@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Disruptor</id>
+    <version>1.1.0</version>
+    <title>Disruptor-net</title>
+    <authors>Olivier Deheurles</authors>
+    <owners>Olivier Deheurles</owners>
+    <projectUrl>http://github.com/odeheurles/Disruptor-net</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Port of LMAX Disruptor to .NET</description>
+    <tags>Concurrency Disruptor Latency Throughput</tags>
+    <references>
+      <reference file="Atomic.dll" />
+      <reference file="Disruptor.dll" />
+      <reference file="Disruptor.Scheduler.dll" />
+    </references>
+  </metadata>
+</package>
