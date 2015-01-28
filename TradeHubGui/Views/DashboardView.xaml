@@ -112,7 +112,7 @@
 
 				<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
 					<ItemsControl Margin="10,0" Width="310" HorizontalAlignment="Left" UseLayoutRounding="True">
-						<GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="8,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
+						<GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
 							<GroupBox.Header>
 								<CheckBox Content="Market Data Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
 							</GroupBox.Header>
@@ -135,7 +135,7 @@
 							</DockPanel>
 						</GroupBox>
 
-						<GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="8,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
+						<GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
 							<GroupBox.Header>
 								<CheckBox Content="Order Execution Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
 							</GroupBox.Header>
@@ -158,7 +158,7 @@
 							</DockPanel>
 						</GroupBox>
 
-						<GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="8,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
+						<GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
 							<GroupBox.Header>
 								<CheckBox Content="Position Engine Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
 							</GroupBox.Header>
@@ -181,7 +181,7 @@
 							</DockPanel>
 						</GroupBox>
 
-						<GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="8,0,0,0" BorderBrush="Crimson" Background="WhiteSmoke">
+						<GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="Crimson" Background="WhiteSmoke">
 							<GroupBox.Header>
 								<CheckBox Content="Reporting Engine Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
 							</GroupBox.Header>

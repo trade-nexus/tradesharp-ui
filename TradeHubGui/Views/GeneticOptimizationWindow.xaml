@@ -49,14 +49,14 @@
 
 				<StackPanel Margin="10" Orientation="Horizontal">
 					<StackPanel Orientation="Vertical" Margin="10,4,20,4">
-						<TextBlock Text="Strategy" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush}" HorizontalAlignment="Center"/>
+						<TextBlock Text="Strategy" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
 						<TextBlock Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}, FallbackValue=AA000001}"
-							   FontSize="24" FontWeight="SemiBold" Foreground="LightSlateGray" HorizontalAlignment="Center"/>
+							   FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
 					</StackPanel>
 					<StackPanel Orientation="Vertical" Margin="10,4,20,4">
-						<TextBlock Text="Completed rounds" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush}" HorizontalAlignment="Center"/>
+						<TextBlock Text="Completed rounds" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
 						<TextBlock Text="{Binding CompletedRounds, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}, FallbackValue=12}"
-							   FontSize="24" FontWeight="SemiBold" Foreground="LightSlateGray" HorizontalAlignment="Center"/>
+							   FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
 					</StackPanel>
 				</StackPanel>
 			</DockPanel>

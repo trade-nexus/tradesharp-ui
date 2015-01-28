@@ -77,8 +77,8 @@
 										<Condition Property="Selector.IsSelectionActive" Value="False"/>
 										<Condition Property="IsSelected" Value="True"/>
 									</MultiTrigger.Conditions>
-									<Setter Property="Background" TargetName="border" Value="{DynamicResource BaseBrush}"/>
-									<Setter Property="Fill" TargetName="path" Value="{DynamicResource BaseBrush}"/>
+									<Setter Property="Background" TargetName="border" Value="{DynamicResource BaseBrush0}"/>
+									<Setter Property="Fill" TargetName="path" Value="{DynamicResource BaseBrush0}"/>
 									<Setter Property="Opacity" TargetName="border" Value="1"/>
 									<Setter Property="Opacity" TargetName="path" Value="1"/>
 								</MultiTrigger>
@@ -87,8 +87,8 @@
 										<Condition Property="Selector.IsSelectionActive" Value="True"/>
 										<Condition Property="IsSelected" Value="True"/>
 									</MultiTrigger.Conditions>
-									<Setter Property="Background" TargetName="border" Value="{DynamicResource BaseBrush}"/>
-									<Setter Property="Fill" TargetName="path" Value="{DynamicResource BaseBrush}"/>
+									<Setter Property="Background" TargetName="border" Value="{DynamicResource BaseBrush0}"/>
+									<Setter Property="Fill" TargetName="path" Value="{DynamicResource BaseBrush0}"/>
 									<Setter Property="Opacity" TargetName="border" Value="1"/>
 									<Setter Property="Opacity" TargetName="path" Value="1"/>
 								</MultiTrigger>
@@ -150,7 +150,7 @@
 			</ListBoxItem>
 		</ListBox>
 
-		<Border Grid.Row="0" Grid.ColumnSpan="2" Height="50" Background="{StaticResource BaseBrush}">
+		<Border Grid.Row="0" Grid.ColumnSpan="2" Height="50" Background="{StaticResource BaseBrush0}">
 			<!--<Controls:TransitioningContentControl VerticalAlignment="Top" Margin="90,0,0,0"
 												  Transition="Right" Content="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox}"
 												  Foreground="White" FontSize="34" />-->
@@ -162,7 +162,7 @@
 											  Transition="Default" RestartTransitionOnContentChange="True" 
 											  Content="{Binding SelectedItem.Tag, ElementName=NavigationListBox}"/>
 
-		<Border Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource BaseBrush}" Height="20">
+		<Border Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource BaseBrush0}" Height="20">
 			<!--<DockPanel Margin="2,2,20,2" VerticalAlignment="Center">
 				<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,2" MinWidth="60">
 					<Ellipse Width="8" Height="8" Margin="8,0" Fill="Crimson"/>

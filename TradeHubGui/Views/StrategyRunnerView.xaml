@@ -57,8 +57,8 @@
 														<Setter Property="Foreground" Value="Black" />
 													</Trigger>
 													<Trigger Property="IsSelected" Value="true">
-														<Setter TargetName="Border" Property="Background" Value="{StaticResource BaseBrush}" />
-														<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BaseBrush}" />
+														<Setter TargetName="Border" Property="Background" Value="{StaticResource BaseBrush0}" />
+														<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BaseBrush0}" />
 														<Setter Property="Foreground" Value="White" />
 													</Trigger>
 													<Trigger Property="IsEnabled" Value="false">
