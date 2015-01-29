@@ -1,32 +1,32 @@
 ﻿<mah:MetroWindow x:Class="TradeHubGui.Views.SettingsWindow"
-				 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-				 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-				 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-				 GlowBrush="Silver"
-				 Title="Settings" Height="500" Width="500">
-	
-	
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                GlowBrush="Silver"
+                Title="Settings" Height="500" Width="500">
+
+
     <Grid>
-		<StackPanel HorizontalAlignment="Left" Margin="20">
-			<TextBlock Text="Content goes here" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4"/>
-			<TextBox Text="TextBox control" Margin="4"/>
-			<CheckBox Content="CheckBox control" Margin="4"/>
-			<RadioButton Content="RadioButton control" Margin="4"/>
-			<RadioButton Content="RadioButton control" Margin="4"/>
-			<ComboBox SelectedIndex="0" Width="150" Margin="4">
-				<ComboBoxItem>Item 1</ComboBoxItem>
-				<ComboBoxItem>Item 2</ComboBoxItem>
-				<ComboBoxItem>Item 3</ComboBoxItem>
-				<ComboBoxItem>Item 4</ComboBoxItem>
-			</ComboBox>
-			<ListBox Margin="4">
-				<ListBoxItem>Item 1</ListBoxItem>
-				<ListBoxItem>Item 2</ListBoxItem>
-				<ListBoxItem>Item 3</ListBoxItem>
-				<ListBoxItem>Item 4</ListBoxItem>
-			</ListBox>
-			<Button Margin="4">Button</Button>
-			<ToggleButton Margin="4">ToggleButton</ToggleButton>
-		</StackPanel>
-	</Grid>
+        <StackPanel HorizontalAlignment="Left" Margin="20">
+            <TextBlock Text="Content goes here" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4"/>
+            <TextBox Text="TextBox control" Margin="4"/>
+            <CheckBox Content="CheckBox control" Margin="4"/>
+            <RadioButton Content="RadioButton control" Margin="4"/>
+            <RadioButton Content="RadioButton control" Margin="4"/>
+            <ComboBox SelectedIndex="0" Width="150" Margin="4">
+                <ComboBoxItem>Item 1</ComboBoxItem>
+                <ComboBoxItem>Item 2</ComboBoxItem>
+                <ComboBoxItem>Item 3</ComboBoxItem>
+                <ComboBoxItem>Item 4</ComboBoxItem>
+            </ComboBox>
+            <ListBox Margin="4">
+                <ListBoxItem>Item 1</ListBoxItem>
+                <ListBoxItem>Item 2</ListBoxItem>
+                <ListBoxItem>Item 3</ListBoxItem>
+                <ListBoxItem>Item 4</ListBoxItem>
+            </ListBox>
+            <Button Margin="4">Button</Button>
+            <ToggleButton Margin="4">ToggleButton</ToggleButton>
+        </StackPanel>
+    </Grid>
 </mah:MetroWindow>

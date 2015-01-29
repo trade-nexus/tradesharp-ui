@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for EditInstanceWindow.xaml
-	/// </summary>
-	public partial class EditInstanceWindow : MetroWindow
-	{
-		public EditInstanceWindow()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for EditInstanceWindow.xaml
+    /// </summary>
+    public partial class EditInstanceWindow : MetroWindow
+    {
+        public EditInstanceWindow()
+        {
+            InitializeComponent();
+        }
+    }
 }

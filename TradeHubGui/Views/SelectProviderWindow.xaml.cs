@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for SelectProviderWindow.xaml
-	/// </summary>
-	public partial class SelectProviderWindow : MetroWindow
-	{
-		public SelectProviderWindow()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for SelectProviderWindow.xaml
+    /// </summary>
+    public partial class SelectProviderWindow : MetroWindow
+    {
+        public SelectProviderWindow()
+        {
+            InitializeComponent();
+        }
+    }
 }

@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for InstanceView.xaml
-	/// </summary>
-	public partial class InstanceView : UserControl
-	{
-		public InstanceView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for InstanceView.xaml
+    /// </summary>
+    public partial class InstanceView : UserControl
+    {
+        public InstanceView()
+        {
+            InitializeComponent();
+        }
+    }
 }

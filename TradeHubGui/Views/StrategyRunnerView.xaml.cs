@@ -18,15 +18,15 @@ using TradeHubGui.ViewModel;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for StrategyRunnerView.xaml
-	/// </summary>
-	public partial class StrategyRunnerView : UserControl
-	{
-		public StrategyRunnerView()
-		{
-			InitializeComponent();
-			DataContext = new StrategyRunnerViewModel();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for StrategyRunnerView.xaml
+    /// </summary>
+    public partial class StrategyRunnerView : UserControl
+    {
+        public StrategyRunnerView()
+        {
+            InitializeComponent();
+            DataContext = new StrategyRunnerViewModel();
+        }
+    }
 }
