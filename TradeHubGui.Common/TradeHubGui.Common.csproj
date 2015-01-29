@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8090220C-F33F-46EA-AE6A-CDAC8C921EDD}</ProjectGuid>
+    <ProjectGuid>{5E5A9A79-0B0C-428B-8385-015134B42D86}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TradeHubGui.StrategyRunner</RootNamespace>
-    <AssemblyName>TradeHubGui.StrategyRunner</AssemblyName>
+    <RootNamespace>TradeHubGui.Common</RootNamespace>
+    <AssemblyName>TradeHubGui.Common</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -37,18 +38,14 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TraceSourceLogger">
-      <HintPath>..\Lib\helper\TraceSourceLogger.2.1.1.1\lib\net40\TraceSourceLogger.dll</HintPath>
-    </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Execution.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\Strategy.cs" />
+    <Compile Include="Models\StrategyInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TradeHubGui.Common\TradeHubGui.Common.csproj">
-      <Project>{5e5a9a79-0b0c-428b-8385-015134b42d86}</Project>
-      <Name>TradeHubGui.Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -10,7 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TradeHubGui.Common;
-using TradeHubGui.Model;
+using TradeHubGui.Common.Models;
 using TradeHubGui.Views;
 
 namespace TradeHubGui.ViewModel

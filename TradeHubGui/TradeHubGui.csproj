@@ -86,10 +86,6 @@
     </ApplicationDefinition>
     <Compile Include="Common\DataGridRowDoubleClickHandler.cs" />
     <Compile Include="Common\RelayCommand.cs" />
-    <Compile Include="Model\Execution.cs" />
-    <Compile Include="Model\Order.cs" />
-    <Compile Include="Model\Strategy.cs" />
-    <Compile Include="Model\StrategyInstance.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
@@ -227,6 +223,17 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Converters\" />
+    <Folder Include="Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TradeHubGui.Common\TradeHubGui.Common.csproj">
+      <Project>{5e5a9a79-0b0c-428b-8385-015134b42d86}</Project>
+      <Name>TradeHubGui.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.StrategyRunner\TradeHubGui.StrategyRunner.csproj">
+      <Project>{8090220c-f33f-46ea-ae6a-cdac8c921edd}</Project>
+      <Name>TradeHubGui.StrategyRunner</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
