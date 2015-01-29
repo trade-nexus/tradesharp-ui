@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.StrategyRunner.Services;
 using TradeHubGui.Views;
 
 namespace TradeHubGui.ViewModel
@@ -31,12 +34,19 @@ namespace TradeHubGui.ViewModel
 		private string _strategyPath;
 		private string _csvInstancesPath;
 
+        /// <summary>
+        /// Provides functionality for all Strategy related operations
+        /// </summary>
+	    private StrategyController _strategyController;
+
 		public StrategyRunnerViewModel()
 		{
+		    _strategyController = new StrategyController();
+
 			_strategies = new ObservableCollection<Strategy>();
-			_strategies.Add(new Strategy() { Key = "AA" });
-			_strategies.Add(new Strategy() { Key = "AB" });
-			_strategies.Add(new Strategy() { Key = "AC" });
+            //_strategies.Add(new Strategy() { Key = "AA" });
+            //_strategies.Add(new Strategy() { Key = "AB" });
+            //_strategies.Add(new Strategy() { Key = "AC" });
 		}
 
 		public ObservableCollection<Strategy> Strategies
@@ -59,46 +69,50 @@ namespace TradeHubGui.ViewModel
 			}
 		}
 
-		public Strategy SelectedStrategy
-		{
-			get { return _selectedStrategy; }
-			set
-			{
-				_selectedStrategy = value;
-				PopulateStrategyInstanceDataGrid(value.Key);
-				OnPropertyChanged("SelectedStrategy");
-			}
-		}
+	    #region Properties
 
-		public StrategyInstance SelectedInstance
-		{
-			get { return _selectedInstance; }
-			set
-			{
-				_selectedInstance = value;
-				OnPropertyChanged("SelectedInstance");
-			}
-		}
+	    public Strategy SelectedStrategy
+	    {
+	        get { return _selectedStrategy; }
+	        set
+	        {
+	            _selectedStrategy = value;
+	            PopulateStrategyInstanceDataGrid(value.Key);
+	            OnPropertyChanged("SelectedStrategy");
+	        }
+	    }
 
-		public string StrategyPath
-		{
-			get { return _strategyPath; }
-			set
-			{
-				_strategyPath = value;
-				OnPropertyChanged("StrategyPath");
-			}
-		}
+	    public StrategyInstance SelectedInstance
+	    {
+	        get { return _selectedInstance; }
+	        set
+	        {
+	            _selectedInstance = value;
+	            OnPropertyChanged("SelectedInstance");
+	        }
+	    }
 
-		public string CsvInstancesPath
-		{
-			get { return _csvInstancesPath; }
-			set
-			{
-				_csvInstancesPath = value;
-				OnPropertyChanged("CsvInstancesPath");
-			}
-		}
+	    public string StrategyPath
+	    {
+	        get { return _strategyPath; }
+	        set
+	        {
+	            _strategyPath = value;
+	            OnPropertyChanged("StrategyPath");
+	        }
+	    }
+
+	    public string CsvInstancesPath
+	    {
+	        get { return _csvInstancesPath; }
+	        set
+	        {
+	            _csvInstancesPath = value;
+	            OnPropertyChanged("CsvInstancesPath");
+	        }
+	    }
+
+	    #endregion
 
 	    #region Commands
 
@@ -234,6 +248,9 @@ namespace TradeHubGui.ViewModel
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
 				StrategyPath = openFileDialog.FileName;
+
+                // Create New Strategy Object
+			    CreateStrategy(StrategyPath);
 			}
 		}
 
@@ -336,6 +353,37 @@ namespace TradeHubGui.ViewModel
 			SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
 		}
 
+        /// <summary>
+        /// Creates a new strategy object
+        /// </summary>
+        /// <param name="strategyPath">Path from which to load the strategy</param>
+        /// <returns></returns>
+	    private bool CreateStrategy(string strategyPath)
+        {
+            // Verfiy Strategy Library
+            if (_strategyController.VerifyAndAddStrategy(strategyPath))
+            {
+                // Get Strategy Type from the selected Assembly
+                var strategyType = StrategyHelper.GetStrategyClassType(strategyPath);
 
+                // Get Strategy Parameter details
+                var details = StrategyHelper.GetParameterDetails(strategyType);
+
+                // Fetch Strategy Name from Assembly
+                var strategyName = StrategyHelper.GetCustomClassSummary(strategyType);
+
+                // Create Strategy Object
+                Strategy strategy = new Strategy(strategyName, strategyType);
+
+                // Set Strategy Parameter Details
+                strategy.ParameterDetails = details;
+
+                // Update Observable Collection
+                _strategies.Add(strategy);
+
+                return true;
+            }
+	        return false;
+	    }
 	}
 }

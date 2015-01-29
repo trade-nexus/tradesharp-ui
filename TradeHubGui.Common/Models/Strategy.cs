@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using TradeHubGui.Common.Utility;
 
 namespace TradeHubGui.Common.Models
 {
@@ -18,9 +20,23 @@ namespace TradeHubGui.Common.Models
         private string _name;
 
         /// <summary>
+        /// Strategy Type extracted from Assembly
+        /// </summary>
+        private Type _strategyType;
+
+        /// <summary>
+        /// Contains Parameter details to be used by Strategy
+        /// Key = Parameter Name
+        /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.)
+        /// </summary>
+        private Dictionary<string, Type> _parameterDetails; 
+
+        /// <summary>
         /// Contains all strategy instances for the current strategy
         /// </summary>
         private IDictionary<string, StrategyInstance> _strategyInstances;
+
+        #region Properties
 
         /// <summary>
         /// Unique to distinguish Strategy 
@@ -47,6 +63,71 @@ namespace TradeHubGui.Common.Models
         {
             get { return _strategyInstances; }
             set { _strategyInstances = value; }
+        }
+
+        /// <summary>
+        /// Strategy Type extracted from Assembly
+        /// </summary>
+        public Type StrategyType
+        {
+            get { return _strategyType; }
+            set { _strategyType = value; }
+        }
+
+        /// <summary>
+        /// Contains Parameter details to be used by Strategy
+        /// Key = Parameter Name
+        /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.)
+        /// </summary>
+        public Dictionary<string, Type> ParameterDetails
+        {
+            get { return _parameterDetails; }
+            set { _parameterDetails = value; }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Argument Constructor
+        /// </summary>
+        /// <param name="name">Strategy Name</param>
+        /// <param name="strategyType">Strategy Assembly Type</param>
+        public Strategy(string name, Type strategyType)
+        {
+            // Get new strategy ID
+            _key = StrategyIdGenerator.GetStrategyKey();
+
+            // Save information
+            _name = name;
+            _strategyType = strategyType;
+
+            // Initialize fields
+            _parameterDetails = new Dictionary<string, Type>();
+            _strategyInstances= new Dictionary<string, StrategyInstance>();
+        }
+
+        /// <summary>
+        /// Creates a new Strategy Instance object
+        /// </summary>
+        /// <param name="parameters">Parameter list to be used by the instance for execution</param>
+        public StrategyInstance CreateInstance(object[] parameters)
+        {
+            // Get new Instance Key
+            string instanceKey = StrategyIdGenerator.GetInstanceKey(_key);
+
+            // Create new Strategy Instance Object
+            var strategyInstance = new StrategyInstance()
+            {
+                InstanceKey = instanceKey,
+                Parameters = parameters,
+                StrategyType = _strategyType
+            };
+
+            // Add to local MAP
+            _strategyInstances.Add(instanceKey, strategyInstance);
+
+            // Return Instance
+            return strategyInstance;
         }
     }
 }

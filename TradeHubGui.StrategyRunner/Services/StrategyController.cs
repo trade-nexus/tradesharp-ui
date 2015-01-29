@@ -57,7 +57,7 @@ namespace TradeHubGui.StrategyRunner.Services
             //cast all strategies names to its object
             foreach (var strategy in strategies)
             {
-                savedStrategies.Add(new Strategy(){Key = strategy});
+                //savedStrategies.Add(new Strategy(){Key = strategy});
             }
             return savedStrategies;
         }
