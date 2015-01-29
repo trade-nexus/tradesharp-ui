@@ -17,54 +17,54 @@ namespace TradeHubGui.ViewModel
 {
 	public class StrategyRunnerViewModel : BaseViewModel, INotifyPropertyChanged
 	{
-		private ObservableCollection<Strategy> strategies;
-		private ObservableCollection<StrategyInstance> instances;
-		private Strategy selectedStrategy;
-		private StrategyInstance selectedInstance;
-		private RelayCommand showCreateInstanceWindowCommand;
-		private RelayCommand showEditInstanceWindowCommand;
-		private RelayCommand showGeneticOptimizationWindowCommand;
-		private RelayCommand showBruteOptimizationWindowCommand;
-		private RelayCommand loadStrategyCommand;
-		private RelayCommand selectProviderCommand;
-		private RelayCommand importInstancesCommand;
-		private string strategyPath;
-		private string csvInstancesPath;
+		private ObservableCollection<Strategy> _strategies;
+		private ObservableCollection<StrategyInstance> _instances;
+		private Strategy _selectedStrategy;
+		private StrategyInstance _selectedInstance;
+		private RelayCommand _showCreateInstanceWindowCommand;
+		private RelayCommand _showEditInstanceWindowCommand;
+		private RelayCommand _showGeneticOptimizationWindowCommand;
+		private RelayCommand _showBruteOptimizationWindowCommand;
+		private RelayCommand _loadStrategyCommand;
+		private RelayCommand _selectProviderCommand;
+		private RelayCommand _importInstancesCommand;
+		private string _strategyPath;
+		private string _csvInstancesPath;
 
 		public StrategyRunnerViewModel()
 		{
-			strategies = new ObservableCollection<Strategy>();
-			strategies.Add(new Strategy() { Key = "AA" });
-			strategies.Add(new Strategy() { Key = "AB" });
-			strategies.Add(new Strategy() { Key = "AC" });
+			_strategies = new ObservableCollection<Strategy>();
+			_strategies.Add(new Strategy() { Key = "AA" });
+			_strategies.Add(new Strategy() { Key = "AB" });
+			_strategies.Add(new Strategy() { Key = "AC" });
 		}
 
 		public ObservableCollection<Strategy> Strategies
 		{
-			get { return strategies; }
+			get { return _strategies; }
 			set
 			{
-				strategies = value;
+				_strategies = value;
 				OnPropertyChanged("Strategies");
 			}
 		}
 
 		public ObservableCollection<StrategyInstance> Instances
 		{
-			get { return instances; }
+			get { return _instances; }
 			set
 			{
-				instances = value;
+				_instances = value;
 				OnPropertyChanged("Instances");
 			}
 		}
 
 		public Strategy SelectedStrategy
 		{
-			get { return selectedStrategy; }
+			get { return _selectedStrategy; }
 			set
 			{
-				selectedStrategy = value;
+				_selectedStrategy = value;
 				PopulateStrategyInstanceDataGrid(value.Key);
 				OnPropertyChanged("SelectedStrategy");
 			}
@@ -72,93 +72,99 @@ namespace TradeHubGui.ViewModel
 
 		public StrategyInstance SelectedInstance
 		{
-			get { return selectedInstance; }
+			get { return _selectedInstance; }
 			set
 			{
-				selectedInstance = value;
+				_selectedInstance = value;
 				OnPropertyChanged("SelectedInstance");
 			}
 		}
 
 		public string StrategyPath
 		{
-			get { return strategyPath; }
+			get { return _strategyPath; }
 			set
 			{
-				strategyPath = value;
+				_strategyPath = value;
 				OnPropertyChanged("StrategyPath");
 			}
 		}
 
 		public string CsvInstancesPath
 		{
-			get { return csvInstancesPath; }
+			get { return _csvInstancesPath; }
 			set
 			{
-				csvInstancesPath = value;
+				_csvInstancesPath = value;
 				OnPropertyChanged("CsvInstancesPath");
 			}
 		}
 
-		public ICommand ShowCreateInstanceWindowCommand
-		{
-			get
-			{
-				return showCreateInstanceWindowCommand ?? (showCreateInstanceWindowCommand = new RelayCommand(
-					param => ShowCreateInstanceWindowExecute(), param => ShowCreateInstanceWindowCanExecute()));
-			}
-		}
+	    #region Commands
 
-		public ICommand ShowEditInstanceWindowCommand
-		{
-			get
-			{
-				return showEditInstanceWindowCommand ?? (showEditInstanceWindowCommand = new RelayCommand(
-					param => ShowEditInstanceWindowExecute(), param => ShowEditInstanceWindowCanExecute()));
-			}
-		}
+	    public ICommand ShowCreateInstanceWindowCommand
+	    {
+	        get
+	        {
+	            return _showCreateInstanceWindowCommand ?? (_showCreateInstanceWindowCommand = new RelayCommand(
+	                param => ShowCreateInstanceWindowExecute(), param => ShowCreateInstanceWindowCanExecute()));
+	        }
+	    }
 
-		public ICommand ShowGeneticOptimizationWindowCommand
-		{
-			get
-			{
-				return showGeneticOptimizationWindowCommand ?? (showGeneticOptimizationWindowCommand = new RelayCommand(
-					param => ShowGeneticOptimizationExecute()));
-			}
-		}
+	    public ICommand ShowEditInstanceWindowCommand
+	    {
+	        get
+	        {
+	            return _showEditInstanceWindowCommand ?? (_showEditInstanceWindowCommand = new RelayCommand(
+	                param => ShowEditInstanceWindowExecute(), param => ShowEditInstanceWindowCanExecute()));
+	        }
+	    }
 
-		public ICommand ShowBruteOptimizationWindowCommand
-		{
-			get
-			{
-				return showBruteOptimizationWindowCommand ?? (showBruteOptimizationWindowCommand = new RelayCommand(
-					param => ShowBruteOptimizationExecute()));
-			}
-		}
+	    public ICommand ShowGeneticOptimizationWindowCommand
+	    {
+	        get
+	        {
+	            return _showGeneticOptimizationWindowCommand ?? (_showGeneticOptimizationWindowCommand = new RelayCommand(
+	                param => ShowGeneticOptimizationExecute()));
+	        }
+	    }
 
-		public ICommand LoadStrategyCommand
-		{
-			get
-			{
-				return loadStrategyCommand ?? (loadStrategyCommand = new RelayCommand(param => LoadStrategyExecute()));
-			}
-		}
+	    public ICommand ShowBruteOptimizationWindowCommand
+	    {
+	        get
+	        {
+	            return _showBruteOptimizationWindowCommand ?? (_showBruteOptimizationWindowCommand = new RelayCommand(
+	                param => ShowBruteOptimizationExecute()));
+	        }
+	    }
 
-		public ICommand SelectProviderCommand
-		{
-			get
-			{
-				return selectProviderCommand ?? (selectProviderCommand = new RelayCommand(param => SelectProviderExecute()));
-			}
-		}
+	    public ICommand LoadStrategyCommand
+	    {
+	        get
+	        {
+	            return _loadStrategyCommand ?? (_loadStrategyCommand = new RelayCommand(param => LoadStrategyExecute()));
+	        }
+	    }
 
-		public ICommand ImportInstancesCommand
-		{
-			get
-			{
-				return importInstancesCommand ?? (importInstancesCommand = new RelayCommand(param => ImportInstancesExecute()));
-			}
-		}
+	    public ICommand SelectProviderCommand
+	    {
+	        get
+	        {
+	            return _selectProviderCommand ??
+	                   (_selectProviderCommand = new RelayCommand(param => SelectProviderExecute()));
+	        }
+	    }
+
+	    public ICommand ImportInstancesCommand
+	    {
+	        get
+	        {
+	            return _importInstancesCommand ??
+	                   (_importInstancesCommand = new RelayCommand(param => ImportInstancesExecute()));
+	        }
+	    }
+
+	    #endregion
 
 		private bool ShowEditInstanceWindowCanExecute()
 		{

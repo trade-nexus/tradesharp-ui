@@ -41,8 +41,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Execution.cs" />
-    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\ExecutionDetails.cs" />
+    <Compile Include="Models\OrderDetails.cs" />
     <Compile Include="Models\Strategy.cs" />
     <Compile Include="Models\StrategyInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

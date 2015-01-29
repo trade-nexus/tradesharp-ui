@@ -2,7 +2,7 @@
 
 namespace TradeHubGui.Common.Models
 {
-	public class Order
+	public class OrderDetails
 	{
 		public string ID { get; set; }
 		public string Side { get; set; }

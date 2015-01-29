@@ -1,6 +1,6 @@
 ﻿namespace TradeHubGui.Common.Models
 {
-	public class Execution
+	public class ExecutionDetails
 	{
 		public string Key { get; set; }
 		public int Executed { get; set; }
