@@ -18,9 +18,8 @@ namespace TradeHubGui.StrategyRunner.Tests.Integration
         public void Test()
         {
             string assemblyPath =
-                Path.GetFullPath(@"~\..\..\..\Lib\testing\TradeHub.StrategyEngine.Testing.SimpleStrategy.dll");
-            StrategyController controller=new StrategyController();
-            StrategyInstance instance=new StrategyInstance();
+                Path.GetFullPath(@"~\..\..\..\..\Lib\testing\TradeHub.StrategyEngine.Testing.SimpleStrategy.dll");
+            Assert.True(File.Exists(assemblyPath));
         }
     }
 }

@@ -15,6 +15,7 @@ using TradeHub.Common.HistoricalDataProvider.ValueObjects;
 using TradeHub.Common.Persistence;
 using TradeHub.StrategyEngine.TradeHub;
 using TradeHub.StrategyEngine.Utlility.Services;
+using TradeHubGui.StrategyRunner.Representations;
 
 namespace TradeHubGui.StrategyRunner.Services
 {
@@ -59,7 +60,7 @@ namespace TradeHubGui.StrategyRunner.Services
         /// <summary>
         /// Indicates whether the strategy is None/Executing/Executed
         /// </summary>
-        private string _strategyStatus;
+        private StrategyStatus _strategyStatus;
 
         /// <summary>
         /// Save Custom Strategy Type (C# Class Type which implements TradeHubStrategy.cs)
@@ -82,14 +83,14 @@ namespace TradeHubGui.StrategyRunner.Services
         #region Events
 
         // ReSharper disable InconsistentNaming
-        private event Action<bool, string> _statusChanged;
+        private event Action<string, StrategyStatus> _statusChanged;
         private event Action<Execution> _executionReceived;
         // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Raised when custom strategy status changed from Running-to-Stopped and vice versa
         /// </summary>
-        public event Action<bool, string> StatusChanged
+        public event Action<string, StrategyStatus> StatusChanged
         {
             add { if (_statusChanged == null) _statusChanged += value; }
             remove { _statusChanged -= value; }
@@ -129,7 +130,7 @@ namespace TradeHubGui.StrategyRunner.Services
         /// <summary>
         /// Indicates whether the strategy is None/Executing/Executed
         /// </summary>
-        public string StrategyStatus
+        public StrategyStatus StrategyStatus
         {
             get { return _strategyStatus; }
             set { _strategyStatus = value; }
@@ -160,7 +161,7 @@ namespace TradeHubGui.StrategyRunner.Services
             _strategyType = strategyType;
             _ctorArguments = ctorArguments;
             //TODO: Assign status
-            //_strategyStatus = Infrastructure.Constants.StrategyStatus.None;
+            _strategyStatus = StrategyStatus.None;
 
             // Initialze Utility Classes
             _orderExecutor = new OrderExecutor(_asyncClassLogger);
@@ -417,16 +418,16 @@ namespace TradeHubGui.StrategyRunner.Services
         {
             if (status)
             {
-                //_strategyStatus = Infrastructure.Constants.StrategyStatus.Executing;
+                _strategyStatus = StrategyStatus.Executing;
             }
             else
             {
-                //_strategyStatus = Infrastructure.Constants.StrategyStatus.Executed;
+                _strategyStatus = StrategyStatus.Executed;
             }
 
             if (_statusChanged != null)
             {
-                _statusChanged(status, _strategyKey);
+                _statusChanged(_strategyKey, _strategyStatus);
             }
         }
 
@@ -441,10 +442,7 @@ namespace TradeHubGui.StrategyRunner.Services
                 _executionReceived(execution);
                 //Task.Factory.StartNew(() => _executionReceived(execution));
             }
-
             // Update Stats
-            //UpdateStatistics(execution);
-            //_statistics.MatlabStatisticsFunction(execution);
             UpdateStatistics(execution);
         }
 
