@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,156 +10,178 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
-using TradeHubGui.Model;
+using TradeHubGui.Common.Models;
+using TradeHubGui.StrategyRunner.Services;
 using TradeHubGui.Views;
 
 namespace TradeHubGui.ViewModel
 {
 	public class StrategyRunnerViewModel : BaseViewModel, INotifyPropertyChanged
 	{
-		private ObservableCollection<Strategy> strategies;
-		private ObservableCollection<StrategyInstance> instances;
-		private Strategy selectedStrategy;
-		private StrategyInstance selectedInstance;
-		private RelayCommand showCreateInstanceWindowCommand;
-		private RelayCommand showEditInstanceWindowCommand;
-		private RelayCommand showGeneticOptimizationWindowCommand;
-		private RelayCommand showBruteOptimizationWindowCommand;
-		private RelayCommand loadStrategyCommand;
-		private RelayCommand selectProviderCommand;
-		private RelayCommand importInstancesCommand;
-		private string strategyPath;
-		private string csvInstancesPath;
+		private ObservableCollection<Strategy> _strategies;
+		private ObservableCollection<StrategyInstance> _instances;
+		private Strategy _selectedStrategy;
+		private StrategyInstance _selectedInstance;
+		private RelayCommand _showCreateInstanceWindowCommand;
+		private RelayCommand _showEditInstanceWindowCommand;
+		private RelayCommand _showGeneticOptimizationWindowCommand;
+		private RelayCommand _showBruteOptimizationWindowCommand;
+		private RelayCommand _loadStrategyCommand;
+		private RelayCommand _selectProviderCommand;
+		private RelayCommand _importInstancesCommand;
+		private string _strategyPath;
+		private string _csvInstancesPath;
+
+        /// <summary>
+        /// Provides functionality for all Strategy related operations
+        /// </summary>
+	    private StrategyController _strategyController;
 
 		public StrategyRunnerViewModel()
 		{
-			strategies = new ObservableCollection<Strategy>();
-			strategies.Add(new Strategy() { Key = "AA" });
-			strategies.Add(new Strategy() { Key = "AB" });
-			strategies.Add(new Strategy() { Key = "AC" });
+		    _strategyController = new StrategyController();
+			_strategies = new ObservableCollection<Strategy>();
+
+            // Get Existing Strategies in the system and populate on UI
+		    LoadExistingStrategies();
 		}
 
-		public ObservableCollection<Strategy> Strategies
-		{
-			get { return strategies; }
-			set
-			{
-				strategies = value;
-				OnPropertyChanged("Strategies");
-			}
-		}
+	    #region Observable Collections
 
-		public ObservableCollection<StrategyInstance> Instances
-		{
-			get { return instances; }
-			set
-			{
-				instances = value;
-				OnPropertyChanged("Instances");
-			}
-		}
+	    public ObservableCollection<Strategy> Strategies
+	    {
+	        get { return _strategies; }
+	        set
+	        {
+	            _strategies = value;
+	            OnPropertyChanged("Strategies");
+	        }
+	    }
 
-		public Strategy SelectedStrategy
-		{
-			get { return selectedStrategy; }
-			set
-			{
-				selectedStrategy = value;
-				PopulateStrategyInstanceDataGrid(value.Key);
-				OnPropertyChanged("SelectedStrategy");
-			}
-		}
+	    public ObservableCollection<StrategyInstance> Instances
+	    {
+	        get { return _instances; }
+	        set
+	        {
+	            _instances = value;
+	            OnPropertyChanged("Instances");
+	        }
+	    }
 
-		public StrategyInstance SelectedInstance
-		{
-			get { return selectedInstance; }
-			set
-			{
-				selectedInstance = value;
-				OnPropertyChanged("SelectedInstance");
-			}
-		}
+	    #endregion
 
-		public string StrategyPath
-		{
-			get { return strategyPath; }
-			set
-			{
-				strategyPath = value;
-				OnPropertyChanged("StrategyPath");
-			}
-		}
+	    #region Properties
 
-		public string CsvInstancesPath
-		{
-			get { return csvInstancesPath; }
-			set
-			{
-				csvInstancesPath = value;
-				OnPropertyChanged("CsvInstancesPath");
-			}
-		}
+	    public Strategy SelectedStrategy
+	    {
+	        get { return _selectedStrategy; }
+	        set
+	        {
+	            _selectedStrategy = value;
+	            PopulateStrategyInstanceDataGrid(value.Key);
+	            OnPropertyChanged("SelectedStrategy");
+	        }
+	    }
 
-		public ICommand ShowCreateInstanceWindowCommand
-		{
-			get
-			{
-				return showCreateInstanceWindowCommand ?? (showCreateInstanceWindowCommand = new RelayCommand(
-					param => ShowCreateInstanceWindowExecute(), param => ShowCreateInstanceWindowCanExecute()));
-			}
-		}
+	    public StrategyInstance SelectedInstance
+	    {
+	        get { return _selectedInstance; }
+	        set
+	        {
+	            _selectedInstance = value;
+	            OnPropertyChanged("SelectedInstance");
+	        }
+	    }
 
-		public ICommand ShowEditInstanceWindowCommand
-		{
-			get
-			{
-				return showEditInstanceWindowCommand ?? (showEditInstanceWindowCommand = new RelayCommand(
-					param => ShowEditInstanceWindowExecute(), param => ShowEditInstanceWindowCanExecute()));
-			}
-		}
+	    public string StrategyPath
+	    {
+	        get { return _strategyPath; }
+	        set
+	        {
+	            _strategyPath = value;
+	            OnPropertyChanged("StrategyPath");
+	        }
+	    }
 
-		public ICommand ShowGeneticOptimizationWindowCommand
-		{
-			get
-			{
-				return showGeneticOptimizationWindowCommand ?? (showGeneticOptimizationWindowCommand = new RelayCommand(
-					param => ShowGeneticOptimizationExecute()));
-			}
-		}
+	    public string CsvInstancesPath
+	    {
+	        get { return _csvInstancesPath; }
+	        set
+	        {
+	            _csvInstancesPath = value;
+	            OnPropertyChanged("CsvInstancesPath");
+	        }
+	    }
 
-		public ICommand ShowBruteOptimizationWindowCommand
-		{
-			get
-			{
-				return showBruteOptimizationWindowCommand ?? (showBruteOptimizationWindowCommand = new RelayCommand(
-					param => ShowBruteOptimizationExecute()));
-			}
-		}
+	    #endregion
 
-		public ICommand LoadStrategyCommand
-		{
-			get
-			{
-				return loadStrategyCommand ?? (loadStrategyCommand = new RelayCommand(param => LoadStrategyExecute()));
-			}
-		}
+	    #region Commands
 
-		public ICommand SelectProviderCommand
-		{
-			get
-			{
-				return selectProviderCommand ?? (selectProviderCommand = new RelayCommand(param => SelectProviderExecute()));
-			}
-		}
+	    public ICommand ShowCreateInstanceWindowCommand
+	    {
+	        get
+	        {
+	            return _showCreateInstanceWindowCommand ?? (_showCreateInstanceWindowCommand = new RelayCommand(
+	                param => ShowCreateInstanceWindowExecute(), param => ShowCreateInstanceWindowCanExecute()));
+	        }
+	    }
 
-		public ICommand ImportInstancesCommand
-		{
-			get
-			{
-				return importInstancesCommand ?? (importInstancesCommand = new RelayCommand(param => ImportInstancesExecute()));
-			}
-		}
+	    public ICommand ShowEditInstanceWindowCommand
+	    {
+	        get
+	        {
+	            return _showEditInstanceWindowCommand ?? (_showEditInstanceWindowCommand = new RelayCommand(
+	                param => ShowEditInstanceWindowExecute(), param => ShowEditInstanceWindowCanExecute()));
+	        }
+	    }
+
+	    public ICommand ShowGeneticOptimizationWindowCommand
+	    {
+	        get
+	        {
+	            return _showGeneticOptimizationWindowCommand ?? (_showGeneticOptimizationWindowCommand = new RelayCommand(
+	                param => ShowGeneticOptimizationExecute()));
+	        }
+	    }
+
+	    public ICommand ShowBruteOptimizationWindowCommand
+	    {
+	        get
+	        {
+	            return _showBruteOptimizationWindowCommand ?? (_showBruteOptimizationWindowCommand = new RelayCommand(
+	                param => ShowBruteOptimizationExecute()));
+	        }
+	    }
+
+	    public ICommand LoadStrategyCommand
+	    {
+	        get
+	        {
+	            return _loadStrategyCommand ?? (_loadStrategyCommand = new RelayCommand(param => LoadStrategyExecute()));
+	        }
+	    }
+
+	    public ICommand SelectProviderCommand
+	    {
+	        get
+	        {
+	            return _selectProviderCommand ??
+	                   (_selectProviderCommand = new RelayCommand(param => SelectProviderExecute()));
+	        }
+	    }
+
+	    public ICommand ImportInstancesCommand
+	    {
+	        get
+	        {
+	            return _importInstancesCommand ??
+	                   (_importInstancesCommand = new RelayCommand(param => ImportInstancesExecute()));
+	        }
+	    }
+
+	    #endregion
 
 		private bool ShowEditInstanceWindowCanExecute()
 		{
@@ -179,6 +202,7 @@ namespace TradeHubGui.ViewModel
 			if (SelectedStrategy == null) return false;
 			return true;
 		}
+
 		private void ShowGeneticOptimizationExecute()
 		{
 			if (TryActivateShownWindow(typeof(GeneticOptimizationWindow)))
@@ -207,6 +231,21 @@ namespace TradeHubGui.ViewModel
 		{
 			CreateInstanceWindow window = new CreateInstanceWindow();
 			window.Tag = string.Format("STRATEGY {0}", SelectedStrategy.Key);
+
+            // KEY = Parameter Name
+            // VALUE = Parameter Type
+		    Dictionary<string, Type> parameterDetails;
+
+            // Traverse collection to find intended Strategy 
+		    foreach (var strategy in _strategies)
+		    {
+                // Retrieve Parameters Information
+                if (strategy.Key.Equals(SelectedStrategy.Key))
+                {
+                    parameterDetails = strategy.ParameterDetails;
+                }
+		    }
+
 			window.Owner = MainWindow;
 			window.ShowDialog();
 		}
@@ -228,6 +267,9 @@ namespace TradeHubGui.ViewModel
 			if (result == System.Windows.Forms.DialogResult.OK)
 			{
 				StrategyPath = openFileDialog.FileName;
+
+                // Create New Strategy Object
+			    AddStrategy(StrategyPath);
 			}
 		}
 
@@ -262,18 +304,32 @@ namespace TradeHubGui.ViewModel
 			return false;
 		}
 
-
+        /// <summary>
+        /// Displays Strategy Instances created against selected Strategy
+        /// </summary>
+        /// <param name="strategyKey">Key to identify Strategy</param>
 		private void PopulateStrategyInstanceDataGrid(string strategyKey)
 		{
-			switch (strategyKey)
-			{
-				case "AA": FillInstancesAA();
-					break;
-				case "AB": FillInstancesAB();
-					break;
-				case "AC": FillInstancesAC();
-					break;
-			}
+            // Find given Strategy
+            foreach (Strategy strategy in _strategies.ToList())
+            {
+                // Find Strategy
+                if (strategy.Key.Equals(strategyKey))
+                {
+                    // Clear current values
+                    Instances = new ObservableCollection<StrategyInstance>();
+
+                    // Populate Instances
+                    foreach (var strategyInstance in strategy.StrategyInstances)
+                    {
+                        Instances.Add(strategyInstance.Value);
+                    }
+
+                    SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
+
+                    break;
+                }
+            }
 		}
 
 		private void FillInstancesAA()
@@ -330,6 +386,65 @@ namespace TradeHubGui.ViewModel
 			SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
 		}
 
+        /// <summary>
+        /// Populates existing strategies 
+        /// </summary>
+	    private void LoadExistingStrategies()
+	    {
+	        // Request Assembly Paths
+            var pathsCollection = StrategyHelper.GetAllStrategiesPath();
 
+            // Traverse List
+            foreach (string path in pathsCollection)
+            {
+                // Create a new Strategy Object from the given strategy path
+                var strategy = CreateStrategyObject(path);
+
+                // Update Observable Collection
+                _strategies.Add(strategy);
+            }
+	    }
+
+        /// <summary>
+        /// Creates a new strategy object
+        /// </summary>
+        /// <param name="strategyPath">Path from which to load the strategy</param>
+	    private void AddStrategy(string strategyPath)
+        {
+            // Verfiy Strategy Library
+            if (_strategyController.VerifyAndAddStrategy(strategyPath))
+            {
+                // Create a new Strategy Object from the given strategy path
+                var strategy = CreateStrategyObject(strategyPath);
+
+                // Update Observable Collection
+                _strategies.Add(strategy);
+            }
+	    }
+
+        /// <summary>
+        /// Creates a new Strategy Object
+        /// </summary>
+        /// <param name="strategyPath">Path from which to load the strategy</param>
+        private Strategy CreateStrategyObject(string strategyPath)
+	    {
+            // Get Strategy Type from the selected Assembly
+            var strategyType = StrategyHelper.GetStrategyClassType(strategyPath);
+
+            // Get Strategy Parameter details
+            var details = StrategyHelper.GetParameterDetails(strategyType);
+
+            // Fetch Strategy Name from Assembly
+            var strategyName = StrategyHelper.GetCustomClassSummary(strategyType);
+
+            // Create Strategy Object
+            Strategy strategy = new Strategy(strategyName, strategyType);
+
+            // Set Strategy Parameter Details
+            strategy.ParameterDetails = details;
+
+            // Return created Strategy
+            return strategy;
+	    }
 	}
 }
