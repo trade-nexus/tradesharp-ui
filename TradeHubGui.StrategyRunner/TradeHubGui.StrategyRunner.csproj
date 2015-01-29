@@ -30,6 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Atomic">
+      <HintPath>..\Lib\helper\Disruptor.1.1.0\lib\net40\Atomic.dll</HintPath>
+    </Reference>
+    <Reference Include="Disruptor">
+      <HintPath>..\Lib\helper\Disruptor.1.1.0\lib\net40\Disruptor.dll</HintPath>
+    </Reference>
+    <Reference Include="Disruptor.Scheduler">
+      <HintPath>..\Lib\helper\Disruptor.1.1.0\lib\net40\Disruptor.Scheduler.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,9 +49,47 @@
     <Reference Include="TraceSourceLogger">
       <HintPath>..\Lib\helper\TraceSourceLogger.2.1.1.1\lib\net40\TraceSourceLogger.dll</HintPath>
     </Reference>
+    <Reference Include="TradeHub.Common.Core">
+      <HintPath>..\Lib\tradehub\TradeHub.Common.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.Common.HistoricalDataProvider">
+      <HintPath>..\Lib\tradehub\TradeHub.Common.HistoricalDataProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.Common.Persistence">
+      <HintPath>..\Lib\tradehub\TradeHub.Common.Persistence.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.Infrastructure.Nhibernate">
+      <HintPath>..\Lib\tradehub\TradeHub.Infrastructure.Nhibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.MarketDataEngine.Client">
+      <HintPath>..\Lib\tradehub\TradeHub.MarketDataEngine.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.Optimization.Genetic">
+      <HintPath>..\Lib\tradehub\TradeHub.Optimization.Genetic.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.OrderExecutionEngine.Client">
+      <HintPath>..\Lib\tradehub\TradeHub.OrderExecutionEngine.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.HistoricalData">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.HistoricalData.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.MarketData">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.MarketData.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.OrderExecution">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.OrderExecution.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.TradeHub">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.TradeHub.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.Utlility">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.Utlility.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\StrategyController.cs" />
+    <Compile Include="Services\StrategyExecutor.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TradeHubGui.Common\TradeHubGui.Common.csproj">
