@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.StrategyRunner"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.Common", "TradeHubGui.Common\TradeHubGui.Common.csproj", "{5E5A9A79-0B0C-428B-8385-015134B42D86}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.StrategyRunner.Tests", "TradeHubGui.StrategyRunner.Tests\TradeHubGui.StrategyRunner.Tests.csproj", "{23917C60-C0A8-42DA-A6CB-58DF146D84DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{5E5A9A79-0B0C-428B-8385-015134B42D86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E5A9A79-0B0C-428B-8385-015134B42D86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E5A9A79-0B0C-428B-8385-015134B42D86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23917C60-C0A8-42DA-A6CB-58DF146D84DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23917C60-C0A8-42DA-A6CB-58DF146D84DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23917C60-C0A8-42DA-A6CB-58DF146D84DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23917C60-C0A8-42DA-A6CB-58DF146D84DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
