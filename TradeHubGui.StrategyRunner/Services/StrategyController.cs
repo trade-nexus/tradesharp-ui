@@ -6,8 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TraceSourceLogger;
 using TraceSourceLogger.ValueObjects;
+using TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common.Models;
+using TradeHubGui.StrategyRunner.Representations;
+using Strategy = TradeHubGui.Common.Models.Strategy;
 
 namespace TradeHubGui.StrategyRunner.Services
 {
@@ -22,6 +25,17 @@ namespace TradeHubGui.StrategyRunner.Services
         private ConcurrentDictionary<string, StrategyExecutor> _strategiesCollection=new ConcurrentDictionary<string, StrategyExecutor>();
 
         private Type _type = typeof (StrategyController);
+        private event Action<StrategyStatusRepresentation> _strategyStatusChanged;
+
+        /// <summary>
+        /// Notify listeneres that on strategy status changed
+        /// </summary>
+        public event Action<StrategyStatusRepresentation> StrategyStatusChanged
+        {
+            add { if (_strategyStatusChanged == null) _strategyStatusChanged += value; }
+            remove { _strategyStatusChanged -= value; }
+        }
+
         /// <summary>
         /// Verify and add strategy to TradeHub
         /// </summary>
@@ -68,9 +82,27 @@ namespace TradeHubGui.StrategyRunner.Services
         /// <param name="strategyInstance"></param>
         public void AddStrategyInstance(StrategyInstance strategyInstance)
         {
-            _strategiesCollection.TryAdd(strategyInstance.InstanceKey,
-                new StrategyExecutor(strategyInstance.InstanceKey, strategyInstance.StrategyType,
-                    strategyInstance.Parameters));
+            //create strategy executor instance
+            StrategyExecutor executor=new StrategyExecutor(strategyInstance.InstanceKey, strategyInstance.StrategyType,
+                    strategyInstance.Parameters);
+            //subscribe to strategy event changed event
+            executor.StatusChanged += OnStrategyStatusChanged;
+            //map the executor instance in dictionary
+            _strategiesCollection.TryAdd(strategyInstance.InstanceKey,executor);
+        }
+
+        /// <summary>
+        /// On strategy status changed
+        /// </summary>
+        /// <param name="instanceKey"></param>
+        /// <param name="strategyStatus"></param>
+        private void OnStrategyStatusChanged(string instanceKey, StrategyStatus strategyStatus)
+        {
+            if (_strategyStatusChanged != null)
+            {
+                //Raise event
+                _strategyStatusChanged(new StrategyStatusRepresentation(instanceKey,strategyStatus));
+            }
         }
 
         /// <summary>
@@ -84,7 +116,10 @@ namespace TradeHubGui.StrategyRunner.Services
                 StrategyExecutor executor;
                 if (_strategiesCollection.TryRemove(instanceKey, out executor))
                 {
-                    //TODO: If strategy is running stop it
+                    //TODO: If strategy is running, stop it
+
+                    //Unsubscribe event
+                    executor.StatusChanged -= OnStrategyStatusChanged;
                     //dispose any resources used
                     executor.Close();
                 }

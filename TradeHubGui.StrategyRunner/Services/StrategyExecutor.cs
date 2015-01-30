@@ -160,7 +160,7 @@ namespace TradeHubGui.StrategyRunner.Services
             _strategyKey = strategyKey;
             _strategyType = strategyType;
             _ctorArguments = ctorArguments;
-            //TODO: Assign status
+            
             _strategyStatus = StrategyStatus.None;
 
             // Initialze Utility Classes
@@ -304,9 +304,6 @@ namespace TradeHubGui.StrategyRunner.Services
 
             _tradeHubStrategy.OverrideBarSubscriptionRequest(_marketRequestListener.SubscribeLiveBars);
             _tradeHubStrategy.OverriderBarUnsubscriptionRequest(_marketRequestListener.UnsubcribeLiveBars);
-
-            ////NOTE: SX Data
-            //_tradeHubStrategy.InitializeMarketDataServiceDisruptor(new IEventHandler<RabbitMqMessage>[] { _marketDataListener });
         }
 
         /// <summary>
