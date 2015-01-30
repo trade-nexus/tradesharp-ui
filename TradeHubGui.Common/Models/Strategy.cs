@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TradeHubGui.Common.Utility;
+using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.Common.Models
 {
@@ -27,9 +28,9 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Contains Parameter details to be used by Strategy
         /// Key = Parameter Name
-        /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.)
+        /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.) , Parameter Value if entered
         /// </summary>
-        private Dictionary<string, Type> _parameterDetails; 
+        private Dictionary<string, ParameterDetail> _parameterDetails; 
 
         /// <summary>
         /// Contains all strategy instances for the current strategy
@@ -79,7 +80,7 @@ namespace TradeHubGui.Common.Models
         /// Key = Parameter Name
         /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.)
         /// </summary>
-        public Dictionary<string, Type> ParameterDetails
+        public Dictionary<string, ParameterDetail> ParameterDetails
         {
             get { return _parameterDetails; }
             set { _parameterDetails = value; }
@@ -102,7 +103,7 @@ namespace TradeHubGui.Common.Models
             _strategyType = strategyType;
 
             // Initialize fields
-            _parameterDetails = new Dictionary<string, Type>();
+            _parameterDetails = new Dictionary<string, ParameterDetail>();
             _strategyInstances= new Dictionary<string, StrategyInstance>();
         }
 

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Services;
 using TradeHubGui.Views;
 
@@ -33,7 +34,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _importInstancesCommand;
         private string _strategyPath;
         private string _csvInstancesPath;
-        private Dictionary<string, Type> _parameterDetails;
+        private Dictionary<string, ParameterDetail> _parameterDetails;
 
         /// <summary>
         /// Provides functionality for all Strategy related operations
@@ -96,7 +97,7 @@ namespace TradeHubGui.ViewModel
             }
         }
 
-        public Dictionary<string, Type> ParameterDetails
+        public Dictionary<string, ParameterDetail> ParameterDetails
         {
             get { return _parameterDetails; }
             set
@@ -251,7 +252,7 @@ namespace TradeHubGui.ViewModel
                 if (strategy.Key.Equals(SelectedStrategy.Key))
                 {
                     ParameterDetails = strategy.ParameterDetails;
-                    
+
                     //TODO: Where are the values of parameters? ParameterDetails holds just Key as string and Value as Type of Parameter, but no ParamValue.
                     // Instead of Type for Value, maybe better to hold some object for Value (i.e. ParamDetail with two properties, ParamType and ParamValue). 
                     // We need to discuss this.
@@ -452,8 +453,15 @@ namespace TradeHubGui.ViewModel
             // Create Strategy Object
             Strategy strategy = new Strategy(strategyName, strategyType);
 
+            Dictionary<string, ParameterDetail> tempDictionary = new Dictionary<string, ParameterDetail>();
+
+            foreach (KeyValuePair<string, Type> keyValuePair in details)
+            {
+                tempDictionary.Add(keyValuePair.Key, new ParameterDetail(keyValuePair.Value, ""));
+            }
+
             // Set Strategy Parameter Details
-            strategy.ParameterDetails = details;
+            strategy.ParameterDetails = tempDictionary;
 
             // Return created Strategy
             return strategy;
