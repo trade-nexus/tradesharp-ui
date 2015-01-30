@@ -33,6 +33,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _importInstancesCommand;
         private string _strategyPath;
         private string _csvInstancesPath;
+        private Dictionary<string, Type> _parameterDetails;
 
         /// <summary>
         /// Provides functionality for all Strategy related operations
@@ -92,6 +93,16 @@ namespace TradeHubGui.ViewModel
             {
                 _selectedInstance = value;
                 OnPropertyChanged("SelectedInstance");
+            }
+        }
+
+        public Dictionary<string, Type> ParameterDetails
+        {
+            get { return _parameterDetails; }
+            set
+            {
+                _parameterDetails = value;
+                OnPropertyChanged("ParameterDetails");
             }
         }
 
@@ -230,11 +241,8 @@ namespace TradeHubGui.ViewModel
         private void ShowCreateInstanceWindowExecute()
         {
             CreateInstanceWindow window = new CreateInstanceWindow();
+            window.DataContext = this;
             window.Tag = string.Format("STRATEGY {0}", SelectedStrategy.Key);
-
-            // KEY = Parameter Name
-            // VALUE = Parameter Type
-            Dictionary<string, Type> parameterDetails;
 
             // Traverse collection to find intended Strategy 
             foreach (var strategy in _strategies)
@@ -242,7 +250,11 @@ namespace TradeHubGui.ViewModel
                 // Retrieve Parameters Information
                 if (strategy.Key.Equals(SelectedStrategy.Key))
                 {
-                    parameterDetails = strategy.ParameterDetails;
+                    ParameterDetails = strategy.ParameterDetails;
+                    
+                    //TODO: Where are the values of parameters? ParameterDetails holds just Key as string and Value as Type of Parameter, but no ParamValue.
+                    // Instead of Type for Value, maybe better to hold some object for Value (i.e. ParamDetail with two properties, ParamType and ParamValue). 
+                    // We need to discuss this.
                 }
             }
 
