@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for BruteOptimizationWindow.xaml
-	/// </summary>
-	public partial class BruteOptimizationWindow : MetroWindow
-	{
-		public BruteOptimizationWindow()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for BruteOptimizationWindow.xaml
+    /// </summary>
+    public partial class BruteOptimizationWindow : MetroWindow
+    {
+        public BruteOptimizationWindow()
+        {
+            InitializeComponent();
+        }
+    }
 }

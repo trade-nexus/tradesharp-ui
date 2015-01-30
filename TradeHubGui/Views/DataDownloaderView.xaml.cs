@@ -15,14 +15,14 @@ using System.Windows.Shapes;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for DataDownloaderView.xaml
-	/// </summary>
-	public partial class DataDownloaderView : UserControl
-	{
-		public DataDownloaderView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for DataDownloaderView.xaml
+    /// </summary>
+    public partial class DataDownloaderView : UserControl
+    {
+        public DataDownloaderView()
+        {
+            InitializeComponent();
+        }
+    }
 }

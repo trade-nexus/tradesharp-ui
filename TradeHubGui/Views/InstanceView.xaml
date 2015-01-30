@@ -3,35 +3,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended" 
+             xmlns:templateSelectors="clr-namespace:TradeHubGui.TemplateSelectors"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-	
-	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+             d:DesignHeight="300" d:DesignWidth="300"
+             Grid.IsSharedSizeScope="True">
+    
+    <UserControl.Resources>
+        <!--<Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>-->
+        
+        <templateSelectors:ParameterDetailsTemplateSelector x:Key="ParameterDetailsTemplateSelector"/>
+        
+        <DataTemplate x:Key="IntegerDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <wpfToolkitExtended:IntegerUpDown Grid.Column="1" Text="{Binding Value.ParameterValue}" FormatString="C0" Increment="1" />
+            </Grid>
+        </DataTemplate>
 
-		<Label Grid.Row="0" Grid.Column="0" Content="Paramter 1"/>
-		<TextBox Grid.Row="0" Grid.Column="1" />
+        <DataTemplate x:Key="DecimalDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <wpfToolkitExtended:DecimalUpDown Grid.Column="1" Text="{Binding Value.ParameterValue}" Increment="1" />
+            </Grid>
+        </DataTemplate>
 
-		<Label Grid.Row="1" Grid.Column="0" Content="Paramter 2"/>
-		<TextBox Grid.Row="1" Grid.Column="1" />
+        <DataTemplate x:Key="StringDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <TextBox Grid.Column="1" Text="{Binding Value.ParameterValue}"/>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
 
-		<Label Grid.Row="2" Grid.Column="0" Content="Paramter 3"/>
-		<TextBox Grid.Row="2" Grid.Column="1" />
-
-		<Label Grid.Row="3" Grid.Column="0" Content="Paramter 4"/>
-		<TextBox Grid.Row="3" Grid.Column="1" />
-
-		<Label Grid.Row="4" Grid.Column="0" Content="Paramter 5"/>
-		<TextBox Grid.Row="4" Grid.Column="1" />
-	</Grid>
+    <ItemsControl ItemTemplateSelector="{StaticResource ParameterDetailsTemplateSelector}"
+                  ItemsSource="{Binding ParameterDetails}"/>
 </UserControl>
