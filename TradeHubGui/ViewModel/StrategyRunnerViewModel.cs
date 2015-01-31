@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MahApps.Metro;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -21,12 +24,14 @@ namespace TradeHubGui.ViewModel
 {
     public class StrategyRunnerViewModel : BaseViewModel
     {
+        private MetroDialogSettings _dialogSettings;
         private ObservableCollection<Strategy> _strategies;
         private ObservableCollection<StrategyInstance> _instances;
         private Strategy _selectedStrategy;
         private StrategyInstance _selectedInstance;
         private RelayCommand _showCreateInstanceWindowCommand;
         private RelayCommand _createInstanceCommand;
+        private RelayCommand _deleteInstanceCommand;
         private RelayCommand _showEditInstanceWindowCommand;
         private RelayCommand _showGeneticOptimizationWindowCommand;
         private RelayCommand _showBruteOptimizationWindowCommand;
@@ -44,6 +49,8 @@ namespace TradeHubGui.ViewModel
 
         public StrategyRunnerViewModel()
         {
+            _dialogSettings = new MetroDialogSettings() { AnimateShow = false, AnimateHide = false, AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
 
@@ -174,6 +181,15 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        public ICommand DeleteInstanceCommand
+        {
+            get
+            {
+                return _deleteInstanceCommand ?? (_deleteInstanceCommand = new RelayCommand(
+                    param => DeleteInstanceExecute()));
+            }
+        }
+
         public ICommand ShowEditInstanceWindowCommand
         {
             get
@@ -256,10 +272,19 @@ namespace TradeHubGui.ViewModel
 
         private void CreateInstanceExecute()
         {
-            // TODO
+            // TODO:
             // in Property SelectedStrategy is current strategy for instance creation
             // in Property PropertyDetails are parameters infos for instance
             // so, let's make instance object and add it to the Instances collection :)
+        }
+
+        private async void DeleteInstanceExecute()
+        {
+            if (await MainWindow.ShowMessageAsync("Question", string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey),
+                MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
+            {
+                // TODO: Delete SelectedInstance
+            }
         }
 
         private void ShowGeneticOptimizationWindowExecute()

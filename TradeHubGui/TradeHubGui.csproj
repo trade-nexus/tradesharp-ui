@@ -90,6 +90,7 @@
     <Compile Include="Common\DataGridRowDoubleClickHandler.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\UIHelper.cs" />
+    <Compile Include="Converters\InstanceExecutionStateToVisibilityConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStateToBrushConverter.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
