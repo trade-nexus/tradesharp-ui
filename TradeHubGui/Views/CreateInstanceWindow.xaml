@@ -26,7 +26,8 @@
         </ScrollViewer>
 
         <StackPanel Grid.Row="2" Margin="14" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button DockPanel.Dock="Right" Content="Create" MinWidth="70" IsDefault="True" Margin="3"/>
+            <Button DockPanel.Dock="Right" Content="Create" MinWidth="70" IsDefault="True" Margin="3"
+                    Command="{Binding CreateInstanceCommand}"/>
             <Button DockPanel.Dock="Right" Content="Cancel" MinWidth="70" IsCancel="True" Margin="3"/>
         </StackPanel>
     </Grid>
