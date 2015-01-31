@@ -48,7 +48,10 @@ namespace TradeHubGui.ViewModel
             _strategies = new ObservableCollection<Strategy>();
 
             // Get Existing Strategies in the system and populate on UI
-            LoadExistingStrategies(); FillInstancesAA();
+            LoadExistingStrategies(); 
+            
+            // temporary fill instances
+            FillInstancesAA();
         }
 
         #region Observable Collections

@@ -93,11 +93,11 @@
                             </Style>
                         </ItemsControl.Resources>
                         <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="8" Height="8" Fill="MediumSeaGreen" Margin="8,0"/>
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
                             <TextBlock>Blackwood</TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="8" Height="8" Fill="Crimson" Margin="8,0"/>
+                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
                             <TextBlock>Interactive Broker</TextBlock>
                         </StackPanel>
                     </ItemsControl>
@@ -112,7 +112,7 @@
 
                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
                     <ItemsControl Margin="10,0" Width="310" HorizontalAlignment="Left" UseLayoutRounding="True">
-                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
+                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="{StaticResource GreenBrush}" Background="WhiteSmoke">
                             <GroupBox.Header>
                                 <CheckBox Content="Market Data Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
                             </GroupBox.Header>
@@ -130,12 +130,12 @@
                                     </StackPanel>
                                 </Button>
                                 <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                    <TextBlock Text="Running" Foreground="MediumSeaGreen" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
+                                    <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
                                 </Border>
                             </DockPanel>
                         </GroupBox>
 
-                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
+                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="{StaticResource GreenBrush}" Background="WhiteSmoke">
                             <GroupBox.Header>
                                 <CheckBox Content="Order Execution Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
                             </GroupBox.Header>
@@ -153,12 +153,12 @@
                                     </StackPanel>
                                 </Button>
                                 <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                    <TextBlock Text="Running" Foreground="MediumSeaGreen" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
+                                    <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
                                 </Border>
                             </DockPanel>
                         </GroupBox>
 
-                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
+                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="{StaticResource GreenBrush}" Background="WhiteSmoke">
                             <GroupBox.Header>
                                 <CheckBox Content="Position Engine Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
                             </GroupBox.Header>
@@ -176,12 +176,12 @@
                                     </StackPanel>
                                 </Button>
                                 <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                    <TextBlock Text="Running" Foreground="MediumSeaGreen" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
+                                    <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
                                 </Border>
                             </DockPanel>
                         </GroupBox>
 
-                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="Crimson" Background="WhiteSmoke">
+                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="{StaticResource RedBrush}" Background="WhiteSmoke">
                             <GroupBox.Header>
                                 <CheckBox Content="Reporting Engine Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
                             </GroupBox.Header>
@@ -199,7 +199,7 @@
                                     </StackPanel>
                                 </Button>
                                 <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                    <TextBlock Text="Stopped" Foreground="Crimson" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
+                                    <TextBlock Text="Stopped" Foreground="{StaticResource RedBrush}" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
                                 </Border>
                             </DockPanel>
                         </GroupBox>
