@@ -19,7 +19,7 @@ using TradeHubGui.Views;
 
 namespace TradeHubGui.ViewModel
 {
-    public class StrategyRunnerViewModel : BaseViewModel, INotifyPropertyChanged
+    public class StrategyRunnerViewModel : BaseViewModel
     {
         private ObservableCollection<Strategy> _strategies;
         private ObservableCollection<StrategyInstance> _instances;
