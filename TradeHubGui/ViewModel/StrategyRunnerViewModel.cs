@@ -36,6 +36,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _showGeneticOptimizationWindowCommand;
         private RelayCommand _showBruteOptimizationWindowCommand;
         private RelayCommand _loadStrategyCommand;
+        private RelayCommand _removeStrategyCommand;
         private RelayCommand _selectProviderCommand;
         private RelayCommand _importInstancesCommand;
         private string _strategyPath;
@@ -49,14 +50,14 @@ namespace TradeHubGui.ViewModel
 
         public StrategyRunnerViewModel()
         {
-            _dialogSettings = new MetroDialogSettings() { AnimateShow = false, AnimateHide = false, AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+            _dialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
 
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
 
             // Get Existing Strategies in the system and populate on UI
-            LoadExistingStrategies(); 
-            
+            LoadExistingStrategies();
+
             // temporary fill instances
             FillInstancesAA();
         }
@@ -102,7 +103,9 @@ namespace TradeHubGui.ViewModel
             set
             {
                 _selectedStrategy = value;
-                PopulateStrategyInstanceDataGrid(value.Key);
+                if(value != null)
+                    PopulateStrategyInstanceDataGrid(value.Key);
+                
                 OnPropertyChanged("SelectedStrategy");
             }
         }
@@ -177,7 +180,7 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _createInstanceCommand ?? (_createInstanceCommand = new RelayCommand(
-                    param => CreateInstanceExecute(), param => CreateInstanceCanExecute()));
+                    param => CreateInstanceExecute(param), param => CreateInstanceCanExecute()));
             }
         }
 
@@ -222,6 +225,15 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _loadStrategyCommand ?? (_loadStrategyCommand = new RelayCommand(param => LoadStrategyExecute()));
+            }
+        }
+
+        public ICommand RemoveStrategyCommand
+        {
+            get
+            {
+                return _removeStrategyCommand ?? (_removeStrategyCommand = new RelayCommand(
+                    param => RemoveStrategyExecute()));
             }
         }
 
@@ -270,12 +282,15 @@ namespace TradeHubGui.ViewModel
             return true;
         }
 
-        private void CreateInstanceExecute()
+        private void CreateInstanceExecute(object param)
         {
             // TODO:
             // in Property SelectedStrategy is current strategy for instance creation
             // in Property PropertyDetails are parameters infos for instance
             // so, let's make instance object and add it to the Instances collection :)
+
+            // Close "Create Instance" window
+            ((Window)param).Close();
         }
 
         private async void DeleteInstanceExecute()
@@ -351,6 +366,18 @@ namespace TradeHubGui.ViewModel
 
                 // Create New Strategy Object
                 AddStrategy(StrategyPath);
+            }
+        }
+
+        /// <summary>
+        // Remove SelectedStrategy
+        /// </summary>
+        private async void RemoveStrategyExecute()
+        {
+            if (await MainWindow.ShowMessageAsync("Question", string.Format("Remove strategy {0}?", SelectedStrategy.Key),
+               MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
+            {
+                Strategies.Remove(SelectedStrategy);
             }
         }
 
