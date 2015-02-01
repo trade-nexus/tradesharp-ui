@@ -58,8 +58,11 @@ namespace TradeHubGui.ViewModel
             // Get Existing Strategies in the system and populate on UI
             LoadExistingStrategies();
 
-            // temporary fill instances
-            FillInstancesAA();
+            // Select 1st strategy from ListBox if not empty
+            if (Strategies.Count > 0)
+            {
+                SelectedStrategy = Strategies[0];
+            }
         }
 
         #region Observable Collections
@@ -103,9 +106,9 @@ namespace TradeHubGui.ViewModel
             set
             {
                 _selectedStrategy = value;
-                if(value != null)
+                if (value != null)
                     PopulateStrategyInstanceDataGrid(value.Key);
-                
+
                 OnPropertyChanged("SelectedStrategy");
             }
         }
