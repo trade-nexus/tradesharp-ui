@@ -21,29 +21,6 @@ using TradeHubGui.Views;
 
 namespace TradeHubGui
 {
-    public class Instrument
-    {
-        public string Symbol { get; set; }
-        public float BidQty { get; set; }
-        public float BidPrice { get; set; }
-        public float AskQty { get; set; }
-        public float AskPrice { get; set; }
-        public float Last { get; set; }
-        public float Volume { get; set; }
-
-        public Instrument(string symbol, float bidQty, float bidPrice, float askQty, float askPrice, float last, float volume)
-        {
-            Symbol = symbol;
-            BidQty = bidQty;
-            BidPrice = bidPrice;
-            AskQty = askQty;
-            AskPrice = askPrice;
-            Last = last;
-            Volume = volume;
-        }
-    }
-
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

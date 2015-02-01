@@ -94,6 +94,7 @@
     <Compile Include="Converters\InstanceExecutionStateToBrushConverter.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>

@@ -18,7 +18,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition MinHeight="80"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="0.5*" MinHeight="80"/>
+                <RowDefinition Height="0.4*" MinHeight="80"/>
             </Grid.RowDefinitions>
 
             <Grid Margin="20,20,5,5">
@@ -26,17 +26,18 @@
                 <DockPanel Margin="10">
                     <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="MARKET DATA" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                    <DataGrid x:Name="MarketDataGrid" Margin="10"
-                            SelectionMode="Single" 
-                            IsTextSearchEnabled="True"
-                            IsSynchronizedWithCurrentItem="True"
-                            CanUserAddRows="False" CanUserDeleteRows="False"
-                            CanUserResizeRows="False" CanUserSortColumns="True"
-                            IsReadOnly="True"
-                            ItemsSource="{Binding DataGridItems}"
-                            SelectionUnit="FullRow"
-                            AutoGenerateColumns="False"
-                            RowHeight="22">
+                    <DataGrid x:Name="MarketDataGrid" 
+                              ItemsSource="{Binding Instruments}"
+                              Margin="10"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False"
+                              RowHeight="22">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Symbol" Width="*" Binding="{Binding Path=Symbol}" />
@@ -102,44 +103,58 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <HeaderedContentControl Grid.Row="0" Header="Market data provider">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <ItemsControl Margin="2">
-                                    <ItemsControl.Resources>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Margin" Value="0"/>
-                                        </Style>
-                                    </ItemsControl.Resources>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
-                                        <TextBlock>Blackwood</TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
-                                        <TextBlock>Interactive Broker</TextBlock>
-                                    </StackPanel>
-                                </ItemsControl>
-                            </ScrollViewer>
-                        </HeaderedContentControl>
-                        <HeaderedContentControl Grid.Row="1" Header="Order execution provider">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <ItemsControl Margin="2">
-                                    <ItemsControl.Resources>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Margin" Value="0"/>
-                                        </Style>
-                                    </ItemsControl.Resources>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
-                                        <TextBlock>Blackwood</TextBlock>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
-                                        <TextBlock>Interactive Broker</TextBlock>
-                                    </StackPanel>
-                                </ItemsControl>
-                            </ScrollViewer>
-                        </HeaderedContentControl>
+                        <Grid Grid.Row="0">
+                            <Button ToolTip="Data API Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
+                                    Width="22" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1"
+                                    Command="{Binding ShowDataApiConfigurationCommand}"/>
+                            <HeaderedContentControl Header="MARKET DATA PROVIDER" Margin="0,2,14,0">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl Margin="2">
+                                        <ItemsControl.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </ItemsControl.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
+                                            <TextBlock>Blackwood</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
+                                            <TextBlock>Integral</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
+                                            <TextBlock>Interactive Broker</TextBlock>
+                                        </StackPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </HeaderedContentControl>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Button ToolTip="Order API Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
+                                    Width="22" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1"
+                                    Command="{Binding ShowDataApiConfigurationCommand}"/>
+                            <HeaderedContentControl Header="ORDER EXECUTION PROVIDER" Margin="0,2,14,0">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl Margin="2">
+                                        <ItemsControl.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </ItemsControl.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
+                                            <TextBlock>Blackwood</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
+                                            <TextBlock>Interactive Broker</TextBlock>
+                                        </StackPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </HeaderedContentControl>
+                        </Grid>
                     </Grid>
                 </DockPanel>
             </Grid>

@@ -56,7 +56,7 @@
                 </StackPanel>
             </DockPanel>
 
-            <HeaderedContentControl Grid.Row="1" Header="Parameters" Margin="10,0,10,10">
+            <HeaderedContentControl Grid.Row="1" Header="PARAMETERS" Margin="10,0,10,10">
                 <DataGrid x:Name="StrategyParametersDataGrid"
 							SelectionMode="Single" 
 							IsTextSearchEnabled="True"
@@ -87,7 +87,7 @@
                 </StackPanel>
             </Button>
 
-            <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Result" Margin="10,0,10,10">
+            <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="RESULTS" Margin="10,0,10,10">
                 <DataGrid x:Name="ResultDataGrid" 
 							SelectionMode="Single" 
 							IsTextSearchEnabled="True"

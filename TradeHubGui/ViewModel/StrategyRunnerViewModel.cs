@@ -48,6 +48,9 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private StrategyController _strategyController;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public StrategyRunnerViewModel()
         {
             _dialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
