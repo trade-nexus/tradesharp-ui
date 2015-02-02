@@ -8,7 +8,9 @@ using TraceSourceLogger;
 using TraceSourceLogger.ValueObjects;
 using TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
+using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Representations;
 using Strategy = TradeHubGui.Common.Models.Strategy;
 
@@ -19,12 +21,17 @@ namespace TradeHubGui.StrategyRunner.Services
     /// </summary>
     public class StrategyController
     {
+        private Type _type = typeof(StrategyController);
+
         /// <summary>
         /// Records of current startegies instances
+        /// KEY = Strategy Instance Unique Key
+        /// VALUE = 
         /// </summary>
         private ConcurrentDictionary<string, StrategyExecutor> _strategiesCollection=new ConcurrentDictionary<string, StrategyExecutor>();
 
-        private Type _type = typeof (StrategyController);
+        #region Events
+
         private event Action<StrategyStatusRepresentation> _strategyStatusChanged;
         private event Action<ExecutionRepresentation> _executionRecevied;
 
@@ -45,6 +52,8 @@ namespace TradeHubGui.StrategyRunner.Services
             add { if (_executionRecevied == null) _executionRecevied += value; }
             remove { _executionRecevied -= value; }
         }
+
+        #endregion
 
         /// <summary>
         /// Verify and add strategy to TradeHub
@@ -103,6 +112,72 @@ namespace TradeHubGui.StrategyRunner.Services
         }
 
         /// <summary>
+        /// Run the specific strategy instance
+        /// </summary>
+        /// <param name="instanceKey">Unique identity of Strategy Instance</param>
+        public void RunStrategy(string instanceKey)
+        {
+            if (_strategiesCollection.ContainsKey(instanceKey))
+            {
+                _strategiesCollection[instanceKey].ExecuteStrategy();
+
+                if (Logger.IsInfoEnabled)
+                {
+                    Logger.Info("Strategy started, instance key=" + instanceKey, _type.FullName, "RunStrategy");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stop specific strategy instance
+        /// </summary>
+        /// <param name="instanceKey">Unique identity of Strategy Instance</param>
+        public void StopStrategy(string instanceKey)
+        {
+            if (_strategiesCollection.ContainsKey(instanceKey))
+            {
+                _strategiesCollection[instanceKey].StopStrategy();
+
+                if (Logger.IsInfoEnabled)
+                {
+                    Logger.Info("Strategy stopped, instance key=" + instanceKey, _type.FullName, "StopStrategy");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Remove existing strategy instance
+        /// </summary>
+        /// <param name="instanceKey">Unique identity of Strategy Instance</param>
+        public void RemoveStrategyInstance(string instanceKey)
+        {
+            if (_strategiesCollection.ContainsKey(instanceKey))
+            {
+                StrategyExecutor executor;
+                if (_strategiesCollection.TryRemove(instanceKey, out executor))
+                {
+                    // Stop strategy if its running
+                    if (executor.StrategyStatus.Equals(StrategyStatus.Executing))
+                    {
+                        executor.StopStrategy();
+                    }
+
+                    //Unsubscribe event
+                    executor.StatusChanged -= OnStrategyStatusChanged;
+                    executor.ExecutionReceived -= OnExecutionReceived;
+
+                    //dispose any resources used
+                    executor.Close();
+                }
+
+                if (Logger.IsInfoEnabled)
+                {
+                    Logger.Info("Removed strategy, instance key=" + instanceKey, _type.FullName, "RemoveStrategyInstance");
+                }
+            }
+        }
+
+        /// <summary>
         /// On execution received from strategy executor
         /// </summary>
         /// <param name="executionRepresentation"></param>
@@ -122,69 +197,15 @@ namespace TradeHubGui.StrategyRunner.Services
         /// <param name="strategyStatus"></param>
         private void OnStrategyStatusChanged(string instanceKey, StrategyStatus strategyStatus)
         {
-            if (_strategyStatusChanged != null)
-            {
-                //Raise event
-                _strategyStatusChanged(new StrategyStatusRepresentation(instanceKey,strategyStatus));
-            }
-        }
+            // Create object to indicate status change to be used for Publishing
+            StrategyInstanceStatus strategyInstanceStatus = new StrategyInstanceStatus();
 
-        /// <summary>
-        /// Add new strategy instance
-        /// </summary>
-        /// <param name="instanceKey"></param>
-        public void RemoveStrategyInstance(string instanceKey)
-        {
-            if (_strategiesCollection.ContainsKey(instanceKey))
-            {
-                StrategyExecutor executor;
-                if (_strategiesCollection.TryRemove(instanceKey, out executor))
-                {
-                    //TODO: If strategy is running, stop it
+            strategyInstanceStatus.StrategyKey = instanceKey.Split('-')[0];
+            strategyInstanceStatus.InstanceKey = instanceKey;
+            strategyInstanceStatus.StrategyStatus = strategyStatus;
 
-                    //Unsubscribe event
-                    executor.StatusChanged -= OnStrategyStatusChanged;
-                    executor.ExecutionReceived -= OnExecutionReceived;
-                    //dispose any resources used
-                    executor.Close();
-                }
-                if (Logger.IsInfoEnabled)
-                {
-                    Logger.Info("Removed strategy, instance key=" + instanceKey, _type.FullName, "RemoveStrategyInstance");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Run the specific strategy instance
-        /// </summary>
-        /// <param name="instanceKey"></param>
-        public void RunStrategy(string instanceKey)
-        {
-            if (_strategiesCollection.ContainsKey(instanceKey))
-            {
-                _strategiesCollection[instanceKey].ExecuteStrategy();
-                if (Logger.IsInfoEnabled)
-                {
-                    Logger.Info("Strategy started, instance key=" + instanceKey, _type.FullName, "RunStrategy");
-                }
-            }
-        }
-
-        /// <summary>
-        /// Stop specific strategy instance
-        /// </summary>
-        /// <param name="instanceKey"></param>
-        public void StopStrategy(string instanceKey)
-        {
-            if (_strategiesCollection.ContainsKey(instanceKey))
-            {
-                _strategiesCollection[instanceKey].StopStrategy();
-                if (Logger.IsInfoEnabled)
-                {
-                    Logger.Info("Strategy stopped, instance key=" + instanceKey, _type.FullName, "StopStrategy");
-                }
-            }
+            // Publish event to notify listeners
+            EventSystem.Publish<StrategyInstanceStatus>(strategyInstanceStatus);
         }
     }
 }

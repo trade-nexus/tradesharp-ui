@@ -72,9 +72,6 @@ namespace TradeHubGui.StrategyRunner.Services
         /// </summary>
         private TradeHubStrategy _tradeHubStrategy;
 
-        private Bar _currentBar;
-        private Bar _prevBar;
-
         /// <summary>
         /// Holds selected ctor arguments to execute strategy
         /// </summary>

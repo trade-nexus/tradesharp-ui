@@ -31,6 +31,8 @@ namespace TradeHubGui.ViewModel
         private StrategyInstance _selectedInstance;
         private RelayCommand _showCreateInstanceWindowCommand;
         private RelayCommand _createInstanceCommand;
+        private RelayCommand _runInstanceCommand;
+        private RelayCommand _stopInstanceCommand;
         private RelayCommand _deleteInstanceCommand;
         private RelayCommand _showEditInstanceWindowCommand;
         private RelayCommand _showGeneticOptimizationWindowCommand;
@@ -199,6 +201,28 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command used with Run button in the Strategy Instance grid
+        /// </summary>
+        public ICommand RunInstanceCommand
+        {
+            get
+            {
+                return _runInstanceCommand ?? (_runInstanceCommand = new RelayCommand(param => RunInstanceExecute()));
+            }
+        }
+
+        /// <summary>
+        /// Command used with Run button in the Strategy Instance grid
+        /// </summary>
+        public ICommand StopInstanceCommand
+        {
+            get
+            {
+                return _stopInstanceCommand ?? (_stopInstanceCommand = new RelayCommand(param => StopInstanceExecute()));
+            }
+        }
+
         public ICommand ShowEditInstanceWindowCommand
         {
             get
@@ -290,16 +314,12 @@ namespace TradeHubGui.ViewModel
 
         private void CreateInstanceExecute(object param)
         {
-            // TODO:
-            // in Property SelectedStrategy is current strategy for instance creation
-            // in Property PropertyDetails are parameters infos for instance
-            // so, let's make instance object and add it to the Instances collection :)
-
             IList<object> parameters = new List<object>();
 
             // Traverse all parameter
             foreach (KeyValuePair<string, ParameterDetail> keyValuePair in ParameterDetails)
             {
+                // Add actual parameter values to the new object list
                 parameters.Add(keyValuePair.Value.ParameterValue);
             }
 
@@ -307,23 +327,55 @@ namespace TradeHubGui.ViewModel
             var strategyInstace = SelectedStrategy.CreateInstance(parameters.ToArray());
 
             // Set Initial status to 'Stopped'
-            strategyInstace.ExecutionState = "Stopped";
+            strategyInstace.ExecutionState = "Running";
 
-            // Add Instance to local Map
-            Instances = new ObservableCollection<StrategyInstance>();
+            // Add Instance to Observable Collection for UI
             Instances.Add(strategyInstace);
-
 
             // Close "Create Instance" window
             ((Window)param).Close();
         }
 
+        /// <summary>
+        /// Triggered with 'RunInstanceCommand'
+        /// </summary>
+        private void RunInstanceExecute()
+        {
+            // Request Strategy Controller to start selected Strategy Instance execution
+            //_strategyController.RunStrategy(SelectedInstance.InstanceKey);
+
+            SelectedInstance.ExecutionState = "Running";
+        }
+
+        /// <summary>
+        /// Triggered with 'StopInstanceCommand'
+        /// </summary>
+        private void StopInstanceExecute()
+        {
+            // Request Strategy Controller to Stop execution for selected Strategy Instance
+            //_strategyController.StopStrategy(SelectedInstance.InstanceKey);
+
+            SelectedInstance.ExecutionState = "Stopped";
+        }
+
+        /// <summary>
+        /// Removes selected intance from the UI and requests Strategy Controller to remove it from working session as well.
+        /// </summary>
         private async void DeleteInstanceExecute()
         {
-            if (await MainWindow.ShowMessageAsync("Question", string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey),
-                MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
+            if (await
+                MainWindow.ShowMessageAsync("Question",
+                    string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey),
+                    MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
             {
-                // TODO: Delete SelectedInstance
+                // Remove the instance from the UI
+                Instances.Remove(SelectedInstance);
+
+                // Remove the Instance from Strategy's Local Map
+                SelectedStrategy.RemoveInstance(SelectedInstance.InstanceKey);
+
+                // Request Strategy Controller to remove the instance from working session
+                _strategyController.RemoveStrategyInstance(SelectedInstance.InstanceKey);
             }
         }
 

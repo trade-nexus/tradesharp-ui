@@ -170,6 +170,7 @@
                                             <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
                                                 <Grid>
                                                     <Button Focusable="False" Width="60" Margin="0,2,4,2" Height="22"
+                                                            Command="{Binding DataContext.RunInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                             Visibility="{Binding ExecutionState, Converter={StaticResource StateToVisibility}}">
                                                         <StackPanel Orientation="Horizontal">
                                                             <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
@@ -177,6 +178,7 @@
                                                         </StackPanel>
                                                     </Button>
                                                     <Button Focusable="False" Width="60" Margin="0,2,4,2" Height="22"
+                                                            Command="{Binding DataContext.StopInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                             Visibility="{Binding ExecutionState, Converter={StaticResource StateToVisibility}, ConverterParameter=Invert}">
                                                         <StackPanel Orientation="Horizontal">
                                                             <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>

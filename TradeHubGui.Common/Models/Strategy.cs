@@ -130,5 +130,15 @@ namespace TradeHubGui.Common.Models
             // Return Instance
             return strategyInstance;
         }
+
+        /// <summary>
+        /// Removes existing Strategy Instance from the local Map
+        /// </summary>
+        /// <param name="instanceKey">Unique key of Strategy Instance object to be removed</param>
+        public void RemoveInstance(string instanceKey)
+        {
+            // Add to local MAP
+            _strategyInstances.Remove(instanceKey);
+        }
     }
 }
