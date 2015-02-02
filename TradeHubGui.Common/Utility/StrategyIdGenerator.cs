@@ -15,8 +15,8 @@ namespace TradeHubGui.Common.Utility
         private const int MaxStrategyValue = 0xFF;
         private static int _strategyIdValue = MinStrategyValue - 1;
 
-        private const int MinInstanceValue = 0x001;
-        private const int MaxInstanceValue = 0x999;
+        private const int MinInstanceValue = 0xA000;
+        private const int MaxInstanceValue = 0xF999;
 
         /// <summary>
         /// Contains mapping for Strategy ID to Instance IDs
@@ -45,7 +45,7 @@ namespace TradeHubGui.Common.Utility
             string idGenerated = _strategyIdValue.ToString("X");
 
             // Add New Id to local Map
-            _strategyIdMap.Add(idGenerated, 0x000);
+            _strategyIdMap.Add(idGenerated, MinInstanceValue);
 
             // Return new ID generated
             return idGenerated;
@@ -77,7 +77,7 @@ namespace TradeHubGui.Common.Utility
                 _strategyIdMap[strategyKey] = currentValue;
 
                 // Return new ID generated with the combination of Parent Strategy ID
-                return strategyKey + currentValue.ToString("X");
+                return strategyKey + "-" + currentValue.ToString("X");
             }
 
             // Empty String as ID should stop the further processes for Strategy Instance

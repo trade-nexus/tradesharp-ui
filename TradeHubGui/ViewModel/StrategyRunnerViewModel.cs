@@ -295,6 +295,25 @@ namespace TradeHubGui.ViewModel
             // in Property PropertyDetails are parameters infos for instance
             // so, let's make instance object and add it to the Instances collection :)
 
+            IList<object> parameters = new List<object>();
+
+            // Traverse all parameter
+            foreach (KeyValuePair<string, ParameterDetail> keyValuePair in ParameterDetails)
+            {
+                parameters.Add(keyValuePair.Value.ParameterValue);
+            }
+
+            // Create a new Strategy Instance with provided parameters
+            var strategyInstace = SelectedStrategy.CreateInstance(parameters.ToArray());
+
+            // Set Initial status to 'Stopped'
+            strategyInstace.ExecutionState = "Stopped";
+
+            // Add Instance to local Map
+            Instances = new ObservableCollection<StrategyInstance>();
+            Instances.Add(strategyInstace);
+
+
             // Close "Create Instance" window
             ((Window)param).Close();
         }
@@ -359,6 +378,9 @@ namespace TradeHubGui.ViewModel
             window.ShowDialog();
         }
 
+        /// <summary>
+        /// Loads a New Strategy into the Application
+        /// </summary>
         private void LoadStrategyExecute()
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -368,6 +390,7 @@ namespace TradeHubGui.ViewModel
             System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
+                // Save selected '.dll' path
                 StrategyPath = openFileDialog.FileName;
 
                 // Create New Strategy Object
@@ -376,7 +399,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        // Remove SelectedStrategy
+        // Remove Selected Strategy
         /// </summary>
         private async void RemoveStrategyExecute()
         {
@@ -400,13 +423,13 @@ namespace TradeHubGui.ViewModel
             }
         }
 
-        private bool TryActivateShownWindow(Type TypeOfWindow)
+        private bool TryActivateShownWindow(Type typeOfWindow)
         {
             if (Application.Current != null)
             {
                 foreach (Window window in Application.Current.Windows)
                 {
-                    if (window.GetType() == TypeOfWindow)
+                    if (window.GetType() == typeOfWindow)
                     {
                         window.Focus();
                         window.Activate();
@@ -439,8 +462,10 @@ namespace TradeHubGui.ViewModel
                         Instances.Add(strategyInstance.Value);
                     }
 
+                    // Set the 1st instance as selected in UI
                     SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
 
+                    // Terminate Loop
                     break;
                 }
             }

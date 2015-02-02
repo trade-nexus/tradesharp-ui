@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
+using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.Common.Models
 {
