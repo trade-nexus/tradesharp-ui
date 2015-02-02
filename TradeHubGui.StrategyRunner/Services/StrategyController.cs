@@ -26,6 +26,7 @@ namespace TradeHubGui.StrategyRunner.Services
 
         private Type _type = typeof (StrategyController);
         private event Action<StrategyStatusRepresentation> _strategyStatusChanged;
+        private event Action<ExecutionRepresentation> _executionRecevied;
 
         /// <summary>
         /// Notify listeneres that on strategy status changed
@@ -34,6 +35,15 @@ namespace TradeHubGui.StrategyRunner.Services
         {
             add { if (_strategyStatusChanged == null) _strategyStatusChanged += value; }
             remove { _strategyStatusChanged -= value; }
+        }
+
+        /// <summary>
+        /// Notify listeneres that on strategy status changed
+        /// </summary>
+        public event Action<ExecutionRepresentation> ExecutionReceived
+        {
+            add { if (_executionRecevied == null) _executionRecevied += value; }
+            remove { _executionRecevied -= value; }
         }
 
         /// <summary>
@@ -87,8 +97,22 @@ namespace TradeHubGui.StrategyRunner.Services
                     strategyInstance.Parameters);
             //subscribe to strategy event changed event
             executor.StatusChanged += OnStrategyStatusChanged;
+            executor.ExecutionReceived += OnExecutionReceived;
             //map the executor instance in dictionary
             _strategiesCollection.TryAdd(strategyInstance.InstanceKey,executor);
+        }
+
+        /// <summary>
+        /// On execution received from strategy executor
+        /// </summary>
+        /// <param name="executionRepresentation"></param>
+        private void OnExecutionReceived(ExecutionRepresentation executionRepresentation)
+        {
+            if (_executionRecevied != null)
+            {
+                //notify listeners about new execution
+                _executionRecevied(executionRepresentation);
+            }
         }
 
         /// <summary>
@@ -120,6 +144,7 @@ namespace TradeHubGui.StrategyRunner.Services
 
                     //Unsubscribe event
                     executor.StatusChanged -= OnStrategyStatusChanged;
+                    executor.ExecutionReceived -= OnExecutionReceived;
                     //dispose any resources used
                     executor.Close();
                 }

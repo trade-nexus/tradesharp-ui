@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using TradeHub.Common.Core.Constants;
+using TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common.Models;
 using TradeHubGui.StrategyRunner.Representations;
@@ -19,7 +20,7 @@ namespace TradeHubGui.StrategyRunner.Tests.Integration
     {
         [Test]
         [Category("Integration")]
-        public void Test()
+        public void TestThatStrategyIsExecutingAndChangingItsStatus()
         {
             string assemblyPath =
                 Path.GetFullPath(@"~\..\..\..\..\Lib\testing\TradeHub.StrategyEngine.Testing.SimpleStrategy.dll");
@@ -38,14 +39,19 @@ namespace TradeHubGui.StrategyRunner.Tests.Integration
             strategyInstance.StrategyType = classtype;
             strategyInstance.Symbol = "ERX";
             StrategyController controller = new StrategyController();
+            StrategyStatusRepresentation statusRepresentationrepresentation = null;
+            ManualResetEvent resetEvent = new ManualResetEvent(false);
             controller.StrategyStatusChanged += delegate(StrategyStatusRepresentation representation)
             {
-
+                statusRepresentationrepresentation = representation;
+                resetEvent.Set();
             };
             controller.AddStrategyInstance(strategyInstance);
+            resetEvent.WaitOne(5000);
             controller.RunStrategy(strategyInstance.InstanceKey);
-            ManualResetEvent resetEvent=new ManualResetEvent(false);
-            resetEvent.WaitOne(20000);
+            resetEvent.WaitOne(2000);
+            Assert.NotNull(statusRepresentationrepresentation);
+            Assert.AreEqual(StrategyStatus.Executing,statusRepresentationrepresentation.StrategyStatus);
         }
     }
 }

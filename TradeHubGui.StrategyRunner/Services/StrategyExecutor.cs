@@ -84,7 +84,7 @@ namespace TradeHubGui.StrategyRunner.Services
 
         // ReSharper disable InconsistentNaming
         private event Action<string, StrategyStatus> _statusChanged;
-        private event Action<Execution> _executionReceived;
+        private event Action<ExecutionRepresentation> _executionReceived;
         // ReSharper restore InconsistentNaming
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace TradeHubGui.StrategyRunner.Services
         /// <summary>
         /// Raised when new execution is received by the custom strategy
         /// </summary>
-        public event Action<Execution> ExecutionReceived
+        public event Action<ExecutionRepresentation> ExecutionReceived
         {
             add { if (_executionReceived == null) _executionReceived += value; }
             remove { _executionReceived -= value; }
@@ -436,7 +436,7 @@ namespace TradeHubGui.StrategyRunner.Services
         {
             if (_executionReceived != null)
             {
-                _executionReceived(execution);
+                _executionReceived(new ExecutionRepresentation(_strategyKey,execution));
                 //Task.Factory.StartNew(() => _executionReceived(execution));
             }
             // Update Stats

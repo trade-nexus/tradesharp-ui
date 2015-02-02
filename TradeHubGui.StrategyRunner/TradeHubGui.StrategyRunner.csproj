@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Representations\ExecutionRepresentation.cs" />
     <Compile Include="Representations\StrategyStatusRepresentation.cs" />
     <Compile Include="Services\StrategyController.cs" />
     <Compile Include="Services\StrategyExecutor.cs" />
