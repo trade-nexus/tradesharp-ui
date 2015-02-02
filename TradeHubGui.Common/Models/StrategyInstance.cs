@@ -67,6 +67,10 @@ namespace TradeHubGui.Common.Models
         //NOTE: Might not be required
         public string Symbol { get; set; }
 
-        public SolidColorBrush StateBrush { get; set; }
+        /// <summary>
+        /// TODO: this is temporary property for Execution State of instance
+        /// Currently it is string, but maybe some enum with all possible states for instance (running, stopped ... )
+        /// </summary>
+        public String ExecutionState { get; set; }
     }
 }

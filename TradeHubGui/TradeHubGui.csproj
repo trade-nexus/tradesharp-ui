@@ -90,8 +90,11 @@
     <Compile Include="Common\DataGridRowDoubleClickHandler.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\UIHelper.cs" />
+    <Compile Include="Converters\InstanceExecutionStateToVisibilityConverter.cs" />
+    <Compile Include="Converters\InstanceExecutionStateToBrushConverter.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>
@@ -226,9 +229,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\TradeHubGui.Common\TradeHubGui.Common.csproj">
       <Project>{5e5a9a79-0b0c-428b-8385-015134b42d86}</Project>

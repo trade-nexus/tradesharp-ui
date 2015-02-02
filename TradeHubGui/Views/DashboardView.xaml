@@ -8,51 +8,253 @@
              Tag="DASHBOARD">
 
     <Grid x:Name="ContentGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="0.2*"/>
-            <RowDefinition Height="0.4*" MinHeight="60"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="0.3*" MinHeight="80"/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="400"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="0.5*" MinWidth="300"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Margin="20,20,5,5">
-            <Border Style="{StaticResource ContentBorderStyle}"/>
-            <DockPanel Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="MARKET DATA" Style="{StaticResource HeaderTextBlockStyle}"/>
+        <Grid Grid.Column="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition MinHeight="80"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0.4*" MinHeight="80"/>
+            </Grid.RowDefinitions>
 
-                <DataGrid x:Name="MarketDataGrid" Margin="10"
-                            SelectionMode="Single" 
-                            IsTextSearchEnabled="True"
-                            IsSynchronizedWithCurrentItem="True"
-                            CanUserAddRows="False" CanUserDeleteRows="False"
-                            CanUserResizeRows="False" CanUserSortColumns="True"
-                            IsReadOnly="True"
-                            ItemsSource="{Binding DataGridItems}"
-                            SelectionUnit="FullRow"
-                            AutoGenerateColumns="False"
-                            RowHeight="22">
+            <Grid Margin="20,20,5,5">
+                <Border Style="{StaticResource ContentBorderStyle}"/>
+                <DockPanel Margin="10">
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="MARKET DATA" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Symbol" Width="*" Binding="{Binding Path=Symbol}" />
-                        <DataGridTextColumn Header="Bid quantity" Width="*" Binding="{Binding Path=BidQty}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                        <DataGridTextColumn Header="Bid price" Width="*" Binding="{Binding Path=BidPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                        <DataGridTextColumn Header="Ask quantity" Width="*" Binding="{Binding Path=AskQty}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                        <DataGridTextColumn Header="Ask price" Width="*" Binding="{Binding Path=AskPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                        <DataGridTextColumn Header="Last" Width="*" Binding="{Binding Path=Last}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                        <DataGridTextColumn Header="Volume" Width="*" Binding="{Binding Path=Volume}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
+                    <DataGrid x:Name="MarketDataGrid" 
+                              ItemsSource="{Binding Instruments}"
+                              Margin="10"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False"
+                              RowHeight="22">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Symbol" Width="*" Binding="{Binding Path=Symbol}" />
+                            <DataGridTextColumn Header="Bid quantity" Width="*" Binding="{Binding Path=BidQty}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Bid price" Width="*" Binding="{Binding Path=BidPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Ask quantity" Width="*" Binding="{Binding Path=AskQty}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Ask price" Width="*" Binding="{Binding Path=AskPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Last" Width="*" Binding="{Binding Path=Last}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Volume" Width="*" Binding="{Binding Path=Volume}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Grid>
+            
+            <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+
+            <Grid Grid.Row="2" Margin="20,5,5,20">
+                <Border Style="{StaticResource ContentBorderStyle}"/>
+                <DockPanel Margin="10">
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="LOG" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
+                        <ItemsControl Margin="2">
+                            <ItemsControl.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="0"/>
+                                    <Setter Property="FontFamily" Value="Consolas"/>
+                                    <Setter Property="FontSize" Value="11"/>
+                                </Style>
+                            </ItemsControl.Resources>
+                            <TextBlock>> MDE Started Successfully</TextBlock>
+                            <TextBlock>> OEE Started Successfully</TextBlock>
+                            <TextBlock>> PE Failed.</TextBlock>
+                            <TextBlock></TextBlock>
+                            <TextBlock>> Blackwood Connected.</TextBlock>
+                            <TextBlock>> Subscribing AAPL.</TextBlock>
+                            <TextBlock></TextBlock>
+                            <TextBlock>> MDE Started Successfully</TextBlock>
+                            <TextBlock>> OEE Started Successfully</TextBlock>
+                            <TextBlock>> PE Failed.</TextBlock>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Grid>
         </Grid>
 
-        <GridSplitter Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" ResizeDirection="Rows"/>
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
 
-        <Grid Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" Margin="20,5,5,20">
+        <Grid Grid.Column="2" >
+            <Grid.RowDefinitions>
+                <RowDefinition MinHeight="80"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="0.8*" MinHeight="80"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="5,20,20,5">
+                <Border Style="{StaticResource ContentBorderStyle}"/>
+                <DockPanel Margin="10">
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+                    <Grid Margin="10,7,10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Button ToolTip="Data API Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
+                                    Width="22" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1"
+                                    Command="{Binding ShowDataApiConfigurationCommand}"/>
+                            <HeaderedContentControl Header="MARKET DATA PROVIDER" Margin="0,2,14,0">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl Margin="2">
+                                        <ItemsControl.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </ItemsControl.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
+                                            <TextBlock>Blackwood</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
+                                            <TextBlock>Integral</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
+                                            <TextBlock>Interactive Broker</TextBlock>
+                                        </StackPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </HeaderedContentControl>
+                        </Grid>
+                        <Grid Grid.Row="1">
+                            <Button ToolTip="Order API Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
+                                    Width="22" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1"
+                                    Command="{Binding ShowDataApiConfigurationCommand}"/>
+                            <HeaderedContentControl Header="ORDER EXECUTION PROVIDER" Margin="0,2,14,0">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl Margin="2">
+                                        <ItemsControl.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Margin" Value="0"/>
+                                            </Style>
+                                        </ItemsControl.Resources>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
+                                            <TextBlock>Blackwood</TextBlock>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
+                                            <TextBlock>Interactive Broker</TextBlock>
+                                        </StackPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
+                            </HeaderedContentControl>
+                        </Grid>
+                    </Grid>
+                </DockPanel>
+            </Grid>
+
+            <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+
+            <Grid Grid.Row="2" Margin="5,5,20,20">
+                <Border Style="{StaticResource ContentBorderStyle}"/>
+                <DockPanel Margin="10">
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="SERVICES" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
+                        <ItemsControl Margin="10,0" Width="310" HorizontalAlignment="Left" UseLayoutRounding="True">
+                            <GroupBox Header="Market Data Service" Padding="0,0,8,2" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="{StaticResource GreenBrush}" Background="WhiteSmoke">
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
+                                            <TextBlock Text="Stop"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button DockPanel.Dock="Right" MinWidth="60" IsEnabled="False" Focusable="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                                            <TextBlock Text="Start"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
+                                        <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,0"/>
+                                    </Border>
+                                </DockPanel>
+                            </GroupBox>
+
+                            <GroupBox Header="Order Execution Service" Padding="0,0,8,2" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="{StaticResource GreenBrush}" Background="WhiteSmoke">
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
+                                            <TextBlock Text="Stop"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="False" Focusable="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                                            <TextBlock Text="Start"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
+                                        <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,0"/>
+                                    </Border>
+                                </DockPanel>
+                            </GroupBox>
+
+                            <GroupBox Header="Position Engine Service" Padding="0,0,8,2" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="{StaticResource GreenBrush}" Background="WhiteSmoke">
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
+                                            <TextBlock Text="Stop"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="False" Focusable="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                                            <TextBlock Text="Start"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
+                                        <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,0"/>
+                                    </Border>
+                                </DockPanel>
+                            </GroupBox>
+
+                            <GroupBox Header="Reporting Engine Service" Padding="0,0,8,2" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="{StaticResource RedBrush}" Background="WhiteSmoke">
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" MinWidth="60" IsEnabled="False" Focusable="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
+                                            <TextBlock Text="Stop"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="True" Focusable="False">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                                            <TextBlock Text="Start"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
+                                        <TextBlock Text="Stopped" Foreground="{StaticResource RedBrush}" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,0"/>
+                                    </Border>
+                                </DockPanel>
+                            </GroupBox>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Grid>
+        </Grid>
+
+
+        <!--<Grid Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" Margin="20,5,5,20">
             <Border Style="{StaticResource ContentBorderStyle}"/>
             <DockPanel Margin="10">
                 <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="PENDING ORDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
@@ -76,169 +278,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </DockPanel>
-        </Grid>
-
-        <GridSplitter Grid.RowSpan="4" Grid.Column="1" ResizeDirection="Columns" />
-
-        <Grid Grid.Row="0" Grid.Column="2" Margin="5,20,20,5">
-            <Border Style="{StaticResource ContentBorderStyle}"/>
-            <DockPanel  Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
-
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                    <ItemsControl Margin="2">
-                        <ItemsControl.Resources>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Margin" Value="0"/>
-                            </Style>
-                        </ItemsControl.Resources>
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="8" Height="8" Fill="MediumSeaGreen" Margin="8,0"/>
-                            <TextBlock>Blackwood</TextBlock>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse Width="8" Height="8" Fill="Crimson" Margin="8,0"/>
-                            <TextBlock>Interactive Broker</TextBlock>
-                        </StackPanel>
-                    </ItemsControl>
-                </ScrollViewer>
-            </DockPanel>
-        </Grid>
-
-        <Grid Grid.Row="1" Grid.Column="2" Margin="5,5,20,5">
-            <Border Style="{StaticResource ContentBorderStyle}"/>
-            <DockPanel Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="SERVICES" Style="{StaticResource HeaderTextBlockStyle}"/>
-
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                    <ItemsControl Margin="10,0" Width="310" HorizontalAlignment="Left" UseLayoutRounding="True">
-                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
-                            <GroupBox.Header>
-                                <CheckBox Content="Market Data Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
-                            </GroupBox.Header>
-                            <DockPanel>
-                                <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-                                        <TextBlock Text="Stop"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button DockPanel.Dock="Right" MinWidth="60" IsEnabled="False" Focusable="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-                                        <TextBlock Text="Start"/>
-                                    </StackPanel>
-                                </Button>
-                                <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                    <TextBlock Text="Running" Foreground="MediumSeaGreen" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
-                                </Border>
-                            </DockPanel>
-                        </GroupBox>
-
-                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
-                            <GroupBox.Header>
-                                <CheckBox Content="Order Execution Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
-                            </GroupBox.Header>
-                            <DockPanel>
-                                <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-                                        <TextBlock Text="Stop"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="False" Focusable="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-                                        <TextBlock Text="Start"/>
-                                    </StackPanel>
-                                </Button>
-                                <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                    <TextBlock Text="Running" Foreground="MediumSeaGreen" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
-                                </Border>
-                            </DockPanel>
-                        </GroupBox>
-
-                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="MediumSeaGreen" Background="WhiteSmoke">
-                            <GroupBox.Header>
-                                <CheckBox Content="Position Engine Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
-                            </GroupBox.Header>
-                            <DockPanel>
-                                <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-                                        <TextBlock Text="Stop"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="False" Focusable="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-                                        <TextBlock Text="Start"/>
-                                    </StackPanel>
-                                </Button>
-                                <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                    <TextBlock Text="Running" Foreground="MediumSeaGreen" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
-                                </Border>
-                            </DockPanel>
-                        </GroupBox>
-
-                        <GroupBox Padding="0,0,8,4" Margin="0,0,0,4" BorderThickness="4,0,0,0" BorderBrush="Crimson" Background="WhiteSmoke">
-                            <GroupBox.Header>
-                                <CheckBox Content="Reporting Engine Service" ToolTip="Enable / Disable Service" IsChecked="True" Focusable="False" Margin="2"/>
-                            </GroupBox.Header>
-                            <DockPanel>
-                                <Button DockPanel.Dock="Right" MinWidth="60" IsEnabled="False" Focusable="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-                                        <TextBlock Text="Stop"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="True" Focusable="False">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-                                        <TextBlock Text="Start"/>
-                                    </StackPanel>
-                                </Button>
-                                <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                    <TextBlock Text="Stopped" Foreground="Crimson" FontWeight="SemiBold" FontSize="16" Margin="20,0,0,0"/>
-                                </Border>
-                            </DockPanel>
-                        </GroupBox>
-                    </ItemsControl>
-                </ScrollViewer>
-            </DockPanel>
-        </Grid>
-
-
-        <Grid Grid.Row="3" Grid.Column="2" Margin="5,5,20,20">
-            <Border Style="{StaticResource ContentBorderStyle}"/>
-            <DockPanel  Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="LOG" Style="{StaticResource HeaderTextBlockStyle}"/>
-
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                    <ItemsControl Margin="2">
-                        <ItemsControl.Resources>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Margin" Value="0"/>
-                                <Setter Property="FontFamily" Value="Consolas"/>
-                                <Setter Property="FontSize" Value="11"/>
-                                <Setter Property="Foreground" Value="DimGray"/>
-                            </Style>
-                        </ItemsControl.Resources>
-                        <TextBlock>> MDE Started Successfully</TextBlock>
-                        <TextBlock>> OEE Started Successfully</TextBlock>
-                        <TextBlock>> PE Failed.</TextBlock>
-                        <TextBlock></TextBlock>
-                        <TextBlock>> Blackwood Connected.</TextBlock>
-                        <TextBlock>> Subscribing AAPL.</TextBlock>
-                        <TextBlock></TextBlock>
-                        <TextBlock>> MDE Started Successfully</TextBlock>
-                        <TextBlock>> OEE Started Successfully</TextBlock>
-                        <TextBlock>> PE Failed.</TextBlock>
-                    </ItemsControl>
-                </ScrollViewer>
-            </DockPanel>
-        </Grid>
-
+        </Grid>-->
     </Grid>
 
 

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MahApps.Metro;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,17 +22,21 @@ using TradeHubGui.Views;
 
 namespace TradeHubGui.ViewModel
 {
-    public class StrategyRunnerViewModel : BaseViewModel, INotifyPropertyChanged
+    public class StrategyRunnerViewModel : BaseViewModel
     {
+        private MetroDialogSettings _dialogSettings;
         private ObservableCollection<Strategy> _strategies;
         private ObservableCollection<StrategyInstance> _instances;
         private Strategy _selectedStrategy;
         private StrategyInstance _selectedInstance;
         private RelayCommand _showCreateInstanceWindowCommand;
+        private RelayCommand _createInstanceCommand;
+        private RelayCommand _deleteInstanceCommand;
         private RelayCommand _showEditInstanceWindowCommand;
         private RelayCommand _showGeneticOptimizationWindowCommand;
         private RelayCommand _showBruteOptimizationWindowCommand;
         private RelayCommand _loadStrategyCommand;
+        private RelayCommand _removeStrategyCommand;
         private RelayCommand _selectProviderCommand;
         private RelayCommand _importInstancesCommand;
         private string _strategyPath;
@@ -41,17 +48,31 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private StrategyController _strategyController;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public StrategyRunnerViewModel()
         {
+            _dialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
+
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
 
             // Get Existing Strategies in the system and populate on UI
             LoadExistingStrategies();
+
+            // Select 1st strategy from ListBox if not empty
+            if (Strategies.Count > 0)
+            {
+                SelectedStrategy = Strategies[0];
+            }
         }
 
         #region Observable Collections
 
+        /// <summary>
+        /// Collection of loaded strategies
+        /// </summary>
         public ObservableCollection<Strategy> Strategies
         {
             get { return _strategies; }
@@ -62,6 +83,9 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Collection of instances for selected strategy
+        /// </summary>
         public ObservableCollection<StrategyInstance> Instances
         {
             get { return _instances; }
@@ -76,17 +100,25 @@ namespace TradeHubGui.ViewModel
 
         #region Properties
 
+        /// <summary>
+        /// Selected strategy from list of loaded strategies
+        /// </summary>
         public Strategy SelectedStrategy
         {
             get { return _selectedStrategy; }
             set
             {
                 _selectedStrategy = value;
-                PopulateStrategyInstanceDataGrid(value.Key);
+                if (value != null)
+                    PopulateStrategyInstanceDataGrid(value.Key);
+
                 OnPropertyChanged("SelectedStrategy");
             }
         }
 
+        /// <summary>
+        /// Selected instance for selected strategy
+        /// </summary>
         public StrategyInstance SelectedInstance
         {
             get { return _selectedInstance; }
@@ -97,6 +129,9 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Parameter details for selected instance
+        /// </summary>
         public Dictionary<string, ParameterDetail> ParameterDetails
         {
             get { return _parameterDetails; }
@@ -107,6 +142,9 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Path of loaded instance
+        /// </summary>
         public string StrategyPath
         {
             get { return _strategyPath; }
@@ -117,6 +155,9 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Path of loaded csv file
+        /// </summary>
         public string CsvInstancesPath
         {
             get { return _csvInstancesPath; }
@@ -140,6 +181,24 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        public ICommand CreateInstanceCommand
+        {
+            get
+            {
+                return _createInstanceCommand ?? (_createInstanceCommand = new RelayCommand(
+                    param => CreateInstanceExecute(param), param => CreateInstanceCanExecute()));
+            }
+        }
+
+        public ICommand DeleteInstanceCommand
+        {
+            get
+            {
+                return _deleteInstanceCommand ?? (_deleteInstanceCommand = new RelayCommand(
+                    param => DeleteInstanceExecute()));
+            }
+        }
+
         public ICommand ShowEditInstanceWindowCommand
         {
             get
@@ -154,7 +213,7 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _showGeneticOptimizationWindowCommand ?? (_showGeneticOptimizationWindowCommand = new RelayCommand(
-                    param => ShowGeneticOptimizationExecute()));
+                    param => ShowGeneticOptimizationWindowExecute()));
             }
         }
 
@@ -163,7 +222,7 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _showBruteOptimizationWindowCommand ?? (_showBruteOptimizationWindowCommand = new RelayCommand(
-                    param => ShowBruteOptimizationExecute()));
+                    param => ShowBruteOptimizationWindowExecute()));
             }
         }
 
@@ -172,6 +231,15 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _loadStrategyCommand ?? (_loadStrategyCommand = new RelayCommand(param => LoadStrategyExecute()));
+            }
+        }
+
+        public ICommand RemoveStrategyCommand
+        {
+            get
+            {
+                return _removeStrategyCommand ?? (_removeStrategyCommand = new RelayCommand(
+                    param => RemoveStrategyExecute()));
             }
         }
 
@@ -215,7 +283,32 @@ namespace TradeHubGui.ViewModel
             return true;
         }
 
-        private void ShowGeneticOptimizationExecute()
+        private bool CreateInstanceCanExecute()
+        {
+            return true;
+        }
+
+        private void CreateInstanceExecute(object param)
+        {
+            // TODO:
+            // in Property SelectedStrategy is current strategy for instance creation
+            // in Property PropertyDetails are parameters infos for instance
+            // so, let's make instance object and add it to the Instances collection :)
+
+            // Close "Create Instance" window
+            ((Window)param).Close();
+        }
+
+        private async void DeleteInstanceExecute()
+        {
+            if (await MainWindow.ShowMessageAsync("Question", string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey),
+                MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
+            {
+                // TODO: Delete SelectedInstance
+            }
+        }
+
+        private void ShowGeneticOptimizationWindowExecute()
         {
             if (TryActivateShownWindow(typeof(GeneticOptimizationWindow)))
             {
@@ -227,7 +320,7 @@ namespace TradeHubGui.ViewModel
             window.Show();
         }
 
-        private void ShowBruteOptimizationExecute()
+        private void ShowBruteOptimizationWindowExecute()
         {
             if (TryActivateShownWindow(typeof(BruteOptimizationWindow)))
             {
@@ -252,10 +345,6 @@ namespace TradeHubGui.ViewModel
                 if (strategy.Key.Equals(SelectedStrategy.Key))
                 {
                     ParameterDetails = strategy.ParameterDetails;
-
-                    //TODO: Where are the values of parameters? ParameterDetails holds just Key as string and Value as Type of Parameter, but no ParamValue.
-                    // Instead of Type for Value, maybe better to hold some object for Value (i.e. ParamDetail with two properties, ParamType and ParamValue). 
-                    // We need to discuss this.
                 }
             }
 
@@ -283,6 +372,18 @@ namespace TradeHubGui.ViewModel
 
                 // Create New Strategy Object
                 AddStrategy(StrategyPath);
+            }
+        }
+
+        /// <summary>
+        // Remove SelectedStrategy
+        /// </summary>
+        private async void RemoveStrategyExecute()
+        {
+            if (await MainWindow.ShowMessageAsync("Question", string.Format("Remove strategy {0}?", SelectedStrategy.Key),
+               MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
+            {
+                Strategies.Remove(SelectedStrategy);
             }
         }
 
@@ -345,57 +446,21 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Dummy method for filling example instances
+        /// </summary>
         private void FillInstancesAA()
         {
             Instances = new ObservableCollection<StrategyInstance>();
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA001", Symbol = "GOOG", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA002", Symbol = "GOOG", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA003", Symbol = "HP", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA004", Symbol = "AAPL", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA005", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA006", Symbol = "GOOG", Description = "Dynamic trade", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA007", Symbol = "HP", Description = "Test", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA008", Symbol = "HP", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA009", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
-        }
-
-        private void FillInstancesAB()
-        {
-            Instances = new ObservableCollection<StrategyInstance>();
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB001", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB002", Symbol = "HP", Description = "Test", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB003", Symbol = "AAPL", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB004", Symbol = "AAPL", Description = "Test", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB005", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB006", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB007", Symbol = "HP", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB008", Symbol = "HP", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB009", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB011", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB012", Symbol = "HP", Description = "Test", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB013", Symbol = "AAPL", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB014", Symbol = "AAPL", Description = "Test", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB015", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB016", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB017", Symbol = "HP", Description = "Test", StateBrush = Brushes.Goldenrod });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB018", Symbol = "HP", Description = "Test", StateBrush = Brushes.Crimson });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AB019", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
-        }
-
-        private void FillInstancesAC()
-        {
-            Instances = new ObservableCollection<StrategyInstance>();
-            Instances.Add(new StrategyInstance() { InstanceKey = "AC001", Symbol = "MSFT", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AC002", Symbol = "HP", Description = "Test", StateBrush = Brushes.MediumSeaGreen });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AC003", Symbol = "AAPL", Description = "Test", StateBrush = Brushes.Crimson });
-
-            for (int i = 4; i < 121; i++)
-            {
-                Instances.Add(new StrategyInstance() { InstanceKey = "AC00" + i, Symbol = "BMW", Description = "Dynamic trade", StateBrush = Brushes.MediumSeaGreen });
-            }
-
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA001", Symbol = "GOOG", Description = "Dynamic trade", ExecutionState = "Running" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA002", Symbol = "GOOG", Description = "Test", ExecutionState = "Stopped" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA003", Symbol = "HP", Description = "Test", ExecutionState = "Stopped" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA004", Symbol = "AAPL", Description = "Test", ExecutionState = "Stopped" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA005", Symbol = "MSFT", Description = "Dynamic trade", ExecutionState = "Stopped" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA006", Symbol = "GOOG", Description = "Dynamic trade", ExecutionState = "Stopped" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA007", Symbol = "HP", Description = "Test", ExecutionState = "Running" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA008", Symbol = "HP", Description = "Test", ExecutionState = "Stopped" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA009", Symbol = "MSFT", Description = "Dynamic trade", ExecutionState = "Running" });
             SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
         }
 

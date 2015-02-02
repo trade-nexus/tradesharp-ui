@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -12,9 +13,9 @@ namespace TradeHubGui.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public Window MainWindow
+        public MetroWindow MainWindow
         {
-            get { return Application.Current.MainWindow; }
+            get { return (MetroWindow)Application.Current.MainWindow; }
         }
 
         protected void OnPropertyChanged(string name)

@@ -11,7 +11,7 @@
                 ShowIconOnTitleBar="True"
                 ShowTitleBar="True"
                 Background="{StaticResource BaseBackground}"
-                GlowBrush="DarkGray"
+                GlowBrush="{StaticResource BaseBrush0}"
                 FontFamily="{StaticResource DefaultFont}"
                 FontSize="{StaticResource NormalFontSize}"
                 Icon="{StaticResource imgHub}">
@@ -96,6 +96,25 @@
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
 
+    <mah:MetroWindow.Flyouts>
+        <mah:FlyoutsControl x:Name="FlayoutOrderAPIConfiguration">
+            <mah:Flyout Header="Data API Configuration" Position="Right" Theme="Adapt" IsModal="True">
+                <Grid Margin="20" Width="400">
+                    <TextBlock Foreground="{StaticResource BaseBrush3}" >
+                        Data API Configuration goes here...
+                    </TextBlock>
+                </Grid>
+            </mah:Flyout>
+
+            <mah:Flyout Header="Order API Configuration" Position="Right" Theme="Adapt" IsModal="True">
+                <Grid Margin="20" Width="400">
+                    <TextBlock Foreground="{StaticResource BaseBrush3}" >
+                        Order API Configuration goes here...
+                    </TextBlock>
+                </Grid>
+            </mah:Flyout>
+        </mah:FlyoutsControl>
+    </mah:MetroWindow.Flyouts>
 
     <Grid x:Name="LayoutRoot" >
         <Grid.RowDefinitions>
@@ -158,7 +177,7 @@
                                         Content="{Binding SelectedItem.Tag, ElementName=NavigationListBox}"/>
 
         <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource BaseBrush0}" Height="20">
-                <!--<DockPanel Margin="2,2,20,2" VerticalAlignment="Center">
+            <!--<DockPanel Margin="2,2,20,2" VerticalAlignment="Center">
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,2" MinWidth="60">
                         <Ellipse Width="8" Height="8" Margin="8,0" Fill="Crimson"/>
                         <TextBlock Text="PE" HorizontalAlignment="Center"/>
