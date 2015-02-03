@@ -68,6 +68,7 @@
     <Compile Include="EventSystem.cs" />
     <Compile Include="Models\ExecutionDetails.cs" />
     <Compile Include="Models\Instrument.cs" />
+    <Compile Include="Models\OptimizationStatistics.cs" />
     <Compile Include="Models\OrderDetails.cs" />
     <Compile Include="Models\Strategy.cs" />
     <Compile Include="Models\StrategyInstance.cs" />

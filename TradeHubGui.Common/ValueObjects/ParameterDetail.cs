@@ -9,7 +9,7 @@ namespace TradeHubGui.Common.ValueObjects
     /// <summary>
     /// Contains Parameter Detail information
     /// </summary>
-    public class ParameterDetail
+    public class ParameterDetail : ICloneable
     {
         /// <summary>
         /// Type of the parameter i.e. Int32, Decimal, String
@@ -48,6 +48,11 @@ namespace TradeHubGui.Common.ValueObjects
         {
             get { return _parameterValue; }
             set { _parameterValue = value; }
+        }
+
+        public object Clone()
+        {
+            return MemberwiseClone();
         }
     }
 }

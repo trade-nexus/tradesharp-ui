@@ -26,6 +26,11 @@ namespace TradeHubGui.Common.Models
         private Type _strategyType;
 
         /// <summary>
+        /// Name of the '.dll' from which the Strategy is loaded
+        /// </summary>
+        private string _fileName;
+
+        /// <summary>
         /// Contains Parameter details to be used by Strategy
         /// Key = Parameter Name
         /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.) , Parameter Value if entered
@@ -86,6 +91,15 @@ namespace TradeHubGui.Common.Models
             set { _parameterDetails = value; }
         }
 
+        /// <summary>
+        /// Name of the '.dll' from which the Strategy is loaded
+        /// </summary>
+        public string FileName
+        {
+            get { return _fileName; }
+            set { _fileName = value; }
+        }
+
         #endregion
 
         /// <summary>
@@ -93,13 +107,15 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         /// <param name="name">Strategy Name</param>
         /// <param name="strategyType">Strategy Assembly Type</param>
-        public Strategy(string name, Type strategyType)
+        /// <param name="fileName">Name of the file from which the Straegy is loaded</param>
+        public Strategy(string name, Type strategyType, string fileName)
         {
             // Get new strategy ID
             _key = StrategyIdGenerator.GetStrategyKey();
 
             // Save information
             _name = name;
+            _fileName = fileName;
             _strategyType = strategyType;
 
             // Initialize fields
@@ -107,11 +123,25 @@ namespace TradeHubGui.Common.Models
             _strategyInstances= new Dictionary<string, StrategyInstance>();
         }
 
+        public Strategy(string name, string fileName)
+        {
+            // Get new strategy ID
+            _key = StrategyIdGenerator.GetStrategyKey();
+
+            // Save information
+            _name = name;
+            _fileName = fileName;
+
+            // Initialize fields
+            _parameterDetails = new Dictionary<string, ParameterDetail>();
+            _strategyInstances = new Dictionary<string, StrategyInstance>();
+        }
+
         /// <summary>
         /// Creates a new Strategy Instance object
         /// </summary>
         /// <param name="parameters">Parameter list to be used by the instance for execution</param>
-        public StrategyInstance CreateInstance(object[] parameters)
+        public StrategyInstance CreateInstance(Dictionary<string, ParameterDetail> parameters)
         {
             // Get new Instance Key
             string instanceKey = StrategyIdGenerator.GetInstanceKey(_key);
