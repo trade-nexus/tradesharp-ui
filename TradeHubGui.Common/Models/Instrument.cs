@@ -30,6 +30,7 @@ namespace TradeHubGui.Common.Models
         }
 
         #region Properties
+        //NOTE: this will be full properties with OnPropertyChanged on setter
         public string Symbol { get; set; }
         public float BidQty { get; set; }
         public float BidPrice { get; set; }

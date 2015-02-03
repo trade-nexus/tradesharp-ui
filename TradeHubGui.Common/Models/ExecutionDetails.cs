@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels.OrderDomain;
 using OrderStatus = TradeHub.Common.Core.Constants.OrderStatus;
@@ -8,17 +9,75 @@ namespace TradeHubGui.Common.Models
     /// <summary>
     /// 
     /// </summary>
-	public class ExecutionDetails
+    public class ExecutionDetails : INotifyPropertyChanged
     {
+        #region Fields
+
         /// <summary>
         /// List of all the Order detials during the current session
         /// </summary>
-        private IList<OrderDetails> _orderDetailsList; 
+        private IList<OrderDetails> _orderDetailsList;
 
-		public string Key { get; set; }
-		public int Executed { get; set; }
-		public int BuyCount { get; set; }
-		public int SellCount { get; set; }
+        public string _key;
+        public int _executed;
+        public int _buyCount;
+        public int _sellCount;
+
+        #endregion
+
+        #region Properties
+
+        public string Key
+        {
+            get { return _key; }
+            set
+            {
+                if (_key != value)
+                {
+                    _key = value;
+                    OnPropertyChanged("Key");
+                }
+            }
+        }
+
+        public int Executed
+        {
+            get { return _executed; }
+            set
+            {
+                if (_executed != value)
+                {
+                    _executed = value;
+                    OnPropertyChanged("Executed");
+                }
+            }
+        }
+
+        public int BuyCount
+        {
+            get { return _buyCount; }
+            set
+            {
+                if (_buyCount != value)
+                {
+                    _buyCount = value;
+                    OnPropertyChanged("BuyCount");
+                }
+            }
+        }
+
+        public int SellCount
+        {
+            get { return _sellCount; }
+            set
+            {
+                if (_sellCount != value)
+                {
+                    _sellCount = value;
+                    OnPropertyChanged("SellCount");
+                }
+            }
+        }
 
         /// <summary>
         /// List of all the Order detials during the current session
@@ -26,8 +85,14 @@ namespace TradeHubGui.Common.Models
         public IList<OrderDetails> OrderDetailsList
         {
             get { return _orderDetailsList; }
-            set { _orderDetailsList = value; }
+            set
+            {
+                _orderDetailsList = value;
+                OnPropertyChanged("OrderDetailsList");
+            }
         }
+
+        #endregion
 
         /// <summary>
         /// Default Constructor
@@ -62,5 +127,17 @@ namespace TradeHubGui.Common.Models
             // Add to local Map
             _orderDetailsList.Add(orderDetails);
         }
-	}
+
+        #region INotifyPropertyChanged members
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+        #endregion
+    }
 }

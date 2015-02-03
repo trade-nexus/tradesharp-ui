@@ -69,6 +69,10 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TradeHub.Common.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.Common.Core.dll</HintPath>
+    </Reference>
     <Reference Include="TradeHub.StrategyEngine.Utlility">
       <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.Utlility.dll</HintPath>
     </Reference>
@@ -90,8 +94,8 @@
     <Compile Include="Common\DataGridRowDoubleClickHandler.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\UIHelper.cs" />
-    <Compile Include="Converters\InstanceExecutionStateToVisibilityConverter.cs" />
-    <Compile Include="Converters\InstanceExecutionStateToBrushConverter.cs" />
+    <Compile Include="Converters\InstanceExecutionStatusToVisibilityConverter.cs" />
+    <Compile Include="Converters\InstanceExecutionStatusToBrushConverter.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
@@ -119,8 +123,7 @@
     </Compile>
     <Compile Include="Views\InstanceView.xaml.cs">
       <DependentUpon>InstanceView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\OrdersView.xaml.cs">
+    </Compile>    <Compile Include="Views\OrdersView.xaml.cs">
       <DependentUpon>OrdersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CreateInstanceWindow.xaml.cs">

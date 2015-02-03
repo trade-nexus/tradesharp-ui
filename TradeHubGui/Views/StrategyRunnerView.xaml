@@ -10,8 +10,8 @@
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
-        <conv:InstanceExecutionStateToBrushConverter x:Key="StateToBrush"/>
-        <conv:InstanceExecutionStateToVisibilityConverter x:Key="StateToVisibility"/>
+        <conv:InstanceExecutionStatusToBrushConverter x:Key="StatusToBrush"/>
+        <conv:InstanceExecutionStatusToVisibilityConverter x:Key="StatusToVisibility"/>
     </UserControl.Resources>
 
     <Grid x:Name="ContentGrid">
@@ -143,15 +143,15 @@
                                     IsSynchronizedWithCurrentItem="True"
                                     CanUserAddRows="False" CanUserDeleteRows="False"
                                     CanUserResizeRows="False" CanUserSortColumns="True"
-                                    IsReadOnly="True"
+                                    IsReadOnly="False"
                                     SelectionUnit="FullRow"
                                     AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Key" Width="0.3*" SortMemberPath="InstanceKey">
+                                <DataGridTemplateColumn Header="Key" Width="0.3*" SortMemberPath="InstanceKey" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Border Padding="10,1,8,2" Margin="0,-10" Background="#0FFF" BorderThickness="9,0,0,0" 
-                                                    BorderBrush="{Binding ExecutionState, Converter={StaticResource StateToBrush}}" HorizontalAlignment="Left">
+                                                    BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}" HorizontalAlignment="Left">
                                                 <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
                                                          FontWeight="SemiBold" VerticalAlignment="Center">
                                                     <TextBlock.Effect>
@@ -162,16 +162,16 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Symbol}" />
-                                <DataGridTextColumn Header="Description" Width="0.5*" Binding="{Binding Path=Description}" />
-                                <DataGridTemplateColumn Header="Actions" Width="Auto">
+                                <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Symbol}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Description" Width="0.5*" Binding="{Binding Path=Description}" IsReadOnly="False"/>
+                                <DataGridTemplateColumn Header="Actions" Width="122" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
                                                 <Grid>
                                                     <Button Focusable="False" Width="60" Margin="0,2,4,2" Height="22"
                                                             Command="{Binding DataContext.RunInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                            Visibility="{Binding ExecutionState, Converter={StaticResource StateToVisibility}}">
+                                                            Visibility="{Binding Status, Converter={StaticResource StatusToVisibility}}">
                                                         <StackPanel Orientation="Horizontal">
                                                             <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
                                                             <TextBlock Text="Start"/>
@@ -179,7 +179,7 @@
                                                     </Button>
                                                     <Button Focusable="False" Width="60" Margin="0,2,4,2" Height="22"
                                                             Command="{Binding DataContext.StopInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                            Visibility="{Binding ExecutionState, Converter={StaticResource StateToVisibility}, ConverterParameter=Invert}">
+                                                            Visibility="{Binding Status, Converter={StaticResource StatusToVisibility}, ConverterParameter=Invert}">
                                                         <StackPanel Orientation="Horizontal">
                                                             <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
                                                             <TextBlock Text="Stop"/>

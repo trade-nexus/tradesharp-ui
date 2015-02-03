@@ -18,10 +18,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!--<TextBlock DockPanel.Dock="Top" Margin="20,10,20,0" Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}" 
-                       Style="{StaticResource SubHeaderTextBlockStyle}"/>-->
+        <TextBlock DockPanel.Dock="Top" Margin="20,10,20,0" Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}" 
+                       Style="{StaticResource SubHeaderTextBlockStyle}"/>
 
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="20">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="20,30,20,20">
             <views:InstanceView />
         </ScrollViewer>
 
