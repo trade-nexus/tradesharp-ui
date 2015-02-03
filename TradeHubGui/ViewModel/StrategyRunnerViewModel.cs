@@ -294,6 +294,9 @@ namespace TradeHubGui.ViewModel
             return true;
         }
 
+        /// <summary>
+        /// Displays Strategy Instance Parameter's window to edit input values
+        /// </summary>
         private void ShowEditInstanceWindowExecute()
         {
             EditInstanceWindow window = new EditInstanceWindow();
@@ -301,9 +304,7 @@ namespace TradeHubGui.ViewModel
             window.Tag = string.Format("Instance {0}", SelectedInstance.InstanceKey);
             window.Owner = MainWindow;
 
-            ParameterDetails = SelectedStrategy.ParameterDetails;
-
-            //TODO: Update parameter values for SelectedInstance (In StrategyInstance values are in "Parameters" property)
+            ParameterDetails = SelectedInstance.Parameters;
 
             window.ShowDialog();
         }
@@ -314,6 +315,9 @@ namespace TradeHubGui.ViewModel
             return true;
         }
 
+        /// <summary>
+        /// Displays Strategy Parameter's window to input values
+        /// </summary>
         private void ShowCreateInstanceWindowExecute()
         {
             CreateInstanceWindow window = new CreateInstanceWindow();
@@ -333,19 +337,17 @@ namespace TradeHubGui.ViewModel
             return true;
         }
 
+        /// <summary>
+        /// Creates a new Strategy Instance and displays on UI
+        /// </summary>
+        /// <param name="param"></param>
         private void CreateInstanceExecute(object param)
         {
-            IList<object> parameters = new List<object>();
-
-            // Traverse all parameter
-            foreach (KeyValuePair<string, ParameterDetail> keyValuePair in ParameterDetails)
-            {
-                // Add actual parameter values to the new object list
-                parameters.Add(keyValuePair.Value.ParameterValue);
-            }
+            var parameters = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key,
+                                               entry => (ParameterDetail)entry.Value.Clone());
 
             // Create a new Strategy Instance with provided parameters
-            var strategyInstace = SelectedStrategy.CreateInstance(parameters.ToArray());
+            var strategyInstace = SelectedStrategy.CreateInstance(parameters);
 
             // Select created instance in DataGrid
             SelectedInstance = strategyInstace;
@@ -361,14 +363,12 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Triggered with 'RunInstanceCommand'
+        /// Start Strategy Instance execution. Triggered with 'RunInstanceCommand'
         /// </summary>
         private void RunInstanceExecute()
         {
             // Request Strategy Controller to start selected Strategy Instance execution
-            //_strategyController.RunStrategy(SelectedInstance.InstanceKey);
-
-            SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
+            _strategyController.RunStrategy(SelectedInstance.InstanceKey);
         }
 
         /// <summary>
@@ -377,7 +377,7 @@ namespace TradeHubGui.ViewModel
         private void StopInstanceExecute()
         {
             // Request Strategy Controller to Stop execution for selected Strategy Instance
-            //_strategyController.StopStrategy(SelectedInstance.InstanceKey);
+            _strategyController.StopStrategy(SelectedInstance.InstanceKey);
 
             SelectedInstance.Status = DomainModels.StrategyStatus.None;
         }
@@ -392,14 +392,14 @@ namespace TradeHubGui.ViewModel
                     string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey),
                     MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
             {
-                // Remove the instance from the UI
-                Instances.Remove(SelectedInstance);
+                // Request Strategy Controller to remove the instance from working session
+                _strategyController.RemoveStrategyInstance(SelectedInstance.InstanceKey);
 
                 // Remove the Instance from Strategy's Local Map
                 SelectedStrategy.RemoveInstance(SelectedInstance.InstanceKey);
 
-                // Request Strategy Controller to remove the instance from working session
-                _strategyController.RemoveStrategyInstance(SelectedInstance.InstanceKey);
+                // Remove the instance from the UI
+                Instances.Remove(SelectedInstance);
             }
         }
 
@@ -462,7 +462,24 @@ namespace TradeHubGui.ViewModel
             if (await MainWindow.ShowMessageAsync("Question", string.Format("Remove strategy {0}?", SelectedStrategy.Key),
                MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
             {
+                // Stop/Remove all Strategy Instances
+                foreach (string instanceKey in SelectedStrategy.StrategyInstances.Keys)
+                {
+                    // Stop executions
+                    _strategyController.RemoveStrategyInstance(instanceKey);
+
+                    // Remove from Strategy's internal map
+                    SelectedStrategy.RemoveInstance(instanceKey);
+                }
+
+                //SelectedStrategy.StrategyType = null;
+                var fileName = SelectedStrategy.FileName;
+
+                // Remove Strategy from UI
                 Strategies.Remove(SelectedStrategy);
+
+                // Remove Strategy assembly from directory
+                StrategyHelper.RemoveAssembly(fileName);
             }
         }
 
@@ -560,7 +577,7 @@ namespace TradeHubGui.ViewModel
                 var strategy = CreateStrategyObject(path);
 
                 // Update Observable Collection
-                _strategies.Add(strategy);
+                Strategies.Add(strategy);
             }
         }
 
@@ -577,7 +594,7 @@ namespace TradeHubGui.ViewModel
                 var strategy = CreateStrategyObject(strategyPath);
 
                 // Update Observable Collection
-                _strategies.Add(strategy);
+                Strategies.Add(strategy);
             }
         }
 
@@ -587,6 +604,8 @@ namespace TradeHubGui.ViewModel
         /// <param name="strategyPath">Path from which to load the strategy</param>
         private Strategy CreateStrategyObject(string strategyPath)
         {
+            Dictionary<string, ParameterDetail> tempDictionary = new Dictionary<string, ParameterDetail>();
+
             // Get Strategy Type from the selected Assembly
             var strategyType = StrategyHelper.GetStrategyClassType(strategyPath);
 
@@ -596,10 +615,11 @@ namespace TradeHubGui.ViewModel
             // Fetch Strategy Name from Assembly
             var strategyName = StrategyHelper.GetCustomClassSummary(strategyType);
 
-            // Create Strategy Object
-            Strategy strategy = new Strategy(strategyName, strategyType);
+            // Retrieve Name of the '.dll' file
+            var fileName = StrategyHelper.GetStrategyFileName(strategyPath);
 
-            Dictionary<string, ParameterDetail> tempDictionary = new Dictionary<string, ParameterDetail>();
+            // Create Strategy Object
+            Strategy strategy = new Strategy(strategyName, null, fileName);
 
             foreach (KeyValuePair<string, Type> keyValuePair in details)
             {

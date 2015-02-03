@@ -30,9 +30,11 @@ namespace TradeHubGui.Common.Models
         private string _description;
 
         /// <summary>
-        /// Parameter values to used
+        /// Contains Parameter details to be used by Strategy
+        /// Key = Parameter Name
+        /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.) , Parameter Value if entered
         /// </summary>
-        private object[] _parameters;
+        private Dictionary<string, ParameterDetail> _parameters; 
 
         /// <summary>
         /// Strategy Type containing TradeHubStrategy
@@ -102,9 +104,11 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
-        /// Parameter values to used
+        /// Contains Parameter details to be used by Strategy
+        /// Key = Parameter Name
+        /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.) , Parameter Value if entered
         /// </summary>
-        public object[] Parameters
+        public Dictionary<string, ParameterDetail> Parameters
         {
             get { return _parameters; }
             set
@@ -186,6 +190,25 @@ namespace TradeHubGui.Common.Models
         public void AddOrderDetails(OrderDetails orderDetails)
         {
             _executionDetails.AddOrderDetails(orderDetails);
+        }
+
+
+        /// <summary>
+        /// Returns IList of actual parameter values from the Parameter Details object
+        /// </summary>
+        /// <returns></returns>
+        public  IList<object> GetParameterValues()
+        {
+            IList<object> parameterValues = new List<object>();
+
+            // Traverse all parameter
+            foreach (KeyValuePair<string, ParameterDetail> keyValuePair in Parameters)
+            {
+                // Add actual parameter values to the new object list
+                parameterValues.Add(keyValuePair.Value.ParameterValue);
+            }
+
+            return parameterValues;
         }
 
         #region INotifyPropertyChanged members

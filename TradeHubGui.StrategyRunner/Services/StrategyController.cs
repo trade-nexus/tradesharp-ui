@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 using TraceSourceLogger;
 using TraceSourceLogger.ValueObjects;
 using TradeHub.Common.Core.DomainModels;
+using TradeHub.Common.Core.DomainModels.OrderDomain;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
+using TradeHubGui.StrategyRunner.Executors;
 using TradeHubGui.StrategyRunner.Representations;
 using Strategy = TradeHubGui.Common.Models.Strategy;
 
@@ -26,9 +28,10 @@ namespace TradeHubGui.StrategyRunner.Services
         /// <summary>
         /// Records of current startegies instances
         /// KEY = Strategy Instance Unique Key
-        /// VALUE = 
+        /// VALUE = <seealso cref="StrategyExecutor"/>
         /// </summary>
-        private ConcurrentDictionary<string, StrategyExecutor> _strategiesCollection=new ConcurrentDictionary<string, StrategyExecutor>();
+        private ConcurrentDictionary<string, StrategyExecutor> _strategiesCollection =
+            new ConcurrentDictionary<string, StrategyExecutor>();
 
         #region Events
 
@@ -66,6 +69,7 @@ namespace TradeHubGui.StrategyRunner.Services
             {
                 Logger.Info("Received call for adding strategy, path=" + assemblyPath, _type.FullName, "VerifyAndAddStrategy");
             }
+            
             if (StrategyHelper.ValidateStrategy(assemblyPath))
             {
                 StrategyHelper.CopyAssembly(assemblyPath);
@@ -75,7 +79,17 @@ namespace TradeHubGui.StrategyRunner.Services
                 }
                 return true;
             }
+            
             return false;
+        }
+
+        /// <summary>
+        /// Removes the Strategy from application and cleans directory aswell
+        /// </summary>
+        /// <param name="assemblyPath"></param>
+        public void RemoveStrategy(string assemblyPath)
+        {
+            
         }
 
         /// <summary>
@@ -85,13 +99,16 @@ namespace TradeHubGui.StrategyRunner.Services
         public List<Strategy> GetAllStrategies()
         {
             List<Strategy> savedStrategies=new List<Strategy>();
+
             //get all saved strategies
             var strategies=StrategyHelper.GetAllStrategiesName();
+            
             //cast all strategies names to its object
             foreach (var strategy in strategies)
             {
                 //savedStrategies.Add(new Strategy(){Key = strategy});
             }
+            
             return savedStrategies;
         }
 
@@ -101,12 +118,13 @@ namespace TradeHubGui.StrategyRunner.Services
         /// <param name="strategyInstance"></param>
         public void AddStrategyInstance(StrategyInstance strategyInstance)
         {
-            //create strategy executor instance
-            StrategyExecutor executor=new StrategyExecutor(strategyInstance.InstanceKey, strategyInstance.StrategyType,
-                    strategyInstance.Parameters);
+            //create strategy executor instance responsible for entire Strategy Instance life cycle
+            StrategyExecutor executor = new StrategyExecutor(strategyInstance);
+
             //subscribe to strategy event changed event
             executor.StatusChanged += OnStrategyStatusChanged;
             executor.ExecutionReceived += OnExecutionReceived;
+
             //map the executor instance in dictionary
             _strategiesCollection.TryAdd(strategyInstance.InstanceKey,executor);
         }

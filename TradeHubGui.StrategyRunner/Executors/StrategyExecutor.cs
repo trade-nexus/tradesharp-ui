@@ -15,17 +15,25 @@ using TradeHub.Common.HistoricalDataProvider.ValueObjects;
 using TradeHub.Common.Persistence;
 using TradeHub.StrategyEngine.TradeHub;
 using TradeHub.StrategyEngine.Utlility.Services;
+using TradeHubGui.Common.Models;
 using TradeHubGui.StrategyRunner.Representations;
+using Strategy = TradeHub.Common.Core.DomainModels.Strategy;
 
-namespace TradeHubGui.StrategyRunner.Services
+namespace TradeHubGui.StrategyRunner.Executors
 {
     /// <summary>
     /// Responsibe for handling individual strategy instances
     /// </summary>
-    public class StrategyExecutor
+    internal class StrategyExecutor
     {
         private Type _type = typeof(StrategyExecutor);
+
         private AsyncClassLogger _asyncClassLogger;
+
+        /// <summary>
+        /// Holds necessary information for Instance Execution and UI-Update
+        /// </summary>
+        private readonly StrategyInstance _strategyInstance;
 
         /// <summary>
         /// Responsible for providing order executions in backtesting
@@ -56,11 +64,6 @@ namespace TradeHubGui.StrategyRunner.Services
         /// Unique Key to Identify the Strategy Instance
         /// </summary>
         private string _strategyKey;
-
-        /// <summary>
-        /// Indicates whether the strategy is None/Executing/Executed
-        /// </summary>
-        private StrategyStatus _strategyStatus;
 
         /// <summary>
         /// Save Custom Strategy Type (C# Class Type which implements TradeHubStrategy.cs)
@@ -129,8 +132,11 @@ namespace TradeHubGui.StrategyRunner.Services
         /// </summary>
         public StrategyStatus StrategyStatus
         {
-            get { return _strategyStatus; }
-            set { _strategyStatus = value; }
+            get { return _strategyInstance.Status; }
+            set
+            {
+                _strategyInstance.Status = value;
+            }
         }
 
         #endregion
@@ -138,27 +144,22 @@ namespace TradeHubGui.StrategyRunner.Services
         /// <summary>
         /// Argument Constructor
         /// </summary>
-        /// <param name="strategyKey">Unique Key to Identify the Strategy Instance</param>
-        /// <param name="strategyType">C# Class Type which implements TradeHubStrategy.cs</param>
-        /// <param name="ctorArguments">Holds selected ctor arguments to execute strategy</param>
-        public StrategyExecutor(string strategyKey, Type strategyType, object[] ctorArguments)
+        /// <param name="strategyInstance">Holds necessary information for Instance Execution and UI-Update</param>
+        public StrategyExecutor(StrategyInstance strategyInstance)
         {
-            //_asyncClassLogger = ContextRegistry.GetContext()["StrategyRunnerLogger"] as AsyncClassLogger;
             _asyncClassLogger = new AsyncClassLogger("StrategyExecutor");
-            {
-                _asyncClassLogger.SetLoggingLevel();
-                //set logging path
-                string path = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) +
-                                  "\\TradeHub Logs\\Client";
-                _asyncClassLogger.LogDirectory(path);
-            }
+
+            //set logging path
+            string path = DirectoryStructure.CLIENT_LOGS_LOCATION;
+
+            _asyncClassLogger.SetLoggingLevel();
+            _asyncClassLogger.LogDirectory(path);
 
             _tradeHubStrategy = null;
-            _strategyKey = strategyKey;
-            _strategyType = strategyType;
-            _ctorArguments = ctorArguments;
-            
-            _strategyStatus = StrategyStatus.None;
+            _strategyInstance = strategyInstance;
+            _strategyKey = _strategyInstance.InstanceKey;
+            _strategyType = _strategyInstance.StrategyType;
+            _ctorArguments = _strategyInstance.GetParameterValues().ToArray();
 
             // Initialze Utility Classes
             _orderExecutor = new OrderExecutor(_asyncClassLogger);
@@ -166,7 +167,7 @@ namespace TradeHubGui.StrategyRunner.Services
             _orderRequestListener = new OrderRequestListener(_orderExecutor, _asyncClassLogger);
 
             // Use MarketDataListener.cs as Event Handler to get data from DataHandler.cs
-            _dataHandler =new DataHandler(new IEventHandler<MarketDataObject>[] { _marketDataListener });
+            _dataHandler = new DataHandler(new IEventHandler<MarketDataObject>[] { _marketDataListener });
 
             _marketDataListener.BarSubscriptionList = _dataHandler.BarSubscriptionList;
             _marketDataListener.TickSubscriptionList = _dataHandler.TickSubscriptionList;
@@ -197,7 +198,7 @@ namespace TradeHubGui.StrategyRunner.Services
                     strategy.StartDateTime = DateTime.Now;
 
                     // Get new strategy instance
-                    var strategyInstance = StrategyHelper.CreateStrategyInstance(_strategyType, CtorArguments);
+                    var strategyInstance = StrategyHelper.CreateStrategyInstance(_strategyType, _ctorArguments);
 
                     if (strategyInstance != null)
                     {
@@ -412,16 +413,16 @@ namespace TradeHubGui.StrategyRunner.Services
         {
             if (status)
             {
-                _strategyStatus = StrategyStatus.Executing;
+                _strategyInstance.Status = StrategyStatus.Executing;
             }
             else
             {
-                _strategyStatus = StrategyStatus.Executed;
+                _strategyInstance.Status = StrategyStatus.Executed;
             }
 
             if (_statusChanged != null)
             {
-                _statusChanged(_strategyKey, _strategyStatus);
+                _statusChanged(_strategyKey, _strategyInstance.Status);
             }
         }
 
