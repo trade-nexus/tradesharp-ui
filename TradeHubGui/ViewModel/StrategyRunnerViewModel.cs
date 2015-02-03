@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DomainModels = TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
@@ -296,8 +297,14 @@ namespace TradeHubGui.ViewModel
         private void ShowEditInstanceWindowExecute()
         {
             EditInstanceWindow window = new EditInstanceWindow();
-            window.Tag = string.Format("INSTANCE {0}", SelectedInstance.InstanceKey);
+            window.DataContext = this;
+            window.Tag = string.Format("Instance {0}", SelectedInstance.InstanceKey);
             window.Owner = MainWindow;
+
+            ParameterDetails = SelectedStrategy.ParameterDetails;
+
+            //TODO: Update parameter values for SelectedInstance (In StrategyInstance values are in "Parameters" property)
+
             window.ShowDialog();
         }
 
@@ -305,6 +312,20 @@ namespace TradeHubGui.ViewModel
         {
             if (SelectedStrategy == null) return false;
             return true;
+        }
+
+        private void ShowCreateInstanceWindowExecute()
+        {
+            CreateInstanceWindow window = new CreateInstanceWindow();
+            window.DataContext = this;
+            window.Tag = string.Format("Instance for Strategy {0}", SelectedStrategy.Key);
+            window.Owner = MainWindow;
+ 
+           ParameterDetails = SelectedStrategy.ParameterDetails;
+
+            //TODO: Clear or pull default values for all parameters
+
+            window.ShowDialog();
         }
 
         private bool CreateInstanceCanExecute()
@@ -326,8 +347,11 @@ namespace TradeHubGui.ViewModel
             // Create a new Strategy Instance with provided parameters
             var strategyInstace = SelectedStrategy.CreateInstance(parameters.ToArray());
 
+            // Select created instance in DataGrid
+            SelectedInstance = strategyInstace;
+
             // Set Initial status to 'Stopped'
-            strategyInstace.ExecutionState = "Running";
+            SelectedInstance.Status = DomainModels.StrategyStatus.None;
 
             // Add Instance to Observable Collection for UI
             Instances.Add(strategyInstace);
@@ -344,7 +368,7 @@ namespace TradeHubGui.ViewModel
             // Request Strategy Controller to start selected Strategy Instance execution
             //_strategyController.RunStrategy(SelectedInstance.InstanceKey);
 
-            SelectedInstance.ExecutionState = "Running";
+            SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
         }
 
         /// <summary>
@@ -355,7 +379,7 @@ namespace TradeHubGui.ViewModel
             // Request Strategy Controller to Stop execution for selected Strategy Instance
             //_strategyController.StopStrategy(SelectedInstance.InstanceKey);
 
-            SelectedInstance.ExecutionState = "Stopped";
+            SelectedInstance.Status = DomainModels.StrategyStatus.None;
         }
 
         /// <summary>
@@ -401,26 +425,6 @@ namespace TradeHubGui.ViewModel
             BruteOptimizationWindow window = new BruteOptimizationWindow();
             window.Tag = string.Format("{0}", SelectedStrategy.Key);
             window.Show();
-        }
-
-        private void ShowCreateInstanceWindowExecute()
-        {
-            CreateInstanceWindow window = new CreateInstanceWindow();
-            window.DataContext = this;
-            window.Tag = string.Format("STRATEGY {0}", SelectedStrategy.Key);
-
-            // Traverse collection to find intended Strategy 
-            foreach (var strategy in _strategies)
-            {
-                // Retrieve Parameters Information
-                if (strategy.Key.Equals(SelectedStrategy.Key))
-                {
-                    ParameterDetails = strategy.ParameterDetails;
-                }
-            }
-
-            window.Owner = MainWindow;
-            window.ShowDialog();
         }
 
         private void SelectProviderExecute()
@@ -529,15 +533,15 @@ namespace TradeHubGui.ViewModel
         private void FillInstancesAA()
         {
             Instances = new ObservableCollection<StrategyInstance>();
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA001", Symbol = "GOOG", Description = "Dynamic trade", ExecutionState = "Running" });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA002", Symbol = "GOOG", Description = "Test", ExecutionState = "Stopped" });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA003", Symbol = "HP", Description = "Test", ExecutionState = "Stopped" });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA004", Symbol = "AAPL", Description = "Test", ExecutionState = "Stopped" });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA005", Symbol = "MSFT", Description = "Dynamic trade", ExecutionState = "Stopped" });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA006", Symbol = "GOOG", Description = "Dynamic trade", ExecutionState = "Stopped" });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA007", Symbol = "HP", Description = "Test", ExecutionState = "Running" });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA008", Symbol = "HP", Description = "Test", ExecutionState = "Stopped" });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA009", Symbol = "MSFT", Description = "Dynamic trade", ExecutionState = "Running" });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA001", Symbol = "GOOG", Description = "Dynamic trade", Status = DomainModels.StrategyStatus.None });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA002", Symbol = "GOOG", Description = "Test", Status = DomainModels.StrategyStatus.None });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA003", Symbol = "HP", Description = "Test", Status = DomainModels.StrategyStatus.Executing });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA004", Symbol = "AAPL", Description = "Test", Status = DomainModels.StrategyStatus.Executed });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA005", Symbol = "MSFT", Description = "Dynamic trade", Status = DomainModels.StrategyStatus.Executed });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA006", Symbol = "GOOG", Description = "Dynamic trade", Status = DomainModels.StrategyStatus.Executed });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA007", Symbol = "HP", Description = "Test", Status = DomainModels.StrategyStatus.Executed });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA008", Symbol = "HP", Description = "Test", Status = DomainModels.StrategyStatus.None });
+            Instances.Add(new StrategyInstance() { InstanceKey = "AA009", Symbol = "MSFT", Description = "Dynamic trade", Status = DomainModels.StrategyStatus.None });
             SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
         }
 
