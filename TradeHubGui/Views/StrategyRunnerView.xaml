@@ -223,19 +223,22 @@
                     <DockPanel DockPanel.Dock="Top">
                         <TextBlock DockPanel.Dock="Left" Margin="10,0" Text="EXECUTION DETAILS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                        <ToggleButton Content="Show all instances" Margin="10,4" HorizontalAlignment="Right" ToolTip="Show all instances for selected strategy"/>
+                        <ToggleButton Content="Show all instances" Margin="10,4" HorizontalAlignment="Right" ToolTip="Show all instances for selected strategy"
+                                      IsChecked="{Binding ExecutionDetailsForAllInstances}"/>
                     </DockPanel>
 
                     <DataGrid x:Name="ExecutionDetailsDataGrid" Margin="10,22,10,10"
-                                SelectionMode="Single" 
-                                IsTextSearchEnabled="True"
-                                IsSynchronizedWithCurrentItem="True"
-                                CanUserAddRows="False" CanUserDeleteRows="False"
-                                CanUserResizeRows="False" CanUserSortColumns="True"
-                                IsReadOnly="False"
-                                SelectionUnit="FullRow"
-                                AutoGenerateColumns="False"
-                                RowHeight="22">
+                              ItemsSource="{Binding ExecutionDetailsCollection}"
+                              SelectedItem="{Binding SelectedExecutionDetails}"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="False"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False"
+                              RowHeight="22">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Strategy key" Width="*" Binding="{Binding Path=Key}" />
@@ -253,15 +256,16 @@
                     <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="ORDERS - AA002" Style="{StaticResource HeaderTextBlockStyle}"/>
 
                     <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,10"
-                                SelectionMode="Single" 
-                                IsTextSearchEnabled="True"
-                                IsSynchronizedWithCurrentItem="True"
-                                CanUserAddRows="False" CanUserDeleteRows="False"
-                                CanUserResizeRows="False" CanUserSortColumns="True"
-                                IsReadOnly="False"
-                                SelectionUnit="FullRow"
-                                AutoGenerateColumns="False"
-                                RowHeight="22">
+                              ItemsSource="{Binding OrderDetailsCollection}"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="False"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False"
+                              RowHeight="22">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Order ID" Width="*" Binding="{Binding Path=OrderId}" />

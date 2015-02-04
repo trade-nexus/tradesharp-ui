@@ -28,6 +28,10 @@ namespace TradeHubGui.ViewModel
         private MetroDialogSettings _dialogSettings;
         private ObservableCollection<Strategy> _strategies;
         private ObservableCollection<StrategyInstance> _instances;
+        private ObservableCollection<ExecutionDetails> _executionDetailsCollection;
+        private ObservableCollection<OrderDetails> _orderDetailsCollection;
+        private ExecutionDetails _selectedExecutionDetails;
+        private bool _executionDetailsForAllInstances;
         private Strategy _selectedStrategy;
         private StrategyInstance _selectedInstance;
         private RelayCommand _showCreateInstanceWindowCommand;
@@ -87,7 +91,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Collection of instances for selected strategy
+        /// Collection of instances for SelectedStrategy
         /// </summary>
         public ObservableCollection<StrategyInstance> Instances
         {
@@ -96,6 +100,66 @@ namespace TradeHubGui.ViewModel
             {
                 _instances = value;
                 OnPropertyChanged("Instances");
+            }
+        }
+
+        /// <summary>
+        /// Collection of execution details for SelectedInstance or for all instances of SelectedStrategy (depends on toggle bool)
+        /// </summary>
+        public ObservableCollection<ExecutionDetails> ExecutionDetailsCollection
+        {
+            get
+            {
+                _executionDetailsCollection = new ObservableCollection<ExecutionDetails>();
+
+                //NOTE: This logic can stay here in getter, or can be moved to method for that purpose. 
+                //NOTE: Refresh of this collection is neccessary when SelectedInstance is changed, or when ExecutionDetailsForAllInstances bool is changed
+                if (ExecutionDetailsForAllInstances)
+                {
+                    if (SelectedStrategy != null)
+                    {
+                        // if ExecutionDetailsForAllInstances is true, traverse collection of all instances for selected strategy 
+                        // and add execution details to _executionDetailsCollection
+                        foreach (StrategyInstance instance in SelectedStrategy.StrategyInstances.Values)
+                        {
+                            _executionDetailsCollection.Add(instance.ExecutionDetails);
+                        }
+                    }
+                }
+                else
+                {
+                    if (SelectedInstance != null)
+                    {
+                        // if ExecutionDetailsForAllInstances is false, add execution details just for selected instance
+                        _executionDetailsCollection.Add(SelectedInstance.ExecutionDetails);
+                    }
+                }
+
+                return _executionDetailsCollection;
+            }
+            set
+            {
+                if (_executionDetailsCollection != value)
+                {
+                    _executionDetailsCollection = value;
+                    OnPropertyChanged("ExecutionDetailsCollection");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Collection of all order details for SelectedExecutionDetails
+        /// </summary>
+        public ObservableCollection<OrderDetails> OrderDetailsCollection
+        {
+            get { return _orderDetailsCollection; }
+            set
+            {
+                if (_orderDetailsCollection != value)
+                {
+                    _orderDetailsCollection = value;
+                    OnPropertyChanged("OrderDetailsCollection");
+                }
             }
         }
 
@@ -120,20 +184,25 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Selected instance for selected strategy
+        /// Selected instance for SelectedStrategy
         /// </summary>
         public StrategyInstance SelectedInstance
         {
             get { return _selectedInstance; }
             set
             {
-                _selectedInstance = value;
-                OnPropertyChanged("SelectedInstance");
+                if (_selectedInstance != value)
+                {
+                    _selectedInstance = value;
+                    OnPropertyChanged("SelectedInstance");
+                    // if SelectedInstance is changed, refresh collection of ExecutionDetails (or call method for filling that collection)
+                    OnPropertyChanged("ExecutionDetailsCollection");
+                }
             }
         }
 
         /// <summary>
-        /// Parameter details for selected instance
+        /// Parameter details for SelectedInstance
         /// </summary>
         public Dictionary<string, ParameterDetail> ParameterDetails
         {
@@ -142,6 +211,40 @@ namespace TradeHubGui.ViewModel
             {
                 _parameterDetails = value;
                 OnPropertyChanged("ParameterDetails");
+            }
+        }
+
+        /// <summary>
+        /// Currently selected execution details in DataGrid
+        /// </summary>
+        public ExecutionDetails SelectedExecutionDetails
+        {
+            get { return _selectedExecutionDetails; }
+            set
+            {
+                if (_selectedExecutionDetails != value)
+                {
+                    _selectedExecutionDetails = value;
+                    OnPropertyChanged("SelectedExecutionDetails");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Toggle bool property for indicating will be shown execution details only for selected instance or for all instances of selected strategy
+        /// </summary>
+        public bool ExecutionDetailsForAllInstances
+        {
+            get { return _executionDetailsForAllInstances; }
+            set
+            {
+                if (_executionDetailsForAllInstances != value)
+                {
+                    _executionDetailsForAllInstances = value;
+                    OnPropertyChanged("ExecutionDetailsForAllInstances");
+                    // if bool is changed, refresh collection of ExecutionDetails (or call method for filling that collection)
+                    OnPropertyChanged("ExecutionDetailsCollection");
+                }
             }
         }
 
@@ -324,8 +427,8 @@ namespace TradeHubGui.ViewModel
             window.DataContext = this;
             window.Tag = string.Format("Instance for Strategy {0}", SelectedStrategy.Key);
             window.Owner = MainWindow;
- 
-           ParameterDetails = SelectedStrategy.ParameterDetails;
+
+            ParameterDetails = SelectedStrategy.ParameterDetails;
 
             //TODO: Clear or pull default values for all parameters
 
