@@ -177,7 +177,7 @@ namespace TradeHubGui.ViewModel
             {
                 _selectedStrategy = value;
                 if (value != null)
-                    PopulateStrategyInstanceDataGrid(value.Key);
+                    PopulateStrategyInstanceDataGrid();
 
                 OnPropertyChanged("SelectedStrategy");
             }
@@ -225,6 +225,10 @@ namespace TradeHubGui.ViewModel
                 if (_selectedExecutionDetails != value)
                 {
                     _selectedExecutionDetails = value;
+                    if (value != null)
+                        PopulateOrderDetailsDataGrid();
+                    else
+                        OrderDetailsCollection = new ObservableCollection<OrderDetails>();
                     OnPropertyChanged("SelectedExecutionDetails");
                 }
             }
@@ -461,6 +465,9 @@ namespace TradeHubGui.ViewModel
             // Add Instance to Observable Collection for UI
             Instances.Add(strategyInstace);
 
+            // Send instance to controller where its execution life cycle can be managed
+            _strategyController.AddStrategyInstance(strategyInstace);
+
             // Close "Create Instance" window
             ((Window)param).Close();
         }
@@ -472,6 +479,8 @@ namespace TradeHubGui.ViewModel
         {
             // Request Strategy Controller to start selected Strategy Instance execution
             _strategyController.RunStrategy(SelectedInstance.InstanceKey);
+
+            //SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
         }
 
         /// <summary>
@@ -620,31 +629,36 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Displays Strategy Instances created against selected Strategy
         /// </summary>
-        /// <param name="strategyKey">Key to identify Strategy</param>
-        private void PopulateStrategyInstanceDataGrid(string strategyKey)
+        private void PopulateStrategyInstanceDataGrid()
         {
-            // Find given Strategy
-            foreach (Strategy strategy in _strategies.ToList())
+            // Clear current values
+            Instances = new ObservableCollection<StrategyInstance>();
+
+            // Populate Instances
+            foreach (var strategyInstance in SelectedStrategy.StrategyInstances)
             {
-                // Find Strategy
-                if (strategy.Key.Equals(strategyKey))
-                {
-                    // Clear current values
-                    Instances = new ObservableCollection<StrategyInstance>();
-
-                    // Populate Instances
-                    foreach (var strategyInstance in strategy.StrategyInstances)
-                    {
-                        Instances.Add(strategyInstance.Value);
-                    }
-
-                    // Set the 1st instance as selected in UI
-                    SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
-
-                    // Terminate Loop
-                    break;
-                }
+                Instances.Add(strategyInstance.Value);
             }
+
+            // Set the 1st instance as selected in UI
+            SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
+        }
+
+        /// <summary>
+        /// Displays 'Order Details' against selected Strategy Instance's 'Execution Details' item
+        /// </summary>
+        private void PopulateOrderDetailsDataGrid()
+        {
+            // Clear current values
+            OrderDetailsCollection = new ObservableCollection<OrderDetails>();
+
+            OrderDetailsCollection = SelectedExecutionDetails.OrderDetailsList;
+
+            //// Populate 'Order Details'
+            //foreach (OrderDetails orderDetails in SelectedExecutionDetails.OrderDetailsList)
+            //{
+            //    OrderDetailsCollection.Add(orderDetails);
+            //}
         }
 
         /// <summary>

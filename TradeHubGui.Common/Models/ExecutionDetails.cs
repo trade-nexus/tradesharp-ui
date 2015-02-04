@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels.OrderDomain;
@@ -16,7 +17,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// List of all the Order detials during the current session
         /// </summary>
-        private IList<OrderDetails> _orderDetailsList;
+        private ObservableCollection<OrderDetails> _orderDetailsList;
 
         public string _key;
         public int _executed;
@@ -82,7 +83,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// List of all the Order detials during the current session
         /// </summary>
-        public IList<OrderDetails> OrderDetailsList
+        public ObservableCollection<OrderDetails> OrderDetailsList
         {
             get { return _orderDetailsList; }
             set
@@ -100,7 +101,7 @@ namespace TradeHubGui.Common.Models
         public ExecutionDetails()
         {
             // Initialize Objects
-            OrderDetailsList = new List<OrderDetails>();
+            OrderDetailsList = new ObservableCollection<OrderDetails>();
         }
 
         /// <summary>
@@ -114,13 +115,24 @@ namespace TradeHubGui.Common.Models
             {
                 Executed++;
 
-                if (orderDetails.Side.Equals(OrderSide.BUY))
+                if (orderDetails.Side.Equals(OrderSide.COVER))
                 {
-                    BuyCount++;
+                    if (BuyCount < SellCount)
+                    {
+                        BuyCount += orderDetails.Quantity;
+                    }
+                    else
+                    {
+                        SellCount += orderDetails.Quantity;
+                    }
+                }
+                else if (orderDetails.Side.Equals(OrderSide.BUY))
+                {
+                    BuyCount += orderDetails.Quantity;
                 }
                 else
                 {
-                    SellCount++;
+                    SellCount += orderDetails.Quantity;
                 }
             }
 

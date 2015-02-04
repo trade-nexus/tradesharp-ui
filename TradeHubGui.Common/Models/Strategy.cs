@@ -123,20 +123,6 @@ namespace TradeHubGui.Common.Models
             _strategyInstances= new Dictionary<string, StrategyInstance>();
         }
 
-        public Strategy(string name, string fileName)
-        {
-            // Get new strategy ID
-            _key = StrategyIdGenerator.GetStrategyKey();
-
-            // Save information
-            _name = name;
-            _fileName = fileName;
-
-            // Initialize fields
-            _parameterDetails = new Dictionary<string, ParameterDetail>();
-            _strategyInstances = new Dictionary<string, StrategyInstance>();
-        }
-
         /// <summary>
         /// Creates a new Strategy Instance object
         /// </summary>
@@ -147,12 +133,7 @@ namespace TradeHubGui.Common.Models
             string instanceKey = StrategyIdGenerator.GetInstanceKey(_key);
 
             // Create new Strategy Instance Object
-            var strategyInstance = new StrategyInstance()
-            {
-                InstanceKey = instanceKey,
-                Parameters = parameters,
-                StrategyType = _strategyType
-            };
+            var strategyInstance = new StrategyInstance(instanceKey, parameters, _strategyType);
 
             // Add to local MAP
             _strategyInstances.Add(instanceKey, strategyInstance);

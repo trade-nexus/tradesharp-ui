@@ -241,7 +241,7 @@
                               RowHeight="22">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Strategy key" Width="*" Binding="{Binding Path=Key}" />
+                            <DataGridTextColumn Header="Instance key" Width="*" Binding="{Binding Path=Key}" />
                             <DataGridTextColumn Header="Executed" Width="*" Binding="{Binding Path=Executed}" />
                             <DataGridTextColumn Header="Buy count" Width="*" Binding="{Binding Path=BuyCount}" />
                             <DataGridTextColumn Header="Sell count" Width="*" Binding="{Binding Path=SellCount}" />
@@ -268,7 +268,7 @@
                               RowHeight="22">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Order ID" Width="*" Binding="{Binding Path=OrderId}" />
+                            <DataGridTextColumn Header="Order ID" Width="*" Binding="{Binding Path=ID}" />
                             <DataGridTextColumn Header="Side" Width="*" Binding="{Binding Path=Side}" />
                             <DataGridTextColumn Header="Type" Width="*" Binding="{Binding Path=Type}" />
                             <DataGridTextColumn Header="Price" Width="*" Binding="{Binding Path=Price}" />

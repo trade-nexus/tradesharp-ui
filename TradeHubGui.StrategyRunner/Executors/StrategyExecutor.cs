@@ -189,6 +189,13 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             try
             {
+                // NOTE: Test code to simulate Strategy working
+                // BEGIN:
+                OnStrategyStatusChanged(true);
+                TestCodeToGenerateExecutions();
+                return;
+                // :END
+
                 // Verify Strategy Instance
                 if (_tradeHubStrategy == null)
                 {
@@ -427,6 +434,56 @@ namespace TradeHubGui.StrategyRunner.Executors
         }
 
         /// <summary>
+        /// Called when Custom Strategy receives requested order accepted message
+        /// </summary>
+        /// <param name="order">Accepted Order details</param>
+        private void OnOrderAccepted(Order order)
+        {
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.ID = order.OrderID;
+            //orderDetails.Price = order.;
+            orderDetails.Quantity = order.OrderSize;
+            orderDetails.Side = order.OrderSide;
+            //orderDetails.Type = order.;
+            orderDetails.Status = order.OrderStatus;
+
+            // Add new information to execution details
+            _strategyInstance.AddOrderDetails(orderDetails);
+        }
+
+        /// <summary>
+        /// Called when Custom Strategy receives notification from Order Cancellation
+        /// </summary>
+        /// <param name="order">Contains cancelled order information</param>
+        private void OnCancellationReceived(Order order)
+        {
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.ID = order.OrderID;
+            //orderDetails.Price = order.;
+            orderDetails.Quantity = order.OrderSize;
+            orderDetails.Side = order.OrderSide;
+            //orderDetails.Type = order.;
+            orderDetails.Status = order.OrderStatus;
+
+            // Add new information to execution details
+            _strategyInstance.AddOrderDetails(orderDetails);
+        }
+
+        /// <summary>
+        /// Called when Custom Strategy's order is rejected
+        /// </summary>
+        /// <param name="rejection">Contains rejection details</param>
+        private void OnRejectionreceived(Rejection rejection)
+        {
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.ID = rejection.OrderId;
+            orderDetails.Status = OrderStatus.REJECTED;
+
+            // Add new information to execution details
+            _strategyInstance.AddOrderDetails(orderDetails);
+        }
+
+        /// <summary>
         /// Called when Custom Strategy receives new execution message
         /// </summary>
         /// <param name="execution">Contains Execution Info</param>
@@ -455,19 +512,16 @@ namespace TradeHubGui.StrategyRunner.Executors
                     _asyncClassLogger.Debug("Updating statistics on: " + execution, _type.FullName, "UpdateStatistics");
                 }
 
-                // Update statistics on BUY Order
-                if (execution.Fill.ExecutionSide.Equals(OrderSide.BUY))
-                {
-                }
-                // Update statistics on SELL Order
-                else if (execution.Fill.ExecutionSide.Equals(OrderSide.SELL) ||
-                    execution.Fill.ExecutionSide.Equals(OrderSide.SHORT))
-                {
-                }
-                // Update statistics on COVER Order (order used to close the open position)
-                else if (execution.Fill.ExecutionSide.Equals(OrderSide.COVER))
-                {
-                }
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.ID = execution.Fill.OrderId;
+                orderDetails.Price = execution.Fill.ExecutionPrice;
+                orderDetails.Quantity = execution.Fill.ExecutionSize;
+                orderDetails.Side = execution.Fill.ExecutionSide;
+                orderDetails.Type = execution.Fill.ExecutionType.ToString();
+                orderDetails.Status = execution.Order.OrderStatus;
+
+                // Add new information to execution details
+                _strategyInstance.AddOrderDetails(orderDetails);
             }
             catch (Exception exception)
             {
@@ -492,6 +546,37 @@ namespace TradeHubGui.StrategyRunner.Executors
             catch (Exception exception)
             {
                 _asyncClassLogger.Error(exception, _type.FullName, "Close");
+            }
+        }
+
+        /// <summary>
+        /// Generates Dummny Executions to be used for UI testing
+        /// </summary>
+        private void TestCodeToGenerateExecutions()
+        {
+            int idCounter = 1;
+            {
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.ID = idCounter++.ToString();
+                orderDetails.Price = 100;
+                orderDetails.Quantity = 20;
+                orderDetails.Side = OrderSide.BUY;
+                orderDetails.Status = OrderStatus.OPEN;
+
+                // Add new information to execution details
+                _strategyInstance.AddOrderDetails(orderDetails);
+            }
+
+            {
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.ID = idCounter++.ToString();
+                orderDetails.Price = 100;
+                orderDetails.Quantity = 20;
+                orderDetails.Side = OrderSide.BUY;
+                orderDetails.Status = OrderStatus.EXECUTED;
+
+                // Add new information to execution details
+                _strategyInstance.AddOrderDetails(orderDetails);
             }
         }
     }

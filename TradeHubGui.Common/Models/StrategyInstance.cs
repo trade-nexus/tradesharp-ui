@@ -171,13 +171,26 @@ namespace TradeHubGui.Common.Models
 
         #endregion
 
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
         public StrategyInstance()
+        {
+            
+        }
+
+        /// <summary>
+        /// Argument Constructor
+        /// </summary>
+        /// <param name="instanceKey">Unique Key to identify instance</param>
+        /// <param name="parameters">Contains Parameter details to be used by Strategy</param>
+        /// <param name="strategyType">Strategy Type containing TradeHubStrategy</param>
+        public StrategyInstance(string instanceKey, Dictionary<string, ParameterDetail> parameters, Type strategyType)
         {
             // Initialize
             _executionDetails = new ExecutionDetails();
+
+            // Save information
+            _instanceKey = instanceKey;
+            _parameters = parameters;
+            _strategyType = strategyType;
 
             // Use Instance Key to identify its execution information
             _executionDetails.Key = _instanceKey;
