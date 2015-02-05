@@ -75,6 +75,10 @@ namespace TradeHubGui.Common.Models
             }
         }
 
+        /// <summary>
+        /// Order Status represented as const static strings from TradeHub.Common.Core.Constants.OrderStatus class
+        /// possible values are: CANCELLED, EXECUTED, OPEN, PARTIALLY_EXECUTED, REJECTED, SUBMITTED
+        /// </summary>
         public string Status
         {
             get { return _status; }

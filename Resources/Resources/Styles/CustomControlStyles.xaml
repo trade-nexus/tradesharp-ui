@@ -1,0 +1,782 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Microsoft_Windows_Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Luna"
+                    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options" xmlns:cc="clr-namespace:Resources.Controls" xmlns:converter="clr-namespace:Resources.Converters"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="PresentationOptions">
+
+	<converter:FloatToGridLenghtConverter x:Key="FloatToGridLenght" />
+
+	<!--  Lock CheckBox  -->
+
+	<Style x:Key="LockStyle" TargetType="{x:Type CheckBox}">
+		<Style.BasedOn>
+			<Style TargetType="{x:Type CheckBox}">
+				<Setter Property="SnapsToDevicePixels" Value="True" />
+				<Setter Property="OverridesDefaultStyle" Value="True" />
+				<Setter Property="FocusVisualStyle">
+					<Setter.Value>
+						<Style>
+							<Setter Property="Control.Template">
+								<Setter.Value>
+									<ControlTemplate>
+										<Border>
+											<Rectangle Margin="0,0,0,0" RadiusX="1" RadiusY="1"
+											           Stroke="#60000000" StrokeDashArray="1 2" StrokeThickness="1" />
+										</Border>
+									</ControlTemplate>
+								</Setter.Value>
+							</Setter>
+						</Style>
+					</Setter.Value>
+				</Setter>
+				<Setter Property="ToolTip" Value="Unlocked" />
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate TargetType="{x:Type CheckBox}">
+							<BulletDecorator x:Name="lock" Background="#00002200">
+								<BulletDecorator.Bullet>
+									<Border Width="21" Height="20">
+										<Canvas x:Name="canvas" Width="20" Height="20">
+											<Path x:Name="path" Width="8.952" Height="9.936"
+											      Margin="5,3,0,0" Data="M7.086,7.944836 L7.086,3.8405 C7.086,2.0508213 5.6340594,0.6 3.843,0.6 2.0519406,0.6 0.62196354,2.050956 0.6,3.8405 0.57966409,5.4974281 0.6,6.3596656 0.6,6.3596656" Stretch="Fill"
+											      StrokeThickness="1.5">
+												<Path.Stroke>
+													<LinearGradientBrush StartPoint="-0.496,0.214" EndPoint="1.776,0.219">
+														<GradientStop Offset="0.394" Color="Black" />
+														<GradientStop Offset="0.216" Color="Black" />
+														<GradientStop Offset="0.289" Color="#FF6E6E6E" />
+													</LinearGradientBrush>
+												</Path.Stroke>
+											</Path>
+											<Rectangle x:Name="rectangle2" Width="10.666" Height="1.164" Margin="4,17,0,0">
+												<Rectangle.Fill>
+													<LinearGradientBrush StartPoint="0.007,0.59" EndPoint="1.002,0.59">
+														<GradientStop Offset="0" Color="#FF8B6C14" />
+														<GradientStop Offset="1" Color="#FF3D2F04" />
+														<GradientStop Offset="0.052" Color="#FFB2943B" />
+														<GradientStop Offset="0.944" Color="#FF87670D" />
+														<GradientStop Offset="0.216" Color="#FFC6A958" />
+													</LinearGradientBrush>
+												</Rectangle.Fill>
+											</Rectangle>
+											<Rectangle x:Name="rectangle" Width="10.666" Height="7.413" Margin="4,10,0,0">
+												<Rectangle.Fill>
+													<LinearGradientBrush StartPoint="0.007,0.59" EndPoint="1.002,0.59">
+														<GradientStop Offset="0" Color="#FF9F7C16" />
+														<GradientStop Offset="1" Color="#FF4E3A01" />
+														<GradientStop Offset="0.052" Color="#FFC89F27" />
+														<GradientStop Offset="0.589" Color="#FFE8B41F" />
+														<GradientStop Offset="0.216" Color="#FFFFEBAD" />
+														<GradientStop Offset="0.81" Color="#FFD69F00" />
+													</LinearGradientBrush>
+												</Rectangle.Fill>
+											</Rectangle>
+											<Rectangle x:Name="rectangle1" Width="10.666" Height="1.163" Margin="4,10,0,0">
+												<Rectangle.Fill>
+													<LinearGradientBrush StartPoint="0.007,0.59" EndPoint="1.002,0.59">
+														<GradientStop Offset="0" Color="#FFA58016" />
+														<GradientStop Offset="1" Color="#FF594301" />
+														<GradientStop Offset="0.052" Color="#FFD4AF44" />
+														<GradientStop Offset="0.944" Color="#FF95720F" />
+														<GradientStop Offset="0.216" Color="#FFE6C465" />
+													</LinearGradientBrush>
+												</Rectangle.Fill>
+											</Rectangle>
+										</Canvas>
+									</Border>
+								</BulletDecorator.Bullet>
+							</BulletDecorator>
+							<ControlTemplate.Triggers>
+								<Trigger Property="IsChecked" Value="False">
+									<Setter TargetName="path" Property="RenderTransform">
+										<Setter.Value>
+											<TransformGroup>
+												<ScaleTransform ScaleX="-1" ScaleY="1" />
+												<SkewTransform AngleX="0" AngleY="0" />
+												<RotateTransform Angle="0" />
+												<TranslateTransform />
+											</TransformGroup>
+										</Setter.Value>
+									</Setter>
+									<Setter TargetName="path" Property="Stroke">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="0.49,0.141" EndPoint="2,0.118">
+												<GradientStop Offset="0.394" Color="Black" />
+												<GradientStop Offset="0.216" Color="Black" />
+												<GradientStop Offset="0.308" Color="#FF6E6E6E" />
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+									<Setter TargetName="path" Property="Margin" Value="0" />
+									<Setter TargetName="path" Property="Canvas.Left" Value="21.143" />
+									<Setter TargetName="path" Property="Canvas.Top" Value="3.125" />
+								</Trigger>
+								<Trigger Property="IsChecked" Value="True">
+									<Setter Property="ToolTip" Value="Locked" />
+								</Trigger>
+								<Trigger Property="IsChecked" Value="{x:Null}">
+									<Setter TargetName="lock" Property="Visibility" Value="Hidden" />
+								</Trigger>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter TargetName="path" Property="Stroke">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="-0.496,0.214" EndPoint="1.776,0.219">
+												<GradientStop Offset="0.394" Color="#FF565656" />
+												<GradientStop Offset="0.216" Color="#FF3B3B3B" />
+												<GradientStop Offset="0.289" Color="#FF919191" />
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+									<Setter TargetName="rectangle" Property="Fill">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="0.007,0.59" EndPoint="1.002,0.59">
+												<GradientStop Offset="0" Color="#FFE1B228" />
+												<GradientStop Offset="1" Color="#FF6F5201" />
+												<GradientStop Offset="0.052" Color="#FFE0BF5E" />
+												<GradientStop Offset="0.589" Color="#FFF0CF70" />
+												<GradientStop Offset="0.216" Color="#FFFFF8E3" />
+												<GradientStop Offset="0.81" Color="#FFE2A800" />
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+								<Trigger Property="IsPressed" Value="True">
+									<Setter TargetName="path" Property="Stroke" Value="Black" />
+									<Setter TargetName="rectangle" Property="Fill">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="0.007,0.59" EndPoint="1.002,0.59">
+												<GradientStop Offset="0" Color="#FF846712" />
+												<GradientStop Offset="1" Color="#FF4E3A01" />
+												<GradientStop Offset="0.052" Color="#FFD5A929" />
+												<GradientStop Offset="0.589" Color="#FFE8B41F" />
+												<GradientStop Offset="0.216" Color="#FFFFEAAB" />
+												<GradientStop Offset="0.81" Color="#FFAF8200" />
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter TargetName="rectangle" Property="Fill">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="0.007,0.59" EndPoint="1.002,0.59">
+												<GradientStop Offset="0" Color="#FF9E9E9E" />
+												<GradientStop Offset="1" Color="#FF8D8D8D" />
+												<GradientStop Offset="0.052" Color="#FFACACAC" />
+												<GradientStop Offset="0.589" Color="Silver" />
+												<GradientStop Offset="0.216" Color="#FFD6D6D6" />
+												<GradientStop Offset="0.81" Color="#FFA7A7A7" />
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+									<Setter TargetName="rectangle1" Property="Fill" Value="#29000000" />
+									<Setter TargetName="path" Property="Stroke" Value="Gray" />
+									<Setter TargetName="rectangle2" Property="Fill">
+										<Setter.Value>
+											<LinearGradientBrush StartPoint="-0.013,0.784" EndPoint="0.968,0.855">
+												<GradientStop Offset="0" Color="#FF838383" />
+												<GradientStop Offset="1" Color="#FF8F8F8F" />
+												<GradientStop Offset="0.113" Color="#FFB2B2B2" />
+												<GradientStop Offset="0.861" Color="#FFAFAFAF" />
+											</LinearGradientBrush>
+										</Setter.Value>
+									</Setter>
+								</Trigger>
+							</ControlTemplate.Triggers>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</Style.BasedOn>
+	</Style>
+
+	<!-- Custom Progress Bars -->
+
+	<Style x:Key="RotatingProgressStyle" TargetType="{x:Type ProgressBar}">
+		<Setter Property="IsIndeterminate" Value="True" />
+		<Setter Property="Margin" Value="2" />
+		<Setter Property="Width" Value="11" />
+		<Setter Property="Height" Value="11" />
+		<Setter Property="Opacity" Value="1" />
+		<Setter Property="Foreground" Value="Black" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ProgressBar}">
+					<Border>
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualStateGroup.Transitions>
+									<VisualTransition GeneratedDuration="0:0:1" To="Indeterminate" />
+									<VisualTransition From="Indeterminate" GeneratedDuration="0:0:1" />
+								</VisualStateGroup.Transitions>
+								<VisualState x:Name="Determinate" />
+								<VisualState x:Name="Indeterminate">
+									<Storyboard>
+										<DoubleAnimationUsingKeyFrames RepeatBehavior="Forever" Storyboard.TargetName="grid" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[2].(RotateTransform.Angle)">
+											<EasingDoubleKeyFrame KeyTime="0" Value="0" />
+											<EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="360" />
+										</DoubleAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+						<Viewbox x:Name="PART_Track" Margin="0" Stretch="Uniform">
+							<Grid x:Name="grid" RenderTransformOrigin="0.5,0.5">
+								<Grid.RenderTransform>
+									<TransformGroup>
+										<ScaleTransform />
+										<SkewTransform />
+										<RotateTransform />
+										<TranslateTransform />
+									</TransformGroup>
+								</Grid.RenderTransform>
+								<Path Width="1.559" Height="1.355" Margin="0,0.003,0.814,0"
+								      HorizontalAlignment="Right" VerticalAlignment="Top" Data="M2.6180379,0 L2.6216917,0.00013447479 C3.2017703,0.028618911 3.7298777,0.25481358 4.1400447,0.61274904 L4.1770792,0.64580512 3.4685173,1.3543673 3.4611244,1.3478895 C3.2348902,1.1578964 2.951741,1.0334767 2.6409404,1.0038943 L2.6180379,1.0019881 z"
+								      Fill="{TemplateBinding Foreground}"
+								      Opacity="0" Stretch="Fill" />
+								<Path Width="1.559" Height="Auto" Margin="0,1.172,-0.207,2.465"
+								      HorizontalAlignment="Right" VerticalAlignment="Stretch" Data="M2.6180379,0 L2.6216917,0.00013447479 C3.2017703,0.028618911 3.7298777,0.25481358 4.1400447,0.61274904 L4.1770792,0.64580512 3.4685173,1.3543673 3.4611244,1.3478895 C3.2348902,1.1578964 2.951741,1.0334767 2.6409404,1.0038943 L2.6180379,1.0019881 z"
+								      Fill="{TemplateBinding Foreground}"
+								      Opacity="0.05" RenderTransformOrigin="0.5,0.5" Stretch="Fill">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform />
+											<SkewTransform />
+											<RotateTransform Angle="44.775" />
+											<TranslateTransform />
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+								<Path Width="1.559" Height="1.355" Margin="0,0,-0.102,0.909"
+								      HorizontalAlignment="Right" VerticalAlignment="Bottom" Data="M2.6180379,0 L2.6216917,0.00013447479 C3.2017703,0.028618911 3.7298777,0.25481358 4.1400447,0.61274904 L4.1770792,0.64580512 3.4685173,1.3543673 3.4611244,1.3478895 C3.2348902,1.1578964 2.951741,1.0334767 2.6409404,1.0038943 L2.6180379,1.0019881 z"
+								      Fill="{TemplateBinding Foreground}"
+								      Opacity="0.2" RenderTransformOrigin="0.5,0.5" Stretch="Fill">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform />
+											<SkewTransform />
+											<RotateTransform Angle="89.819" />
+											<TranslateTransform />
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+								<Path Width="Auto" Height="1.355" Margin="2.38,0,1.055,-0.1"
+								      HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Data="M2.6180379,0 L2.6216917,0.00013447479 C3.2017703,0.028618911 3.7298777,0.25481358 4.1400447,0.61274904 L4.1770792,0.64580512 3.4685173,1.3543673 3.4611244,1.3478895 C3.2348902,1.1578964 2.951741,1.0334767 2.6409404,1.0038943 L2.6180379,1.0019881 z"
+								      Fill="{TemplateBinding Foreground}"
+								      Opacity="0.4" RenderTransformOrigin="0.5,0.5" Stretch="Fill">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform />
+											<SkewTransform />
+											<RotateTransform Angle="134.956" />
+											<TranslateTransform />
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+								<Path Width="1.559" Height="1.355" Margin="0.814,0,0,-0.001"
+								      HorizontalAlignment="Left" VerticalAlignment="Bottom" Data="M2.6180379,0 L2.6216917,0.00013447479 C3.2017703,0.028618911 3.7298777,0.25481358 4.1400447,0.61274904 L4.1770792,0.64580512 3.4685173,1.3543673 3.4611244,1.3478895 C3.2348902,1.1578964 2.951741,1.0334767 2.6409404,1.0038943 L2.6180379,1.0019881 z"
+								      Fill="{TemplateBinding Foreground}"
+								      Opacity="0.6" RenderTransformOrigin="0.5,0.5" Stretch="Fill">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform />
+											<SkewTransform />
+											<RotateTransform Angle="-179.994" />
+											<TranslateTransform />
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+								<Path Width="1.559" Height="Auto" Margin="-0.204,2.47,0,1.168"
+								      HorizontalAlignment="Left" VerticalAlignment="Stretch" Data="M2.6180379,0 L2.6216917,0.00013447479 C3.2017703,0.028618911 3.7298777,0.25481358 4.1400447,0.61274904 L4.1770792,0.64580512 3.4685173,1.3543673 3.4611244,1.3478895 C3.2348902,1.1578964 2.951741,1.0334767 2.6409404,1.0038943 L2.6180379,1.0019881 z"
+								      Fill="{TemplateBinding Foreground}"
+								      Opacity="0.8" RenderTransformOrigin="0.5,0.5" Stretch="Fill">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform />
+											<SkewTransform />
+											<RotateTransform Angle="-135.224" />
+											<TranslateTransform />
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+								<Path Width="1.559" Height="1.355" Margin="-0.098,0.916,0,0"
+								      HorizontalAlignment="Left" VerticalAlignment="Top" Data="M2.6180379,0 L2.6216917,0.00013447479 C3.2017703,0.028618911 3.7298777,0.25481358 4.1400447,0.61274904 L4.1770792,0.64580512 3.4685173,1.3543673 3.4611244,1.3478895 C3.2348902,1.1578964 2.951741,1.0334767 2.6409404,1.0038943 L2.6180379,1.0019881 z"
+								      Fill="{TemplateBinding Foreground}"
+								      Opacity="0.9" RenderTransformOrigin="0.5,0.5" Stretch="Fill">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform />
+											<SkewTransform />
+											<RotateTransform Angle="-89.931" />
+											<TranslateTransform />
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+								<Path Width="Auto" Height="1.355" Margin="1.076,-0.105,2.359,0"
+								      HorizontalAlignment="Stretch" VerticalAlignment="Top" Data="M2.6180379,0 L2.6216917,0.00013447479 C3.2017703,0.028618911 3.7298777,0.25481358 4.1400447,0.61274904 L4.1770792,0.64580512 3.4685173,1.3543673 3.4611244,1.3478895 C3.2348902,1.1578964 2.951741,1.0334767 2.6409404,1.0038943 L2.6180379,1.0019881 z"
+								      Fill="{TemplateBinding Foreground}"
+								      Opacity="1" RenderTransformOrigin="0.5,0.5" Stretch="Fill">
+									<Path.RenderTransform>
+										<TransformGroup>
+											<ScaleTransform />
+											<SkewTransform />
+											<RotateTransform Angle="-44.439" />
+											<TranslateTransform />
+										</TransformGroup>
+									</Path.RenderTransform>
+								</Path>
+							</Grid>
+						</Viewbox>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--  DropDownButton Style  -->
+
+	<Style x:Key="ButtonFocusVisual">
+		<Setter Property="Control.Template">
+			<Setter.Value>
+				<ControlTemplate>
+					<Rectangle Margin="3" SnapsToDevicePixels="true" Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<SolidColorBrush x:Key="ButtonBorder" PresentationOptions:Freeze="True" Color="#FF003C74" />
+
+	<Style x:Key="DDButtonLabelStyle" BasedOn="{x:Null}" TargetType="{x:Type Label}">
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Label}">
+					<Grid>
+						<ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style x:Key="DropDownButtonStyle" TargetType="{x:Type cc:DropDownButton}">
+		<Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+		<Setter Property="SnapsToDevicePixels" Value="True" />
+		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+		<Setter Property="FocusVisualStyle" Value="{DynamicResource ButtonFocusVisual}" />
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+		<Setter Property="Background" Value="{DynamicResource NormalBrush}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+		<Setter Property="BorderThickness" Value="1" />
+		<Setter Property="Padding" Value="2,0" />
+		<Setter Property="Height" Value="22" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type cc:DropDownButton}">
+					<Grid Name="Grid">
+						<Border x:Name="OutherBorder" Background="Transparent" BorderBrush="{DynamicResource OutherBorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" />
+						<Border x:Name="Border" Margin="1"
+						        Background="{TemplateBinding Background}"
+						        BorderBrush="{TemplateBinding BorderBrush}"
+						        BorderThickness="1" CornerRadius="3"
+						        Padding="{TemplateBinding Padding}">
+							<Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+									<ColumnDefinition Width="Auto" />
+								</Grid.ColumnDefinitions>
+								<Image Name="Image" Margin="1" VerticalAlignment="Center" Source="{TemplateBinding Image}" />
+								<TextBlock Name="Text" Grid.Column="1" Margin="2,0,2,1"
+								           VerticalAlignment="Center" Padding="0"
+								           Text="{TemplateBinding Text}" />
+								<Path Name="Arrow" Grid.Column="2" Height="5"
+								      Margin="2,2,2,0" Data="M 0 0 L 4 4 L 8 0 Z"
+								      Fill="{DynamicResource GlyphBrush}"
+								      UseLayoutRounding="True" />
+							</Grid>
+						</Border>
+						<Border Name="HoverBorder" Margin="1"
+						        Background="{DynamicResource HoverBrush}"
+						        BorderBrush="{DynamicResource HoverBorderBrush}"
+						        BorderThickness="2" CornerRadius="3" Opacity="0.3"
+						        Visibility="Collapsed" />
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush2}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+							<Setter TargetName="Text" Property="Foreground" Value="Black" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+							<Setter TargetName="HoverBorder" Property="Visibility" Value="Visible" />
+							<Setter TargetName="Text" Property="Foreground" Value="Black" />
+							<Setter TargetName="Arrow" Property="Fill" Value="Black" />
+						</Trigger>
+						<Trigger Property="IsKeyboardFocused" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource DefaultedBorderBrush}" />
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsMouseOver" Value="True" />
+								<Condition Property="IsChecked" Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush2}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+							<Setter TargetName="Text" Property="Foreground" Value="Black" />
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsKeyboardFocused" Value="True" />
+								<Condition Property="IsChecked" Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush2}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+							<Setter TargetName="Text" Property="Foreground" Value="Black" />
+						</MultiTrigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush2}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+							<Setter TargetName="Text" Property="Foreground" Value="Black" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Image" Property="Opacity" Value="1"/>
+							<Setter TargetName="Grid" Property="Opacity" Value="0.5" />
+							<Setter Property="Foreground" Value="Black" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style BasedOn="{StaticResource DropDownButtonStyle}" TargetType="{x:Type cc:DropDownButton}" />
+
+
+	<Style x:Key="ToolBarDropDownButtonStyle" BasedOn="{StaticResource DropDownButtonStyle}" TargetType="{x:Type cc:DropDownButton}">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+		<Setter Property="Height" Value="24" />
+	</Style>
+
+
+	<DataTemplate x:Key="DropDownMenuIconStyle">
+		<Image Source="{Binding XPath=.}" />
+	</DataTemplate>
+
+	<!--  SplitButton Style  -->
+
+	<Style x:Key="SplitButtonStyle" TargetType="{x:Type cc:SplitButton}">
+		<Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+		<Setter Property="FocusVisualStyle" Value="{DynamicResource ButtonFocusVisual}" />
+		<Setter Property="Background" Value="{DynamicResource NormalBrush}" />
+		<Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+		<Setter Property="Height" Value="22" />
+		<Setter Property="MinWidth" Value="24" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type cc:SplitButton}">
+					<Grid Name="Grid">
+						<Button x:Name="PART_Button" Grid.Column="0" Margin="0,0,14,0" Padding="0" Height="{TemplateBinding Height}">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" />
+									<ColumnDefinition Width="*" />
+								</Grid.ColumnDefinitions>
+								<Image x:Name="icon" Height="16" Margin="4,0,2,0" VerticalAlignment="Center" Source="{TemplateBinding Image}" />
+								<TextBlock Grid.Column="1" Margin="0,0,3,0" VerticalAlignment="Center" Padding="0" Text="{TemplateBinding Text}" />
+							</Grid>
+						</Button>
+						<Border x:Name="OutherBorder" Background="Transparent" BorderBrush="{DynamicResource OutherBorderBrush}"
+								CornerRadius="4" BorderThickness="0,1,1,1"
+								Margin="0" Width="18" HorizontalAlignment="Right">
+							<Grid>
+								<Border x:Name="Border"  
+										Background="{TemplateBinding Background}"
+										BorderBrush="{TemplateBinding BorderBrush}"
+										BorderThickness="1,1,1,1" CornerRadius="0,3,3,0"
+										Padding="{TemplateBinding Padding}">
+									<Path x:Name="Arrow" Grid.Column="3" Height="5"
+								      Margin="3,2,2,0" Data="M 0 0 L 4 4 L 8 0 Z"
+								      Fill="{DynamicResource GlyphBrush}" />
+								</Border>
+								<Border Name="HoverBorder"
+										Background="{DynamicResource HoverBrush}"
+										BorderBrush="{DynamicResource HoverBorderBrush}"
+										BorderThickness="0,2,2,2" CornerRadius="3" Opacity="0.3"
+										Visibility="Collapsed" />
+							</Grid>
+						</Border>
+
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="ToggleButton.IsChecked" Value="True">
+						</Trigger>
+						<Trigger Property="IsChecked" Value="True">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush2}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
+							<Setter TargetName="HoverBorder" Property="Visibility" Value="Visible" />
+							<Setter TargetName="Arrow" Property="Fill" Value="Black" />
+						</Trigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsMouseOver" Value="True" />
+								<Condition Property="IsChecked" Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush2}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+						</MultiTrigger>
+						<MultiTrigger>
+							<MultiTrigger.Conditions>
+								<Condition Property="IsKeyboardFocused" Value="True" />
+								<Condition Property="IsChecked" Value="True" />
+							</MultiTrigger.Conditions>
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush2}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+						</MultiTrigger>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush2}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter TargetName="Grid" Property="Opacity" Value="0.5" />
+							<Setter Property="Foreground" Value="Black" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style BasedOn="{StaticResource SplitButtonStyle}" TargetType="{x:Type cc:SplitButton}" />
+
+	<Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+		<Setter Property="Foreground" Value="Black" />
+		<Setter Property="Background" Value="#00FFFFFF" />
+		<Setter Property="HorizontalAlignment" Value="Stretch" />
+		<Setter Property="VerticalAlignment" Value="Stretch" />
+		<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+		<Setter Property="VerticalContentAlignment" Value="Stretch" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Border x:Name="Bd" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+						<ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsPressed" Value="True">
+							<Setter TargetName="Bd" Property="Background" Value="#FF98B5E2" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+
+	<Style x:Key="ToolBarSplitButtonStyle" BasedOn="{StaticResource SplitButtonStyle}" TargetType="{x:Type cc:SplitButton}">
+		<Setter Property="Height" Value="24" />
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderBrush" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+	</Style>
+
+
+	<DataTemplate x:Key="SplitMenuIconStyle">
+		<Image Source="{Binding XPath=.}" />
+	</DataTemplate>
+
+	<ControlTemplate x:Key="SplitMenuItemTemplate" TargetType="MenuItem">
+		<Border Name="Border">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" SharedSizeGroup="Icon" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" SharedSizeGroup="Shortcut" />
+					<ColumnDefinition Width="13" />
+				</Grid.ColumnDefinitions>
+				<ContentPresenter x:Name="Icon" Width="16" Height="16"
+				                  Margin="6,0,6,0" VerticalAlignment="Center" ContentSource="Icon"
+				                  ContentTemplate="{StaticResource SplitMenuIconStyle}" />
+				<Border x:Name="Check" Width="13" Height="13"
+				        Margin="6,0,6,0"
+				        Background="{DynamicResource NormalBrush}"
+				        BorderBrush="{DynamicResource NormalBorderBrush}"
+				        BorderThickness="1" Visibility="Collapsed">
+					<Path x:Name="CheckMark" Width="7" Height="7"
+					      Data="M 0 0 L 7 7 M 0 7 L 7 0" SnapsToDevicePixels="False"
+					      Stroke="{StaticResource GlyphBrush}"
+					      StrokeThickness="2" Visibility="Hidden" />
+				</Border>
+				<ContentPresenter x:Name="HeaderHost" Grid.Column="1" Margin="5,2,0,2"
+				                  VerticalAlignment="Center" ContentSource="Header" RecognizesAccessKey="True" />
+				<TextBlock x:Name="InputGestureText" Grid.Column="2" Margin="5,2,0,2" DockPanel.Dock="Right" Text="{TemplateBinding InputGestureText}" />
+			</Grid>
+		</Border>
+		<ControlTemplate.Triggers>
+			<Trigger Property="Icon" Value="{x:Null}">
+				<Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
+			</Trigger>
+			<Trigger Property="IsChecked" Value="true">
+				<Setter TargetName="CheckMark" Property="Visibility" Value="Visible" />
+			</Trigger>
+			<Trigger Property="IsCheckable" Value="true">
+				<Setter TargetName="Check" Property="Visibility" Value="Visible" />
+				<Setter TargetName="Icon" Property="Visibility" Value="Hidden" />
+			</Trigger>
+			<Trigger Property="IsHighlighted" Value="true">
+				<Setter TargetName="Border" Property="Background" Value="{DynamicResource SelectedBackgroundBrush}" />
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="false">
+				<Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<!--  Style: NotificationBorderStyle  -->
+	<Style x:Key="NotificationBorderStyle" TargetType="{x:Type Control}">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Visibility" Value="{Binding Visibility, UpdateSourceTrigger=PropertyChanged, FallbackValue=Collapsed}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Control}">
+					<ControlTemplate.Resources>
+						<ToolTip x:Key="eToolTip" Placement="Right">
+							<ToolTip.Style>
+								<Style TargetType="{x:Type ToolTip}">
+									<Setter Property="OverridesDefaultStyle" Value="true" />
+									<Setter Property="Template">
+										<Setter.Value>
+											<ControlTemplate TargetType="{x:Type ToolTip}">
+												<Grid Margin="5,0,5,5">
+													<Border PresentationOptions:Freeze="True" Background="Goldenrod" CornerRadius="3">
+														<Border.Effect>
+															<DropShadowEffect BlurRadius="4" Direction="300" Opacity="0.3" RenderingBias="Performance" ShadowDepth="3" />
+														</Border.Effect>
+													</Border>
+													<TextBlock Foreground="White" Text="{Binding Tag, UpdateSourceTrigger=PropertyChanged}" Margin="8,3,8,4"/>
+												</Grid>
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+							</ToolTip.Style>
+						</ToolTip>
+					</ControlTemplate.Resources>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+
+						<Border BorderBrush="Goldenrod" BorderThickness="1" CornerRadius="3">
+							<AdornedElementPlaceholder x:Name="thisadorner" Margin="-2" />
+						</Border>
+						<Button Name="NotificationFieldButton" Grid.Column="1" Width="9" Height="9"
+										Margin="-9,0,0,11" VerticalAlignment="Top"
+										ToolTip="{StaticResource eToolTip}">
+							<Button.Template>
+								<ControlTemplate TargetType="{x:Type Button}">
+									<Grid Width="9" Height="9">
+										<Path x:Name="path" Width="Auto" Height="Auto"
+													  Margin="0,-0.012,-0.013,0.013" Data="M0,0 L8.0027452,0.020432061 C10.359728,0.020432061 11.966761,0.84516371 12.021468,4.5165497 12.015829,5.2082602 12,8.1997837 12,11.917 z" 
+													  Fill="DarkGoldenrod"
+													  Stretch="Fill"
+													  Stroke="{x:Null}" />
+									</Grid>
+									<ControlTemplate.Triggers>
+										<Trigger Property="IsKeyboardFocused" Value="true" />
+										<Trigger Property="IsDefaulted" Value="true" />
+										<Trigger Property="IsMouseOver" Value="true">
+											<Setter TargetName="path" Property="Fill" Value="Goldenrod" />
+										</Trigger>
+										<Trigger Property="IsPressed" Value="true" />
+										<Trigger Property="IsEnabled" Value="false">
+											<Setter TargetName="path" Property="Fill" Value="#FF888888" />
+										</Trigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</Button.Template>
+						</Button>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!--  Style: ValidationErrorBorderStyle  -->
+	<Style x:Key="ValidationErrorBorderStyle" TargetType="{x:Type Control}">
+		<Setter Property="OverridesDefaultStyle" Value="true" />
+		<Setter Property="Visibility" Value="{Binding Visibility, UpdateSourceTrigger=PropertyChanged, FallbackValue=Collapsed}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Control}">
+					<ControlTemplate.Resources>
+						<ToolTip x:Key="eToolTip" Placement="Right">
+							<ToolTip.Style>
+								<Style TargetType="{x:Type ToolTip}">
+									<Setter Property="OverridesDefaultStyle" Value="true" />
+									<Setter Property="Template">
+										<Setter.Value>
+											<ControlTemplate TargetType="{x:Type ToolTip}">
+												<Grid Margin="5,0,5,5">
+													<Border PresentationOptions:Freeze="True" Background="#CC0000" CornerRadius="3">
+														<Border.Effect>
+															<DropShadowEffect BlurRadius="4" Direction="300" Opacity="0.3" RenderingBias="Performance" ShadowDepth="3" />
+														</Border.Effect>
+													</Border>
+													<TextBlock Foreground="White" Text="{Binding Tag, UpdateSourceTrigger=PropertyChanged}" Margin="8,3,8,4"/>
+												</Grid>
+											</ControlTemplate>
+										</Setter.Value>
+									</Setter>
+								</Style>
+							</ToolTip.Style>
+						</ToolTip>
+					</ControlTemplate.Resources>
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+
+						<Border BorderBrush="#EE0000" BorderThickness="1" CornerRadius="3">
+							<AdornedElementPlaceholder x:Name="thisadorner" Margin="-2" />
+						</Border>
+						<Button Name="NotificationFieldButton" Grid.Column="1" Width="9" Height="9"
+										Margin="-9,0,0,11" VerticalAlignment="Top"
+										ToolTip="{StaticResource eToolTip}">
+							<Button.Template>
+								<ControlTemplate TargetType="{x:Type Button}">
+									<Grid Width="9" Height="9">
+										<Path x:Name="path" Width="Auto" Height="Auto"
+													  Margin="0,-0.012,-0.013,0.013" Data="M0,0 L8.0027452,0.020432061 C10.359728,0.020432061 11.966761,0.84516371 12.021468,4.5165497 12.015829,5.2082602 12,8.1997837 12,11.917 z" 
+													  Fill="#FFBC0000"
+													  Stretch="Fill"
+													  Stroke="{x:Null}" />
+									</Grid>
+									<ControlTemplate.Triggers>
+										<Trigger Property="IsKeyboardFocused" Value="true" />
+										<Trigger Property="IsDefaulted" Value="true" />
+										<Trigger Property="IsMouseOver" Value="true">
+											<Setter TargetName="path" Property="Fill" Value="Red" />
+										</Trigger>
+										<Trigger Property="IsPressed" Value="true" />
+										<Trigger Property="IsEnabled" Value="false">
+											<Setter TargetName="path" Property="Fill" Value="#FF888888" />
+										</Trigger>
+									</ControlTemplate.Triggers>
+								</ControlTemplate>
+							</Button.Template>
+						</Button>
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style x:Key="NaviListBoxItemStyle" BasedOn="{StaticResource ListBoxItemStyle}" TargetType="{x:Type ListBoxItem}" />
+</ResourceDictionary>

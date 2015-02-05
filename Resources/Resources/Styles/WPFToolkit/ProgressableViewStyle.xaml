@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:wpfToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+					xmlns:localization="clr-namespace:Resources">
+
+	<DataTemplate x:Key="BusyContentTemplate">
+		<Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=wpfToolkit:BusyIndicator}}" 
+			  Width="350" Margin="10" SnapsToDevicePixels="True">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+
+			<DockPanel Margin="0,0,0,5">
+				<TextBlock DockPanel.Dock="Right" TextAlignment="Right" Margin="20,0,0,0">
+					<Run Text="{Binding ProgressPercentage}" /><Run Text="%" />
+				</TextBlock>
+				<TextBlock VerticalAlignment="Center" Text="{Binding WaitingText}"/>
+			</DockPanel>
+
+			<ProgressBar Grid.Row="1" Grid.Column="0" Value="{Binding ProgressPercentage}" Margin="0" VerticalAlignment="Center" />
+
+			<Button Grid.Row="1" Grid.Column="1" Content="Cancel"
+					Margin="10,0,0,0" VerticalAlignment="Center" MinWidth="70" Command="{Binding CancelProgressCommand}"/>
+		</Grid>
+	</DataTemplate>
+
+	<Style x:Key="ProgressBarStyle"  TargetType="ProgressBar">
+		<Setter Property="Visibility" Value="Collapsed" />
+	</Style>
+
+	<Style x:Key="BusyIndicatorStyle" TargetType="wpfToolkit:BusyIndicator" BasedOn="{StaticResource {x:Type wpfToolkit:BusyIndicator}}">
+		<Setter Property="IsBusy" Value="{Binding IsInProgress}"/>
+		<Setter Property="ProgressBarStyle" Value="{StaticResource ProgressBarStyle}"/>
+		<Setter Property="BusyContentTemplate" Value="{StaticResource BusyContentTemplate}"/>
+	</Style>
+
+	<!--<wpfToolkit:BusyIndicator x:Key="BusyIndicator" Name="BusyIndicator" Style="{StaticResource BusyIndicatorStyle}"/>-->
+
+</ResourceDictionary>

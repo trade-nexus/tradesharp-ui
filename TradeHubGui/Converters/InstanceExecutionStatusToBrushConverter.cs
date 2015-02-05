@@ -29,20 +29,24 @@ namespace TradeHubGui.Converters
                 // Return certain brush depending on StrategyStatus
                 if (status.Equals(StrategyStatus.Executed))
                 {
-                    return Application.Current.Resources["GreenBrush"];
+                    return Application.Current.Resources["BlueBrush"];
                 }
                 else if (status.Equals(StrategyStatus.Executing))
                 {
-                    return Application.Current.Resources["BlueBrush"];
+                    return Application.Current.Resources["GreenBrush"];
                 }
                 else if (status.Equals(StrategyStatus.None))
                 {
-                    return Application.Current.Resources["RedBrush"];
+                    return Application.Current.Resources["GrayBrush"];
                 }
+                //else if (status.Equals(StrategyStatus.Stopped))
+                //{
+                //    return Application.Current.Resources["RedBrush"];
+                //}
             }
 
-            // Initial state is Stopped, so the color is Red
-            return Application.Current.Resources["RedBrush"];
+            // Initial state is None, so the color is Gray
+            return Application.Current.Resources["GrayBrush"];
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
