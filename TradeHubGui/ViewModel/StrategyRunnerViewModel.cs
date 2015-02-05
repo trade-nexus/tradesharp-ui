@@ -523,6 +523,9 @@ namespace TradeHubGui.ViewModel
             }
 
             GeneticOptimizationWindow window = new GeneticOptimizationWindow();
+
+            // Create ViewModel as DataContext and pass selected strategy for Genetic Optimization
+            window.DataContext = new GeneticOptimizationViewModel(SelectedStrategy);
             window.Tag = string.Format("{0}", SelectedStrategy.Key);
             window.Show();
         }
