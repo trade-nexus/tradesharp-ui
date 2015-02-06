@@ -44,7 +44,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Current Execution Status of Stratgey Instance i.e. 'None' | 'Executing' | 'Executed'
         /// </summary>
-        private StrategyStatus _status;
+        private StrategyStatus _status = StrategyStatus.None;
 
         /// <summary>
         /// Holds basic execution information for the current instance to be used for UI

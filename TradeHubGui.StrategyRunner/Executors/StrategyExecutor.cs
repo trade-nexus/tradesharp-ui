@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Disruptor;
 using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
@@ -29,6 +30,11 @@ namespace TradeHubGui.StrategyRunner.Executors
         private Type _type = typeof(StrategyExecutor);
 
         private AsyncClassLogger _asyncClassLogger;
+
+        /// <summary>
+        /// Holds UI thread reference
+        /// </summary>
+        private Dispatcher _currentDispatcher;
 
         /// <summary>
         /// Holds necessary information for Instance Execution and UI-Update
@@ -147,6 +153,8 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="strategyInstance">Holds necessary information for Instance Execution and UI-Update</param>
         public StrategyExecutor(StrategyInstance strategyInstance)
         {
+            this._currentDispatcher = Dispatcher.CurrentDispatcher;
+
             _asyncClassLogger = new AsyncClassLogger("StrategyExecutor");
 
             //set logging path
@@ -189,12 +197,12 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             try
             {
-                // NOTE: Test code to simulate Strategy working
-                // BEGIN:
-                OnStrategyStatusChanged(true);
-                TestCodeToGenerateExecutions();
-                return;
-                // :END
+                //// NOTE: Test code to simulate Strategy working
+                //// BEGIN:
+                //OnStrategyStatusChanged(true);
+                //TestCodeToGenerateExecutions();
+                //return;
+                //// :END
 
                 // Verify Strategy Instance
                 if (_tradeHubStrategy == null)
@@ -347,7 +355,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="order"></param>
         private void OnOrderExecutorCancellationArrived(Order order)
         {
-            _tradeHubStrategy.OnCancellationArrived(order);
+            _tradeHubStrategy.CancellationArrived(order);
             PersistencePublisher.PublishDataForPersistence(order);
         }
 
@@ -357,7 +365,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="rejection"></param>
         private void OnOrderExecutorRejectionArrived(Rejection rejection)
         {
-            _tradeHubStrategy.OnRejectionArrived(rejection);
+            _tradeHubStrategy.RejectionArrived(rejection);
         }
 
         /// <summary>
@@ -366,7 +374,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="execution"></param>
         private void OnOrderExecutorExecutionArrived(Execution execution)
         {
-            _tradeHubStrategy.OnExecutionArrived(execution);
+            _tradeHubStrategy.ExecutionArrived(execution);
             PersistencePublisher.PublishDataForPersistence(execution.Fill);
             PersistencePublisher.PublishDataForPersistence(execution.Order);
         }
@@ -377,7 +385,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="order"></param>
         private void OnOrderExecutorNewArrived(Order order)
         {
-            _tradeHubStrategy.OnNewArrived(order);
+            _tradeHubStrategy.NewArrived(order);
             PersistencePublisher.PublishDataForPersistence(order);
         }
 
@@ -420,17 +428,23 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             if (status)
             {
-                _strategyInstance.Status = StrategyStatus.Executing;
+                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                {
+                    _strategyInstance.Status = StrategyStatus.Executing;
+                }));
             }
             else
             {
-                _strategyInstance.Status = StrategyStatus.Executed;
+                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                {
+                    _strategyInstance.Status = StrategyStatus.Executed;
+                }));
             }
 
-            if (_statusChanged != null)
-            {
-                _statusChanged(_strategyKey, _strategyInstance.Status);
-            }
+            //if (_statusChanged != null)
+            //{
+            //    _statusChanged(_strategyKey, _strategyInstance.Status);
+            //}
         }
 
         /// <summary>
@@ -447,8 +461,8 @@ namespace TradeHubGui.StrategyRunner.Executors
             //orderDetails.Type = order.;
             orderDetails.Status = order.OrderStatus;
 
-            // Add new information to execution details
-            _strategyInstance.AddOrderDetails(orderDetails);
+            // Update UI
+            AddOrderDetails(orderDetails);
         }
 
         /// <summary>
@@ -465,8 +479,8 @@ namespace TradeHubGui.StrategyRunner.Executors
             //orderDetails.Type = order.;
             orderDetails.Status = order.OrderStatus;
 
-            // Add new information to execution details
-            _strategyInstance.AddOrderDetails(orderDetails);
+            // Update UI
+            AddOrderDetails(orderDetails);
         }
 
         /// <summary>
@@ -479,8 +493,8 @@ namespace TradeHubGui.StrategyRunner.Executors
             orderDetails.ID = rejection.OrderId;
             orderDetails.Status = OrderStatus.REJECTED;
 
-            // Add new information to execution details
-            _strategyInstance.AddOrderDetails(orderDetails);
+            // Update UI
+            AddOrderDetails(orderDetails);
         }
 
         /// <summary>
@@ -489,13 +503,23 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="execution">Contains Execution Info</param>
         private void OnNewExecutionReceived(Execution execution)
         {
-            if (_executionReceived != null)
-            {
-                _executionReceived(new ExecutionRepresentation(_strategyKey,execution));
-                //Task.Factory.StartNew(() => _executionReceived(execution));
-            }
+            //if (_executionReceived != null)
+            //{
+            //    _executionReceived(new ExecutionRepresentation(_strategyKey,execution));
+            //    //Task.Factory.StartNew(() => _executionReceived(execution));
+            //}
+
             // Update Stats
-            UpdateStatistics(execution);
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.ID = execution.Fill.OrderId;
+            orderDetails.Price = execution.Fill.ExecutionPrice;
+            orderDetails.Quantity = execution.Fill.ExecutionSize;
+            orderDetails.Side = execution.Fill.ExecutionSide;
+            orderDetails.Type = execution.Fill.ExecutionType.ToString();
+            orderDetails.Status = execution.Order.OrderStatus;
+
+            // Update UI
+            AddOrderDetails(orderDetails);
         }
 
         /// <summary>
@@ -527,6 +551,15 @@ namespace TradeHubGui.StrategyRunner.Executors
             {
                 _asyncClassLogger.Error(exception, _type.FullName, "UpdateStatistics");
             }
+        }
+
+        /// <summary>
+        /// Adds new 'Order Details' information in 'Execution Details' object for Strategy Instance
+        /// </summary>
+        /// <param name="orderDetails"></param>
+        private void AddOrderDetails(OrderDetails orderDetails)
+        {
+            _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() => _strategyInstance.AddOrderDetails(orderDetails)));
         }
 
         /// <summary>
@@ -574,6 +607,54 @@ namespace TradeHubGui.StrategyRunner.Executors
                 orderDetails.Quantity = 20;
                 orderDetails.Side = OrderSide.BUY;
                 orderDetails.Status = OrderStatus.EXECUTED;
+
+                // Add new information to execution details
+                _strategyInstance.AddOrderDetails(orderDetails);
+            }
+
+            {
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.ID = idCounter++.ToString();
+                orderDetails.Price = 100;
+                orderDetails.Quantity = 20;
+                orderDetails.Side = OrderSide.BUY;
+                orderDetails.Status = OrderStatus.PARTIALLY_EXECUTED;
+
+                // Add new information to execution details
+                _strategyInstance.AddOrderDetails(orderDetails);
+            }
+
+            {
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.ID = idCounter++.ToString();
+                orderDetails.Price = 100;
+                orderDetails.Quantity = 20;
+                orderDetails.Side = OrderSide.BUY;
+                orderDetails.Status = OrderStatus.CANCELLED;
+
+                // Add new information to execution details
+                _strategyInstance.AddOrderDetails(orderDetails);
+            }
+
+            {
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.ID = idCounter++.ToString();
+                orderDetails.Price = 100;
+                orderDetails.Quantity = 20;
+                orderDetails.Side = OrderSide.BUY;
+                orderDetails.Status = OrderStatus.REJECTED;
+
+                // Add new information to execution details
+                _strategyInstance.AddOrderDetails(orderDetails);
+            }
+
+            {
+                OrderDetails orderDetails = new OrderDetails();
+                orderDetails.ID = idCounter++.ToString();
+                orderDetails.Price = 100;
+                orderDetails.Quantity = 20;
+                orderDetails.Side = OrderSide.BUY;
+                orderDetails.Status = OrderStatus.SUBMITTED;
 
                 // Add new information to execution details
                 _strategyInstance.AddOrderDetails(orderDetails);

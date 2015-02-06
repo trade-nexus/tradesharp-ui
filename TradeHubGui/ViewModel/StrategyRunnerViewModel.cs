@@ -13,6 +13,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using TraceSourceLogger;
+using TradeHubGui.Common.Utility;
 using DomainModels = TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
@@ -25,6 +27,8 @@ namespace TradeHubGui.ViewModel
 {
     public class StrategyRunnerViewModel : BaseViewModel
     {
+        private Type _type = typeof (StrategyRunnerViewModel);
+
         private MetroDialogSettings _dialogSettings;
         private ObservableCollection<Strategy> _strategies;
         private ObservableCollection<StrategyInstance> _instances;
@@ -434,8 +438,6 @@ namespace TradeHubGui.ViewModel
 
             ParameterDetails = SelectedStrategy.ParameterDetails;
 
-            //TODO: Clear or pull default values for all parameters
-
             window.ShowDialog();
         }
 
@@ -454,19 +456,19 @@ namespace TradeHubGui.ViewModel
                                                entry => (ParameterDetail)entry.Value.Clone());
 
             // Create a new Strategy Instance with provided parameters
-            var strategyInstace = SelectedStrategy.CreateInstance(parameters);
+            var strategyInstance = SelectedStrategy.CreateInstance(parameters);
 
             // Select created instance in DataGrid
-            SelectedInstance = strategyInstace;
+            SelectedInstance = strategyInstance;
 
             // Set Initial status to 'Stopped'
             SelectedInstance.Status = DomainModels.StrategyStatus.None;
 
             // Add Instance to Observable Collection for UI
-            Instances.Add(strategyInstace);
+            Instances.Add(strategyInstance);
 
             // Send instance to controller where its execution life cycle can be managed
-            _strategyController.AddStrategyInstance(strategyInstace);
+            _strategyController.AddStrategyInstance(strategyInstance);
 
             // Close "Create Instance" window
             ((Window)param).Close();
@@ -608,6 +610,8 @@ namespace TradeHubGui.ViewModel
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 CsvInstancesPath = openFileDialog.FileName;
+
+               AddMultipleInstanceFromFile(CsvInstancesPath);
             }
         }
 
@@ -656,12 +660,6 @@ namespace TradeHubGui.ViewModel
             OrderDetailsCollection = new ObservableCollection<OrderDetails>();
 
             OrderDetailsCollection = SelectedExecutionDetails.OrderDetailsList;
-
-            //// Populate 'Order Details'
-            //foreach (OrderDetails orderDetails in SelectedExecutionDetails.OrderDetailsList)
-            //{
-            //    OrderDetailsCollection.Add(orderDetails);
-            //}
         }
 
         /// <summary>
@@ -698,6 +696,78 @@ namespace TradeHubGui.ViewModel
 
                 // Update Observable Collection
                 Strategies.Add(strategy);
+            }
+        }
+
+        /// <summary>
+        /// Uses '.csv' file with input parameters to Create Instances
+        /// </summary>
+        /// <param name="fileName">.csv file complete name</param>
+        private async void AddMultipleInstanceFromFile(string fileName)
+        {
+            var instances = await Task.Factory.StartNew(() => CreateMultipleStrategyInstances(fileName));
+            //var instances = CreateMultipleStrategyInstances(fileName);
+
+            // Update UI
+            LoadMultipleInstances(instances);
+        }
+
+        /// <summary>
+        /// Creates Multiple Strategy Instance objects using the selected file
+        /// </summary>
+        /// <param name="fileName">.csv file complete name</param>
+        /// <returns>List of newly created Strategy Instances</returns>
+        private IList<StrategyInstance> CreateMultipleStrategyInstances(string fileName)
+        {
+            IList<StrategyInstance> instances = new List<StrategyInstance>();
+
+            var parametersList = FileReader.ReadParameters(fileName);
+
+            foreach (string[] parameters in parametersList)
+            {
+                if (parameters.Length != SelectedStrategy.ParameterDetails.Count)
+                {
+                    if (Logger.IsDebugEnabled)
+                    {
+                        Logger.Debug("Parameters count doesn't match the required number. " + parameters, _type.FullName, "CreateMultipleStrategyInstances");
+                    }
+                    continue;
+                }
+
+                int count = 0;
+
+                var instanceParameters = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+
+                // Populate parameters to be used by Strategy Instance
+                foreach (KeyValuePair<string, ParameterDetail> keyValuePair in instanceParameters)
+                {
+                    keyValuePair.Value.ParameterValue = parameters[count++];
+                }
+
+                // Create a new Strategy Instance with provided parameters
+                var strategyInstance = SelectedStrategy.CreateInstance(instanceParameters);
+
+                // Add to local Map
+                instances.Add(strategyInstance);
+
+                // Send instance to controller where its execution life cycle can be managed
+                _strategyController.AddStrategyInstance(strategyInstance);
+
+            }
+
+            return instances;
+        }
+
+        /// <summary>
+        /// Loads a list of newly created 'Strategy Instance' into UI and application session
+        /// </summary>
+        /// <param name="instances">List of Strategy Instance objects</param>
+        private void LoadMultipleInstances(IList<StrategyInstance> instances)
+        {
+            foreach (StrategyInstance strategyInstance in instances)
+            {
+                // Display Strategy Instance on UI
+                Instances.Add(strategyInstance);
             }
         }
 
@@ -739,7 +809,7 @@ namespace TradeHubGui.ViewModel
             var fileName = StrategyHelper.GetStrategyFileName(strategyPath);
 
             // Create Strategy Object
-            Strategy strategy = new Strategy(strategyName, null, fileName);
+            Strategy strategy = new Strategy(strategyName, strategyType, fileName);
 
             foreach (KeyValuePair<string, Type> keyValuePair in details)
             {

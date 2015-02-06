@@ -59,6 +59,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TraceSourceLogger">
+      <HintPath>..\Lib\helper\TraceSourceLogger.2.1.1.1\lib\net40\TraceSourceLogger.dll</HintPath>
+    </Reference>
     <Reference Include="TradeHub.Common.Core">
       <HintPath>..\Lib\tradehub\TradeHub.Common.Core.dll</HintPath>
     </Reference>
@@ -73,6 +76,7 @@
     <Compile Include="Models\Strategy.cs" />
     <Compile Include="Models\StrategyInstance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\FileReader.cs" />
     <Compile Include="Utility\StrategyIdGenerator.cs" />
     <Compile Include="ValueObjects\ParameterDetail.cs" />
     <Compile Include="ValueObjects\StrategyInstanceStatus.cs" />

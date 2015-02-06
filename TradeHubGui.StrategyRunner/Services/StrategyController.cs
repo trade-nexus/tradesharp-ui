@@ -137,7 +137,7 @@ namespace TradeHubGui.StrategyRunner.Services
         {
             if (_strategiesCollection.ContainsKey(instanceKey))
             {
-                _strategiesCollection[instanceKey].ExecuteStrategy();
+                Task.Factory.StartNew(_strategiesCollection[instanceKey].ExecuteStrategy);
 
                 if (Logger.IsInfoEnabled)
                 {
