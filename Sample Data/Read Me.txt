@@ -1,0 +1,1 @@
+Place unzipped folder in "..\AppData\Roaming\DataDownloader\Blackwood"
