@@ -80,7 +80,6 @@
     <Compile Include="MessageBox\DelegateCommand.cs" />
     <Compile Include="MessageBox\IconUtilities.cs" />
     <Compile Include="MessageBox\MessageBoxViewModel.cs" />
-    <Compile Include="MessageBox\WindowHelper.cs" />
     <Compile Include="MessageBox\WPFMessageBox.cs" />
     <Compile Include="MessageBox\WPFMessageBoxControl.cs" />
     <Compile Include="MessageBox\WPFMessageBoxWindow.xaml.cs">
