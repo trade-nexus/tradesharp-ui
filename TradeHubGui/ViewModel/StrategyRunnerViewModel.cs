@@ -741,7 +741,8 @@ namespace TradeHubGui.ViewModel
                 // Populate parameters to be used by Strategy Instance
                 foreach (KeyValuePair<string, ParameterDetail> keyValuePair in instanceParameters)
                 {
-                    keyValuePair.Value.ParameterValue = parameters[count++];
+                    var input= StrategyHelper.GetParametereValue(parameters[count++], keyValuePair.Value.ParameterType.Name);
+                    keyValuePair.Value.ParameterValue = input;
                 }
 
                 // Create a new Strategy Instance with provided parameters
@@ -749,10 +750,6 @@ namespace TradeHubGui.ViewModel
 
                 // Add to local Map
                 instances.Add(strategyInstance);
-
-                // Send instance to controller where its execution life cycle can be managed
-                _strategyController.AddStrategyInstance(strategyInstance);
-
             }
 
             return instances;
@@ -766,6 +763,9 @@ namespace TradeHubGui.ViewModel
         {
             foreach (StrategyInstance strategyInstance in instances)
             {
+                // Send instance to controller where its execution life cycle can be managed
+                _strategyController.AddStrategyInstance(strategyInstance);
+
                 // Display Strategy Instance on UI
                 Instances.Add(strategyInstance);
             }
