@@ -81,15 +81,17 @@
 	<Color x:Key="DisabledColor" PresentationOptions:Freeze="True">Gray</Color>
 
     <Color x:Key="RedColor" PresentationOptions:Freeze="True">#ffc22424</Color>
-    <Color x:Key="BlueColor" PresentationOptions:Freeze="True">#ff2457c2</Color>
+    <Color x:Key="BlueColor" PresentationOptions:Freeze="True">#ff5495c3</Color>
     <Color x:Key="GreenColor" PresentationOptions:Freeze="True">#ff45a221</Color>
     <Color x:Key="OrangeColor" PresentationOptions:Freeze="True">#FFD38827</Color>
+    <Color x:Key="YellowColor" PresentationOptions:Freeze="True">#ffd3bc27</Color>
     <Color x:Key="GrayColor" PresentationOptions:Freeze="True">#FFAAAAAA</Color>
 	
     <SolidColorBrush x:Key="RedBrush" Color="{StaticResource RedColor}" PresentationOptions:Freeze="True" />
     <SolidColorBrush x:Key="BlueBrush" Color="{StaticResource BlueColor}" PresentationOptions:Freeze="True" />
 	<SolidColorBrush x:Key="GreenBrush" Color="{StaticResource GreenColor}" PresentationOptions:Freeze="True" />
     <SolidColorBrush x:Key="OrangeBrush" Color="{StaticResource OrangeColor}" PresentationOptions:Freeze="True" />
+    <SolidColorBrush x:Key="YellowBrush" Color="{StaticResource YellowColor}" PresentationOptions:Freeze="True" />
     <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}" PresentationOptions:Freeze="True" />
 
 	<Color x:Key="ErrorColor" PresentationOptions:Freeze="True">Crimson</Color>

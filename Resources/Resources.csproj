@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MahApps.Metro, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\MahApps.Metro.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="PresentationFramework.Luna" />
@@ -73,10 +77,23 @@
     <Compile Include="Converters\TreeViewLastLineToBoolConverter.cs" />
     <Compile Include="Converters\TreeViewLastLineToHeightConverter.cs" />
     <Compile Include="Converters\ValidationErrorsToStringConverter.cs" />
+    <Compile Include="MessageBox\DelegateCommand.cs" />
+    <Compile Include="MessageBox\IconUtilities.cs" />
+    <Compile Include="MessageBox\MessageBoxViewModel.cs" />
+    <Compile Include="MessageBox\WindowHelper.cs" />
+    <Compile Include="MessageBox\WPFMessageBox.cs" />
+    <Compile Include="MessageBox\WPFMessageBoxControl.cs" />
+    <Compile Include="MessageBox\WPFMessageBoxWindow.xaml.cs">
+      <DependentUpon>WPFMessageBoxWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\AutoCompleteTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MessageBox\WPFMessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -3,7 +3,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	<ResourceDictionary.MergedDictionaries>
 		<!-- Styles -->
-		<ResourceDictionary Source="/Resources;component/Resources/Styles/BasicStyles.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+        <ResourceDictionary Source="/Resources;component/Resources/Styles/BasicStyles.xaml"/>
 		<ResourceDictionary Source="/Resources;component/Resources/Styles/MenuStyles.xaml"/>
 		<ResourceDictionary Source="/Resources;component/Resources/Styles/WindowStyles.xaml"/>
 		<ResourceDictionary Source="/Resources;component/Resources/Styles/CustomControlStyles.xaml"/>

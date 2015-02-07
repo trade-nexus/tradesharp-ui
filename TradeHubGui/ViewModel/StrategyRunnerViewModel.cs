@@ -22,12 +22,14 @@ using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Services;
 using TradeHubGui.Views;
+using MessageBoxUtils;
+using Forms = System.Windows.Forms;
 
 namespace TradeHubGui.ViewModel
 {
     public class StrategyRunnerViewModel : BaseViewModel
     {
-        private Type _type = typeof (StrategyRunnerViewModel);
+        private Type _type = typeof(StrategyRunnerViewModel);
 
         private MetroDialogSettings _dialogSettings;
         private ObservableCollection<Strategy> _strategies;
@@ -482,7 +484,7 @@ namespace TradeHubGui.ViewModel
             // Request Strategy Controller to start selected Strategy Instance execution
             _strategyController.RunStrategy(SelectedInstance.InstanceKey);
 
-            //SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
+            SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
         }
 
         /// <summary>
@@ -499,12 +501,10 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Removes selected intance from the UI and requests Strategy Controller to remove it from working session as well.
         /// </summary>
-        private async void DeleteInstanceExecute()
+        private void DeleteInstanceExecute()
         {
-            if (await
-                MainWindow.ShowMessageAsync("Question",
-                    string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey),
-                    MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
+            if ((Forms.DialogResult)WPFMessageBox.Show(MainWindow, string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey), "Strategy Runner",
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
             {
                 // Request Strategy Controller to remove the instance from working session
                 _strategyController.RemoveStrategyInstance(SelectedInstance.InstanceKey);
@@ -574,10 +574,10 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         // Remove Selected Strategy
         /// </summary>
-        private async void RemoveStrategyExecute()
+        private void RemoveStrategyExecute()
         {
-            if (await MainWindow.ShowMessageAsync("Question", string.Format("Remove strategy {0}?", SelectedStrategy.Key),
-               MessageDialogStyle.AffirmativeAndNegative, _dialogSettings) == MessageDialogResult.Affirmative)
+            if ((Forms.DialogResult)WPFMessageBox.Show(MainWindow, string.Format("Remove strategy {0}?", SelectedStrategy.Key), "Strategy Runner",
+                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
             {
                 // Stop/Remove all Strategy Instances
                 foreach (string instanceKey in SelectedStrategy.StrategyInstances.Keys)
@@ -611,7 +611,7 @@ namespace TradeHubGui.ViewModel
             {
                 CsvInstancesPath = openFileDialog.FileName;
 
-               AddMultipleInstanceFromFile(CsvInstancesPath);
+                AddMultipleInstanceFromFile(CsvInstancesPath);
             }
         }
 
@@ -741,7 +741,7 @@ namespace TradeHubGui.ViewModel
                 // Populate parameters to be used by Strategy Instance
                 foreach (KeyValuePair<string, ParameterDetail> keyValuePair in instanceParameters)
                 {
-                    var input= StrategyHelper.GetParametereValue(parameters[count++], keyValuePair.Value.ParameterType.Name);
+                    var input = StrategyHelper.GetParametereValue(parameters[count++], keyValuePair.Value.ParameterType.Name);
                     keyValuePair.Value.ParameterValue = input;
                 }
 
@@ -761,6 +761,8 @@ namespace TradeHubGui.ViewModel
         /// <param name="instances">List of Strategy Instance objects</param>
         private void LoadMultipleInstances(IList<StrategyInstance> instances)
         {
+            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+            stopWatch.Start();
             foreach (StrategyInstance strategyInstance in instances)
             {
                 // Send instance to controller where its execution life cycle can be managed
@@ -769,6 +771,10 @@ namespace TradeHubGui.ViewModel
                 // Display Strategy Instance on UI
                 Instances.Add(strategyInstance);
             }
+            stopWatch.Stop();
+
+            Console.WriteLine("RunTime ---> " + stopWatch.Elapsed);
+
         }
 
         /// <summary>

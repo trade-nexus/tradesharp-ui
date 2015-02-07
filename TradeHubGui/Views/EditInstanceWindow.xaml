@@ -21,11 +21,11 @@
         <TextBlock DockPanel.Dock="Top" Margin="20,10,20,0" Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}" 
                     Style="{StaticResource SubHeaderTextBlockStyle}"/>
 
-        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="20,30,20,20">
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="12,25,12,20">
             <views:InstanceView />
         </ScrollViewer>
 
-        <StackPanel Grid.Row="2" Margin="14" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button DockPanel.Dock="Right" Content="Edit" MinWidth="70" IsDefault="True" Margin="3"/>
             <Button DockPanel.Dock="Right" Content="Cancel" MinWidth="70" IsCancel="True" Margin="3"/>
         </StackPanel>

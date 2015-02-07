@@ -8,7 +8,6 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Left" Margin="20">
-            <TextBlock Text="Content goes here" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4"/>
             <TextBox Text="TextBox control" Margin="4"/>
             <CheckBox Content="CheckBox control" Margin="4"/>
             <RadioButton Content="RadioButton control" Margin="4"/>

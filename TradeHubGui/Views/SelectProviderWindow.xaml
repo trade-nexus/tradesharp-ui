@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="20">
+        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="12">
             <StackPanel DockPanel.Dock="Top">
                 <Label Content="Market data provider"/>
                 <ComboBox Margin="0,0,0,8"/>
@@ -26,7 +26,7 @@
             </StackPanel>
         </ScrollViewer>
 
-        <StackPanel Grid.Row="1" Margin="14" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="1" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button DockPanel.Dock="Right" Content="OK" MinWidth="70" IsDefault="True" Margin="3"/>
             <Button DockPanel.Dock="Right" Content="Cancel" MinWidth="70" IsCancel="True" Margin="3"/>
         </StackPanel>

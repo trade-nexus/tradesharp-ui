@@ -155,9 +155,9 @@
                                                     BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}" HorizontalAlignment="Left">
                                                 <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
                                                          FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center">
-                                                    <TextBlock.Effect>
+                                                    <!--<TextBlock.Effect>
                                                         <DropShadowEffect Color="White" ShadowDepth="0.1" BlurRadius="1" Opacity="1"/>
-                                                    </TextBlock.Effect>
+                                                    </TextBlock.Effect>-->
                                                 </TextBlock>
                                             </Border>
                                         </DataTemplate>
@@ -174,7 +174,7 @@
                                                             Command="{Binding DataContext.RunInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                             Visibility="{Binding Status, Converter={StaticResource ExecutionStatusToVisibility}}">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStartGreen}"/>
                                                             <TextBlock Text="Start"/>
                                                         </StackPanel>
                                                     </Button>
@@ -182,7 +182,7 @@
                                                             Command="{Binding DataContext.StopInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                             Visibility="{Binding Status, Converter={StaticResource ExecutionStatusToVisibility}, ConverterParameter=Invert}">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
+                                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStopRed}"/>
                                                             <TextBlock Text="Stop"/>
                                                         </StackPanel>
                                                     </Button>
@@ -278,8 +278,8 @@
                             <DataGridTemplateColumn Header="Status" Width="0.4*" SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border Background="{Binding Status, Converter={StaticResource OrderStatusToBrush}}" VerticalAlignment="Center" HorizontalAlignment="Left">
-                                            <TextBlock Text="{Binding Status}" Foreground="White" FontWeight="SemiBold" Margin="4,2"/>
+                                        <Border Background="{Binding Status, Converter={StaticResource OrderStatusToBrush}}" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Status}" Foreground="White" FontWeight="SemiBold" Margin="4,2" HorizontalAlignment="Center"/>
                                         </Border>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
