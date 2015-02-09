@@ -84,9 +84,9 @@
                             <wpfToolkitExtended:IntegerUpDown Value="{Binding Iterations}" Increment="1" Minimum="1"/>
                             <wpfToolkitExtended:IntegerUpDown Value="{Binding PopulationSize}" Increment="1" Minimum="1"/>
                         </StackPanel>
-                        <StackPanel Width="122" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="True">
+                        <StackPanel Width="130" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="True">
                             <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
-                                Command="{Binding ShowCreateInstanceWindowCommand}">
+                                Command="{Binding ShowEditInstanceWindowCommand}">
                                 <StackPanel Orientation="Horizontal" Margin="4,0">
                                     <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgAdd}" UseLayoutRounding="True"/>
                                     <TextBlock Text="Parameter Details" />
@@ -95,7 +95,8 @@
                         </StackPanel>
                     </DockPanel>
 
-                    <DataGrid x:Name="StrategyParametersDataGrid" Margin="0,20,0,0"
+                    <DataGrid x:Name="StrategyParametersDataGrid" Margin="0,20,0,0" 
+                                ItemsSource="{Binding OptimizationParameters}"
                                 SelectionMode="Single" 
                                 IsTextSearchEnabled="True"
                                 IsSynchronizedWithCurrentItem="True"
@@ -108,7 +109,7 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Index" Width="0.4*" Binding="{Binding Path=Index}" />
-                            <DataGridTextColumn Header="Description" Width="0.7*" Binding="{Binding Path=Descriptin}" />
+                            <DataGridTextColumn Header="Description" Width="0.7*" Binding="{Binding Path=Description}" />
                             <DataGridTextColumn Header="Start value" Width="0.4*" Binding="{Binding Path=StartValue}" />
                             <DataGridTextColumn Header="End value" Width="0.4*" Binding="{Binding Path=EndValue}" />
                         </DataGrid.Columns>
@@ -129,6 +130,7 @@
 
             <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="RESULTS" Margin="10,0,10,10">
                 <DataGrid x:Name="ResultDataGrid" 
+                            ItemsSource="{Binding OptimizedParameters}"
                             SelectionMode="Single" 
                             IsTextSearchEnabled="True"
                             IsSynchronizedWithCurrentItem="True"
@@ -140,8 +142,8 @@
                             RowHeight="22">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Property" Width="*" Binding="{Binding Path=Property}" />
-                        <DataGridTextColumn Header="Value" Width="*" Binding="{Binding Path=Value}" />
+                        <DataGridTextColumn Header="Property" Width="*" Binding="{Binding Path=Description}" />
+                        <DataGridTextColumn Header="Value" Width="*" Binding="{Binding Path=OptimizedValue}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </HeaderedContentControl>

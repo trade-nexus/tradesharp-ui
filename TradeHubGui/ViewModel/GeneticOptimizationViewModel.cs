@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using Resources.Controls;
+using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
+using TradeHubGui.StrategyRunner.Managers;
+using TradeHubGui.Views;
 
 namespace TradeHubGui.ViewModel
 {
@@ -26,12 +32,29 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _exportGeneticOptimization;
         private RelayCommand _closeGeneticOptimizationWindow;
         private RelayCommand _showEditPropertiesWindowCommand;
+        private RelayCommand _editInstanceParametersCommand;
 
         private Strategy _selectedStrategy;
+
+        /// <summary>
+        /// Handles activities for Genetic Optimization
+        /// </summary>
+        private OptimizationManagerGeneticAlgorithm _managerGeneticAlgorithm;
+
+        /// <summary>
+        /// Collection of parameters to be used in Optimization process
+        /// </summary>
+        private ObservableCollection<OptimizationParameterDetail> _optimizationParameters;
+
+        /// <summary>
+        /// Holds Optimzation result with Optimized value for each parameter
+        /// </summary>
+        private ObservableCollection<OptimizationParameterDetail> _optimizedParameters;
 
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -43,10 +66,41 @@ namespace TradeHubGui.ViewModel
             _rounds = 1;
             _iterations = 1;
             _populationSize = 1;
+
+            _managerGeneticAlgorithm = new OptimizationManagerGeneticAlgorithm();
+            _optimizationParameters = new ObservableCollection<OptimizationParameterDetail>();
+            _optimizedParameters = new ObservableCollection<OptimizationParameterDetail>();
+
+            EventSystem.Subscribe<GeneticAlgorithmResult>(DisplayResult);
         }
+
         #endregion
 
         #region Commands
+
+        /// <summary>
+        /// Command used to open 'Edit Instance Window' from Strategy Instance Grid
+        /// </summary>
+        public ICommand ShowEditInstanceWindowCommand
+        {
+            get
+            {
+                return _showEditPropertiesWindowCommand ?? (_showEditPropertiesWindowCommand = new RelayCommand(
+                    param => ShowEditPropertiesWindowExecute()));
+            }
+        }
+        
+        /// <summary>
+        /// Command used with 'Edit' button in Edit Instance Window
+        /// </summary>
+        public ICommand EditInstanceParametersCommand
+        {
+            get
+            {
+                return _editInstanceParametersCommand ?? (_editInstanceParametersCommand = new RelayCommand(param => EditInstanceParametersExecute(param)));
+            }
+        }
+        
         public ICommand RunGeneticOptimizationCommand
         {
             get
@@ -73,6 +127,7 @@ namespace TradeHubGui.ViewModel
                     param => CloseGeneticOptimizationWindowExecute(), param => CloseGeneticOptimizationWindowCanExecute()));
             }
         }
+
         #endregion
 
         #region Properties
@@ -145,9 +200,63 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Collection of parameters to be used in Optimization process
+        /// </summary>
+        public ObservableCollection<OptimizationParameterDetail> OptimizationParameters
+        {
+            get { return _optimizationParameters; }
+            set
+            {
+                _optimizationParameters = value;
+                OnPropertyChanged("OptimizationParameters");
+            }
+        }
+
+        /// <summary>
+        /// Holds Optimzation result with Optimized value for each parameter
+        /// </summary>
+        public ObservableCollection<OptimizationParameterDetail> OptimizedParameters
+        {
+            get { return _optimizedParameters; }
+            set
+            {
+                _optimizedParameters = value;
+                OnPropertyChanged("OptimizatedParameters");
+            }
+        }
+
         #endregion
 
-        #region Private methods
+        #region Methods triggered on Commands
+
+        /// <summary>
+        /// Called when "Parameter Details" button is clicked
+        /// </summary>
+        private void ShowEditPropertiesWindowExecute()
+        {
+            EditInstanceWindow window = new EditInstanceWindow();
+            window.DataContext = this;
+
+            ParameterDetails = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone()); ;
+
+            window.ShowDialog();
+        }
+        
+        /// <summary>
+        /// Modifies selected Strategy Instance's Parameter Details
+        /// </summary>
+        private void EditInstanceParametersExecute(object param)
+        {
+            // Update Parameter Details
+            SelectedStrategy.ParameterDetails = ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+
+            // Close "Edit Instance" window
+            ((Window)param).Close();
+
+            OptimizationParameterDetails();
+        }
+
         private bool ExportGeneticOptimizationCanExecute()
         {
             //TODO: make condition here (for example when export data is available)
@@ -165,13 +274,15 @@ namespace TradeHubGui.ViewModel
         {
             //TODO: make condition here if necessary (if no condition needed, just return true)
 
-            return false;
+            return true;
         }
 
+        /// <summary>
+        /// Called when 'Execute' button is clicked
+        /// </summary>
         private void RunGeneticOptimizationExecute()
         {
-            //TODO: make implementation
-            throw new NotImplementedException();
+            StartGeneticOptimization();
         }
 
         private bool CloseGeneticOptimizationWindowCanExecute()
@@ -186,6 +297,88 @@ namespace TradeHubGui.ViewModel
             //TODO: make implementation (make sure to dispose this ViewModel on close, so this class should be disposable)
             throw new NotImplementedException();
         }
+
         #endregion
+
+        /// <summary>
+        /// Request <seealso cref="OptimizationManagerGeneticAlgorithm"/> to start the Optimization Process
+        /// </summary>
+        private void StartGeneticOptimization()
+        {
+            var parameterValues = GetParameterValues(SelectedStrategy.ParameterDetails).ToArray();
+
+            SortedDictionary<int, OptimizationParameterDetail> sortedParameterDetails= new SortedDictionary<int, OptimizationParameterDetail>();
+
+            foreach (var optimizationParameterDetail in _optimizationParameters)
+            {
+                sortedParameterDetails.Add(optimizationParameterDetail.Index, optimizationParameterDetail);
+            }
+
+            var strategyDetails = new GeneticAlgorithmParameters(SelectedStrategy.StrategyType, parameterValues, sortedParameterDetails, _iterations, _populationSize);
+
+            // Raise Event to notify listeners to start Optimization Process
+            EventSystem.Publish<GeneticAlgorithmParameters>(strategyDetails);
+        }
+
+        /// <summary>
+        /// Finds parameters to be used for optimization for the given Strategy and displays on UI
+        /// </summary>
+        private void OptimizationParameterDetails()
+        {
+            // Clear existing data
+            OptimizationParameters.Clear();
+
+            // Contains custom defined attributes in the given assembly
+            Dictionary<int, Tuple<string, Type>> customAttributes = null;
+            
+            // Get Custom Attributes
+            if (_selectedStrategy.StrategyType != null)
+            {
+                // Get custom attributes from the given assembly
+                customAttributes = StrategyHelper.GetCustomAttributes(_selectedStrategy.StrategyType);
+
+                foreach (KeyValuePair<int, Tuple<string, Type>> keyValuePair in customAttributes)
+                {
+                    var parameter = new OptimizationParameterDetail();
+                    
+                    parameter.Index = keyValuePair.Key;
+                    parameter.Description = keyValuePair.Value.Item1;
+                    parameter.ParameterType = keyValuePair.Value.Item2;
+
+                    // Add to observable collection to display on UI
+                    OptimizationParameters.Add(parameter);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Displays GA Optimization Result on UI
+        /// </summary>
+        /// <param name="optimizationResult">Contains optimized parameters information</param>
+        private void DisplayResult(GeneticAlgorithmResult optimizationResult)
+        {
+            foreach (OptimizationParameterDetail optimizationParameterDetail in optimizationResult.ParameterList)
+            {
+                OptimizedParameters.Add(optimizationParameterDetail);
+            }
+        }
+
+        /// <summary>
+        /// Returns IList of actual parameter values from the Parameter Details object
+        /// </summary>
+        /// <returns></returns>
+        public IList<object> GetParameterValues(Dictionary<string, ParameterDetail> parameterDetails)
+        {
+            IList<object> parameterValues = new List<object>();
+
+            // Traverse all parameter
+            foreach (KeyValuePair<string, ParameterDetail> keyValuePair in parameterDetails)
+            {
+                // Add actual parameter values to the new object list
+                parameterValues.Add(keyValuePair.Value.ParameterValue);
+            }
+
+            return parameterValues;
+        }
     }
 }

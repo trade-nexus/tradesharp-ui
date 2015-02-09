@@ -10,6 +10,9 @@ using TraceSourceLogger;
 using TradeHub.Optimization.Genetic;
 using TradeHub.Optimization.Genetic.FitnessFunction;
 using TradeHub.Optimization.Genetic.FitnessFunctionImplementation;
+using TradeHubGui.Common;
+using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Executors;
 using Parallel = System.Threading.Tasks.Parallel;
 
@@ -22,7 +25,7 @@ namespace TradeHubGui.StrategyRunner.Managers
     {
         private readonly Type _type = typeof(OptimizationManagerGeneticAlgorithm);
 
-        private AsyncClassLogger _logger = new AsyncClassLogger("OptimizationManagerGeneticAlgo");
+        private AsyncClassLogger _logger = new AsyncClassLogger("OptimizationManagerGeneticAlgorithm");
 
         /// <summary>
         /// Array size to be used for local arrays 
@@ -37,7 +40,7 @@ namespace TradeHubGui.StrategyRunner.Managers
         private Population[] _populationArray;
         private GeneticOptimization[] _fitnessFunctionArray;
         private StrategyExecutorGeneticAlgorithm[] _strategyExecutorArray;
-        //private SortedDictionary<int, GeneticAlgoParameters> _optimizationParameters;
+        private SortedDictionary<int, OptimizationParameterDetail> _optimizationParameters;
 
         /// <summary>
         /// GA Iterations
@@ -57,32 +60,42 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// </summary>
         public OptimizationManagerGeneticAlgorithm()
         {
-            
+            EventSystem.Subscribe<GeneticAlgorithmParameters>(OptimizeStrategy);
         }
 
         /// <summary>
         /// Handles incoming strategy optimization requests
         /// </summary>
         /// <param name="strategyInfo">Information to optimized specified strategy</param>
-        private void OptimizeStrategy(/*OptimizeStrategyGeneticAlgo strategyInfo*/)
+        private void OptimizeStrategy(GeneticAlgorithmParameters strategyInfo)
         {
-            //// Save constructor arguments
-            //_ctorArguments = strategyInfo.CtorArgs;
-            //// Save user strategy type
-            //_strategyType = strategyInfo.StrategyType;
-            //// Save optimization parameters info
-            //_optimizationParameters = strategyInfo.OptimzationParameters;
-            ////save iterations
-            //_iterations = strategyInfo.Iterations;
-            ////save population size
-            //_populationSize = strategyInfo.PopulationSize;
+            // NOTE: Test code to simulate GA Results
+            // BEGIN:
+            TestCodeToGenerateResults(strategyInfo);
+            return;
+            // :END
+
+            // Save constructor arguments
+            _ctorArguments = strategyInfo.CtorArgs;
+            
+            // Save user strategy type
+            _strategyType = strategyInfo.StrategyType;
+            
+            // Save optimization parameters info
+            _optimizationParameters = strategyInfo.OptimzationParameters;
+            
+            //save iterations
+            _iterations = strategyInfo.Iterations;
+            
+            //save population size
+            _populationSize = strategyInfo.PopulationSize;
+            
             //initialize range
             if (_ranges == null)
             {
                 InitializeRangeArray();
             }
 
-            //ExecuteSingleRun();
             //Initialize Required parameters
             if (InitializeOptimizationParameters())
             {
@@ -93,11 +106,35 @@ namespace TradeHubGui.StrategyRunner.Managers
                     // Get Optimized parameters info
                     Dictionary<int, double> optimizedParameters = ProvideOptimizedParameterInfo(index);
 
-                    //// Create result to be displayed on UI
-                    //var result = new OptimizationResultGeneticAlgo(_populationArray[index].FitnessMax, optimizedParameters);
-                    //// Publish event to UI
-                    //EventSystem.Publish<OptimizationResultGeneticAlgo>(result);
-                    //Dispose();
+                    // Create result to be displayed on UI
+                    var result = new GeneticAlgorithmResult();
+
+                    foreach (KeyValuePair<int, double> keyValuePair in optimizedParameters)
+                    {
+                        OptimizationParameterDetail optimizationParameter;
+                        if (_optimizationParameters.TryGetValue(keyValuePair.Key, out optimizationParameter))
+                        {
+                            // Set Optimized Parameter Value
+                            optimizationParameter.OptimizedValue = keyValuePair.Value;
+
+                            // Add to result 
+                            result.ParameterList.Add(optimizationParameter);
+                        }
+                    }
+
+                    // Update Fitness
+                    var risk = Math.Round(_populationArray[index].FitnessMax, 5);
+
+                    var tempParameterDetail = new OptimizationParameterDetail();
+                    tempParameterDetail.OptimizedValue = risk;
+                    tempParameterDetail.Description = "Risk";
+
+                    // Add to result 
+                    result.ParameterList.Add(tempParameterDetail);
+
+                    // Publish event to UI
+                    EventSystem.Publish<GeneticAlgorithmResult>(result);
+                    ////Dispose();
                 }
             }
         }
@@ -107,11 +144,11 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// </summary>
         public void InitializeRangeArray()
         {
-            //_ranges = new Range[_optimizationParameters.Count];
-            //for (int i = 0; i < _optimizationParameters.Count; i++)
-            //{
-            //    _ranges[i] = new Range((float)_optimizationParameters.ElementAt(i).Value.StartValue, (float)_optimizationParameters.ElementAt(i).Value.EndValue);
-            //}
+            _ranges = new Range[_optimizationParameters.Count];
+            for (int i = 0; i < _optimizationParameters.Count; i++)
+            {
+                _ranges[i] = new Range((float)_optimizationParameters.ElementAt(i).Value.StartValue, (float)_optimizationParameters.ElementAt(i).Value.EndValue);
+            }
         }
 
         /// <summary>
@@ -291,22 +328,22 @@ namespace TradeHubGui.StrategyRunner.Managers
                 }
                 for (int i = 0; i < _arrayLength; i++)
                 {
-                    //firstRange[i] =
-                    //    new Range(
-                    //        float.Parse(_optimizationParameters.ElementAt(0).Value.StartValue.ToString()),
-                    //        float.Parse(_optimizationParameters.ElementAt(0).Value.EndValue.ToString()));
-                    //secondRange[i] =
-                    //    new Range(
-                    //        float.Parse(_optimizationParameters.ElementAt(1).Value.StartValue.ToString()),
-                    //        float.Parse(_optimizationParameters.ElementAt(1).Value.EndValue.ToString()));
-                    //thirdRange[i] =
-                    //    new Range(
-                    //        float.Parse(_optimizationParameters.ElementAt(2).Value.StartValue.ToString()),
-                    //        float.Parse(_optimizationParameters.ElementAt(2).Value.EndValue.ToString()));
-                    //fourthRange[i] =
-                    //    new Range(
-                    //        float.Parse(_optimizationParameters.ElementAt(3).Value.StartValue.ToString()),
-                    //        float.Parse(_optimizationParameters.ElementAt(3).Value.EndValue.ToString()));
+                    firstRange[i] =
+                        new Range(
+                            float.Parse(_optimizationParameters.ElementAt(0).Value.StartValue.ToString()),
+                            float.Parse(_optimizationParameters.ElementAt(0).Value.EndValue.ToString()));
+                    secondRange[i] =
+                        new Range(
+                            float.Parse(_optimizationParameters.ElementAt(1).Value.StartValue.ToString()),
+                            float.Parse(_optimizationParameters.ElementAt(1).Value.EndValue.ToString()));
+                    thirdRange[i] =
+                        new Range(
+                            float.Parse(_optimizationParameters.ElementAt(2).Value.StartValue.ToString()),
+                            float.Parse(_optimizationParameters.ElementAt(2).Value.EndValue.ToString()));
+                    fourthRange[i] =
+                        new Range(
+                            float.Parse(_optimizationParameters.ElementAt(3).Value.StartValue.ToString()),
+                            float.Parse(_optimizationParameters.ElementAt(3).Value.EndValue.ToString()));
                 }
                 if (_logger.IsInfoEnabled)
                 {
@@ -423,14 +460,14 @@ namespace TradeHubGui.StrategyRunner.Managers
                         // capturing taskNumber in lambda wouldn't work correctly
                         int taskNumberCopy = taskNumber;
 
-                        //taskArray[taskNumber] = Task.Factory.StartNew(
-                        //    () =>
-                        //    {
-                        //        _populationArray[taskNumberCopy] =
-                        //            new Population(_populationSize, new BinaryChromosome(64),
-                        //                _fitnessFunctionArray[taskNumberCopy],
-                        //                new EliteSelection());
-                        //    });
+                        taskArray[taskNumber] = Task.Factory.StartNew(
+                            () =>
+                            {
+                                _populationArray[taskNumberCopy] =
+                                    new Population(_populationSize, new BinaryChromosome(64),
+                                        _fitnessFunctionArray[taskNumberCopy],
+                                        new EliteSelection());
+                            });
                     }
 
 
@@ -606,11 +643,11 @@ namespace TradeHubGui.StrategyRunner.Managers
             try
             {
                 var optimizedParameters = new Dictionary<int, double>();
-                //for (int i = 0; i < _ranges.Length; i++)
-                //{
-                //    optimizedParameters.Add(_optimizationParameters[i + 1].Index,
-                //                            _fitnessFunctionArray[bestPopulationIndex].Translate(_populationArray[bestPopulationIndex].BestChromosome)[i]);
-                //}
+                for (int i = 0; i < _ranges.Length; i++)
+                {
+                    optimizedParameters.Add(_optimizationParameters[i + 1].Index,
+                                            _fitnessFunctionArray[bestPopulationIndex].Translate(_populationArray[bestPopulationIndex].BestChromosome)[i]);
+                }
 
                 return optimizedParameters;
             }
@@ -668,17 +705,37 @@ namespace TradeHubGui.StrategyRunner.Managers
                 _strategyExecutorArray[i].StopStrategy();
             }
             Array.Clear(_strategyExecutorArray, 0, _strategyExecutorArray.Length);
-            //EventSystem.Unsubscribe<OptimizeStrategyGeneticAlgo>(OptimizeStrategy);
-            //_populationArray = null;
-            //_ctorArguments = null;
-            //_ctorArgumentsArray = null;
-            //_fitnessFunctionArray = null;
-            //_logger = null;
-            //_optimizationParameters = null;
-            //_populationArray = null;
-            //_strategyExecutorArray = null;
         }
 
+        /// <summary>
+        /// Generates Dummy result to test UI
+        /// </summary>
+        /// <param name="strategyInfo"></param>
+        private void TestCodeToGenerateResults(GeneticAlgorithmParameters strategyInfo)
+        {
+            // Create result to be displayed on UI
+            var result = new GeneticAlgorithmResult();
+
+            foreach (OptimizationParameterDetail iterator in strategyInfo.OptimzationParameters.Values.ToList())
+            {
+                iterator.OptimizedValue = 2.023;
+                // Add to result 
+                result.ParameterList.Add(iterator);
+            }
+
+            // Update Fitness
+            double risk = 100;
+
+            var tempParameterDetail = new OptimizationParameterDetail();
+            tempParameterDetail.OptimizedValue = risk;
+            tempParameterDetail.Description = "Risk";
+
+            // Add to result 
+            result.ParameterList.Add(tempParameterDetail);
+
+            // Publish event to UI
+            EventSystem.Publish<GeneticAlgorithmResult>(result);
+        }
 
     }
 }

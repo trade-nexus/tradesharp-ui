@@ -355,6 +355,9 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command used to open 'Edit Instance Window' from Strategy Instance Grid
+        /// </summary>
         public ICommand ShowEditInstanceWindowCommand
         {
             get

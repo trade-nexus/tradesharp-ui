@@ -41,6 +41,11 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         private decimal _avgSellPrice;
 
+        /// <summary>
+        /// Parameter Description
+        /// </summary>
+        private string _description;
+
         #region Properties
 
         /// <summary>
@@ -115,6 +120,15 @@ namespace TradeHubGui.Common.Models
                 }
                 return "NONE";
             }
+        }
+
+        /// <summary>
+        /// Parameter Description
+        /// </summary>
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
         }
 
         #endregion

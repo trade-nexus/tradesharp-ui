@@ -205,7 +205,6 @@ namespace TradeHubGui.Common.Models
             _executionDetails.AddOrderDetails(orderDetails);
         }
 
-
         /// <summary>
         /// Returns IList of actual parameter values from the Parameter Details object
         /// </summary>
