@@ -26,7 +26,8 @@
         </ScrollViewer>
 
         <StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button DockPanel.Dock="Right" Content="Edit" MinWidth="70" IsDefault="True" Margin="3"/>
+            <Button Command="{Binding EditInstanceParametersCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}"
+                    DockPanel.Dock="Right" Content="Edit" MinWidth="70" IsDefault="True" Margin="3"/>
             <Button DockPanel.Dock="Right" Content="Cancel" MinWidth="70" IsCancel="True" Margin="3"/>
         </StackPanel>
     </Grid>

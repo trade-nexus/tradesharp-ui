@@ -1,6 +1,3 @@
 SHORT EMA,LONG EMA,EMA PRICE TYPE,SYMBOL,BAR LENGTH,BAR FORMAT,BAR PRICE TYPE,MarketDataProvider,OrderExecutionProvider
 1,4,H,ERX,60,TIME,LAST,SimulatedExchange,SimulatedExchange
 1,3,H,ERX,60,TIME,LAST,SimulatedExchange,SimulatedExchange
-1,2,H,ERX,60,TIME,LAST,SimulatedExchange,SimulatedExchange
-1,10,H,ERX,60,TIME,LAST,SimulatedExchange,SimulatedExchange
-1,9,H,ERX,60,TIME,LAST,SimulatedExchange,SimulatedExchange

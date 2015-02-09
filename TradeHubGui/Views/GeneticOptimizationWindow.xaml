@@ -84,6 +84,15 @@
                             <wpfToolkitExtended:IntegerUpDown Value="{Binding Iterations}" Increment="1" Minimum="1"/>
                             <wpfToolkitExtended:IntegerUpDown Value="{Binding PopulationSize}" Increment="1" Minimum="1"/>
                         </StackPanel>
+                        <StackPanel Width="122" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="True">
+                            <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
+                                Command="{Binding ShowCreateInstanceWindowCommand}">
+                                <StackPanel Orientation="Horizontal" Margin="4,0">
+                                    <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgAdd}" UseLayoutRounding="True"/>
+                                    <TextBlock Text="Parameter Details" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
                     </DockPanel>
 
                     <DataGrid x:Name="StrategyParametersDataGrid" Margin="0,20,0,0"

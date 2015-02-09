@@ -86,6 +86,11 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// </summary>
         private object[] _ctorArguments;
 
+        /// <summary>
+        /// Indicates if the Strategy Instance was requested to Stop Execution by the user
+        /// </summary>
+        private bool _stopInstanceRequested;
+
         #region Events
 
         // ReSharper disable InconsistentNaming
@@ -248,6 +253,8 @@ namespace TradeHubGui.StrategyRunner.Executors
                 //Overriding if running on simulated exchange
                 ManageBackTestingStrategy();
 
+                _stopInstanceRequested = false;
+
                 // Start Executing the strategy
                 _tradeHubStrategy.Run();
             }
@@ -271,6 +278,8 @@ namespace TradeHubGui.StrategyRunner.Executors
                     {
                         _asyncClassLogger.Info("Stopping user strategy execution: " + _strategyType.FullName, _type.FullName, "StopStrategy");
                     }
+
+                    _stopInstanceRequested = true;
 
                     // Start Executing the strategy
                     _tradeHubStrategy.Stop();
@@ -435,16 +444,21 @@ namespace TradeHubGui.StrategyRunner.Executors
             }
             else
             {
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                if (_stopInstanceRequested)
                 {
-                    _strategyInstance.Status = StrategyStatus.Executed;
-                }));
+                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                    {
+                        _strategyInstance.Status = StrategyStatus.Stopped;
+                    }));
+                }
+                else
+                {
+                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
+                    {
+                        _strategyInstance.Status = StrategyStatus.Executed;
+                    }));
+                }
             }
-
-            //if (_statusChanged != null)
-            //{
-            //    _statusChanged(_strategyKey, _strategyInstance.Status);
-            //}
         }
 
         /// <summary>
@@ -503,12 +517,6 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="execution">Contains Execution Info</param>
         private void OnNewExecutionReceived(Execution execution)
         {
-            //if (_executionReceived != null)
-            //{
-            //    _executionReceived(new ExecutionRepresentation(_strategyKey,execution));
-            //    //Task.Factory.StartNew(() => _executionReceived(execution));
-            //}
-
             // Update Stats
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = execution.Fill.OrderId;

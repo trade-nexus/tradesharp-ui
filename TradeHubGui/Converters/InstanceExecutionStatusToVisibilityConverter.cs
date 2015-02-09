@@ -34,9 +34,13 @@ namespace TradeHubGui.Converters
                     {
                         return System.Windows.Visibility.Visible;
                     }
-                    else if (status.Equals(StrategyStatus.None))
+                    else if (status.Equals(StrategyStatus.None) || status.Equals(StrategyStatus.Stopped))
                     {
                         return System.Windows.Visibility.Collapsed;
+                    }
+                    else if (status.Equals(StrategyStatus.Initializing))
+                    {
+                        return System.Windows.Visibility.Visible;
                     }
                 }
                 else
@@ -46,7 +50,7 @@ namespace TradeHubGui.Converters
                     {
                         return System.Windows.Visibility.Collapsed;
                     }
-                    else if (status.Equals(StrategyStatus.None))
+                    else if (status.Equals(StrategyStatus.None) || status.Equals(StrategyStatus.Stopped))
                     {
                         return System.Windows.Visibility.Visible;
                     }

@@ -45,6 +45,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _runInstanceCommand;
         private RelayCommand _stopInstanceCommand;
         private RelayCommand _deleteInstanceCommand;
+        private RelayCommand _editInstanceParametersCommand;
         private RelayCommand _showEditInstanceWindowCommand;
         private RelayCommand _showGeneticOptimizationWindowCommand;
         private RelayCommand _showBruteOptimizationWindowCommand;
@@ -297,6 +298,9 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command used with 'Create Instance' button
+        /// </summary>
         public ICommand CreateInstanceCommand
         {
             get
@@ -306,6 +310,9 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command used with 'Delete' button for each individual Instance in the Strategy Instance Grid
+        /// </summary>
         public ICommand DeleteInstanceCommand
         {
             get
@@ -334,6 +341,17 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _stopInstanceCommand ?? (_stopInstanceCommand = new RelayCommand(param => StopInstanceExecute()));
+            }
+        }
+        
+        /// <summary>
+        /// Command used with 'Edit' button in Edit Instance Window
+        /// </summary>
+        public ICommand EditInstanceParametersCommand
+        {
+            get
+            {
+                return _editInstanceParametersCommand ?? (_editInstanceParametersCommand = new RelayCommand(param => EditInstanceParametersExecute(param)));
             }
         }
 
@@ -417,7 +435,7 @@ namespace TradeHubGui.ViewModel
             window.Tag = string.Format("Instance {0}", SelectedInstance.InstanceKey);
             window.Owner = MainWindow;
 
-            ParameterDetails = SelectedInstance.Parameters;
+            ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());;
 
             window.ShowDialog();
         }
@@ -454,8 +472,7 @@ namespace TradeHubGui.ViewModel
         /// <param name="param"></param>
         private void CreateInstanceExecute(object param)
         {
-            var parameters = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key,
-                                               entry => (ParameterDetail)entry.Value.Clone());
+            var parameters = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
 
             // Create a new Strategy Instance with provided parameters
             var strategyInstance = SelectedStrategy.CreateInstance(parameters);
@@ -481,10 +498,11 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void RunInstanceExecute()
         {
+            SelectedInstance.Status = DomainModels.StrategyStatus.Initializing;
             // Request Strategy Controller to start selected Strategy Instance execution
             _strategyController.RunStrategy(SelectedInstance.InstanceKey);
 
-            SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
+            //SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
         }
 
         /// <summary>
@@ -495,7 +513,7 @@ namespace TradeHubGui.ViewModel
             // Request Strategy Controller to Stop execution for selected Strategy Instance
             _strategyController.StopStrategy(SelectedInstance.InstanceKey);
 
-            SelectedInstance.Status = DomainModels.StrategyStatus.None;
+            //SelectedInstance.Status = DomainModels.StrategyStatus.None;
         }
 
         /// <summary>
@@ -515,6 +533,18 @@ namespace TradeHubGui.ViewModel
                 // Remove the instance from the UI
                 Instances.Remove(SelectedInstance);
             }
+        }
+
+        /// <summary>
+        /// Modifies selected Strategy Instance's Parameter Details
+        /// </summary>
+        private void EditInstanceParametersExecute(object param)
+        {
+            // Update Parameter Details
+            SelectedInstance.Parameters = ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+
+            // Close "Edit Instance" window
+            ((Window)param).Close();
         }
 
         private void ShowGeneticOptimizationWindowExecute()

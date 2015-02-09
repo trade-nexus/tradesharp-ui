@@ -35,14 +35,18 @@ namespace TradeHubGui.Converters
                 {
                     return Application.Current.Resources["GreenBrush"];
                 }
+                else if (status.Equals(StrategyStatus.Stopped))
+                {
+                    return Application.Current.Resources["RedBrush"];
+                }
+                else if (status.Equals(StrategyStatus.Initializing))
+                {
+                    return Application.Current.Resources["OrangeBrush"];
+                }
                 else if (status.Equals(StrategyStatus.None))
                 {
                     return Application.Current.Resources["GrayBrush"];
                 }
-                //else if (status.Equals(StrategyStatus.Stopped))
-                //{
-                //    return Application.Current.Resources["RedBrush"];
-                //}
             }
 
             // Initial state is None, so the color is Gray

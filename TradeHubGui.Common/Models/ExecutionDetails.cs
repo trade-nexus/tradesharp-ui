@@ -111,7 +111,7 @@ namespace TradeHubGui.Common.Models
         public void AddOrderDetails(OrderDetails orderDetails)
         {
             // Counts are to be incremented if incoming order detail is for execution
-            if (orderDetails.Status.Equals(OrderStatus.EXECUTED))
+            if (orderDetails.Status.Equals(OrderStatus.EXECUTED) || orderDetails.Status.Equals(OrderStatus.PARTIALLY_EXECUTED))
             {
                 Executed++;
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.ViewModel
 {
@@ -15,13 +16,19 @@ namespace TradeHubGui.ViewModel
     public class GeneticOptimizationViewModel : BaseViewModel
     {
         #region Fields
+
         private int _rounds;
         private int _iterations;
         private int _populationSize;
+        private Dictionary<string, ParameterDetail> _parameterDetails;
+
         private RelayCommand _runGeneticOptimization;
         private RelayCommand _exportGeneticOptimization;
         private RelayCommand _closeGeneticOptimizationWindow;
+        private RelayCommand _showEditPropertiesWindowCommand;
+
         private Strategy _selectedStrategy;
+
         #endregion
 
         #region Constructors
@@ -69,6 +76,7 @@ namespace TradeHubGui.ViewModel
         #endregion
 
         #region Properties
+
         public int Rounds
         {
             get { return _rounds; }
@@ -123,6 +131,20 @@ namespace TradeHubGui.ViewModel
                 }
             }
         }
+
+        /// <summary>
+        /// Parameter details for SelectedInstance
+        /// </summary>
+        public Dictionary<string, ParameterDetail> ParameterDetails
+        {
+            get { return _parameterDetails; }
+            set
+            {
+                _parameterDetails = value;
+                OnPropertyChanged("ParameterDetails");
+            }
+        }
+
         #endregion
 
         #region Private methods
