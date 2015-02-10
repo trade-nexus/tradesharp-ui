@@ -387,7 +387,11 @@ namespace TradeHubGui.ViewModel
             var strategyDetails = new GeneticAlgorithmParameters(SelectedStrategy.StrategyType, parameterValues,
                 optimizationParametersDetail, _iterations, _populationSize, _rounds);
 
+            // Change Status
             Status = OptimizationStatus.Working;
+
+            // Clear existing data
+            OptimizedParameters.Clear();
 
             // Raise Event to notify listeners to start Optimization Process
             Task.Factory.StartNew(() => { EventSystem.Publish<GeneticAlgorithmParameters>(strategyDetails); });
