@@ -71,7 +71,10 @@ namespace TradeHubGui.StrategyRunner.Managers
         {
             // NOTE: Test code to simulate GA Results
             // BEGIN:
-            TestCodeToGenerateResults(strategyInfo);
+            for (int i = 0; i < strategyInfo.Rounds; i++)
+            {
+                TestCodeToGenerateResults(strategyInfo);
+            }
             return;
             // :END
 
@@ -89,7 +92,22 @@ namespace TradeHubGui.StrategyRunner.Managers
             
             //save population size
             _populationSize = strategyInfo.PopulationSize;
-            
+
+            int roundCount = 0;
+
+            // Execute GA for the specified No. of times
+            while (++roundCount<=strategyInfo.Rounds)
+            {
+                // Executes a single Round of Genetic Algorithm optimization
+                ExecuteGeneticAlgorithmRound();
+            }
+        }
+
+        /// <summary>
+        /// Executes a single Round of Genetic Algorithm optimization
+        /// </summary>
+        private void ExecuteGeneticAlgorithmRound()
+        {
             //initialize range
             if (_ranges == null)
             {

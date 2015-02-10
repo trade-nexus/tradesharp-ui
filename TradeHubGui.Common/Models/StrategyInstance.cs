@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Media;
 using TradeHub.Common.Core.DomainModels;
+using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.Common.Models
@@ -216,8 +217,11 @@ namespace TradeHubGui.Common.Models
             // Traverse all parameter
             foreach (KeyValuePair<string, ParameterDetail> keyValuePair in Parameters)
             {
+                // Makes sure all parameters are in right format
+                var input = StrategyHelper.GetParametereValue(keyValuePair.Value.ParameterValue.ToString(), keyValuePair.Value.ParameterType.Name);
+
                 // Add actual parameter values to the new object list
-                parameterValues.Add(keyValuePair.Value.ParameterValue);
+                parameterValues.Add(input);
             }
 
             return parameterValues;

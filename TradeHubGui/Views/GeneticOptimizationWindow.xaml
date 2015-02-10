@@ -57,7 +57,12 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="10,4,20,4">
                         <TextBlock Text="Completed rounds" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding CompletedRounds, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}, FallbackValue=12}"
+                        <TextBlock Text="{Binding RoundsCompleted, FallbackValue=0}"
+                                FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Execution Status" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding Status, FallbackValue=n/a}"
                                 FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </StackPanel>
