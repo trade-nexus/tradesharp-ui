@@ -23,7 +23,18 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="{Binding Key}"/>
-                <wpfToolkitExtended:IntegerUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" FormatString="C0" Increment="1" />
+                <wpfToolkitExtended:IntegerUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" FormatString="N0" Increment="1" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="UnsignedIntegerDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <wpfToolkitExtended:IntegerUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" FormatString="N0" Increment="1" Minimum="0" />
             </Grid>
         </DataTemplate>
 

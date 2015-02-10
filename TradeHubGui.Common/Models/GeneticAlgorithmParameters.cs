@@ -33,9 +33,14 @@ namespace TradeHubGui.Common.Models
         private int _iterations;
 
         /// <summary>
-        /// create population size
+        /// Population size to be used in Genetic Algorithm working
         /// </summary>
         private int _populationSize;
+
+        /// <summary>
+        /// No. of rounds Genetic Algorithm should run
+        /// </summary>
+        private int _rounds;
 
         /// <summary>
         /// Argument Constrcutor
@@ -44,16 +49,18 @@ namespace TradeHubGui.Common.Models
         /// <param name="ctorArgs">Constructor arguments to be used for given strategy</param>
         /// <param name="optimzationParameters">Parameters to be used for optimizing the strategy</param>
         /// <param name="iterations">No. of iterations to be executed</param>
-        /// <param name="populationSize">Genetic Population to use</param>
+        /// <param name="populationSize">Population size to be used in Genetic Algorithm working</param>
+        /// <param name="rounds">No. of rounds Genetic Algorithm should run</param>
         public GeneticAlgorithmParameters(Type strategyType, object[] ctorArgs,
             SortedDictionary<int, OptimizationParameterDetail> optimzationParameters, int iterations,
-            int populationSize)
+            int populationSize, int rounds)
         {
             _strategyType = strategyType;
             _ctorArgs = ctorArgs;
             _optimzationParameters = optimzationParameters;
             _iterations = iterations;
             _populationSize = populationSize;
+            _rounds = rounds;
         }
 
         /// <summary>
@@ -81,7 +88,7 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
-        /// Contains info for Population Size
+        /// Population size to be used in Genetic Algorithm working
         /// </summary>
         public int PopulationSize
         {
@@ -90,12 +97,21 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
-        /// Contains info for Iterations.
+        /// Iterations of the GA to be run
         /// </summary>
         public int Iterations
         {
             get { return _iterations; }
             set { _iterations = value; }
+        }
+
+        /// <summary>
+        /// No. of rounds Genetic Algorithm should run
+        /// </summary>
+        public int Rounds
+        {
+            get { return _rounds; }
+            set { _rounds = value; }
         }
     }
 }

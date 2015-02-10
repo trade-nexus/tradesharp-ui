@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Resources.Controls;
+using TraceSourceLogger;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Managers;
@@ -21,11 +25,43 @@ namespace TradeHubGui.ViewModel
     /// </summary>
     public class GeneticOptimizationViewModel : BaseViewModel
     {
+        private Type _type = typeof (GeneticOptimizationViewModel);
+
         #region Fields
 
+        /// <summary>
+        /// Holds reference to UI dispatcher
+        /// </summary>
+        private readonly Dispatcher _currentDispatcher;
+
+        /// <summary>
+        /// No. of rounds Genetic Algorithm should execute
+        /// </summary>
         private int _rounds;
+
+        /// <summary>
+        /// No. of rounds Genetic Algorithm should has executed
+        /// </summary>
+        private int _roundsCompleted;
+
+        /// <summary>
+        /// No. of iteration to be executed in each round
+        /// </summary>
         private int _iterations;
+
+        /// <summary>
+        /// Size of the population while executing Genetic Algorithm
+        /// </summary>
         private int _populationSize;
+
+        /// <summary>
+        /// Execution status of Genetic Algorithm Optimization
+        /// </summary>
+        private OptimizationStatus _status; 
+
+        /// <summary>
+        /// Contains Parameter information to be used by the Strategy Instance to execute
+        /// </summary>
         private Dictionary<string, ParameterDetail> _parameterDetails;
 
         private RelayCommand _runGeneticOptimization;
@@ -60,12 +96,16 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public GeneticOptimizationViewModel(Strategy strategy)
         {
+            // Save Dispatcher reference to be used for UI modifications
+            _currentDispatcher = Dispatcher.CurrentDispatcher;
+
             _selectedStrategy = strategy;
 
             // Initial default values
             _rounds = 1;
             _iterations = 1;
-            _populationSize = 1;
+            _populationSize = 45;
+            _roundsCompleted = 0;
 
             _managerGeneticAlgorithm = new OptimizationManagerGeneticAlgorithm();
             _optimizationParameters = new ObservableCollection<OptimizationParameterDetail>();
@@ -226,6 +266,32 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// No. of rounds Genetic Algorithm should has executed
+        /// </summary>
+        public int RoundsCompleted
+        {
+            get { return _roundsCompleted; }
+            set
+            {
+                _roundsCompleted = value;
+                OnPropertyChanged("RoundsCompleted");
+            }
+        }
+
+        /// <summary>
+        /// Execution status of Genetic Algorithm Optimization
+        /// </summary>
+        public OptimizationStatus Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                OnPropertyChanged("Status");
+            }
+        }
+
         #endregion
 
         #region Methods triggered on Commands
@@ -259,15 +325,15 @@ namespace TradeHubGui.ViewModel
 
         private bool ExportGeneticOptimizationCanExecute()
         {
-            //TODO: make condition here (for example when export data is available)
-
-            return false;
+            return (RoundsCompleted == Rounds);
         }
 
+        /// <summary>
+        /// Called when 'Export' button is clicked
+        /// </summary>
         private void ExportGeneticOptimizationExecute()
         {
-            //TODO: make implemetation
-            throw new NotImplementedException();
+            ExportGeneticAlgorithmReuslts();
         }
 
         private bool RunGeneticOptimizationCanExecute()
@@ -305,19 +371,26 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void StartGeneticOptimization()
         {
+            // Reset Value
+            RoundsCompleted = 0;
+
+            // Array of object to be used as parameters for given strategy
             var parameterValues = GetParameterValues(SelectedStrategy.ParameterDetails).ToArray();
 
-            SortedDictionary<int, OptimizationParameterDetail> sortedParameterDetails= new SortedDictionary<int, OptimizationParameterDetail>();
+            var optimizationParametersDetail = new SortedDictionary<int, OptimizationParameterDetail>();
 
             foreach (var optimizationParameterDetail in _optimizationParameters)
             {
-                sortedParameterDetails.Add(optimizationParameterDetail.Index, optimizationParameterDetail);
+                optimizationParametersDetail.Add(optimizationParameterDetail.Index, optimizationParameterDetail);
             }
 
-            var strategyDetails = new GeneticAlgorithmParameters(SelectedStrategy.StrategyType, parameterValues, sortedParameterDetails, _iterations, _populationSize);
+            var strategyDetails = new GeneticAlgorithmParameters(SelectedStrategy.StrategyType, parameterValues,
+                optimizationParametersDetail, _iterations, _populationSize, _rounds);
+
+            Status = OptimizationStatus.Working;
 
             // Raise Event to notify listeners to start Optimization Process
-            EventSystem.Publish<GeneticAlgorithmParameters>(strategyDetails);
+            Task.Factory.StartNew(() => { EventSystem.Publish<GeneticAlgorithmParameters>(strategyDetails); });
         }
 
         /// <summary>
@@ -357,10 +430,20 @@ namespace TradeHubGui.ViewModel
         /// <param name="optimizationResult">Contains optimized parameters information</param>
         private void DisplayResult(GeneticAlgorithmResult optimizationResult)
         {
-            foreach (OptimizationParameterDetail optimizationParameterDetail in optimizationResult.ParameterList)
+            _currentDispatcher.Invoke(DispatcherPriority.Normal, (Action) (() =>
             {
-                OptimizedParameters.Add(optimizationParameterDetail);
-            }
+                RoundsCompleted++;
+
+                foreach (OptimizationParameterDetail optimizationParameterDetail in optimizationResult.ParameterList)
+                {
+                    OptimizedParameters.Add(optimizationParameterDetail);
+                }
+
+                if (RoundsCompleted==Rounds)
+                {
+                    Status = OptimizationStatus.Completed;
+                }
+            }));
         }
 
         /// <summary>
@@ -374,11 +457,92 @@ namespace TradeHubGui.ViewModel
             // Traverse all parameter
             foreach (KeyValuePair<string, ParameterDetail> keyValuePair in parameterDetails)
             {
+                // Makes sure all parameters are in right format
+                var input = StrategyHelper.GetParametereValue(keyValuePair.Value.ParameterValue.ToString(), keyValuePair.Value.ParameterType.Name);
+
                 // Add actual parameter values to the new object list
-                parameterValues.Add(keyValuePair.Value.ParameterValue);
+                parameterValues.Add(input);
             }
 
             return parameterValues;
+        }
+
+        /// <summary>
+        /// dump the results to file
+        /// </summary>
+        private void ExportGeneticAlgorithmReuslts()
+        {
+            try
+            {
+                IList<string> lines = null;
+                string folderPath = string.Empty;
+
+                // Get Directory in which to save stats
+                using (System.Windows.Forms.FolderBrowserDialog form = new System.Windows.Forms.FolderBrowserDialog())
+                {
+                    if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        folderPath = form.SelectedPath;
+                    }
+                }
+
+                // Write Optimization Stats to the file
+                if (folderPath != string.Empty)
+                {
+                    lines = new List<string>();
+                    
+                    // Create header row
+                    string header = "Round";
+                    foreach (var optimizationParameterDetail in _optimizationParameters)
+                    {
+                        header += "," + optimizationParameterDetail.Description;
+                    }
+                    header += ",Risk";
+
+                    // Add Header Row
+                    lines.Add(header);
+
+                    int tempRound = 1;
+                    int tempItemCount = 0;
+                    string row = tempRound.ToString();
+
+                    // Create Individual Rows
+                    foreach (var optimizationParameterDetail in _optimizedParameters)
+                    {
+                        row += "," + optimizationParameterDetail.OptimizedValue;
+
+                        if (++tempItemCount == (_optimizationParameters.Count + 1))
+                        {
+                            // Add Row
+                            lines.Add(row);
+
+                            // Start a new row
+                            row = (++tempRound).ToString();
+
+                            // Reset variable
+                            tempItemCount = 0;
+                        }
+                    }
+
+                    //for (int i = 0; i < _parametersInfo.Count; i += 5)
+                    //{
+                    //    string temp = string.Format("{0},{1},{2},{3},{4},{5}", tempRound++, _parametersInfo[i].ParameterValue,
+                    //        _parametersInfo[i + 1].ParameterValue, _parametersInfo[i + 2].ParameterValue,
+                    //        _parametersInfo[i + 3].ParameterValue, _parametersInfo[i + 4].ParameterValue);
+                    //    lines.Add(temp);
+                    //}
+
+                    // Create file path
+                    string path = folderPath + "\\" + "GA-Results.csv";
+
+                    // Write data
+                    File.WriteAllLines(path, lines);
+                }
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "ExportGeneticAlgoReuslts");
+            }
         }
     }
 }

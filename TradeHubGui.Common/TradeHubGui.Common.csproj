@@ -65,9 +65,13 @@
     <Reference Include="TradeHub.Common.Core">
       <HintPath>..\Lib\tradehub\TradeHub.Common.Core.dll</HintPath>
     </Reference>
+    <Reference Include="TradeHub.StrategyEngine.Utlility">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.Utlility.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\OptimizationStatus.cs" />
     <Compile Include="EventSystem.cs" />
     <Compile Include="Models\ExecutionDetails.cs" />
     <Compile Include="Models\GeneticAlgorithmResult.cs" />
