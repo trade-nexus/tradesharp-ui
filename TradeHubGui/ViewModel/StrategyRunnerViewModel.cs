@@ -67,8 +67,6 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public StrategyRunnerViewModel()
         {
-            _dialogSettings = new MetroDialogSettings() { AffirmativeButtonText = "Yes", NegativeButtonText = "No" };
-
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
 
@@ -363,7 +361,7 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _showEditInstanceWindowCommand ?? (_showEditInstanceWindowCommand = new RelayCommand(
-                    param => ShowEditInstanceWindowExecute(), param => ShowEditInstanceWindowCanExecute()));
+                    param => ShowEditInstanceWindowExecute()));
             }
         }
 
@@ -421,12 +419,6 @@ namespace TradeHubGui.ViewModel
         }
 
         #endregion
-
-        private bool ShowEditInstanceWindowCanExecute()
-        {
-            if (SelectedInstance == null) return false;
-            return true;
-        }
 
         /// <summary>
         /// Displays Strategy Instance Parameter's window to edit input values
@@ -573,6 +565,7 @@ namespace TradeHubGui.ViewModel
             }
 
             BruteOptimizationWindow window = new BruteOptimizationWindow();
+            window.DataContext = new BruteOptimizationViewModel(SelectedStrategy);
             window.Tag = string.Format("{0}", SelectedStrategy.Key);
             window.Show();
         }
@@ -680,7 +673,7 @@ namespace TradeHubGui.ViewModel
                 Instances.Add(strategyInstance.Value);
             }
 
-            // Set the 1st instance as selected in UI
+            // Select the 1st instance from DataGrid
             SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
         }
 
@@ -796,6 +789,7 @@ namespace TradeHubGui.ViewModel
         {
             System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
             stopWatch.Start();
+
             foreach (StrategyInstance strategyInstance in instances)
             {
                 // Send instance to controller where its execution life cycle can be managed
@@ -804,10 +798,12 @@ namespace TradeHubGui.ViewModel
                 // Display Strategy Instance on UI
                 Instances.Add(strategyInstance);
             }
+
             stopWatch.Stop();
+            Console.WriteLine("LoadMultipleInstances method runtime ---> " + stopWatch.Elapsed);
 
-            Console.WriteLine("RunTime ---> " + stopWatch.Elapsed);
-
+            // Select the 1st instance from DataGrid
+            SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
         }
 
         /// <summary>
