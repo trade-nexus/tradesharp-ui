@@ -59,6 +59,7 @@
 
             <HeaderedContentControl Grid.Row="1" Header="PARAMETERS" Margin="10,0,10,10">
                 <DataGrid x:Name="StrategyParametersDataGrid"
+                            ItemsSource="{Binding BruteForceParameters.ParameterDetails}"
 							SelectionMode="Single" 
 							IsTextSearchEnabled="True"
 							IsSynchronizedWithCurrentItem="True"
@@ -70,8 +71,8 @@
 							RowHeight="22">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Parameter" Width="0.7*" Binding="{Binding Path=Parameter}" />
-                        <DataGridTextColumn Header="Value" Width="0.5*" Binding="{Binding Path=Value}" />
+                        <DataGridTextColumn Header="Parameter" Width="0.7*" Binding="{Binding Path=Description}" />
+                        <DataGridTextColumn Header="Value" Width="0.5*" Binding="{Binding Path=ParameterValue}" />
                         <DataGridTextColumn Header="End value" Width="0.6*" Binding="{Binding Path=EndValue}" />
                         <DataGridTextColumn Header="Increment" Width="0.7*" Binding="{Binding Path=Increment}" />
                     </DataGrid.Columns>

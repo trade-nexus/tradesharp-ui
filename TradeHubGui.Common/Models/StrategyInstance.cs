@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Media;
 using TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
@@ -210,9 +211,11 @@ namespace TradeHubGui.Common.Models
         /// Returns IList of actual parameter values from the Parameter Details object
         /// </summary>
         /// <returns></returns>
-        public  IList<object> GetParameterValues()
+        public object[] GetParameterValues()
         {
-            IList<object> parameterValues = new List<object>();
+            int entryCount = 0;
+
+            object[] parameterValues = new object[Parameters.Count];
 
             // Traverse all parameter
             foreach (KeyValuePair<string, ParameterDetail> keyValuePair in Parameters)
@@ -221,10 +224,31 @@ namespace TradeHubGui.Common.Models
                 var input = StrategyHelper.GetParametereValue(keyValuePair.Value.ParameterValue.ToString(), keyValuePair.Value.ParameterType.Name);
 
                 // Add actual parameter values to the new object list
-                parameterValues.Add(input);
+                parameterValues[entryCount++] = input;
             }
 
             return parameterValues;
+        }
+
+        /// <summary>
+        /// Verifies if the incoming parameters arrays contains any parameter which has different from the existing parameters
+        /// </summary>
+        /// <param name="parametersArray">Array of parameters to check for difference</param>
+        /// <returns></returns>
+        public bool ParametersChanged(object[] parametersArray)
+        {
+            var existingParameters = GetParameterValues();
+
+            for (int i = 0; i < existingParameters.Length; i++)
+            {
+                if (! existingParameters[i].GetHashCode().Equals(parametersArray[i].GetHashCode()))
+                {
+                    // A different Parameter value is found
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #region INotifyPropertyChanged members

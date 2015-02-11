@@ -8,8 +8,9 @@ namespace TradeHubGui.Common.Constants
 {
     public enum OptimizationStatus
     {
-        Stopped,
+        None,
         Working,
-        Completed
+        Completed,
+        Stopped
     }
 }

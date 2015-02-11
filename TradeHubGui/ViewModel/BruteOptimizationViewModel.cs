@@ -8,6 +8,8 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
+using TradeHubGui.StrategyRunner.Managers;
 
 namespace TradeHubGui.ViewModel
 {
@@ -20,13 +22,26 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private readonly Dispatcher _currentDispatcher;
 
+        /// <summary>
+        /// Handles activities for Brute Force Optimization
+        /// </summary>
+        private OptimizationManagerBruteForce _managerBruteForce; 
+
+        /// <summary>
+        /// Contains detailed information for all the parameters
+        /// </summary>
+        private BruteForceParameters _bruteForceParameters;
+
         private RelayCommand _runBruteOptimization;
         private RelayCommand _exportBruteOptimization;
         private RelayCommand _closeBruteOptimizationWindow;
+        
         private Strategy _selectedStrategy;
+        
         #endregion
 
         #region Constructors
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -34,12 +49,30 @@ namespace TradeHubGui.ViewModel
         {
             // Save Dispatcher reference to be used for UI modifications
             _currentDispatcher = Dispatcher.CurrentDispatcher;
-
+            
             _selectedStrategy = strategy;
+            _bruteForceParameters = new BruteForceParameters(_selectedStrategy.StrategyType);
+            _managerBruteForce = new OptimizationManagerBruteForce();
+
+            DisplayParameterDetails();
         }
+
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Contains detailed information for all the parameters
+        /// </summary>
+        public BruteForceParameters BruteForceParameters
+        {
+            get { return _bruteForceParameters; }
+            set
+            {
+                _bruteForceParameters = value;
+                OnPropertyChanged("BruteForceParameters");
+            }
+        }
 
         #endregion
 
@@ -74,18 +107,18 @@ namespace TradeHubGui.ViewModel
 
         #endregion
 
-        #region Methods
+        #region Methods triggered on Commands
 
         private bool RunBruteOptimizationCanExecute()
         {
             // TODO: make some condition here if necessary
 
-            return false;
+            return true;
         }
 
         private void RunBruteOptimizationExecute()
         {
-            throw new NotImplementedException();
+            ExecuteBruteForceOptimization();
         }
 
         private bool ExportBruteOptimizationCanExecute()
@@ -113,5 +146,28 @@ namespace TradeHubGui.ViewModel
         }
 
         #endregion
+
+        /// <summary>
+        /// Displays Strategy parameters on the UI
+        /// </summary>
+        private void DisplayParameterDetails()
+        {
+            foreach (KeyValuePair<string, ParameterDetail> keyValuePair in _selectedStrategy.ParameterDetails)
+            {
+                var bruteForceParameterDetail = new BruteForceParameterDetail(keyValuePair.Key,
+                    keyValuePair.Value.ParameterType, keyValuePair.Value.ParameterValue, keyValuePair.Value.ParameterValue, default(double));
+
+                // Add information
+                BruteForceParameters.ParameterDetails.Add(bruteForceParameterDetail);
+            }
+        }
+
+        /// <summary>
+        /// Starts the Optimization process
+        /// </summary>
+        private void ExecuteBruteForceOptimization()
+        {
+            EventSystem.Publish<BruteForceParameters>(BruteForceParameters);
+        }
     }
 }

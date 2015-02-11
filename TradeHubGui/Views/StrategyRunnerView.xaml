@@ -82,8 +82,8 @@
                             <DataTemplate>
                                 <DockPanel Margin="0">
                                     <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,2,0,4">
-                                        <TextBlock Text="Strategy" FontSize="18" Opacity="0.7" Margin="0,0,4,0"/>
-                                        <TextBlock Text="{Binding Key}" FontWeight="SemiBold" FontSize="20"/>
+                                        <TextBlock Text="{Binding Key}" FontSize="18" Opacity="0.7" Margin="0,0,4,0"/>
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="18"/>
                                     </StackPanel>
 
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVis}}">
