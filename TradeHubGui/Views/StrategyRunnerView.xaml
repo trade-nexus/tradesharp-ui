@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <conv:InstanceExecutionStatusToBrushConverter x:Key="StatusToBrush"/>
+        <conv:InstanceExecutionStatusToBoolConverter x:Key="StatusToBool"/>
         <conv:InstanceExecutionStatusToVisibilityConverter x:Key="ExecutionStatusToVisibility"/>
         <conv:OrderStatusToBrushConverter x:Key="OrderStatusToBrush"/>
     </UserControl.Resources>
@@ -151,20 +152,17 @@
                                 <DataGridTemplateColumn Header="Key" Width="0.3*" SortMemberPath="InstanceKey" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Padding="10,0,8,1" Margin="0,-10" Background="#0FFF" BorderThickness="9,0,0,0" 
-                                                    BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}" HorizontalAlignment="Left">
+                                            <Border Padding="10,0,8,1" Margin="0,-12" Background="#4FFF" BorderThickness="9,0,0,0" 
+                                                    BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}">
                                                 <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
                                                          FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center">
-                                                    <!--<TextBlock.Effect>
-                                                        <DropShadowEffect Color="White" ShadowDepth="0.1" BlurRadius="1" Opacity="1"/>
-                                                    </TextBlock.Effect>-->
                                                 </TextBlock>
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <!--<DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Symbol}" IsReadOnly="True"/>-->
                                 <DataGridTextColumn Header="Description" Width="0.5*" Binding="{Binding Path=Description}" IsReadOnly="False"/>
+                                <DataGridTextColumn Header="Status" Width="0.2*" Binding="{Binding Status}" IsReadOnly="True"/>
                                 <DataGridTemplateColumn Header="Actions" Width="122" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -188,12 +186,14 @@
                                                     </Button>
                                                 </Grid>
 
-                                                <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Edit instance" 
+                                                <Button Name="ButtonEditInstance" Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Edit instance" 
+                                                        IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}}"
                                                         Command="{Binding DataContext.ShowEditInstanceWindowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                     <Image Width="13" Height="13" Margin="3,2,1,2" Source="{StaticResource imgEdit}" UseLayoutRounding="True"/>
                                                 </Button>
 
                                                 <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete instance"
+                                                        IsEnabled="{Binding IsEnabled, ElementName=ButtonEditInstance}"
                                                         Command="{Binding DataContext.DeleteInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                     <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
                                                 </Button>

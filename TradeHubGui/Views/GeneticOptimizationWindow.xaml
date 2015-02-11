@@ -89,15 +89,13 @@
                             <wpfToolkitExtended:IntegerUpDown Value="{Binding Iterations}" Increment="1" Minimum="1"/>
                             <wpfToolkitExtended:IntegerUpDown Value="{Binding PopulationSize}" Increment="1" Minimum="1"/>
                         </StackPanel>
-                        <StackPanel Width="130" HorizontalAlignment="Right" VerticalAlignment="Bottom" UseLayoutRounding="True">
-                            <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
-                                Command="{Binding ShowEditInstanceWindowCommand}">
-                                <StackPanel Orientation="Horizontal" Margin="4,0">
-                                    <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgAdd}" UseLayoutRounding="True"/>
-                                    <TextBlock Text="Parameter Details" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
+                        <Button Style="{StaticResource ButtonToolBar}" Focusable="False" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                Command="{Binding ShowEditInstanceWindowCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}">
+                            <StackPanel Orientation="Horizontal" Margin="4,0">
+                                <Image Width="13" Height="13" Margin="0,0,4,0" Source="{StaticResource imgEdit}" UseLayoutRounding="True"/>
+                                <TextBlock Text="Edit parameters" />
+                            </StackPanel>
+                        </Button>
                     </DockPanel>
 
                     <DataGrid x:Name="StrategyParametersDataGrid" Margin="0,20,0,0" 
@@ -107,7 +105,7 @@
                                 IsSynchronizedWithCurrentItem="True"
                                 CanUserAddRows="False" CanUserDeleteRows="False"
                                 CanUserResizeRows="False" CanUserSortColumns="True"
-                                IsReadOnly="False"
+                                IsReadOnly="True"
                                 SelectionUnit="FullRow"
                                 AutoGenerateColumns="False"
                                 RowHeight="22">
@@ -141,7 +139,7 @@
                             IsSynchronizedWithCurrentItem="True"
                             CanUserAddRows="False" CanUserDeleteRows="False"
                             CanUserResizeRows="False" CanUserSortColumns="True"
-                            IsReadOnly="False"
+                            IsReadOnly="True"
                             SelectionUnit="FullRow"
                             AutoGenerateColumns="False"
                             RowHeight="22">

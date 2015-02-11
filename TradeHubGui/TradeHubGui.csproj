@@ -128,11 +128,13 @@
     <Compile Include="Common\DataGridRowDoubleClickHandler.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\UIHelper.cs" />
+    <Compile Include="Converters\InstanceExecutionStatusToBoolConverter.cs" />
     <Compile Include="Converters\OrderStatusToBrushConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToVisibilityConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBrushConverter.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />

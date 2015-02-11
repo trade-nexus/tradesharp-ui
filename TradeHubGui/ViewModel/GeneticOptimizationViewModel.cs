@@ -25,7 +25,7 @@ namespace TradeHubGui.ViewModel
     /// </summary>
     public class GeneticOptimizationViewModel : BaseViewModel
     {
-        private Type _type = typeof (GeneticOptimizationViewModel);
+        private Type _type = typeof(GeneticOptimizationViewModel);
 
         #region Fields
 
@@ -57,7 +57,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Execution status of Genetic Algorithm Optimization
         /// </summary>
-        private OptimizationStatus _status; 
+        private OptimizationStatus _status;
 
         /// <summary>
         /// Contains Parameter information to be used by the Strategy Instance to execute
@@ -126,10 +126,10 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _showEditPropertiesWindowCommand ?? (_showEditPropertiesWindowCommand = new RelayCommand(
-                    param => ShowEditPropertiesWindowExecute()));
+                    param => ShowEditPropertiesWindowExecute(param)));
             }
         }
-        
+
         /// <summary>
         /// Command used with 'Edit' button in Edit Instance Window
         /// </summary>
@@ -140,7 +140,7 @@ namespace TradeHubGui.ViewModel
                 return _editInstanceParametersCommand ?? (_editInstanceParametersCommand = new RelayCommand(param => EditInstanceParametersExecute(param)));
             }
         }
-        
+
         public ICommand RunGeneticOptimizationCommand
         {
             get
@@ -299,16 +299,18 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Called when "Parameter Details" button is clicked
         /// </summary>
-        private void ShowEditPropertiesWindowExecute()
+        private void ShowEditPropertiesWindowExecute(object param)
         {
+            ParameterDetails = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+            
             EditInstanceWindow window = new EditInstanceWindow();
             window.DataContext = this;
-
-            ParameterDetails = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone()); ;
-
+            window.Title = "EDIT PARAMETERS";
+            window.Tag = string.Format("Parameters for strategy {0}", _selectedStrategy.Key);
+            window.Owner = (Window)param;
             window.ShowDialog();
         }
-        
+
         /// <summary>
         /// Modifies selected Strategy Instance's Parameter Details
         /// </summary>
@@ -407,7 +409,7 @@ namespace TradeHubGui.ViewModel
 
             // Contains custom defined attributes in the given assembly
             Dictionary<int, Tuple<string, Type>> customAttributes = null;
-            
+
             // Get Custom Attributes
             if (_selectedStrategy.StrategyType != null)
             {
@@ -417,7 +419,7 @@ namespace TradeHubGui.ViewModel
                 foreach (KeyValuePair<int, Tuple<string, Type>> keyValuePair in customAttributes)
                 {
                     var parameter = new OptimizationParameterDetail();
-                    
+
                     parameter.Index = keyValuePair.Key;
                     parameter.Description = keyValuePair.Value.Item1;
                     parameter.ParameterType = keyValuePair.Value.Item2;
@@ -434,7 +436,7 @@ namespace TradeHubGui.ViewModel
         /// <param name="optimizationResult">Contains optimized parameters information</param>
         private void DisplayResult(GeneticAlgorithmResult optimizationResult)
         {
-            _currentDispatcher.Invoke(DispatcherPriority.Normal, (Action) (() =>
+            _currentDispatcher.Invoke(DispatcherPriority.Normal, (Action)(() =>
             {
                 RoundsCompleted++;
 
@@ -443,7 +445,7 @@ namespace TradeHubGui.ViewModel
                     OptimizedParameters.Add(optimizationParameterDetail);
                 }
 
-                if (RoundsCompleted==Rounds)
+                if (RoundsCompleted == Rounds)
                 {
                     Status = OptimizationStatus.Completed;
                 }
@@ -494,7 +496,7 @@ namespace TradeHubGui.ViewModel
                 if (folderPath != string.Empty)
                 {
                     lines = new List<string>();
-                    
+
                     // Create header row
                     string header = "Round";
                     foreach (var optimizationParameterDetail in _optimizationParameters)
