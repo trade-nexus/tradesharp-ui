@@ -21,11 +21,13 @@ namespace TradeHubGui.StrategyRunner.Managers
     /// <summary>
     /// Manages the optimization process (Genetic Algorithm) for a given strategy 
     /// </summary>
-    public class OptimizationManagerGeneticAlgorithm
+    public class OptimizationManagerGeneticAlgorithm : IDisposable
     {
         private readonly Type _type = typeof(OptimizationManagerGeneticAlgorithm);
 
         private AsyncClassLogger _logger = new AsyncClassLogger("OptimizationManagerGeneticAlgorithm");
+
+        private bool _disposed = false;
 
         /// <summary>
         /// Array size to be used for local arrays 
@@ -60,6 +62,7 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// </summary>
         public OptimizationManagerGeneticAlgorithm()
         {
+            // Subscribe Event
             EventSystem.Subscribe<GeneticAlgorithmParameters>(OptimizeStrategy);
         }
 
@@ -712,17 +715,46 @@ namespace TradeHubGui.StrategyRunner.Managers
             //// Publish event to UI
             //EventSystem.Publish<OptimizationResultGeneticAlgo>(result);
         }
-
-        private void Dispose()
+        
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
         {
-            Array.Clear(_populationArray, 0, _populationArray.Length);
-            Array.Clear(_ctorArgumentsArray, 0, _ctorArgumentsArray.Length);
-            Array.Clear(_fitnessFunctionArray, 0, _fitnessFunctionArray.Length);
-            for (int i = 0; i < _strategyExecutorArray.Length; i++)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
             {
-                _strategyExecutorArray[i].StopStrategy();
+                if (disposing)
+                {
+                    // Make sure event is only subscribed once
+                    EventSystem.Unsubscribe<GeneticAlgorithmParameters>(OptimizeStrategy);
+
+                    if (_populationArray != null)
+                        Array.Clear(_populationArray, 0, _populationArray.Length);
+
+                    if (_ctorArgumentsArray != null) 
+                        Array.Clear(_ctorArgumentsArray, 0, _ctorArgumentsArray.Length);
+
+                    if (_fitnessFunctionArray != null)
+                        Array.Clear(_fitnessFunctionArray, 0, _fitnessFunctionArray.Length);
+
+                    if (_strategyExecutorArray != null)
+                    {
+                        for (int i = 0; i < _strategyExecutorArray.Length; i++)
+                        {
+                            _strategyExecutorArray[i].StopStrategy();
+                        }
+                        Array.Clear(_strategyExecutorArray, 0, _strategyExecutorArray.Length);
+                    }
+                }
+                // Release unmanaged resources.
+                _disposed = true;
             }
-            Array.Clear(_strategyExecutorArray, 0, _strategyExecutorArray.Length);
         }
 
         /// <summary>

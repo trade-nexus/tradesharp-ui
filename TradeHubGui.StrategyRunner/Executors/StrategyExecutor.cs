@@ -172,7 +172,6 @@ namespace TradeHubGui.StrategyRunner.Executors
             _strategyInstance = strategyInstance;
             _strategyKey = _strategyInstance.InstanceKey;
             _strategyType = _strategyInstance.StrategyType;
-            _ctorArguments = _strategyInstance.GetParameterValues().ToArray();
 
             // Initialze Utility Classes
             _orderExecutor = new OrderExecutor(_asyncClassLogger);
@@ -209,13 +208,24 @@ namespace TradeHubGui.StrategyRunner.Executors
                 //return;
                 //// :END
 
+                bool parameterChanged = true;
+
+                // Check if any strategy parameter was changed
+                if (_ctorArguments != null)
+                {
+                    parameterChanged = _strategyInstance.ParametersChanged(_ctorArguments);
+                }
+
                 // Verify Strategy Instance
-                if (_tradeHubStrategy == null)
+                if (_tradeHubStrategy == null || parameterChanged)
                 {
                     //create DB strategy 
                     Strategy strategy = new Strategy();
                     strategy.Name = _strategyType.Name;
                     strategy.StartDateTime = DateTime.Now;
+
+                    // Get parameter values to be used
+                    _ctorArguments = _strategyInstance.GetParameterValues();
 
                     // Get new strategy instance
                     var strategyInstance = StrategyHelper.CreateStrategyInstance(_strategyType, _ctorArguments);
@@ -525,6 +535,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             orderDetails.Side = execution.Fill.ExecutionSide;
             orderDetails.Type = execution.Fill.ExecutionType.ToString();
             orderDetails.Status = execution.Order.OrderStatus;
+            orderDetails.Time = execution.Fill.ExecutionDateTime;
 
             // Update UI
             AddOrderDetails(orderDetails);

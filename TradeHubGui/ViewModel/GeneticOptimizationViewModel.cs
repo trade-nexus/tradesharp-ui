@@ -111,6 +111,10 @@ namespace TradeHubGui.ViewModel
             _optimizationParameters = new ObservableCollection<OptimizationParameterDetail>();
             _optimizedParameters = new ObservableCollection<OptimizationParameterDetail>();
 
+            // Make sure event is only subscribed once
+            EventSystem.Unsubscribe<GeneticAlgorithmResult>(DisplayResult);
+
+            // Subscribe event
             EventSystem.Subscribe<GeneticAlgorithmResult>(DisplayResult);
         }
 
@@ -357,13 +361,17 @@ namespace TradeHubGui.ViewModel
         {
             //TODO: make condition here (when the window can be closed, or return true if window can be closed anytime, but in that case just make sure to cancel execution if user click Close button)
 
-            return false;
+            return true;
         }
 
+        /// <summary>
+        /// Called when window 'Close' is hit
+        /// </summary>
+        /// <returns></returns>
         private object CloseGeneticOptimizationWindowExecute()
         {
-            //TODO: make implementation (make sure to dispose this ViewModel on close, so this class should be disposable)
-            throw new NotImplementedException();
+            _managerGeneticAlgorithm.Dispose();
+            return null;
         }
 
         #endregion
@@ -529,14 +537,6 @@ namespace TradeHubGui.ViewModel
                             tempItemCount = 0;
                         }
                     }
-
-                    //for (int i = 0; i < _parametersInfo.Count; i += 5)
-                    //{
-                    //    string temp = string.Format("{0},{1},{2},{3},{4},{5}", tempRound++, _parametersInfo[i].ParameterValue,
-                    //        _parametersInfo[i + 1].ParameterValue, _parametersInfo[i + 2].ParameterValue,
-                    //        _parametersInfo[i + 3].ParameterValue, _parametersInfo[i + 4].ParameterValue);
-                    //    lines.Add(temp);
-                    //}
 
                     // Create file path
                     string path = folderPath + "\\" + "GA-Results.csv";

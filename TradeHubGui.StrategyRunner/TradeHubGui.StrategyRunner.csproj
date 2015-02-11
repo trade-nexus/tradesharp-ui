@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Executors\StrategyExecutorGeneticAlgorithm.cs" />
+    <Compile Include="Managers\OptimizationManagerBruteForce.cs" />
     <Compile Include="Managers\OptimizationManagerGeneticAlgorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Representations\ExecutionRepresentation.cs" />

@@ -3,12 +3,14 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                  xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+                 xmlns:conv="clr-namespace:TradeHubGui.Converters"
                  xmlns:views="clr-namespace:TradeHubGui.Views"
+                 xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                  GlowBrush="Silver"
                  ShowInTaskbar="True"
                  WindowStartupLocation="CenterScreen"
                  Title="Genetic Optimization"
-                 Width="900"
+                 Width="980"
                  Height="600"
                  MinWidth="500" 
                  MinHeight="500"
@@ -19,6 +21,15 @@
             <Image Height="20" Width="20" Source="{StaticResource imgGenetic}"/>
         </DataTemplate>
     </mah:MetroWindow.IconTemplate>
+    
+    <mah:MetroWindow.Resources>
+        <conv:OptimizationExecutionStatusToBrushConverter x:Key="StatusToBrush"/>
+    </mah:MetroWindow.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction  Command="{Binding CloseGeneticOptimizationWindowCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -62,8 +73,11 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="10,4,20,4">
                         <TextBlock Text="Execution Status" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding Status, FallbackValue=n/a}"
-                                FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
+                        <Border Padding="0,0,0,0" Margin="0,0,-9,0" Background="#4FFF" BorderThickness="0,0,9,0" 
+                                                    BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}">
+                            <TextBlock Text="{Binding Status, FallbackValue=n/a}"
+                                    FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
+                        </Border>
                     </StackPanel>
                 </StackPanel>
             </DockPanel>
@@ -154,7 +168,7 @@
 
 
         <StackPanel Grid.Row="1" Margin="14,8,14,12" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button DockPanel.Dock="Right" Content="Close" MinWidth="70" Margin="3" Command="{Binding CloseGeneticOptimizationWindowCommand}"/>
+            <Button Visibility="Hidden" DockPanel.Dock="Right" Content="Close" MinWidth="70" Margin="3" Command="{Binding CloseGeneticOptimizationWindowCommand}"/>
         </StackPanel>
     </Grid>
 </mah:MetroWindow>
