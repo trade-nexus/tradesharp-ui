@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TradeHubGui.ViewModel;
 using TradeHubGui.Views;
 
 
@@ -29,6 +30,7 @@ namespace TradeHubGui
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new BaseViewModel();
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

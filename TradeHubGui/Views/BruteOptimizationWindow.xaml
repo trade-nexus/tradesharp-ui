@@ -40,7 +40,7 @@
             <Border Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource ContentBorderStyle}" Margin="4"/>
 
             <DockPanel>
-                <Button DockPanel.Dock="Right" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20"
+                <Button DockPanel.Dock="Right" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20,40,20,0" VerticalAlignment="Top"
                         Command="{Binding RunBruteOptimizationCommand}">
                     <StackPanel Orientation="Horizontal">
                         <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
@@ -82,7 +82,7 @@
             <GridSplitter Grid.Column="1" Grid.RowSpan="2" ResizeDirection="Columns"/>
 
 
-            <Button Grid.Row="0" Grid.Column="2" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20" HorizontalAlignment="Right"
+            <Button Grid.Row="0" Grid.Column="2" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20,40,20,0" HorizontalAlignment="Right" VerticalAlignment="Top"
                     Command="{Binding ExportBruteOptimizationCommand}">
                 <StackPanel Orientation="Horizontal">
                     <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}"/>
