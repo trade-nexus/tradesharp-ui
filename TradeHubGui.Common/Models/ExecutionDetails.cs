@@ -19,10 +19,25 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         private ObservableCollection<OrderDetails> _orderDetailsList;
 
-        public string _key;
-        public int _executed;
-        public int _buyCount;
-        public int _sellCount;
+        private string _key;
+        private int _executed;
+        private int _buyCount;
+        private int _sellCount;
+
+        /// <summary>
+        /// Avg price for all the Buy orders till now
+        /// </summary>
+        private decimal _avgBuyPrice;
+
+        /// <summary>
+        /// Avg Price for all the Sell orders till now
+        /// </summary>
+        private decimal _avgSellPrice;
+
+        /// <summary>
+        /// Profit and Loss for the traded shares
+        /// </summary>
+        private decimal _profit;
 
         #endregion
 
@@ -93,6 +108,45 @@ namespace TradeHubGui.Common.Models
             }
         }
 
+        /// <summary>
+        /// Avg price for all the Buy orders till now
+        /// </summary>
+        public decimal AvgBuyPrice
+        {
+            get { return _avgBuyPrice; }
+            set
+            {
+                _avgBuyPrice = value;
+                OnPropertyChanged("AvgBuyPrice");
+            }
+        }
+
+        /// <summary>
+        /// Avg Price for all the Sell orders till now
+        /// </summary>
+        public decimal AvgSellPrice
+        {
+            get { return _avgSellPrice; }
+            set
+            {
+                _avgSellPrice = value;
+                OnPropertyChanged("AvgSellPrice");
+            }
+        }
+
+        /// <summary>
+        /// Profitl and Loss for the trades shares
+        /// </summary>
+        public decimal Profit
+        {
+            get { return _profit; }
+            set
+            {
+                _profit = value;
+                OnPropertyChanged("Profit");
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -119,21 +173,32 @@ namespace TradeHubGui.Common.Models
                 {
                     if (BuyCount < SellCount)
                     {
-                        BuyCount += orderDetails.Quantity;
+                        AvgBuyPrice = ((orderDetails.Price * orderDetails.Quantity) + (AvgBuyPrice * BuyCount))
+                                                      / (BuyCount += orderDetails.Quantity);
+                        //BuyCount += orderDetails.Quantity;
                     }
                     else
                     {
-                        SellCount += orderDetails.Quantity;
+                        AvgSellPrice = ((orderDetails.Price * orderDetails.Quantity) + (AvgSellPrice * SellCount))
+                                                      / (SellCount += orderDetails.Quantity);
+                        //SellCount += orderDetails.Quantity;
                     }
                 }
                 else if (orderDetails.Side.Equals(OrderSide.BUY))
                 {
-                    BuyCount += orderDetails.Quantity;
+                    AvgBuyPrice = ((orderDetails.Price * orderDetails.Quantity) + (AvgBuyPrice * BuyCount))
+                                                      / (BuyCount += orderDetails.Quantity);
+                    //BuyCount += orderDetails.Quantity;
                 }
                 else
                 {
-                    SellCount += orderDetails.Quantity;
+                    AvgSellPrice = ((orderDetails.Price * orderDetails.Quantity) + (AvgSellPrice * SellCount))
+                                                      / (SellCount += orderDetails.Quantity);
+                    //SellCount += orderDetails.Quantity;
                 }
+
+                // Update PnL as per current executions
+                Profit = (AvgSellPrice*SellCount) - (AvgBuyPrice*BuyCount);
             }
 
             // Add to local Map
@@ -141,6 +206,7 @@ namespace TradeHubGui.Common.Models
         }
 
         #region INotifyPropertyChanged members
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
@@ -150,6 +216,7 @@ namespace TradeHubGui.Common.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
         #endregion
     }
 }

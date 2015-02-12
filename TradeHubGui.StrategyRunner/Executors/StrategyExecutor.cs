@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Disruptor;
+using Spring.Context.Support;
 using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
@@ -44,7 +45,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <summary>
         /// Responsible for providing order executions in backtesting
         /// </summary>
-        private OrderExecutor _orderExecutor;
+        private IOrderExecutor _orderExecutor;
 
         /// <summary>
         /// Manages order requests from strategy in backtesting
@@ -172,9 +173,11 @@ namespace TradeHubGui.StrategyRunner.Executors
             _strategyInstance = strategyInstance;
             _strategyKey = _strategyInstance.InstanceKey;
             _strategyType = _strategyInstance.StrategyType;
+            _ctorArguments = _strategyInstance.GetParameterValues();
 
             // Initialze Utility Classes
-            _orderExecutor = new OrderExecutor(_asyncClassLogger);
+            //_orderExecutor = new OrderExecutor(_asyncClassLogger);
+            _orderExecutor = ContextRegistry.GetContext()["OrderExecutor"] as IOrderExecutor;
             _marketDataListener = new MarketDataListener(_asyncClassLogger);
             _orderRequestListener = new OrderRequestListener(_orderExecutor, _asyncClassLogger);
 
@@ -214,6 +217,13 @@ namespace TradeHubGui.StrategyRunner.Executors
                 if (_ctorArguments != null)
                 {
                     parameterChanged = _strategyInstance.ParametersChanged(_ctorArguments);
+
+                    // Get updated values to be used
+                    if (parameterChanged)
+                    {
+                        // Get parameter values to be used
+                        _ctorArguments = _strategyInstance.GetParameterValues();
+                    }
                 }
 
                 // Verify Strategy Instance
@@ -468,6 +478,11 @@ namespace TradeHubGui.StrategyRunner.Executors
                         _strategyInstance.Status = StrategyStatus.Executed;
                     }));
                 }
+            }
+
+            if (_statusChanged!=null)
+            {
+                _statusChanged(_strategyKey, _strategyInstance.Status);
             }
         }
 

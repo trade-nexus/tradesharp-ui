@@ -10,21 +10,30 @@ using TradeHub.Common.Core.DomainModels;
 using TradeHub.Common.Core.Utility;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Executors;
 
 namespace TradeHubGui.StrategyRunner.Managers
 {
-    public class OptimizationManagerBruteForce
+    public class OptimizationManagerBruteForce : IDisposable
     {
         private Type _type = typeof(OptimizationManagerBruteForce);
+
         private AsyncClassLogger _asyncClassLogger;
+
+        private bool _disposed = false;
 
         /// <summary>
         /// Contains ctor arguments to be used for multiple iteration
         /// </summary>
         private List<object[]> _ctorArguments;
+
+        /// <summary>
+        /// Holds reference to the Parameters information provided for Brute force optimization
+        /// </summary>
+        private BruteForceParameters _optimizationParameters;
 
         /// <summary>
         /// Keeps tracks of all the running strategies
@@ -71,13 +80,20 @@ namespace TradeHubGui.StrategyRunner.Managers
         {
             try
             {
+                // Save instance 
+                _optimizationParameters = optimizationParameters;
+
                 if (_asyncClassLogger.IsInfoEnabled)
                 {
                     _asyncClassLogger.Info("Getting argument combinations", _type.FullName, "StartOptimization");
                 }
+                
+                // Change Status to indicate on UI
+                _optimizationParameters.Status = OptimizationStatus.Working;
 
                 // Clear all previous information
                 _strategiesCollection.Clear();
+                _ctorArguments.Clear();
 
                 // Get Parameter values to be used in the Constructor
                 object[] ctorArguments = optimizationParameters.GetParameterValues();
@@ -101,20 +117,38 @@ namespace TradeHubGui.StrategyRunner.Managers
 
                     for (int i = 0; i < ctorArgumentValues.Length; i++)
                     {
-                        instanceParameterDetails.Add(_parmatersDetails[i].Description, _parmatersDetails[i]);
+                        // Create new parameter details to be when creating Strategy Instance object
+                        ParameterDetail tempParameterDetail = new ParameterDetail(_parmatersDetails[i].ParameterType, ctorArgumentValues[i]);
+
+                        instanceParameterDetails.Add(_parmatersDetails[i].Description, tempParameterDetail);
                     }
 
-                    StrategyInstance instance = new StrategyInstance(key, instanceParameterDetails,
-                        optimizationParameters.StrategyType);
+                    // Create Strategy Instance object
+                    var instance = new StrategyInstance(key, instanceParameterDetails, optimizationParameters.StrategyType);
 
                     // Save Strategy details in new Strategy Executor object
-                    StrategyExecutor strategyExecutor = new StrategyExecutor(instance);
+                    var strategyExecutor = new StrategyExecutor(instance);
 
                     // Register Event
                     strategyExecutor.StatusChanged += OnStrategyExecutorStatusChanged;
 
                     // Add to local map
                     _strategiesCollection.AddOrUpdate(key, strategyExecutor, (ky, value) => strategyExecutor);
+
+                    StringBuilder parametersInfo = new StringBuilder();
+                    foreach (object ctorArgument in strategyExecutor.CtorArguments)
+                    {
+                        parametersInfo.Append(ctorArgument.ToString());
+                        parametersInfo.Append(" | ");
+                    }
+
+                    // Create new object to be used with Event Aggregator
+                    var optimizationStatistics = new OptimizationStatistics(strategyExecutor.StrategyKey);
+                    optimizationStatistics.Description = parametersInfo.ToString();
+                    optimizationStatistics.ExecutionDetails = instance.ExecutionDetails;
+
+                    // Raise event to Bind statistics to UI and will be updated as each instance is executed
+                    EventSystem.Publish<OptimizationStatistics>(optimizationStatistics);
                 }
 
                 // Start executing each instance
@@ -149,6 +183,11 @@ namespace TradeHubGui.StrategyRunner.Managers
                     {
                         strategyExecutor.ExecuteStrategy();
                     }
+                }
+                else
+                {
+                    // Change Status to indicate on UI
+                    _optimizationParameters.Status = OptimizationStatus.Completed;
                 }
                 // Execute each instance on a separate thread
                 // Parallel.ForEach(_strategiesCollection.Values,
@@ -268,19 +307,14 @@ namespace TradeHubGui.StrategyRunner.Managers
                             parametersInfo.Append(" | ");
                         }
 
-                        //// Create new object to be used with Event Aggregator
-                        //var optimizationStatistics =
-                        //    new OptimizationStatistics(strategyExecutor.Statistics, parametersInfo.ToString());
+                        // Unhook Event
+                        strategyExecutor.StatusChanged -= OnStrategyExecutorStatusChanged;
 
-                        //// Unhook Event
-                        //strategyExecutor.StatusChanged -= OnStrategyExecutorStatusChanged;
+                        // Stop Strategy
+                        strategyExecutor.StopStrategy();
 
-                        //// Stop Strategy
-                        //strategyExecutor.StopStrategy();
-                        //EventSystem.Publish<OptimizationStatistics>(optimizationStatistics);
-
-                        //// Close all connections
-                        //strategyExecutor.Close();
+                        // Close all connections
+                        strategyExecutor.Close();
 
                         // Execute next iteration
                         StartStrategyExecution();
@@ -313,6 +347,32 @@ namespace TradeHubGui.StrategyRunner.Managers
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Make sure event is only subscribed once
+                    EventSystem.Unsubscribe<BruteForceParameters>(StartOptimization);
+
+                    _ctorArguments.Clear();
+                    _strategiesCollection.Clear();
+                }
+                // Release unmanaged resources.
+                _disposed = true;
+            }
         }
     }
 }

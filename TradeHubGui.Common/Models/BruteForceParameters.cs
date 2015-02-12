@@ -6,12 +6,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TradeHub.StrategyEngine.Utlility.Services;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.Common.Models
 {
     public class BruteForceParameters : INotifyPropertyChanged
     {
+        /// <summary>
+        /// Indicates brute force working status
+        /// </summary>
+        private OptimizationStatus _status;
+
         /// <summary>
         /// Strategy Type containing TradeHubStrategy
         /// </summary>
@@ -53,6 +59,19 @@ namespace TradeHubGui.Common.Models
             }
         }
 
+        /// <summary>
+        /// Indicates brute force working status
+        /// </summary>
+        public OptimizationStatus Status
+        {
+            get { return _status; }
+            set
+            {
+                _status = value;
+                OnPropertyChanged("Status");
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -61,6 +80,7 @@ namespace TradeHubGui.Common.Models
         /// <param name="strategyType">Strategy Type containing TradeHubStrategy</param>
         public BruteForceParameters(Type strategyType)
         {
+            _status = OptimizationStatus.None;
             _strategyType = strategyType;
             _parameterDetails = new ObservableCollection<BruteForceParameterDetail>();
         }
