@@ -339,7 +339,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ExportGeneticOptimizationExecute()
         {
-            ExportGeneticAlgorithmReuslts();
+            ExportGeneticAlgorithmResults();
         }
 
         private bool RunGeneticOptimizationCanExecute()
@@ -482,9 +482,9 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// dump the results to file
+        /// Dump the results to file
         /// </summary>
-        private void ExportGeneticAlgorithmReuslts()
+        private void ExportGeneticAlgorithmResults()
         {
             try
             {
@@ -506,7 +506,7 @@ namespace TradeHubGui.ViewModel
                     lines = new List<string>();
 
                     // Create header row
-                    string header = "Round";
+                    string header = "Property Info,Bought,Sold,Avg Buy Price,Avg Sell Price,Profit";
                     foreach (var optimizationParameterDetail in _optimizationParameters)
                     {
                         header += "," + optimizationParameterDetail.Description;
@@ -539,7 +539,7 @@ namespace TradeHubGui.ViewModel
                     }
 
                     // Create file path
-                    string path = folderPath + "\\" + "GA-Results.csv";
+                    string path = folderPath + "\\" + "BruteForce-Results.csv";
 
                     // Write data
                     File.WriteAllLines(path, lines);

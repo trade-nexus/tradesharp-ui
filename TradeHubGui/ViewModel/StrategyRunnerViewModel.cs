@@ -566,7 +566,7 @@ namespace TradeHubGui.ViewModel
 
             BruteOptimizationWindow window = new BruteOptimizationWindow();
             window.DataContext = new BruteOptimizationViewModel(SelectedStrategy);
-            window.Tag = string.Format("{0}", SelectedStrategy.Key);
+            window.Tag = string.Format("{0}", SelectedStrategy.Name);
             window.Show();
         }
 

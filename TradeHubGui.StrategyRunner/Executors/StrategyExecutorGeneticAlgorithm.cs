@@ -277,7 +277,7 @@ namespace TradeHubGui.StrategyRunner.Executors
                 _tradeHubStrategy.SetParameters(array);
 
                 // Clear Orders from previous iterations
-                _orderExecutor.ClearOrderMaps();
+                _orderExecutor.Clear();
 
                 // Start Strategy Execution
                 _tradeHubStrategy.Run();
