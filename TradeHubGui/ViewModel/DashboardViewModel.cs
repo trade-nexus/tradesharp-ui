@@ -78,28 +78,12 @@ namespace TradeHubGui.ViewModel
 
         private void ShowDataApiConfigurationExecute()
         {
-            ToggleFlyout(1);
+            ToggleFlyout(0);
         }
 
         private void ShowOrderApiConfigurationExecute()
         {
-            ToggleFlyout(2);
+            ToggleFlyout(1);
         }
-
-        /// <summary>
-        /// Shows or Hide flayout window
-        /// </summary>
-        /// <param name="index">flayout index</param>
-        private void ToggleFlyout(int index)
-        {
-            var flyout = MainWindow.Flyouts.Items[index] as Flyout;
-            if (flyout == null)
-            {
-                return;
-            }
-
-            flyout.IsOpen = !flyout.IsOpen;
-        }
-
     }
 }

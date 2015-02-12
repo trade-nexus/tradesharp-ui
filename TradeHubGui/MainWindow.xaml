@@ -113,10 +113,34 @@
                     </TextBlock>
                 </Grid>
             </mah:Flyout>
+
+            <mah:Flyout Header="" Position="Bottom" Theme="Adapt" IsModal="False" Background="WhiteSmoke">
+                <Grid Margin="14,10,22,10" Height="212">
+                    <DockPanel Background="White">
+                        <TextBlock DockPanel.Dock="Top" Margin="22,10,20,10" Text="LOG" Style="{StaticResource HeaderTextBlockStyle}"/>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl Margin="2" ItemsSource="{Binding Logs}">
+                                <ItemsControl.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="0"/>
+                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                        <Setter Property="FontSize" Value="11"/>
+                                    </Style>
+                                </ItemsControl.Resources>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </DockPanel>
+                </Grid>
+            </mah:Flyout>
         </mah:FlyoutsControl>
     </mah:MetroWindow.Flyouts>
 
-    <Grid x:Name="LayoutRoot" >
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -164,6 +188,7 @@
             </ListBoxItem>
         </ListBox>
 
+
         <Border Grid.Row="0" Grid.ColumnSpan="2" Height="50" Background="{StaticResource BaseBrush0}">
             <!--<Controls:TransitioningContentControl VerticalAlignment="Top" Margin="90,0,0,0"
                     Transition="Right" Content="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox}"
@@ -175,6 +200,16 @@
         <mah:TransitioningContentControl Grid.Row="1" Grid.Column="1" 
                                         Transition="Default" RestartTransitionOnContentChange="True" 
                                         Content="{Binding SelectedItem.Tag, ElementName=NavigationListBox}"/>
+
+        <Button Grid.RowSpan="3" Grid.ColumnSpan="2" Style="{StaticResource ButtonToolBar}" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                ToolTip="Show logs" Width="46" Height="46" Margin="4,4,4,40"
+                Command="{Binding ShowLogsCommand}">
+            <Image Width="32" Height="32" Source="{StaticResource imgLog}" Margin="4" UseLayoutRounding="True">
+                <Image.Effect>
+                    <DropShadowEffect Opacity="0.3" ShadowDepth="0.1"/>
+                </Image.Effect>
+            </Image>
+        </Button>
 
         <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource BaseBrush0}" Height="20">
             <!--<DockPanel Margin="2,2,20,2" VerticalAlignment="Center">

@@ -152,7 +152,7 @@
                                 <DataGridTemplateColumn Header="Key" Width="0.3*" SortMemberPath="InstanceKey" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Padding="10,0,8,1" Margin="0,-12" Background="#4FFF" BorderThickness="9,0,0,0" 
+                                            <Border Padding="10,0,8,1" Margin="0,-12" Background="#0FFF" BorderThickness="9,0,0,0" 
                                                     BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}">
                                                 <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
                                                          FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center">
