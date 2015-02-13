@@ -200,7 +200,7 @@
                                                 </Button>
 
                                                 <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete instance"
-                                                        IsEnabled="{Binding IsEnabled, ElementName=ButtonEditInstance}"
+                                                        IsEnabled="True"
                                                         Command="{Binding DataContext.DeleteInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                     <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
                                                 </Button>

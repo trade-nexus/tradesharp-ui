@@ -83,6 +83,8 @@
     <Color x:Key="RedColor" PresentationOptions:Freeze="True">#FFCF2C3F</Color>
     <Color x:Key="BlueColor" PresentationOptions:Freeze="True">#ff4f8cbb</Color>
     <Color x:Key="GreenColor" PresentationOptions:Freeze="True">#FF3AA577</Color>
+    <Color x:Key="LightGreenColor" PresentationOptions:Freeze="True">#FF7FFF00</Color>
+    <Color x:Key="MediumTurquoiseColor" PresentationOptions:Freeze="True">#FF48D1CC</Color>
     <Color x:Key="OrangeColor" PresentationOptions:Freeze="True">#FFD78E2C</Color>
     <Color x:Key="YellowColor" PresentationOptions:Freeze="True">#FFF1CA54</Color>
     <Color x:Key="GrayColor" PresentationOptions:Freeze="True">#FFA0A0A0</Color>
@@ -90,6 +92,8 @@
     <SolidColorBrush x:Key="RedBrush" Color="{StaticResource RedColor}" PresentationOptions:Freeze="True" />
     <SolidColorBrush x:Key="BlueBrush" Color="{StaticResource BlueColor}" PresentationOptions:Freeze="True" />
 	<SolidColorBrush x:Key="GreenBrush" Color="{StaticResource GreenColor}" PresentationOptions:Freeze="True" />
+	<SolidColorBrush x:Key="LightGreenBrush" Color="{StaticResource LightGreenColor}" PresentationOptions:Freeze="True" />
+    <SolidColorBrush x:Key="MediumTurquoiseBrush" Color="{StaticResource MediumTurquoiseColor}" PresentationOptions:Freeze="True" />
     <SolidColorBrush x:Key="OrangeBrush" Color="{StaticResource OrangeColor}" PresentationOptions:Freeze="True" />
     <SolidColorBrush x:Key="YellowBrush" Color="{StaticResource YellowColor}" PresentationOptions:Freeze="True" />
     <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}" PresentationOptions:Freeze="True" />
