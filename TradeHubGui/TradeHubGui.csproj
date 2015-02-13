@@ -134,6 +134,8 @@
     <Compile Include="Converters\OrderStatusToBrushConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToVisibilityConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBrushConverter.cs" />
+    <Compile Include="TemplateSelectors\DataGridEndValuesTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\DataGridStartValuesTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />

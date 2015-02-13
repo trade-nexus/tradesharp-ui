@@ -12,7 +12,7 @@ namespace TradeHubGui.Converters
     public class OptimizationExecutionStatusToBrushConverter : IValueConverter
     {
         /// <summary>
-        /// Converts instance execution status to SolidColorBrush for indication of status
+        /// Converts optimization execution status to SolidColorBrush for indication of status
         /// </summary>
         /// <param name="value">StrategyStatus</param>
         /// <param name="targetType">not used</param>
@@ -28,11 +28,11 @@ namespace TradeHubGui.Converters
                 // Return certain brush depending on StrategyStatus
                 if (status.Equals(OptimizationStatus.Working))
                 {
-                    return Application.Current.Resources["BlueBrush"];
+                    return Application.Current.Resources["OrangeBrush"];
                 }
                 else if (status.Equals(OptimizationStatus.Completed))
                 {
-                    return Application.Current.Resources["GreenBrush"];
+                    return Application.Current.Resources["BlueBrush"];
                 }
                 else if (status.Equals(OptimizationStatus.Stopped))
                 {
