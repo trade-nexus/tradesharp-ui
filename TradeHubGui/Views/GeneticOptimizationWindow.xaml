@@ -159,14 +159,13 @@
                                 IsSynchronizedWithCurrentItem="True"
                                 CanUserAddRows="False" CanUserDeleteRows="False"
                                 CanUserResizeRows="False" CanUserSortColumns="True"
-                                IsReadOnly="True"
+                                IsReadOnly="False"
                                 SelectionUnit="FullRow"
                                 AutoGenerateColumns="False"
                                 RowHeight="24">
-
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Index" Width="0.4*" Binding="{Binding Path=Index}" />
-                            <DataGridTextColumn Header="Description" Width="0.7*" Binding="{Binding Path=Description}" />
+                            <DataGridTextColumn Header="Index" Width="0.4*" Binding="{Binding Path=Index}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Description" Width="0.7*" Binding="{Binding Path=Description}" IsReadOnly="True"/>
                             <DataGridTemplateColumn Header="Start value" Width="0.4*">
                                 <DataGridTemplateColumn.CellTemplateSelector>
                                     <templateSelectors:DataGridStartValuesTemplateSelector

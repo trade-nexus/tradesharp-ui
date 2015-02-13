@@ -28,7 +28,7 @@ namespace TradeHubGui.Converters
                 // Return certain brush depending on StrategyStatus
                 if (status.Equals(OptimizationStatus.Working))
                 {
-                    return Application.Current.Resources["OrangeBrush"];
+                    return Application.Current.Resources["GreenBrush"];
                 }
                 else if (status.Equals(OptimizationStatus.Completed))
                 {

@@ -344,9 +344,7 @@ namespace TradeHubGui.ViewModel
 
         private bool RunGeneticOptimizationCanExecute()
         {
-            //TODO: make condition here if necessary (if no condition needed, just return true)
-
-            return true;
+            return CheckValidOptimizationParameterValues();
         }
 
         /// <summary>
@@ -389,7 +387,7 @@ namespace TradeHubGui.ViewModel
 
             var optimizationParametersDetail = new SortedDictionary<int, OptimizationParameterDetail>();
 
-            foreach (var optimizationParameterDetail in _optimizationParameters)
+            foreach (var optimizationParameterDetail in OptimizationParameters)
             {
                 optimizationParametersDetail.Add(optimizationParameterDetail.Index, optimizationParameterDetail);
             }
@@ -549,6 +547,33 @@ namespace TradeHubGui.ViewModel
             {
                 Logger.Error(exception, _type.FullName, "ExportGeneticAlgoReuslts");
             }
+        }
+
+        /// <summary>
+        /// Performs some basic checks to see if valid Optimization parameter values are provided
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckValidOptimizationParameterValues()
+        {
+            if (_optimizationParameters.Count==0)
+                return false;
+
+            foreach (var optimizationParameterDetail in _optimizationParameters)
+            {
+                if (optimizationParameterDetail.StartValue.Equals(default(double)))
+                    return false;
+
+                if (optimizationParameterDetail.EndValue.Equals(default(double)))
+                    return false;
+
+                if (optimizationParameterDetail.StartValue.Equals(optimizationParameterDetail.EndValue))
+                    return false;
+
+                if (optimizationParameterDetail.EndValue < optimizationParameterDetail.StartValue)
+                    return false;
+            }
+
+            return true;
         }
     }
 }

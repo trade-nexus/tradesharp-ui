@@ -42,11 +42,11 @@ namespace TradeHubGui.Converters
                 }
                 else if (status.Equals(OrderStatus.PARTIALLY_EXECUTED))
                 {
-                    return Application.Current.Resources["OrangeBrush"];
+                    return Application.Current.Resources["MediumTurquoiseBrush"];
                 }
                 else if (status.Equals(OrderStatus.OPEN))
                 {
-                    return Application.Current.Resources["BlueBrush"];
+                    return Application.Current.Resources["OrangeBrush"];
                 }
                 else if (status.Equals(OrderStatus.REJECTED))
                 {

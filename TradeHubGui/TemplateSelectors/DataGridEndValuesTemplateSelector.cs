@@ -21,15 +21,15 @@ namespace TradeHubGui.TemplateSelectors
 
             if (detail != null)
             {
-                if (detail.EndValue.GetType() == typeof(int))
+                if (detail.StartValue.GetType() == typeof(int))
                 {
                     return EndValueIntegerTemplate;
                 }
-                else if (detail.EndValue.GetType() == typeof(uint))
+                else if (detail.StartValue.GetType() == typeof(uint))
                 {
                     return EndValueUnsignedIntegerTemplate;
                 }
-                else if (detail.EndValue.GetType() == typeof(decimal) || detail.EndValue.GetType() == typeof(float) || detail.EndValue.GetType() == typeof(double))
+                else if (detail.StartValue.GetType() == typeof(decimal) || detail.StartValue.GetType() == typeof(float) || detail.StartValue.GetType() == typeof(double))
                 {
                     return EndValueDecimalTemplate;
                 }
