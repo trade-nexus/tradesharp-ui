@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:conv="clr-namespace:TradeHubGui.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="700" d:DesignWidth="1200"
              Tag="STRATEGY RUNNER">
 
     <UserControl.Resources>
@@ -155,14 +155,21 @@
                                             <Border Padding="10,0,8,1" Margin="0,-12" Background="#0FFF" BorderThickness="9,0,0,0" 
                                                     BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}">
                                                 <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
-                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center">
-                                                </TextBlock>
+                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center"/>
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Description" Width="0.5*" Binding="{Binding Path=Description}" IsReadOnly="False"/>
-                                <DataGridTextColumn Header="Status" Width="0.2*" Binding="{Binding Status}" IsReadOnly="True"/>
+                                <DataGridTemplateColumn Header="Status" Width="0.2*" IsReadOnly="True">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource StatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Status}" Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTemplateColumn Header="Actions" Width="122" IsReadOnly="True">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -172,7 +179,7 @@
                                                             Command="{Binding DataContext.RunInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                             Visibility="{Binding Status, Converter={StaticResource ExecutionStatusToVisibility}}">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStartGreen}"/>
+                                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
                                                             <TextBlock Text="Start"/>
                                                         </StackPanel>
                                                     </Button>
@@ -180,7 +187,7 @@
                                                             Command="{Binding DataContext.StopInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                             Visibility="{Binding Status, Converter={StaticResource ExecutionStatusToVisibility}, ConverterParameter=Invert}">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStopRed}"/>
+                                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
                                                             <TextBlock Text="Stop"/>
                                                         </StackPanel>
                                                     </Button>

@@ -24,10 +24,6 @@ namespace TradeHubGui.TemplateSelectors
                 {
                     return element.FindResource("StringDataTemplate") as DataTemplate;
                 }
-                else if (pair.Value.ParameterType == typeof(decimal))
-                {
-                    return element.FindResource("DecimalDataTemplate") as DataTemplate;
-                }
                 else if (pair.Value.ParameterType == typeof(int))
                 {
                     return element.FindResource("IntegerDataTemplate") as DataTemplate;
@@ -36,13 +32,13 @@ namespace TradeHubGui.TemplateSelectors
                 {
                     return element.FindResource("UnsignedIntegerDataTemplate") as DataTemplate;
                 }
-                else if (pair.Value.ParameterType == typeof(float))
+                else if (pair.Value.ParameterType == typeof(float) || pair.Value.ParameterType == typeof(decimal))
                 {
                     return element.FindResource("DecimalDataTemplate") as DataTemplate;
                 }
             }
 
-            return null;
+            return base.SelectTemplate(item, container);
         }
     }
 }

@@ -81,9 +81,9 @@
 	<Color x:Key="DisabledColor" PresentationOptions:Freeze="True">Gray</Color>
 
     <Color x:Key="RedColor" PresentationOptions:Freeze="True">#FFCF2C3F</Color>
-    <Color x:Key="BlueColor" PresentationOptions:Freeze="True">#FF3D729B</Color>
+    <Color x:Key="BlueColor" PresentationOptions:Freeze="True">#ff4f8cbb</Color>
     <Color x:Key="GreenColor" PresentationOptions:Freeze="True">#FF3AA577</Color>
-    <Color x:Key="OrangeColor" PresentationOptions:Freeze="True">#ffd98413</Color>
+    <Color x:Key="OrangeColor" PresentationOptions:Freeze="True">#FFD78E2C</Color>
     <Color x:Key="YellowColor" PresentationOptions:Freeze="True">#FFF1CA54</Color>
     <Color x:Key="GrayColor" PresentationOptions:Freeze="True">#FFA0A0A0</Color>
 	
