@@ -114,11 +114,13 @@
                 </Grid>
             </mah:Flyout>
 
-            <mah:Flyout Header="" Position="Bottom" Theme="Adapt" IsModal="False" Background="WhiteSmoke">
-                <Grid Margin="14,10,22,10" Height="212">
-                    <DockPanel Background="White">
-                        <TextBlock DockPanel.Dock="Top" Margin="22,10,20,10" Text="LOG" Style="{StaticResource HeaderTextBlockStyle}"/>
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <mah:Flyout Header="" Position="Bottom" Theme="Adapt" IsModal="False" Background="#DFEEEEEE">
+                <Grid Height="150">
+                    <DockPanel Margin="-20,0,0,0">
+                        <Border DockPanel.Dock="Top" Background="{StaticResource BaseBrush0}" Height="20">
+                            <TextBlock Margin="7,0" Text="LOG" Foreground="White" VerticalAlignment="Center"/>
+                        </Border>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
                             <ItemsControl Margin="2" ItemsSource="{Binding Logs}">
                                 <ItemsControl.Resources>
                                     <Style TargetType="TextBlock">
