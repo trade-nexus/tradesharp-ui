@@ -153,6 +153,7 @@
                     <Grid Grid.IsSharedSizeScope="True">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" MinHeight="120"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
@@ -170,10 +171,13 @@
                             <ComboBox Grid.Column="1" Name="MarketDataProvidersComboBox" SelectedItem="{Binding SelectedMarketDataProvider}"
                                       ItemsSource="{Binding MarketDataProviders}" DisplayMemberPath="ProviderName"/>
                         </Grid>
+                        
                         <Button Grid.Column="1" Content="Add new provider" Margin="20,0,0,0" Command="{Binding AddMarketDataProviderCommand}"/>
+                        
                         <ItemsControl Grid.Row="1" Margin="0,20,0,0"
                                       ItemsSource="{Binding SelectedItem.ProviderCredentials, ElementName=MarketDataProvidersComboBox}"
                                       ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}" />
+
                         <Grid Grid.Row="2" Margin="0,20,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
@@ -186,6 +190,11 @@
                                            Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
                             </Border>
                         </Grid>
+
+                        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Left">
+                            <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectMarketDataProviderCommand}"/>
+                            <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectMarketDataProviderCommand}"/>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </mah:Flyout>
@@ -195,7 +204,9 @@
                     <Grid Grid.IsSharedSizeScope="True">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto" MinHeight="120"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -211,10 +222,13 @@
                             <ComboBox Grid.Column="1" Name="OrderExecutionProvidersComboBox" SelectedItem="{Binding SelectedOrderExecutionProvider}"
                                       ItemsSource="{Binding OrderExecutionProviders}" DisplayMemberPath="ProviderName"/>
                         </Grid>
+
                         <Button Grid.Column="1" Content="Add new provider" Margin="20,0,0,0" Command="{Binding AddOrderExecutionProviderCommand}"/>
-                        <ItemsControl Grid.Row="1" Margin="0,20,0,0" 
+
+                        <ItemsControl Grid.Row="1" Margin="0,20,0,0"
                                       ItemsSource="{Binding SelectedItem.ProviderCredentials, ElementName=OrderExecutionProvidersComboBox}"
-                                      ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}"/>
+                                      ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}" />
+
                         <Grid Grid.Row="2" Margin="0,20,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
@@ -227,6 +241,11 @@
                                            Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
                             </Border>
                         </Grid>
+
+                        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,20,0,0" HorizontalAlignment="Left">
+                            <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectOrderExecutionProviderCommand}"/>
+                            <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectOrderExecutionProviderCommand}"/>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </mah:Flyout>
