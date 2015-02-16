@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TradeHubGui.Common.Models;
 using TradeHubGui.ViewModel;
 using TradeHubGui.Views;
 
@@ -47,6 +48,18 @@ namespace TradeHubGui
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
             this.ShowMessageAsync("About", "Something will be displayed here!", MessageDialogStyle.Affirmative);
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            (passwordBox.DataContext as ProviderCredential).CredValue = passwordBox.Password;
+        }
+
+        private void PasswordBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            passwordBox.Password = (passwordBox.DataContext as ProviderCredential).CredValue;
         }
     }
 }

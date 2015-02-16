@@ -21,7 +21,7 @@
 	<sys:Double x:Key="SmallFontSize">10</sys:Double>
 
 	<!--  Miscellaneous Brushes and Colors  -->
-	
+
 	<DrawingBrush x:Key="BaseBackground" TileMode="Tile" Viewport="0 0 5 5" ViewportUnits="Absolute" Stretch="None" PresentationOptions:Freeze="True">
 		<DrawingBrush.Drawing>
 			<DrawingGroup>
@@ -57,46 +57,46 @@
 	<!--<Color x:Key="BaseColor0" PresentationOptions:Freeze="True">#ff949381</Color>-->
 	<!--<Color x:Key="BaseColor0" PresentationOptions:Freeze="True">#ff678a8c</Color>-->
 
-    <Color x:Key="BaseColor1" PresentationOptions:Freeze="True">#FFBCD7EC</Color>
-    <Color x:Key="BaseColor2" PresentationOptions:Freeze="True">#FF88B2D3</Color>
-    <Color x:Key="BaseColor0" PresentationOptions:Freeze="True">#FF5C8FB5</Color>
-    <Color x:Key="BaseColor3" PresentationOptions:Freeze="True">#FF3D729B</Color>
-    <Color x:Key="BaseColor4" PresentationOptions:Freeze="True">#FF245E8B</Color>
-    
+	<Color x:Key="BaseColor1" PresentationOptions:Freeze="True">#FFBCD7EC</Color>
+	<Color x:Key="BaseColor2" PresentationOptions:Freeze="True">#FF88B2D3</Color>
+	<Color x:Key="BaseColor0" PresentationOptions:Freeze="True">#FF5C8FB5</Color>
+	<Color x:Key="BaseColor3" PresentationOptions:Freeze="True">#FF3D729B</Color>
+	<Color x:Key="BaseColor4" PresentationOptions:Freeze="True">#FF245E8B</Color>
+
 
 	<SolidColorBrush x:Key="BaseBrush1" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor1}" />
 	<SolidColorBrush x:Key="BaseBrush2" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor2}" />
-    <SolidColorBrush x:Key="BaseBrush0" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor0}" />
+	<SolidColorBrush x:Key="BaseBrush0" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor0}" />
 	<SolidColorBrush x:Key="BaseBrush3" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor3}" />
 	<SolidColorBrush x:Key="BaseBrush4" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor4}" />
 
 
-    <SolidColorBrush x:Key="WindowTitleColorBrush" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor0}" />
-    <SolidColorBrush x:Key="BlackColorBrush" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor2}" />
-    <SolidColorBrush x:Key="HighlightBrush" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor4}" />
+	<SolidColorBrush x:Key="WindowTitleColorBrush" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor0}" />
+	<SolidColorBrush x:Key="BlackColorBrush" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor2}" />
+	<SolidColorBrush x:Key="HighlightBrush" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor4}" />
 
 
 	<SolidColorBrush x:Key="TextBrush" PresentationOptions:Freeze="True">#F444</SolidColorBrush>
 
 	<Color x:Key="DisabledColor" PresentationOptions:Freeze="True">Gray</Color>
 
-    <Color x:Key="RedColor" PresentationOptions:Freeze="True">#FFCF2C3F</Color>
-    <Color x:Key="BlueColor" PresentationOptions:Freeze="True">#ff4f8cbb</Color>
-    <Color x:Key="GreenColor" PresentationOptions:Freeze="True">#FF3AA577</Color>
-    <Color x:Key="LightGreenColor" PresentationOptions:Freeze="True">#FF7FFF00</Color>
-    <Color x:Key="MediumTurquoiseColor" PresentationOptions:Freeze="True">#FF48D1CC</Color>
-    <Color x:Key="OrangeColor" PresentationOptions:Freeze="True">#FFD78E2C</Color>
-    <Color x:Key="YellowColor" PresentationOptions:Freeze="True">#FFF1CA54</Color>
-    <Color x:Key="GrayColor" PresentationOptions:Freeze="True">#FFA0A0A0</Color>
-	
-    <SolidColorBrush x:Key="RedBrush" Color="{StaticResource RedColor}" PresentationOptions:Freeze="True" />
-    <SolidColorBrush x:Key="BlueBrush" Color="{StaticResource BlueColor}" PresentationOptions:Freeze="True" />
+	<Color x:Key="RedColor" PresentationOptions:Freeze="True">#FFCF2C3F</Color>
+	<Color x:Key="BlueColor" PresentationOptions:Freeze="True">#ff4f8cbb</Color>
+	<Color x:Key="GreenColor" PresentationOptions:Freeze="True">#FF3AA577</Color>
+	<Color x:Key="LightGreenColor" PresentationOptions:Freeze="True">#FF7FFF00</Color>
+	<Color x:Key="MediumTurquoiseColor" PresentationOptions:Freeze="True">#FF48D1CC</Color>
+	<Color x:Key="OrangeColor" PresentationOptions:Freeze="True">#FFD78E2C</Color>
+	<Color x:Key="YellowColor" PresentationOptions:Freeze="True">#FFF1CA54</Color>
+	<Color x:Key="GrayColor" PresentationOptions:Freeze="True">#FFA0A0A0</Color>
+
+	<SolidColorBrush x:Key="RedBrush" Color="{StaticResource RedColor}" PresentationOptions:Freeze="True" />
+	<SolidColorBrush x:Key="BlueBrush" Color="{StaticResource BlueColor}" PresentationOptions:Freeze="True" />
 	<SolidColorBrush x:Key="GreenBrush" Color="{StaticResource GreenColor}" PresentationOptions:Freeze="True" />
 	<SolidColorBrush x:Key="LightGreenBrush" Color="{StaticResource LightGreenColor}" PresentationOptions:Freeze="True" />
-    <SolidColorBrush x:Key="MediumTurquoiseBrush" Color="{StaticResource MediumTurquoiseColor}" PresentationOptions:Freeze="True" />
-    <SolidColorBrush x:Key="OrangeBrush" Color="{StaticResource OrangeColor}" PresentationOptions:Freeze="True" />
-    <SolidColorBrush x:Key="YellowBrush" Color="{StaticResource YellowColor}" PresentationOptions:Freeze="True" />
-    <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}" PresentationOptions:Freeze="True" />
+	<SolidColorBrush x:Key="MediumTurquoiseBrush" Color="{StaticResource MediumTurquoiseColor}" PresentationOptions:Freeze="True" />
+	<SolidColorBrush x:Key="OrangeBrush" Color="{StaticResource OrangeColor}" PresentationOptions:Freeze="True" />
+	<SolidColorBrush x:Key="YellowBrush" Color="{StaticResource YellowColor}" PresentationOptions:Freeze="True" />
+	<SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}" PresentationOptions:Freeze="True" />
 
 	<Color x:Key="ErrorColor" PresentationOptions:Freeze="True">Crimson</Color>
 	<Color x:Key="WarningColor" PresentationOptions:Freeze="True">DarkGoldenRod</Color>
@@ -107,7 +107,7 @@
 	<Color x:Key="MiddlePressedBackgroundColor" PresentationOptions:Freeze="True">#FF505050</Color>
 	<Color x:Key="LightMiddlePressedBackgroundColor" PresentationOptions:Freeze="True">#FF707070</Color>
 	<Color x:Key="LightPressedBackgroundColor" PresentationOptions:Freeze="True">#FFAAAAAA</Color>
-	
+
 	<SolidColorBrush x:Key="SolidBorderBrush" PresentationOptions:Freeze="True" Color="#CCC" />
 	<SolidColorBrush x:Key="PopupBorderBrush" PresentationOptions:Freeze="True" Color="#AAA" />
 	<SolidColorBrush x:Key="MarkBrush" PresentationOptions:Freeze="True" Color="{StaticResource BaseColor4}" />
@@ -320,7 +320,7 @@
 	</LinearGradientBrush>
 
 	<!--  BasicStyles : Headers  -->
-	
+
 	<Style x:Key="HeaderTextBlockStyle" TargetType="TextBlock">
 		<Setter Property="FontSize" Value="22" />
 		<Setter Property="FontFamily" Value="Segoe UI" />
@@ -1630,7 +1630,7 @@
 		<Setter Property="Focusable" Value="False"/>
 		<Setter Property="BorderBrush" Value="Gainsboro" />
 		<Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+		<Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
 		<Setter Property="Padding" Value="10" />
 		<Setter Property="Margin" Value="2"/>
 		<Setter Property="Template">
@@ -2479,19 +2479,19 @@
 	<Style x:Key="HeaderedContentControl" TargetType="{x:Type HeaderedContentControl}">
 		<Setter Property="Margin" Value="0,4" />
 		<Setter Property="Padding" Value="0" />
-        <Setter Property="Focusable" Value="False"/>
+		<Setter Property="Focusable" Value="False"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type HeaderedContentControl}">
 					<DockPanel Margin="{TemplateBinding Margin}">
-                        <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top" Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}">
+						<DockPanel Margin="0,0,0,10" DockPanel.Dock="Top" Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}">
 							<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
 											  TextBlock.FontSize="{TemplateBinding FontSize}" 
 											  TextBlock.FontWeight="{TemplateBinding FontWeight}" 
 											  TextBlock.Foreground="{StaticResource BaseBrush3}" />
 							<Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource BaseBrush1}" VerticalAlignment="Center" Margin="8,2,1,0"/>
 						</DockPanel>
-                        <ContentPresenter Margin="{TemplateBinding Padding}" TextBlock.Foreground="{StaticResource TextBrush}"/>
+						<ContentPresenter Margin="{TemplateBinding Padding}" TextBlock.Foreground="{StaticResource TextBrush}"/>
 					</DockPanel>
 				</ControlTemplate>
 			</Setter.Value>
@@ -3124,40 +3124,39 @@
 		</Style.Triggers>
 	</Style>
 
-	<Style x:Key="{x:Type PasswordBox}" TargetType="{x:Type PasswordBox}">
+	<Style TargetType="{x:Type PasswordBox}">
 		<Setter Property="SnapsToDevicePixels" Value="True" />
 		<Setter Property="OverridesDefaultStyle" Value="True" />
 		<Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
 		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
-		<Setter Property="FontFamily" Value="{StaticResource DefaultFont}" />
-		<Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
-		<Setter Property="Background" Value="White" />
+		<Setter Property="ContextMenu" Value="{StaticResource TextBoxContextMenu}" />
 		<Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+		<Setter Property="Background" Value="White" />
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
 		<Setter Property="Height" Value="24" />
-		<Setter Property="Padding" Value="1" />
+		<Setter Property="Padding" Value="1,1,1,0" />
+		<Setter Property="Margin" Value="0"/>
 		<Setter Property="AllowDrop" Value="true" />
 		<Setter Property="Validation.ErrorTemplate" Value="{DynamicResource DefaultErrorTemplate}" />
-		<Setter Property="SelectionBrush" Value="{StaticResource FocusBorderBrush}" />
+		<Setter Property="SelectionBrush" Value="{StaticResource BaseBrush0}" />
 		<Setter Property="PasswordChar" Value="●" />
-		<Setter Property="SelectionBrush" Value="#FF888888" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type PasswordBox}">
 					<Grid Name="Grid">
-						<Border x:Name="OutherBorder" Background="Transparent" BorderBrush="{StaticResource OutherBorderBrush}" 
-								BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0" />
 						<Border x:Name="Border" Margin="1"
 						        Background="{TemplateBinding Background}"
 						        BorderBrush="{TemplateBinding BorderBrush}"
-						        BorderThickness="{TemplateBinding BorderThickness}" 
-								CornerRadius="0"
-						        Padding="{TemplateBinding Padding}">
-							<ScrollViewer x:Name="PART_ContentHost" Foreground="{TemplateBinding Foreground}" />
+						        BorderThickness="{TemplateBinding BorderThickness}">
+							<ScrollViewer x:Name="PART_ContentHost" Foreground="{TemplateBinding Foreground}" 
+										Margin="{TemplateBinding Padding}"/>
 						</Border>
-						<Border Name="HoverBorder" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="1" IsHitTestVisible="False"
+						<Border Name="HoverBorder" IsHitTestVisible="False" Margin="1"
 						        Background="{StaticResource HoverBrush}"
 						        BorderBrush="{StaticResource HoverBorderBrush}"
-						        BorderThickness="2" CornerRadius="0" Opacity="0.3"
+						        BorderThickness="1" 
+								Opacity="0.3"
 						        Visibility="Collapsed" />
 					</Grid>
 					<ControlTemplate.Triggers>
@@ -3171,7 +3170,6 @@
 						</MultiTrigger>
 						<MultiTrigger>
 							<MultiTrigger.Conditions>
-								<Condition Property="BorderThickness" Value="1"/>
 								<Condition Property="IsFocused" Value="true"/>
 							</MultiTrigger.Conditions>
 							<Setter TargetName="Border" Property="Background" Value="{StaticResource FocusBackgroundBrush}" />
@@ -3180,7 +3178,7 @@
 							<Setter Property="Foreground" Value="Black" />
 						</MultiTrigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter TargetName="Grid" Property="Opacity" Value="0.5" />
+							<Setter TargetName="Grid" Property="Opacity" Value="0.4" />
 							<Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
 						</Trigger>
 					</ControlTemplate.Triggers>

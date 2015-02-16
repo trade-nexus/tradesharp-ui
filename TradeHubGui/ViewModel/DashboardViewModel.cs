@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 
@@ -16,12 +17,15 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<Instrument> _instruments;
         private RelayCommand _showDataApiConfigurationCommand;
         private RelayCommand _showOrderApiConfigurationCommand;
+        private ProvidersViewModel providersViewModel;
 
         /// <summary>
-        /// Constructor
+        /// Constructors
         /// </summary>
         public DashboardViewModel()
         {
+            providersViewModel = new ProvidersViewModel();
+
             #region Temporary fill instruments (this will be removed)
             _instruments = new ObservableCollection<Instrument>();
             for (int i = 0; i < 10; i++)
@@ -54,6 +58,22 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Collection of market data providers for displaying on Dashboard
+        /// </summary>
+        public ObservableCollection<Provider> MarketDataProviders
+        {
+            get { return providersViewModel.MarketDataProviders; }
+        }
+
+        /// <summary>
+        /// Collection of order execution providers for displaying on Dashboard
+        /// </summary>
+        public ObservableCollection<Provider> OrderExecutionProviders
+        {
+            get { return providersViewModel.OrderExecutionProviders; }
+        }
+
         #endregion
 
         #region Commands
@@ -78,12 +98,23 @@ namespace TradeHubGui.ViewModel
 
         private void ShowDataApiConfigurationExecute()
         {
-            ToggleFlyout(0);
+            if(ToggleFlyout(0))
+            {
+                (MainWindow.Flyouts.Items[0] as Flyout).DataContext = providersViewModel;
+            }
+        }
+
+        private object GetMarketDataProviders()
+        {
+            throw new NotImplementedException();
         }
 
         private void ShowOrderApiConfigurationExecute()
         {
-            ToggleFlyout(1);
+            if (ToggleFlyout(1))
+            {
+                (MainWindow.Flyouts.Items[1] as Flyout).DataContext = providersViewModel;
+            }
         }
     }
 }

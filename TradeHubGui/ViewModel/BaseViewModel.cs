@@ -13,7 +13,6 @@ namespace TradeHubGui.ViewModel
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         private RelayCommand _showLogsCommand;
 
         public MetroWindow MainWindow
@@ -33,15 +32,6 @@ namespace TradeHubGui.ViewModel
             }
         }
 
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
-
         private void ShowLogsExecute()
         {
             ToggleFlyout(2);
@@ -51,15 +41,30 @@ namespace TradeHubGui.ViewModel
         /// Shows or Hide flayout window
         /// </summary>
         /// <param name="index">flayout index</param>
-        public void ToggleFlyout(int index)
+        /// <returns>returns true if flayout is found, otherwise returns false</returns>
+        public bool ToggleFlyout(int index)
         {
             var flyout = MainWindow.Flyouts.Items[index] as Flyout;
             if (flyout == null)
             {
-                return;
+                return false;
             }
 
             flyout.IsOpen = !flyout.IsOpen;
+            return true;
         }
+
+        #region INotifyPropertyChanged implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+        #endregion
     }
 }

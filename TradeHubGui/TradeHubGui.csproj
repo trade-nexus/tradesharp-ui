@@ -131,9 +131,11 @@
     <Compile Include="Common\UIHelper.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBoolConverter.cs" />
     <Compile Include="Converters\OptimizationExecutionStatusToBrushConverter.cs" />
+    <Compile Include="Converters\ProviderConnectionStatusToBrushConverter.cs" />
     <Compile Include="Converters\OrderStatusToBrushConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToVisibilityConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBrushConverter.cs" />
+    <Compile Include="TemplateSelectors\CredentialsTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\DataGridEndValuesTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\DataGridStartValuesTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
+    <Compile Include="ViewModel\ProvidersViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>

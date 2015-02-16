@@ -3,9 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:conv="clr-namespace:TradeHubGui.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200"
              Tag="DASHBOARD">
+    
+    <UserControl.Resources>
+        <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+    </UserControl.Resources>
 
     <Grid x:Name="ContentGrid">
         <Grid.ColumnDefinitions>
@@ -51,7 +56,7 @@
                     </DataGrid>
                 </DockPanel>
             </Grid>
-            
+
             <!--<GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
 
             <Grid Grid.Row="2" Margin="20,5,5,20">
@@ -107,26 +112,17 @@
                             <Button ToolTip="Data API Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
                                     Width="22" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1"
                                     Command="{Binding ShowDataApiConfigurationCommand}"/>
-                            <HeaderedContentControl Header="MARKET DATA PROVIDER" Margin="0,2,14,0">
+                            <HeaderedContentControl Header="MARKET DATA PROVIDERS" Margin="0,2,14,0">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                    <ItemsControl Margin="2">
-                                        <ItemsControl.Resources>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Margin" Value="0"/>
-                                            </Style>
-                                        </ItemsControl.Resources>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
-                                            <TextBlock>Blackwood</TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
-                                            <TextBlock>Integral</TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
-                                            <TextBlock>Interactive Broker</TextBlock>
-                                        </StackPanel>
+                                    <ItemsControl Margin="2" ItemsSource="{Binding MarketDataProviders}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="1">
+                                                    <Ellipse Width="8" Height="8" Fill="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" Margin="8,0"/>
+                                                    <TextBlock Text="{Binding ProviderName}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </ScrollViewer>
                             </HeaderedContentControl>
@@ -135,22 +131,17 @@
                             <Button ToolTip="Order API Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
                                     Width="22" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1"
                                     Command="{Binding ShowOrderApiConfigurationCommand}"/>
-                            <HeaderedContentControl Header="ORDER EXECUTION PROVIDER" Margin="0,2,14,0">
+                            <HeaderedContentControl Header="ORDER EXECUTION PROVIDERS" Margin="0,2,14,0">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                    <ItemsControl Margin="2">
-                                        <ItemsControl.Resources>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Margin" Value="0"/>
-                                            </Style>
-                                        </ItemsControl.Resources>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Ellipse Width="8" Height="8" Fill="{StaticResource GreenBrush}" Margin="8,0"/>
-                                            <TextBlock>Blackwood</TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Ellipse Width="8" Height="8" Fill="{StaticResource RedBrush}" Margin="8,0"/>
-                                            <TextBlock>Interactive Broker</TextBlock>
-                                        </StackPanel>
+                                    <ItemsControl Margin="2" ItemsSource="{Binding OrderExecutionProviders}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal" Margin="1">
+                                                    <Ellipse Width="8" Height="8" Fill="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" Margin="8,0"/>
+                                                    <TextBlock Text="{Binding ProviderName}"/>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </ScrollViewer>
                             </HeaderedContentControl>

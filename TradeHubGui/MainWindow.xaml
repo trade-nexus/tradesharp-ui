@@ -1,20 +1,23 @@
 ﻿<mah:MetroWindow x:Class="TradeHubGui.MainWindow"
-                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                xmlns:wpfToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
-                xmlns:views="clr-namespace:TradeHubGui.Views"
-                WindowStartupLocation="CenterScreen"
-                Title="TradeHUB" 
-                Height="850" Width="1280"
-                NonActiveGlowBrush="Silver"
-                ShowIconOnTitleBar="True"
-                ShowTitleBar="True"
-                Background="{StaticResource BaseBackground}"
-                GlowBrush="{StaticResource BaseBrush0}"
-                FontFamily="{StaticResource DefaultFont}"
-                FontSize="{StaticResource NormalFontSize}"
-                Icon="{StaticResource imgHub}">
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:wpfToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+                 xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+                 xmlns:templateSelector="clr-namespace:TradeHubGui.TemplateSelectors"
+                 xmlns:conv="clr-namespace:TradeHubGui.Converters"
+                 xmlns:views="clr-namespace:TradeHubGui.Views"
+                 WindowStartupLocation="CenterScreen"
+                 Title="TradeHUB" 
+                 Height="850" Width="1280"
+                 NonActiveGlowBrush="Silver"
+                 ShowIconOnTitleBar="True"
+                 ShowTitleBar="True"
+                 Background="{StaticResource BaseBackground}"
+                 GlowBrush="{StaticResource BaseBrush0}"
+                 FontFamily="{StaticResource DefaultFont}"
+                 FontSize="{StaticResource NormalFontSize}"
+                 Icon="{StaticResource imgHub}">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Height="20" Width="20" Source="{StaticResource imgHub}"/>
@@ -93,24 +96,138 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+
+            <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+            <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
+
+            <DataTemplate x:Key="UsernameDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Column="1" Text="{Binding CredValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="PasswordDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <PasswordBox Grid.Column="1" PasswordChanged="PasswordBox_PasswordChanged" Loaded="PasswordBox_Loaded" />
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="IpAddressDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Column="1" Text="{Binding CredValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="PortDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Column="1" Text="{Binding CredValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
 
     <mah:MetroWindow.Flyouts>
         <mah:FlyoutsControl x:Name="FlayoutOrderAPIConfiguration">
-            <mah:Flyout Header="Data API Configuration" Position="Right" Theme="Adapt" IsModal="True">
+            <mah:Flyout Header="Market Data API Configuration" Position="Right" Theme="Adapt" IsModal="True">
                 <Grid Margin="20" Width="400">
-                    <TextBlock Foreground="{StaticResource BaseBrush3}" >
-                        Data API Configuration goes here...
-                    </TextBlock>
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Provider"/>
+                            <ComboBox Grid.Column="1" Name="MarketDataProvidersComboBox" SelectedItem="{Binding SelectedMarketDataProvider}"
+                                      ItemsSource="{Binding MarketDataProviders}" DisplayMemberPath="ProviderName"/>
+                        </Grid>
+                        <Button Grid.Column="1" Content="Add new provider" Margin="20,0,0,0" Command="{Binding AddMarketDataProviderCommand}"/>
+                        <ItemsControl Grid.Row="1" Margin="0,20,0,0"
+                                      ItemsSource="{Binding SelectedItem.ProviderCredentials, ElementName=MarketDataProvidersComboBox}"
+                                      ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}" />
+                        <Grid Grid.Row="2" Margin="0,20,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Connection status"/>
+                            <Border Grid.Column="1" Padding="4,1,4,3" CornerRadius="3" 
+                                    Background="{Binding SelectedItem.ConnectionStatus, ElementName=MarketDataProvidersComboBox, Converter={StaticResource ConnectionStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding SelectedItem.ConnectionStatus, ElementName=MarketDataProvidersComboBox}" 
+                                           Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </mah:Flyout>
 
-            <mah:Flyout Header="Order API Configuration" Position="Right" Theme="Adapt" IsModal="True">
+            <mah:Flyout Header="Order Execution API Configuration" Position="Right" Theme="Adapt" IsModal="True">
                 <Grid Margin="20" Width="400">
-                    <TextBlock Foreground="{StaticResource BaseBrush3}" >
-                        Order API Configuration goes here...
-                    </TextBlock>
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Provider"/>
+                            <ComboBox Grid.Column="1" Name="OrderExecutionProvidersComboBox" SelectedItem="{Binding SelectedOrderExecutionProvider}"
+                                      ItemsSource="{Binding OrderExecutionProviders}" DisplayMemberPath="ProviderName"/>
+                        </Grid>
+                        <Button Grid.Column="1" Content="Add new provider" Margin="20,0,0,0" Command="{Binding AddOrderExecutionProviderCommand}"/>
+                        <ItemsControl Grid.Row="1" Margin="0,20,0,0" 
+                                      ItemsSource="{Binding SelectedItem.ProviderCredentials, ElementName=OrderExecutionProvidersComboBox}"
+                                      ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}"/>
+                        <Grid Grid.Row="2" Margin="0,20,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Connection status"/>
+                            <Border Grid.Column="1" Padding="4,1,4,3" CornerRadius="3" 
+                                    Background="{Binding SelectedItem.ConnectionStatus, ElementName=OrderExecutionProvidersComboBox, Converter={StaticResource ConnectionStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding SelectedItem.ConnectionStatus, ElementName=OrderExecutionProvidersComboBox}" 
+                                           Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                            </Border>
+                        </Grid>
+                    </Grid>
                 </Grid>
             </mah:Flyout>
 
@@ -158,34 +275,22 @@
                  ItemContainerStyle="{DynamicResource NavigationListBoxItemStyle}">
             <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[0]}">
                 <Border Background="Transparent" ToolTip="Dashboard">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32" Source="{StaticResource imgDashboard}" Margin="14,10,10,10"/>
-                        <!--<TextBlock Text="Dashboard" Foreground="White" VerticalAlignment="Center" Margin="4,0"/>-->
-                    </StackPanel>
+                    <Image Width="32" Height="32" Source="{StaticResource imgDashboard}" Margin="14,10,10,10"/>
                 </Border>
             </ListBoxItem>
             <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[1]}">
                 <Border Background="Transparent" ToolTip="Strategy Runner">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32" Source="{StaticResource imgStrategyRunner}" Margin="14,10,10,10"/>
-                        <!--<TextBlock Text="Strategy Runner" Foreground="White" VerticalAlignment="Center" Margin="4,0"/>-->
-                    </StackPanel>
+                    <Image Width="32" Height="32" Source="{StaticResource imgStrategyRunner}" Margin="14,10,10,10"/>
                 </Border>
             </ListBoxItem>
             <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[2]}">
                 <Border Background="Transparent" ToolTip="Orders">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32" Source="{StaticResource imgActiveOrders}" Margin="14,10,10,10"/>
-                        <!--<TextBlock Text="Active Orders" Foreground="White" VerticalAlignment="Center" Margin="4,0"/>-->
-                    </StackPanel>
+                    <Image Width="32" Height="32" Source="{StaticResource imgActiveOrders}" Margin="14,10,10,10"/>
                 </Border>
             </ListBoxItem>
             <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[3]}">
                 <Border Background="Transparent" ToolTip="Data Downloader">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32" Source="{StaticResource imgDataDownloader}" Margin="14,10,10,10"/>
-                        <!--<TextBlock Text="Data Downloader" Foreground="White" VerticalAlignment="Center" Margin="4,0"/>-->
-                    </StackPanel>
+                    <Image Width="32" Height="32" Source="{StaticResource imgDataDownloader}" Margin="14,10,10,10"/>
                 </Border>
             </ListBoxItem>
         </ListBox>
@@ -214,20 +319,7 @@
         </Button>
 
         <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource BaseBrush0}" Height="20">
-            <!--<DockPanel Margin="2,2,20,2" VerticalAlignment="Center">
-                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,2" MinWidth="60">
-                        <Ellipse Width="8" Height="8" Margin="8,0" Fill="Crimson"/>
-                        <TextBlock Text="PE" HorizontalAlignment="Center"/>
-                       </StackPanel>
-                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,2" MinWidth="60">
-                        <Ellipse Width="8" Height="8" Margin="8,0" Fill="LimeGreen"/>
-                        <TextBlock Text="OEE" HorizontalAlignment="Center"/>
-                       </StackPanel>
-                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,2" MinWidth="60">
-                        <Ellipse Width="8" Height="8" Margin="8,0" Fill="LimeGreen"/>
-                        <TextBlock Text="MDE" HorizontalAlignment="Center"/>
-                    </StackPanel>
-                </DockPanel>-->
+
         </Border>
     </Grid>
 </mah:MetroWindow>

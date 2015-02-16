@@ -74,9 +74,11 @@
     <Compile Include="Constants\OptimizationStatus.cs" />
     <Compile Include="EventSystem.cs" />
     <Compile Include="Models\BruteForceParameters.cs" />
+    <Compile Include="Models\ProviderCredential.cs" />
     <Compile Include="Models\ExecutionDetails.cs" />
     <Compile Include="Models\GeneticAlgorithmResult.cs" />
     <Compile Include="Models\Instrument.cs" />
+    <Compile Include="Models\Provider.cs" />
     <Compile Include="Models\OptimizationStatistics.cs" />
     <Compile Include="Models\OrderDetails.cs" />
     <Compile Include="Models\Strategy.cs" />
