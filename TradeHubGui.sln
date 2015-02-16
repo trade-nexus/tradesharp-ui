@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.StrategyRunner.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Resources", "Resources\Resources.csproj", "{9CC3C15B-6A55-481E-B379-85F86CD1CDBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.Dashboard", "TradeHubGui.Dashboard\TradeHubGui.Dashboard.csproj", "{8E7E4246-3804-4D60-90C4-C0350013297D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.Dashboard.Tests", "TradeHubGui.Dashboard.Tests\TradeHubGui.Dashboard.Tests.csproj", "{1F3C57FC-622D-4AFE-ADF1-A1664C593330}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +41,14 @@ Global
 		{9CC3C15B-6A55-481E-B379-85F86CD1CDBC}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{9CC3C15B-6A55-481E-B379-85F86CD1CDBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CC3C15B-6A55-481E-B379-85F86CD1CDBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E7E4246-3804-4D60-90C4-C0350013297D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E7E4246-3804-4D60-90C4-C0350013297D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E7E4246-3804-4D60-90C4-C0350013297D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E7E4246-3804-4D60-90C4-C0350013297D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F3C57FC-622D-4AFE-ADF1-A1664C593330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F3C57FC-622D-4AFE-ADF1-A1664C593330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F3C57FC-622D-4AFE-ADF1-A1664C593330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F3C57FC-622D-4AFE-ADF1-A1664C593330}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

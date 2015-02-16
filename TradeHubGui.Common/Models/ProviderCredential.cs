@@ -11,8 +11,8 @@ namespace TradeHubGui.Common.Models
     {
         #region Fields
 
-        private string credName;
-        private string credValue;
+        private string _credentialName;
+        private string _credentialValue;
 
         #endregion
 
@@ -30,15 +30,15 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Holds credential name, for example 'Username', 'Password' etc.
         /// </summary>
-        public string CredName
+        public string CredentialName
         {
-            get { return credName; }
+            get { return _credentialName; }
             set
             {
-                if (credName != value)
+                if (_credentialName != value)
                 {
-                    credName = value;
-                    OnPropertyChanged("CredName");
+                    _credentialName = value;
+                    OnPropertyChanged("CredentialName");
                 }
             }
         }
@@ -46,15 +46,15 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Holds credential value
         /// </summary>
-        public string CredValue
+        public string CredentialValue
         {
-            get { return credValue; }
+            get { return _credentialValue; }
             set
             {
-                if (credValue != value)
+                if (_credentialValue != value)
                 {
-                    credValue = value;
-                    OnPropertyChanged("CrValue");
+                    _credentialValue = value;
+                    OnPropertyChanged("CredentialValue");
                 }
             }
         }

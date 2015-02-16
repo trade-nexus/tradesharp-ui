@@ -25,14 +25,14 @@ namespace TradeHubGui.Converters
         {
             if (value != null && value != DependencyProperty.UnsetValue)
             {
-                string status = (string)value;
+                var status = (ConnectionStatus)value;
 
-                // Return certain brush depending on OrderStatus
-                if (status.Equals("Connected"))
+                // Return certain brush depending on Connection Status
+                if (status.Equals(ConnectionStatus.Connected))
                 {
                     return Application.Current.Resources["GreenBrush"];
                 }
-                else if (status.Equals("Disconnected"))
+                else if (status.Equals(ConnectionStatus.Disconnected))
                 {
                     return Application.Current.Resources["RedBrush"];
                 }

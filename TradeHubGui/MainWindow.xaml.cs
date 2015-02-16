@@ -53,13 +53,13 @@ namespace TradeHubGui
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             PasswordBox passwordBox = sender as PasswordBox;
-            (passwordBox.DataContext as ProviderCredential).CredValue = passwordBox.Password;
+            (passwordBox.DataContext as ProviderCredential).CredentialValue = passwordBox.Password;
         }
 
         private void PasswordBox_Loaded(object sender, RoutedEventArgs e)
         {
             PasswordBox passwordBox = sender as PasswordBox;
-            passwordBox.Password = (passwordBox.DataContext as ProviderCredential).CredValue;
+            passwordBox.Password = (passwordBox.DataContext as ProviderCredential).CredentialValue;
         }
     }
 }

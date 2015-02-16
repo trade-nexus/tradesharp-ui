@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeHub.Common.Core.Constants;
 
 namespace TradeHubGui.Common.Models
 {
@@ -14,9 +15,9 @@ namespace TradeHubGui.Common.Models
     {
         #region Fields
 
-        private string providerName;
-        private string connectionStatus;
-        private List<ProviderCredential> providerCredentials;
+        private string _providerName;
+        private ConnectionStatus _connectionStatus;
+        private List<ProviderCredential> _providerCredentials;
 
         #endregion
 
@@ -24,7 +25,7 @@ namespace TradeHubGui.Common.Models
 
         public Provider()
         {
-            providerCredentials = new List<ProviderCredential>(10);
+            _providerCredentials = new List<ProviderCredential>(10);
         }
 
         #endregion
@@ -36,12 +37,12 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         public string ProviderName
         {
-            get { return providerName; }
+            get { return _providerName; }
             set
             {
-                if (providerName != value)
+                if (_providerName != value)
                 {
-                    providerName = value;
+                    _providerName = value;
                     OnPropertyChanged("ProviderName");
                 }
             }
@@ -50,14 +51,14 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Provider connection status
         /// </summary>
-        public string ConnectionStatus
+        public ConnectionStatus ConnectionStatus
         {
-            get { return connectionStatus; }
+            get { return _connectionStatus; }
             set
             {
-                if (connectionStatus != value)
+                if (_connectionStatus != value)
                 {
-                    connectionStatus = value;
+                    _connectionStatus = value;
                     OnPropertyChanged("ConnectionStatus");
                 }
             }
@@ -68,12 +69,12 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         public List<ProviderCredential> ProviderCredentials
         {
-            get { return providerCredentials; }
+            get { return _providerCredentials; }
             set
             {
-                if (providerCredentials != value)
+                if (_providerCredentials != value)
                 {
-                    providerCredentials = value;
+                    _providerCredentials = value;
                     OnPropertyChanged("Credentials");
                 }
             }

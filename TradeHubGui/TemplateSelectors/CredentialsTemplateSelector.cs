@@ -20,21 +20,21 @@ namespace TradeHubGui.TemplateSelectors
 
             if(item != null)
             {
-                ProviderCredential cred = (ProviderCredential)item;
+                ProviderCredential credential = (ProviderCredential)item;
 
-                if(cred.CredName.Equals("Username"))
+                if(credential.CredentialName.Equals("Username"))
                 {
                     return (DataTemplate)element.FindResource("UsernameDataTemplate");
                 }
-                else if(cred.CredName.Equals("Password"))
+                else if(credential.CredentialName.Equals("Password"))
                 {
                     return (DataTemplate)element.FindResource("PasswordDataTemplate");
                 }
-                else if(cred.CredName.Equals("IP address"))
+                else if(credential.CredentialName.Equals("IP address"))
                 {
                     return (DataTemplate)element.FindResource("IpAddressDataTemplate");
                 }
-                else if (cred.CredName.Equals("Port"))
+                else if (credential.CredentialName.Equals("Port"))
                 {
                     return (DataTemplate)element.FindResource("PortDataTemplate");
                 }
