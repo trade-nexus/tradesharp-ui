@@ -29,37 +29,37 @@
 
         <DataTemplate x:Key="StartValueIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding StartValue, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1"/>
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding StartValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="StartValueUnsignedIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding StartValue, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding StartValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="StartValueDecimalTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:DecimalUpDown Value="{Binding StartValue, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1" />
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding StartValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="EndValueIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="EndValueUnsignedIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="EndValueDecimalTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:DecimalUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1" />
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
             </Border>
         </DataTemplate>
 

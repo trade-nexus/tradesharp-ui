@@ -98,6 +98,7 @@
             </Style>
 
             <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+            <conv:SelectedProviderToVisibilityConverter x:Key="SelectedProviderToVisibility"/>
             <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
 
             <DataTemplate x:Key="UsernameDataTemplate">
@@ -153,6 +154,7 @@
                     <Grid Grid.IsSharedSizeScope="True">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" MinHeight="120"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
@@ -168,13 +170,25 @@
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Content="Provider"/>
                             <ComboBox Grid.Column="1" Name="MarketDataProvidersComboBox" SelectedItem="{Binding SelectedMarketDataProvider}"
-                                      ItemsSource="{Binding MarketDataProviders}" DisplayMemberPath="ProviderName"/>
+                                      ItemsSource="{Binding MarketDataProviders}" DisplayMemberPath="ProviderName" FontWeight="Bold"/>
                         </Grid>
-                        <Button Grid.Column="1" Content="Add new provider" Margin="20,0,0,0" Command="{Binding AddMarketDataProviderCommand}"/>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button ToolTip="Add new provider" Margin="20,0,0,0" Padding="0" Width="24"
+                                    Command="{Binding AddProviderCommand}" CommandParameter="MarketDataProvider">
+                                <Image Width="13" Height="13" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
+                            </Button>
+                            <Button ToolTip="Remove provider" Margin="2,0,0,0" Padding="0" Width="24"
+                                    Command="{Binding RemoveProviderCommand}" CommandParameter="MarketDataProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgRemove}" UseLayoutRounding="True"/>
+                            </Button>
+                        </StackPanel>
+
                         <ItemsControl Grid.Row="1" Margin="0,20,0,0"
                                       ItemsSource="{Binding SelectedItem.ProviderCredentials, ElementName=MarketDataProvidersComboBox}"
                                       ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}" />
-                        <Grid Grid.Row="2" Margin="0,20,0,0">
+
+                        <Grid Grid.Row="2" Margin="0,20,0,0" Visibility="{Binding SelectedMarketDataProvider, Converter={StaticResource SelectedProviderToVisibility}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
                                 <ColumnDefinition />
@@ -186,6 +200,12 @@
                                            Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
                             </Border>
                         </Grid>
+
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="100,10,0,0" HorizontalAlignment="Left" 
+                                    Visibility="{Binding SelectedMarketDataProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="MarketDataProvider"/>
+                            <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="MarketDataProvider"/>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </mah:Flyout>
@@ -195,7 +215,9 @@
                     <Grid Grid.IsSharedSizeScope="True">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
+                            <RowDefinition Height="Auto" MinHeight="120"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -209,13 +231,25 @@
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Content="Provider"/>
                             <ComboBox Grid.Column="1" Name="OrderExecutionProvidersComboBox" SelectedItem="{Binding SelectedOrderExecutionProvider}"
-                                      ItemsSource="{Binding OrderExecutionProviders}" DisplayMemberPath="ProviderName"/>
+                                      ItemsSource="{Binding OrderExecutionProviders}" DisplayMemberPath="ProviderName" FontWeight="Bold"/>
                         </Grid>
-                        <Button Grid.Column="1" Content="Add new provider" Margin="20,0,0,0" Command="{Binding AddOrderExecutionProviderCommand}"/>
-                        <ItemsControl Grid.Row="1" Margin="0,20,0,0" 
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button ToolTip="Add new provider" Margin="20,0,0,0" Padding="0" Width="24"
+                                    Command="{Binding AddProviderCommand}" CommandParameter="OrderExecutionProvider">
+                                <Image Width="13" Height="13" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
+                            </Button>
+                            <Button ToolTip="Remove provider" Margin="2,0,0,0" Padding="0" Width="24"
+                                    Command="{Binding RemoveProviderCommand}" CommandParameter="OrderExecutionProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgRemove}" UseLayoutRounding="True"/>
+                            </Button>
+                        </StackPanel>
+
+                        <ItemsControl Grid.Row="1" Margin="0,20,0,0"
                                       ItemsSource="{Binding SelectedItem.ProviderCredentials, ElementName=OrderExecutionProvidersComboBox}"
-                                      ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}"/>
-                        <Grid Grid.Row="2" Margin="0,20,0,0">
+                                      ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}" />
+
+                        <Grid Grid.Row="2" Margin="0,20,0,0" Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
                                 <ColumnDefinition />
@@ -227,6 +261,12 @@
                                            Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
                             </Border>
                         </Grid>
+
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="100,10,0,0" HorizontalAlignment="Left" 
+                                    Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                            <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </mah:Flyout>
