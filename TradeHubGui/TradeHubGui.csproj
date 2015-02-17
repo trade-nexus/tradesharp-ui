@@ -50,6 +50,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="clrzmq, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\helper\clrzmq.2.2.5\lib\clrzmq.dll</HintPath>
+    </Reference>
+    <Reference Include="clrzmq-ext, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\helper\clrzmq.2.2.5\lib\clrzmq-ext.dll</HintPath>
+    </Reference>
     <Reference Include="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\helper\Common.Logging.1.2.0\lib\1.0\Common.Logging.dll</HintPath>
@@ -281,6 +289,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="libzmq.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="LoggerConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -293,6 +304,10 @@
     <ProjectReference Include="..\TradeHubGui.Common\TradeHubGui.Common.csproj">
       <Project>{5e5a9a79-0b0c-428b-8385-015134b42d86}</Project>
       <Name>TradeHubGui.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.Dashboard\TradeHubGui.Dashboard.csproj">
+      <Project>{8E7E4246-3804-4D60-90C4-C0350013297D}</Project>
+      <Name>TradeHubGui.Dashboard</Name>
     </ProjectReference>
     <ProjectReference Include="..\TradeHubGui.StrategyRunner\TradeHubGui.StrategyRunner.csproj">
       <Project>{8090220c-f33f-46ea-ae6a-cdac8c921edd}</Project>

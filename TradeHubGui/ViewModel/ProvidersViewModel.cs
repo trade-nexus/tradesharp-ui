@@ -279,7 +279,8 @@ namespace TradeHubGui.ViewModel
         {
             if (param.Equals("MarketDataProvider"))
             {
-                //TODO:
+                // Rasie event to request connection
+                EventSystem.Publish<Provider>(SelectedMarketDataProvider);
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
@@ -289,6 +290,17 @@ namespace TradeHubGui.ViewModel
 
         private bool ConnectProviderCanExecute(object param)
         {
+            if (param.Equals("MarketDataProvider"))
+            {
+                if (SelectedMarketDataProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
+                {
+                    return true;
+                }
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+                //TODO:
+            }
             return false;
         }
 

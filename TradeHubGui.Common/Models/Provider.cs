@@ -19,13 +19,21 @@ namespace TradeHubGui.Common.Models
         private ConnectionStatus _connectionStatus;
         private List<ProviderCredential> _providerCredentials;
 
+        /// <summary>
+        /// 
+        /// KEY = Symbol
+        /// VALUE = <see cref="TickDetails"/>
+        /// </summary>
+        private Dictionary<string, TickDetails> _tickDetailsMap; 
+
         #endregion
 
         #region Constructors
 
         public Provider()
         {
-            _providerCredentials = new List<ProviderCredential>(10);
+            _providerCredentials = new List<ProviderCredential>();
+            _tickDetailsMap = new Dictionary<string, TickDetails>();
         }
 
         #endregion
@@ -78,6 +86,17 @@ namespace TradeHubGui.Common.Models
                     OnPropertyChanged("Credentials");
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// KEY = Symbol
+        /// VALUE = <see cref="TickDetails"/>
+        /// </summary>
+        public Dictionary<string, TickDetails> TickDetailsMap
+        {
+            get { return _tickDetailsMap; }
+            set { _tickDetailsMap = value; }
         }
 
         #endregion

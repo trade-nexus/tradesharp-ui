@@ -85,6 +85,7 @@
     <Compile Include="Models\Strategy.cs" />
     <Compile Include="Models\StrategyInstance.cs" />
     <Compile Include="Models\SubscriptionRequest.cs" />
+    <Compile Include="Models\TickDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\FileReader.cs" />
     <Compile Include="Utility\StrategyIdGenerator.cs" />
@@ -99,38 +100,38 @@
     <None Include="HistoricalDataConfiguration\HistoricalDataProvider.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="TradeHubConfig\ClientMqConfig.xml">
+    <Content Include="Config\ClientMqConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradeHubConfig\HistoricalDataServiceSpringConfig.xml">
+    <Content Include="SpringConfig\HistoricalDataServiceSpringConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradeHubConfig\MarketDataServiceSpringConfig.xml">
+    <Content Include="SpringConfig\MarketDataServiceSpringConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradeHubConfig\MDEClientSpringConfig.xml">
+    <Content Include="SpringConfig\MDEClientSpringConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradeHubConfig\MDEServer.xml">
+    <Content Include="Config\MDEServer.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradeHubConfig\OEEClientMqConfig.xml">
+    <Content Include="Config\OEEClientMqConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradeHubConfig\OEEClientSpringConfig.xml">
+    <Content Include="SpringConfig\OEEClientSpringConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradeHubConfig\OEEServer.xml">
+    <Content Include="Config\OEEServer.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TradeHubConfig\OrderExecutionServiceSpringConfig.xml">
+    <Content Include="SpringConfig\OrderExecutionServiceSpringConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <None Include="TradeHubConfig\SpringDao.xml">
+    <None Include="SpringConfig\SpringDao.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="TradeHubConfig\ZmqConfig.xml">
+    <Content Include="Config\ZmqConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

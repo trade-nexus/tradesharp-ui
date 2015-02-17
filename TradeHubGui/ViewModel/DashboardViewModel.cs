@@ -6,9 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Spring.Context.Support;
 using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Dashboard.Services;
 
 namespace TradeHubGui.ViewModel
 {
@@ -18,6 +20,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _showDataApiConfigurationCommand;
         private RelayCommand _showOrderApiConfigurationCommand;
         private ProvidersViewModel providersViewModel;
+        private MarketDataController _marketDataController;
 
         /// <summary>
         /// Constructors
@@ -25,6 +28,10 @@ namespace TradeHubGui.ViewModel
         public DashboardViewModel()
         {
             providersViewModel = new ProvidersViewModel();
+
+            _marketDataController = ContextRegistry.GetContext()["MarketDataController"] as MarketDataController;
+
+            EventSystem.Subscribe<string>(OnApplicationClose);
 
             #region Temporary fill instruments (this will be removed)
             _instruments = new ObservableCollection<Instrument>();
@@ -116,5 +123,18 @@ namespace TradeHubGui.ViewModel
                 (MainWindow.Flyouts.Items[1] as Flyout).DataContext = providersViewModel;
             }
         }
+
+        /// <summary>
+        /// Called when application is closing
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnApplicationClose(string message)
+        {
+            if (message.Equals("Close"))
+            {
+                _marketDataController.Stop();
+            }
+        }
+
     }
 }

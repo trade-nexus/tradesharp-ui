@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.ViewModel;
 using TradeHubGui.Views;
@@ -60,6 +61,11 @@ namespace TradeHubGui
         {
             PasswordBox passwordBox = sender as PasswordBox;
             passwordBox.Password = (passwordBox.DataContext as ProviderCredential).CredentialValue;
+        }
+
+        private void OnApplicationClose(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            EventSystem.Publish<string>("Close");
         }
     }
 }

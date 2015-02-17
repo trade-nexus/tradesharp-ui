@@ -17,7 +17,7 @@
                  GlowBrush="{StaticResource BaseBrush0}"
                  FontFamily="{StaticResource DefaultFont}"
                  FontSize="{StaticResource NormalFontSize}"
-                 Icon="{StaticResource imgHub}">
+                 Icon="{StaticResource imgHub}" Closing="OnApplicationClose">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Height="20" Width="20" Source="{StaticResource imgHub}"/>

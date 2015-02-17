@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
+using TradeHub.Common.Core.ValueObjects.AdminMessages;
 using TradeHub.StrategyEngine.MarketData;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
@@ -47,6 +48,9 @@ namespace TradeHubGui.Dashboard.Services
 
             // Subscribe Application events
             SubscribeEvents();
+
+            // Subscribe Market Data Manager events
+            SubscribeManagerEvents();
         }
 
         /// <summary>
@@ -66,10 +70,10 @@ namespace TradeHubGui.Dashboard.Services
         /// </summary>
         private void SubscribeManagerEvents()
         {
-            _marketDataManager.LogonArrived += OnLogonArrived;
-            _marketDataManager.LogoutArrived += OnLogoutArrived;
+            _marketDataManager.LogonArrivedEvent += OnLogonArrived;
+            _marketDataManager.LogoutArrivedEvent += OnLogoutArrived;
 
-            _marketDataManager.TickArrived += OnTickArrived;
+            _marketDataManager.TickArrivedEvent += OnTickArrived;
         }
 
         #region Incoming Requests
@@ -213,9 +217,48 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="tick">Contains market details</param>
         private void OnTickArrived(Tick tick)
         {
-            EventSystem.Publish<Tick>(tick);
+            Provider provider;
+
+            // Get Provider object
+            if (_providersMap.TryGetValue(tick.MarketDataProvider, out provider))
+            {
+                TickDetails tickDetails;
+
+                // Get TickDetails object to update tick information
+                if (provider.TickDetailsMap.TryGetValue(tick.Security.Symbol, out tickDetails))
+                {
+                    // Update Bid
+                    tickDetails.BidPrice = tick.BidPrice;
+                    tickDetails.BidQuantity = tick.BidSize;
+
+                    // Update Ask
+                    tickDetails.AskPrice = tick.AskPrice;
+                    tickDetails.AskQuantity = tick.AskSize;
+
+                    // Update Last
+                    tickDetails.LastPrice = tick.LastPrice;
+                    tickDetails.LastQuantity = tick.LastSize;
+                }
+            }
         }
 
         #endregion
+
+        /// <summary>
+        /// Stops all market data related activities
+        /// </summary>
+        public void Stop()
+        {
+            // Send logout for each connected market data provider
+            foreach (KeyValuePair<string, Provider> keyValuePair in _providersMap)
+            {
+                if (keyValuePair.Value.ConnectionStatus.Equals(ConnectionStatus.Connected))
+                {
+                    _marketDataManager.Disconnect(keyValuePair.Key);
+                }
+            }
+
+            _marketDataManager.Stop();
+        }
     }
 }

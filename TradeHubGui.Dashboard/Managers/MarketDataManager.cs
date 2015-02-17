@@ -32,7 +32,7 @@ namespace TradeHubGui.Dashboard.Managers
         private event Action<Tick> _tickArrivedEvent;
         // ReSharper restore InconsistentNaming
 
-        public event Action Connected
+        public event Action ConnectedEvent
         {
             add
             {
@@ -44,7 +44,7 @@ namespace TradeHubGui.Dashboard.Managers
             remove { _connectedEvent -= value; }
         }
 
-        public event Action Disconnected
+        public event Action DisconnectedEvent
         {
             add
             {
@@ -56,7 +56,7 @@ namespace TradeHubGui.Dashboard.Managers
             remove { _disconnectedEvent -= value; }
         }
 
-        public event Action<string> LogonArrived
+        public event Action<string> LogonArrivedEvent
         {
             add
             {
@@ -68,7 +68,7 @@ namespace TradeHubGui.Dashboard.Managers
             remove { _logonArrivedEvent -= value; }
         }
 
-        public event Action<string> LogoutArrived
+        public event Action<string> LogoutArrivedEvent
         {
             add
             {
@@ -80,7 +80,7 @@ namespace TradeHubGui.Dashboard.Managers
             remove { _logoutArrivedEvent -= value; }
         }
 
-        public event Action<Tick> TickArrived
+        public event Action<Tick> TickArrivedEvent
         {
             add
             {
@@ -256,5 +256,13 @@ namespace TradeHubGui.Dashboard.Managers
         }
 
         #endregion
+
+        /// <summary>
+        /// Stops all market data activites and closes open connections
+        /// </summary>
+        public void Stop()
+        {
+            _marketDataService.StopService();
+        }
     }
 }
