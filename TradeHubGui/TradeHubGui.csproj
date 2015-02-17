@@ -138,6 +138,7 @@
     <Compile Include="Converters\SelectedProviderToVisibilityConverter.cs" />
     <Compile Include="TemplateSelectors\CredentialsTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\DataGridEndValuesTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\DataGridIncrementValuesTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\DataGridStartValuesTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />

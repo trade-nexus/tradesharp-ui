@@ -11,7 +11,7 @@
                 ShowInTaskbar="True"
                 WindowStartupLocation="CenterScreen"
                 Title="Brute Optimization"
-                Width="1080"
+                Width="1140"
                 Height="600"
                 MinWidth="500"
                 MinHeight="500"
@@ -25,44 +25,74 @@
     
     <mah:MetroWindow.Resources>
         <conv:OptimizationExecutionStatusToBrushConverter x:Key="StatusToBrush"/>
-        
+
+        <DataTemplate x:Key="StartValueIntegerTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StartValueUnsignedIntegerTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StartValueDecimalTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StartValueStringTemplate">
+            <Border Background="#8FFF">
+                <TextBox Text="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+        </DataTemplate>
+
         <DataTemplate x:Key="EndValueIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue}" FormatString="N0" Increment="1" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="EndValueUnsignedIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue}" FormatString="N0" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="EndValueDecimalTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:DecimalUpDown Value="{Binding EndValue}" FormatString="N0" Increment="1" />
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
             </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EndValueStringTemplate">
+            <Border Background="#8FFF"></Border>
         </DataTemplate>
 
         <DataTemplate x:Key="IncrementIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment}" FormatString="N0" Increment="1"/>
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1"/>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="IncrementUnsignedIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment}" FormatString="N0" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1" Minimum="0" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="IncrementDecimalTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:DecimalUpDown Value="{Binding Increment}" FormatString="N0" Increment="1" />
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="0.1" />
             </Border>
         </DataTemplate>
-
-        <templateSelectors:DataGridEndValuesTemplateSelector x:Key="ParameterDetailsTemplateSelector"/>
+        
+        <DataTemplate x:Key="IncrementStringTemplate">
+            <Border Background="#8FFF"></Border>
+        </DataTemplate>
 
     </mah:MetroWindow.Resources>
     
@@ -127,12 +157,36 @@
 							IsReadOnly="False"
 							SelectionUnit="FullRow"
 							AutoGenerateColumns="False"
-							RowHeight="22">
+							RowHeight="24">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Parameter" Width="0.7*" Binding="{Binding Path=Description}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Value" Width="0.5*" Binding="{Binding Path=ParameterValue}" />
-                        <DataGridTextColumn Header="End value" Width="0.6*" Binding="{Binding Path=EndValue}" />
-                        <DataGridTextColumn Header="Increment" Width="0.7*" Binding="{Binding Path=Increment}" />
+                        <DataGridTemplateColumn Header="Value" Width="0.6*" SortMemberPath="ParameterValue">
+                            <DataGridTemplateColumn.CellTemplateSelector>
+                                <templateSelectors:DataGridStartValuesTemplateSelector
+                                        StartValueIntegerTemplate="{StaticResource StartValueIntegerTemplate}"
+                                        StartValueUnsignedIntegerTemplate="{StaticResource StartValueUnsignedIntegerTemplate}"
+                                        StartValueDecimalTemplate="{StaticResource StartValueDecimalTemplate}"
+                                        StartValueStringTemplate="{StaticResource StartValueStringTemplate}"/>
+                            </DataGridTemplateColumn.CellTemplateSelector>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="End value" Width="0.4*" SortMemberPath="EndValue">
+                            <DataGridTemplateColumn.CellTemplateSelector>
+                                <templateSelectors:DataGridEndValuesTemplateSelector
+                                        EndValueIntegerTemplate="{StaticResource EndValueIntegerTemplate}"
+                                        EndValueUnsignedIntegerTemplate="{StaticResource EndValueUnsignedIntegerTemplate}"
+                                        EndValueDecimalTemplate="{StaticResource EndValueDecimalTemplate}"
+                                        EndValueStringTemplate="{StaticResource EndValueStringTemplate}"/>
+                            </DataGridTemplateColumn.CellTemplateSelector>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Increment" Width="0.4*" SortMemberPath="Increment">
+                            <DataGridTemplateColumn.CellTemplateSelector>
+                                <templateSelectors:DataGridIncrementValuesTemplateSelector
+                                        IncrementIntegerTemplate="{StaticResource IncrementIntegerTemplate}"
+                                        IncrementUnsignedIntegerTemplate="{StaticResource IncrementUnsignedIntegerTemplate}"
+                                        IncrementDecimalTemplate="{StaticResource IncrementDecimalTemplate}"
+                                        IncrementStringTemplate="{StaticResource IncrementStringTemplate}"/>
+                            </DataGridTemplateColumn.CellTemplateSelector>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </HeaderedContentControl>

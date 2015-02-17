@@ -357,8 +357,6 @@ namespace TradeHubGui.ViewModel
 
         private bool CloseGeneticOptimizationWindowCanExecute()
         {
-            //TODO: make condition here (when the window can be closed, or return true if window can be closed anytime, but in that case just make sure to cancel execution if user click Close button)
-
             return true;
         }
 
