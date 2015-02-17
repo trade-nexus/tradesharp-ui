@@ -66,6 +66,16 @@ namespace TradeHubGui
         private void OnApplicationClose(object sender, System.ComponentModel.CancelEventArgs e)
         {
             EventSystem.Publish<string>("Close");
+
+            // Close all open windows
+            foreach (Window window in Application.Current.Windows)
+            {
+                // Because Main Window is already in closing state
+                if (window != Application.Current.MainWindow)
+                {
+                    window.Close();
+                }
+            }
         }
     }
 }
