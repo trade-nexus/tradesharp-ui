@@ -1,9 +1,11 @@
-﻿using System;
+﻿using MessageBoxUtils;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
@@ -18,9 +20,10 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<Provider> _orderExecutionProviders;
         private Provider _selectedMarketDataProvider;
         private Provider _selectedOrderExecutionProvider;
-        private RelayCommand _addMarketDataProviderCommand;
-        private RelayCommand _addOrderExecutionProviderCommand;
-
+        private RelayCommand _addProviderCommand;
+        private RelayCommand _removeProviderCommand;
+        private RelayCommand _connectProviderCommand;
+        private RelayCommand _disconnectProviderCommand;
         #endregion
 
         #region Constructors
@@ -102,26 +105,49 @@ namespace TradeHubGui.ViewModel
         #region Commands
 
         /// <summary>
-        /// Command used for Add new provider button for adding new marked data provider
+        /// Used for 'Add new provider' button for adding new marked data provider or order execution provider depending on param
         /// </summary>
-        public ICommand AddMarketDataProviderCommand
+        public ICommand AddProviderCommand
         {
             get
             {
-                return _addMarketDataProviderCommand ?? (_addMarketDataProviderCommand = new RelayCommand(param => AddMarketDataProviderExecute()));
+                return _addProviderCommand ?? (_addProviderCommand = new RelayCommand(param => AddProviderExecute(param)));
             }
         }
 
         /// <summary>
-        /// Command used for Add new provider button for adding new order execution provider
+        /// Used for 'Remove provider' button for removing marked data provider or order execution provider depending on param
         /// </summary>
-        public ICommand AddOrderExecutionProviderCommand
+        public ICommand RemoveProviderCommand
         {
             get
             {
-                return _addOrderExecutionProviderCommand ?? (_addOrderExecutionProviderCommand = new RelayCommand(param => AddOrderExecutionProviderExecute()));
+                return _removeProviderCommand ?? (_removeProviderCommand = new RelayCommand(param => RemoveProviderExecute(param), Param => RemoveProviderCanExecute()));
             }
         }
+
+        /// <summary>
+        /// Connect selected provider
+        /// </summary>
+        public ICommand ConnectProviderCommand
+        {
+            get
+            {
+                return _connectProviderCommand ?? (_connectProviderCommand = new RelayCommand(param => ConnectProviderExecute(param), param => ConnectProviderCanExecute(param)));
+            }
+        }
+
+        /// <summary>
+        /// Disconnect selected provider
+        /// </summary>
+        public ICommand DisconnectProviderCommand
+        {
+            get
+            {
+                return _disconnectProviderCommand ?? (_disconnectProviderCommand = new RelayCommand(param => DisconnectProviderExecute(param), param => DisconnectProviderCanExecute(param)));
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -173,7 +199,7 @@ namespace TradeHubGui.ViewModel
             #endregion
 
             // Select initially 1st provider in ComboBox
-            if(_marketDataProviders != null && _marketDataProviders.Count > 0)
+            if (_marketDataProviders != null && _marketDataProviders.Count > 0)
                 SelectedMarketDataProvider = _marketDataProviders[0];
         }
 
@@ -192,22 +218,97 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Add new market data provider to the MarketDataProviders collection
+        /// Add new provider to the MarketDataProviders or to the OrderExecutionProviders collection depending on param
         /// </summary>
-        private void AddMarketDataProviderExecute()
+        private void AddProviderExecute(object param)
         {
-            // TODO: add new market data provider to the MarketDataProviders collection
-            // this should open dialog for adding provider, and after that add that provider to the MarketDataProviders collection
+            // TODO: 
+            // this should open dialog for adding provider, and after that add that provider to the certain providers collection
+
+
+            if (param.Equals("MarketDataProvider"))
+            {
+
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+
+            }
         }
 
         /// <summary>
-        /// Add new market data provider to the OrderExecutionProviders collection
+        /// Remove provider from the MarketDataProviders or from the OrderExecutionProviders collection depending on param
         /// </summary>
-        private void AddOrderExecutionProviderExecute()
+        private void RemoveProviderExecute(object param)
         {
-            // TODO: add new market data provider to the OrderExecutionProviders collection
-            // this should open dialog for adding provider, and after that add that provider to the OrderExecutionProviders collection
+            Provider selectedProvider = param.Equals("MarketDataProvider") ? SelectedMarketDataProvider : SelectedOrderExecutionProvider;
+
+            if ((System.Windows.Forms.DialogResult)WPFMessageBox.Show(MainWindow, string.Format("Remove provider {0}?", selectedProvider.ProviderName), "Question",
+                 MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == System.Windows.Forms.DialogResult.Yes)
+            {
+                if (param.Equals("MarketDataProvider"))
+                {
+                    // Remove SelectedMarketDataProvider
+                    MarketDataProviders.Remove(SelectedMarketDataProvider);
+
+                    // Select 1st provider from collection if not empty
+                    if (MarketDataProviders.Count > 0) 
+                        SelectedMarketDataProvider = MarketDataProviders[0];
+                }
+                else if (param.Equals("OrderExecutionProvider"))
+                {
+                    // Remove SelectedOrderExecutionProvider
+                    OrderExecutionProviders.Remove(SelectedOrderExecutionProvider);
+
+                    // Select 1st provider from collection if not empty
+                    if (OrderExecutionProviders.Count > 0)
+                        SelectedOrderExecutionProvider = OrderExecutionProviders[0];
+                }
+            }
         }
+
+        private bool RemoveProviderCanExecute()
+        {
+            if (SelectedMarketDataProvider != null || SelectedOrderExecutionProvider != null)
+                return true;
+
+            return false;
+        }
+
+        private void ConnectProviderExecute(object param)
+        {
+            if (param.Equals("MarketDataProvider"))
+            {
+                //TODO:
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+                //TODO:
+            }
+        }
+
+        private bool ConnectProviderCanExecute(object param)
+        {
+            return false;
+        }
+
+        private void DisconnectProviderExecute(object param)
+        {
+            if (param.Equals("MarketDataProvider"))
+            {
+                //TODO:
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+                //TODO:
+            }
+        }
+
+        private bool DisconnectProviderCanExecute(object param)
+        {
+            return false;
+        }
+
         #endregion
     }
 }

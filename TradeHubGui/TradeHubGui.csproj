@@ -135,6 +135,7 @@
     <Compile Include="Converters\OrderStatusToBrushConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToVisibilityConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBrushConverter.cs" />
+    <Compile Include="Converters\SelectedProviderToVisibilityConverter.cs" />
     <Compile Include="TemplateSelectors\CredentialsTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\DataGridEndValuesTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\DataGridStartValuesTemplateSelector.cs" />
