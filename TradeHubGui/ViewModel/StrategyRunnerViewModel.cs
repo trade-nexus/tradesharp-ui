@@ -731,7 +731,7 @@ namespace TradeHubGui.ViewModel
         /// <param name="fileName">.csv file complete name</param>
         private async void AddMultipleInstanceFromFile(string fileName)
         {
-            var instances = await Task.Factory.StartNew(() => CreateMultipleStrategyInstances(fileName));
+            var instances = await Task.Run(() => CreateMultipleStrategyInstances(fileName));
             //var instances = CreateMultipleStrategyInstances(fileName);
 
             // Update UI
@@ -743,7 +743,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         /// <param name="fileName">.csv file complete name</param>
         /// <returns>List of newly created Strategy Instances</returns>
-        private IList<StrategyInstance> CreateMultipleStrategyInstances(string fileName)
+        private async Task<IList<StrategyInstance>> CreateMultipleStrategyInstances(string fileName)
         {
             IList<StrategyInstance> instances = new List<StrategyInstance>();
 
@@ -776,6 +776,9 @@ namespace TradeHubGui.ViewModel
 
                 // Add to local Map
                 instances.Add(strategyInstance);
+
+                // Send instance to controller where its execution life cycle can be managed
+                _strategyController.AddStrategyInstance(strategyInstance);
             }
 
             return instances;
@@ -792,9 +795,6 @@ namespace TradeHubGui.ViewModel
 
             foreach (StrategyInstance strategyInstance in instances)
             {
-                // Send instance to controller where its execution life cycle can be managed
-                _strategyController.AddStrategyInstance(strategyInstance);
-
                 // Display Strategy Instance on UI
                 Instances.Add(strategyInstance);
             }
