@@ -157,9 +157,10 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// Argument Constructor
         /// </summary>
         /// <param name="strategyInstance">Holds necessary information for Instance Execution and UI-Update</param>
-        public StrategyExecutor(StrategyInstance strategyInstance)
+        /// <param name="currentDispatcher"></param>
+        public StrategyExecutor(StrategyInstance strategyInstance, Dispatcher currentDispatcher)
         {
-            this._currentDispatcher = Dispatcher.CurrentDispatcher;
+            this._currentDispatcher = currentDispatcher;
 
             _asyncClassLogger = new AsyncClassLogger("StrategyExecutor");
 

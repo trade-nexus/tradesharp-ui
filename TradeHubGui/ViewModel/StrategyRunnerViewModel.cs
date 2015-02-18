@@ -482,7 +482,7 @@ namespace TradeHubGui.ViewModel
             Instances.Add(strategyInstance);
 
             // Send instance to controller where its execution life cycle can be managed
-            _strategyController.AddStrategyInstance(strategyInstance);
+            Task.Run(() => _strategyController.AddStrategyInstance(strategyInstance));
 
             // Close "Create Instance" window
             ((Window)param).Close();
