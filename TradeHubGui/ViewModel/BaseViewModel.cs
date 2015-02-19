@@ -32,9 +32,12 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Show logs fayout window
+        /// </summary>
         private void ShowLogsExecute()
         {
-            ToggleFlyout(2);
+            ToggleFlyout(3);
         }
 
         /// <summary>

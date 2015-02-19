@@ -113,16 +113,14 @@
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="10,4,20,4">
                         <TextBlock Text="Execution Status" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
-                        <Viewbox Height="24" Margin="0,6,0,0">
-                            <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource StatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                <TextBlock Text="{Binding Status}" Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
-                            </Border>
-                        </Viewbox>
+                        <Border Padding="8,4" Margin="0,4,0,0" Background="{Binding Status, Converter={StaticResource StatusToBrush}}">
+                            <TextBlock Text="{Binding Status, FallbackValue=None}" FontSize="14" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center"/>
+                        </Border>
                     </StackPanel>
                 </StackPanel>
             </DockPanel>
 
-            <HeaderedContentControl Grid.Row="1" Header="PARAMETERS" Margin="10,0,10,10">
+            <HeaderedContentControl Grid.Row="1" Header="Parameters" Margin="10,0,10,10">
                 <HeaderedContentControl.Resources>
                     <ResourceDictionary>
                         <Style TargetType="Label">
@@ -198,7 +196,7 @@
                 </StackPanel>
             </Button>
 
-            <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="RESULTS" Margin="10,0,10,10">
+            <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Results" Margin="10,0,10,10">
                 <DataGrid x:Name="ResultDataGrid" 
                             ItemsSource="{Binding OptimizedParameters}"
                             SelectionMode="Single" 
