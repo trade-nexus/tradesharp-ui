@@ -10,25 +10,35 @@ using System.Windows.Input;
 using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Dashboard.Services;
 
 namespace TradeHubGui.ViewModel
 {
     public class ProvidersViewModel : BaseViewModel
     {
         #region Fields
+
         private ObservableCollection<Provider> _marketDataProviders;
         private ObservableCollection<Provider> _orderExecutionProviders;
+
         private Provider _selectedMarketDataProvider;
         private Provider _selectedOrderExecutionProvider;
+
         private RelayCommand _addProviderCommand;
         private RelayCommand _removeProviderCommand;
         private RelayCommand _connectProviderCommand;
         private RelayCommand _disconnectProviderCommand;
+
+        private ProvidersController _providersController;
+
         #endregion
 
         #region Constructors
+        
         public ProvidersViewModel()
         {
+            _providersController = new ProvidersController();
+
             InitMarketDataProviders();
             InitOrderExecutionProviders();
         }
@@ -158,45 +168,54 @@ namespace TradeHubGui.ViewModel
         {
             _marketDataProviders = new ObservableCollection<Provider>();
 
-            #region NOTE: this region is just dummy initialization for testing purpose and this will be replaced with real initialization
+            var availableProviders = _providersController.GetAvailableProviders();
 
-            List<ProviderCredential> credentials = new List<ProviderCredential>();
-            credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
-            credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
-            credentials.Add(new ProviderCredential() { CredentialName = "IP address", CredentialValue = string.Empty });
-            credentials.Add(new ProviderCredential() { CredentialName = "Port", CredentialValue = string.Empty });
+            foreach (var keyValuePair in availableProviders)
+            {
+                Provider tempProvider = new Provider() { ProviderName = keyValuePair.Key, ConnectionStatus = ConnectionStatus.Disconnected };
+                tempProvider.ProviderCredentials = keyValuePair.Value;
+                _marketDataProviders.Add(tempProvider);
+            }
 
-            Provider provider = new Provider() { ProviderName = MarketDataProvider.Blackwood, ConnectionStatus = ConnectionStatus.Connected };
-            provider.ProviderCredentials = credentials;
-            _marketDataProviders.Add(provider);
+            //#region NOTE: this region is just dummy initialization for testing purpose and this will be replaced with real initialization
 
-            credentials = new List<ProviderCredential>();
-            credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
-            credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
+            //List<ProviderCredential> credentials = new List<ProviderCredential>();
+            //credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
+            //credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
+            //credentials.Add(new ProviderCredential() { CredentialName = "IP address", CredentialValue = string.Empty });
+            //credentials.Add(new ProviderCredential() { CredentialName = "Port", CredentialValue = string.Empty });
 
-            provider = new Provider() { ProviderName = MarketDataProvider.InteractiveBrokers, ConnectionStatus = ConnectionStatus.Connected };
-            provider.ProviderCredentials = credentials;
-            _marketDataProviders.Add(provider);
+            //Provider provider = new Provider() { ProviderName = MarketDataProvider.Blackwood, ConnectionStatus = ConnectionStatus.Connected };
+            //provider.ProviderCredentials = credentials;
+            //_marketDataProviders.Add(provider);
 
-            credentials = new List<ProviderCredential>();
-            credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
-            credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
-            credentials.Add(new ProviderCredential() { CredentialName = "IP address", CredentialValue = string.Empty });
-            credentials.Add(new ProviderCredential() { CredentialName = "Port", CredentialValue = string.Empty });
+            //credentials = new List<ProviderCredential>();
+            //credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
+            //credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
 
-            provider = new Provider() { ProviderName = MarketDataProvider.Simulated, ConnectionStatus = ConnectionStatus.Disconnected };
-            provider.ProviderCredentials = credentials;
-            _marketDataProviders.Add(provider);
+            //provider = new Provider() { ProviderName = MarketDataProvider.InteractiveBrokers, ConnectionStatus = ConnectionStatus.Connected };
+            //provider.ProviderCredentials = credentials;
+            //_marketDataProviders.Add(provider);
 
-            credentials = new List<ProviderCredential>();
-            credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
-            credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
+            //credentials = new List<ProviderCredential>();
+            //credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
+            //credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
+            //credentials.Add(new ProviderCredential() { CredentialName = "IP address", CredentialValue = string.Empty });
+            //credentials.Add(new ProviderCredential() { CredentialName = "Port", CredentialValue = string.Empty });
 
-            provider = new Provider() { ProviderName = MarketDataProvider.SimulatedExchange, ConnectionStatus = ConnectionStatus.Connected };
-            provider.ProviderCredentials = credentials;
-            _marketDataProviders.Add(provider);
+            //provider = new Provider() { ProviderName = MarketDataProvider.Simulated, ConnectionStatus = ConnectionStatus.Disconnected };
+            //provider.ProviderCredentials = credentials;
+            //_marketDataProviders.Add(provider);
 
-            #endregion
+            //credentials = new List<ProviderCredential>();
+            //credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
+            //credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
+
+            //provider = new Provider() { ProviderName = MarketDataProvider.SimulatedExchange, ConnectionStatus = ConnectionStatus.Connected };
+            //provider.ProviderCredentials = credentials;
+            //_marketDataProviders.Add(provider);
+
+            //#endregion
 
             // Select initially 1st provider in ComboBox
             if (_marketDataProviders != null && _marketDataProviders.Count > 0)
