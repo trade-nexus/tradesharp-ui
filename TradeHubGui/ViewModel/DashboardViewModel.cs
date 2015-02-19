@@ -19,6 +19,7 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<Instrument> _instruments;
         private RelayCommand _showDataApiConfigurationCommand;
         private RelayCommand _showOrderApiConfigurationCommand;
+        private RelayCommand _showServicesConfigurationCommand;
         private ProvidersViewModel providersViewModel;
         private MarketDataController _marketDataController;
 
@@ -101,6 +102,14 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        public ICommand ShowServicesConfigurationCommand
+        {
+            get
+            {
+                return _showServicesConfigurationCommand ?? (_showServicesConfigurationCommand = new RelayCommand(param => ShowServicesConfigurationExecute()));
+            }
+        }
+
         #endregion
 
         private void ShowDataApiConfigurationExecute()
@@ -111,17 +120,25 @@ namespace TradeHubGui.ViewModel
             }
         }
 
-        private object GetMarketDataProviders()
-        {
-            throw new NotImplementedException();
-        }
-
         private void ShowOrderApiConfigurationExecute()
         {
             if (ToggleFlyout(1))
             {
                 (MainWindow.Flyouts.Items[1] as Flyout).DataContext = providersViewModel;
             }
+        }
+
+        private void ShowServicesConfigurationExecute()
+        {
+            if (ToggleFlyout(2))
+            {
+                
+            }
+        }
+
+        private object GetMarketDataProviders()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

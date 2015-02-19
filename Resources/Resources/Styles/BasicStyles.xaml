@@ -2446,8 +2446,9 @@
 				<ControlTemplate TargetType="{x:Type HeaderedItemsControl}">
 					<Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
 						<DockPanel Margin="{TemplateBinding Margin}">
-							<DockPanel Margin="0,0,0,10" DockPanel.Dock="Top">
-								<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" TextBlock.FontSize="{TemplateBinding FontSize}" TextBlock.FontWeight="{TemplateBinding FontWeight}" TextBlock.Foreground="{TemplateBinding Foreground}" />
+                            <DockPanel Margin="0,0,0,10" DockPanel.Dock="Top" Typography.Capitals="SmallCaps" TextBlock.FontWeight="SemiBold">
+								<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" TextBlock.FontSize="{TemplateBinding FontSize}" 
+                                                  TextBlock.FontWeight="{TemplateBinding FontWeight}" TextBlock.Foreground="{TemplateBinding Foreground}" />
 								<Separator Margin="4,0" VerticalAlignment="Center" Style="{DynamicResource HorizontalSeparatorStyle}" />
 							</DockPanel>
 							<ItemsPresenter Margin="10,0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
@@ -2467,8 +2468,9 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type HeaderedContentControl}">
 					<DockPanel Margin="{TemplateBinding Margin}">
-						<TextBlock DockPanel.Dock="Top" Text="{TemplateBinding Header}" Margin="0,0,0,10" FontSize="22" Foreground="Silver"
-								   Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}"/>
+                        <TextBlock DockPanel.Dock="Top" Text="{TemplateBinding Header}" Margin="0,0,0,10" FontSize="22" 
+                                   Foreground="Silver" Typography.Capitals="SmallCaps" FontWeight="SemiBold"
+								   Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}" />
 						<ContentPresenter Margin="10,0" TextElement.Foreground="{StaticResource TextBrush}"/>
 					</DockPanel>
 				</ControlTemplate>
@@ -2485,11 +2487,12 @@
 				<ControlTemplate TargetType="{x:Type HeaderedContentControl}">
 					<DockPanel Margin="{TemplateBinding Margin}">
 						<DockPanel Margin="0,0,0,10" DockPanel.Dock="Top" Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}">
-							<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" 
-											  TextBlock.FontSize="{TemplateBinding FontSize}" 
-											  TextBlock.FontWeight="{TemplateBinding FontWeight}" 
-											  TextBlock.Foreground="{StaticResource BaseBrush3}" />
-							<Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource BaseBrush1}" VerticalAlignment="Center" Margin="8,2,1,0"/>
+							<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" Margin="0,0,0,0" VerticalAlignment="Center"
+											  TextBlock.FontSize="13" 
+											  TextBlock.FontWeight="SemiBold" 
+											  TextBlock.Foreground="{StaticResource BaseBrush3}" 
+                                              Typography.Capitals="AllSmallCaps"/>
+                            <Border BorderThickness="0,0,0,2" BorderBrush="{StaticResource BaseBrush2}" VerticalAlignment="Center" Margin="6,3,1,0" UseLayoutRounding="True"/>
 						</DockPanel>
 						<ContentPresenter Margin="{TemplateBinding Padding}" TextBlock.Foreground="{StaticResource TextBrush}"/>
 					</DockPanel>

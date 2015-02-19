@@ -146,7 +146,7 @@
                 </StackPanel>
             </DockPanel>
 
-            <HeaderedContentControl Grid.Row="1" Header="PARAMETERS" Margin="10,0,10,10">
+            <HeaderedContentControl Grid.Row="1" Header="Parameters" Margin="10,0,10,10">
                 <DataGrid x:Name="StrategyParametersDataGrid"
                             ItemsSource="{Binding BruteForceParameters.ParameterDetails}"
 							SelectionMode="Single" 
@@ -202,7 +202,7 @@
                 </StackPanel>
             </Button>
 
-            <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="RESULTS" Margin="10,0,10,10">
+            <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Results" Margin="10,0,10,10">
                 <DataGrid x:Name="ResultDataGrid" 
                             ItemsSource="{Binding OptimizationStatisticsCollection}"
 							SelectionMode="Single" 
