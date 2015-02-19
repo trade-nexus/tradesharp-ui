@@ -275,9 +275,9 @@
             <mah:Flyout Header="Services Configuration" Position="Right" Theme="Adapt" IsModal="True">
                 <Grid Margin="20" Width="400" Grid.IsSharedSizeScope="True">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                        <ListBox Margin="10,0" Width="380" ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}"
+                        <ItemsControl Margin="10,0" Width="380" ItemsSource="{Binding Services}"
                                       HorizontalAlignment="Left" UseLayoutRounding="True">
-                            <ListBox.ItemTemplate>
+                            <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                         <GroupBox Header="{Binding ServiceName}" Padding="0,0,8,2" Margin="0,0,0,4">
                                         <DockPanel>
@@ -286,14 +286,16 @@
                                                       Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.EnableDisableCommand}"
                                                       Margin="10,0,10,0" VerticalAlignment="Center"/>
                                             <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False" 
-                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StopServiceCommand}">
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StopServiceCommand}"
+                                                    CommandParameter="{Binding ServiceName}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
                                                     <TextBlock Text="Stop"/>
                                                 </StackPanel>
                                             </Button>
                                             <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False" 
-                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StartServiceCommand}">
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StartServiceCommand}"
+                                                    CommandParameter="{Binding ServiceName}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
                                                     <TextBlock Text="Start"/>
@@ -305,8 +307,8 @@
                                         </DockPanel>
                                     </GroupBox>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </ScrollViewer>
                 </Grid>
             </mah:Flyout>
