@@ -98,6 +98,7 @@
             </Style>
 
             <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+            <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
             <conv:SelectedProviderToVisibilityConverter x:Key="SelectedProviderToVisibility"/>
             <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
 
@@ -274,91 +275,38 @@
             <mah:Flyout Header="Services Configuration" Position="Right" Theme="Adapt" IsModal="True">
                 <Grid Margin="20" Width="400" Grid.IsSharedSizeScope="True">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                        <ItemsControl Margin="10,0" Width="380" HorizontalAlignment="Left" UseLayoutRounding="True">
-                            <GroupBox Header="Market Data Service" Padding="0,0,8,2" Margin="0,0,0,4">
-                                <DockPanel>
-                                    <CheckBox DockPanel.Dock="Right" Content="Enabled" Margin="10,0,10,0" VerticalAlignment="Center"/>
-                                    <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-                                            <TextBlock Text="Stop"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button DockPanel.Dock="Right" MinWidth="60" IsEnabled="False" Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-                                            <TextBlock Text="Start"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                        <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" FontSize="14" Margin="0,0,0,0"/>
-                                    </Border>
-                                </DockPanel>
-                            </GroupBox>
-
-                            <GroupBox Header="Order Execution Service" Padding="0,0,8,2" Margin="0,0,0,4">
-                                <DockPanel>
-                                    <CheckBox DockPanel.Dock="Right" Content="Enabled" Margin="10,0,10,0" VerticalAlignment="Center"/>
-                                    <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-                                            <TextBlock Text="Stop"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="False" Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-                                            <TextBlock Text="Start"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                        <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" FontSize="14" Margin="0,0,0,0"/>
-                                    </Border>
-                                </DockPanel>
-                            </GroupBox>
-
-                            <GroupBox Header="Position Engine Service" Padding="0,0,8,2" Margin="0,0,0,4">
-                                <DockPanel>
-                                    <CheckBox DockPanel.Dock="Right" Content="Enabled" Margin="10,0,10,0" VerticalAlignment="Center"/>
-                                    <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-                                            <TextBlock Text="Stop"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="False" Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-                                            <TextBlock Text="Start"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                        <TextBlock Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" FontSize="14" Margin="0,0,0,0"/>
-                                    </Border>
-                                </DockPanel>
-                            </GroupBox>
-
-                            <GroupBox Header="Reporting Engine Service" Padding="0,0,8,2" Margin="0,0,0,4">
-                                <DockPanel>
-                                    <CheckBox DockPanel.Dock="Right" Content="Enabled" Margin="10,0,10,0" VerticalAlignment="Center"/>
-                                    <Button DockPanel.Dock="Right" MinWidth="60" IsEnabled="False" Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-                                            <TextBlock Text="Stop"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button DockPanel.Dock="Right"  MinWidth="60" IsEnabled="True" Focusable="False">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-                                            <TextBlock Text="Start"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
-                                        <TextBlock Text="Stopped" Foreground="{StaticResource RedBrush}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" FontSize="14" Margin="0,0,0,0"/>
-                                    </Border>
-                                </DockPanel>
-                            </GroupBox>
-                        </ItemsControl>
+                        <ListBox Margin="10,0" Width="380" ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}"
+                                      HorizontalAlignment="Left" UseLayoutRounding="True">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                        <GroupBox Header="{Binding ServiceName}" Padding="0,0,8,2" Margin="0,0,0,4">
+                                        <DockPanel>
+                                            <CheckBox DockPanel.Dock="Right" Content="Enabled" 
+                                                      IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.EnableDisableCommand}"
+                                                      Margin="10,0,10,0" VerticalAlignment="Center"/>
+                                            <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False" 
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StopServiceCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
+                                                    <TextBlock Text="Stop"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False" 
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StartServiceCommand}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                                                    <TextBlock Text="Start"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
+                                                <TextBlock Text="{Binding Status}" Foreground="{Binding Status, Converter={StaticResource ServiceStatusToBrush}}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" FontSize="14" Margin="0,0,0,0"/>
+                                            </Border>
+                                        </DockPanel>
+                                    </GroupBox>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </ScrollViewer>
                 </Grid>
             </mah:Flyout>

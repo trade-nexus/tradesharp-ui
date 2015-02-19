@@ -20,7 +20,10 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _showDataApiConfigurationCommand;
         private RelayCommand _showOrderApiConfigurationCommand;
         private RelayCommand _showServicesConfigurationCommand;
-        private ProvidersViewModel providersViewModel;
+        
+        private ProvidersViewModel _providersViewModel;
+        private ServicesViewModel _servicesViewModel;
+
         private MarketDataController _marketDataController;
 
         /// <summary>
@@ -28,7 +31,8 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public DashboardViewModel()
         {
-            providersViewModel = new ProvidersViewModel();
+            _providersViewModel = new ProvidersViewModel();
+            _servicesViewModel = new ServicesViewModel();
 
             _marketDataController = ContextRegistry.GetContext()["MarketDataController"] as MarketDataController;
 
@@ -71,7 +75,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public ObservableCollection<Provider> MarketDataProviders
         {
-            get { return providersViewModel.MarketDataProviders; }
+            get { return _providersViewModel.MarketDataProviders; }
         }
 
         /// <summary>
@@ -79,7 +83,15 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public ObservableCollection<Provider> OrderExecutionProviders
         {
-            get { return providersViewModel.OrderExecutionProviders; }
+            get { return _providersViewModel.OrderExecutionProviders; }
+        }
+
+        /// <summary>
+        /// Collection for Application Services to be displayed on Dashboard
+        /// </summary>
+        public ObservableCollection<ServiceDetails> Services
+        {
+            get { return _servicesViewModel.Services; }
         }
 
         #endregion
@@ -116,7 +128,7 @@ namespace TradeHubGui.ViewModel
         {
             if(ToggleFlyout(0))
             {
-                (MainWindow.Flyouts.Items[0] as Flyout).DataContext = providersViewModel;
+                (MainWindow.Flyouts.Items[0] as Flyout).DataContext = _providersViewModel;
             }
         }
 
@@ -124,7 +136,7 @@ namespace TradeHubGui.ViewModel
         {
             if (ToggleFlyout(1))
             {
-                (MainWindow.Flyouts.Items[1] as Flyout).DataContext = providersViewModel;
+                (MainWindow.Flyouts.Items[1] as Flyout).DataContext = _providersViewModel;
             }
         }
 
@@ -132,7 +144,7 @@ namespace TradeHubGui.ViewModel
         {
             if (ToggleFlyout(2))
             {
-                
+                (MainWindow.Flyouts.Items[2] as Flyout).DataContext = _servicesViewModel;
             }
         }
 

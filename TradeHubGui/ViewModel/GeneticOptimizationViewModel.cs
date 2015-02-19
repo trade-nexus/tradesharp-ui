@@ -344,7 +344,14 @@ namespace TradeHubGui.ViewModel
 
         private bool RunGeneticOptimizationCanExecute()
         {
-            return CheckValidOptimizationParameterValues();
+            bool canExecute = CheckValidOptimizationParameterValues();
+
+            if (Status.Equals(OptimizationStatus.Working))
+            {
+                canExecute = false;
+            }
+            
+            return canExecute;
         }
 
         /// <summary>

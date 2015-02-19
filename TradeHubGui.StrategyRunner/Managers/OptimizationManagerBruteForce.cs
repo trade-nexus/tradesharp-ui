@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TraceSourceLogger;
 using TradeHub.Common.Core.DomainModels;
 using TradeHub.Common.Core.Utility;
@@ -22,6 +23,11 @@ namespace TradeHubGui.StrategyRunner.Managers
         private Type _type = typeof(OptimizationManagerBruteForce);
 
         private AsyncClassLogger _asyncClassLogger;
+
+        /// <summary>
+        /// Holds UI thread reference
+        /// </summary>
+        private Dispatcher _currentDispatcher;
 
         private bool _disposed = false;
 
@@ -61,6 +67,8 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// </summary>
         public OptimizationManagerBruteForce()
         {
+            _currentDispatcher = Dispatcher.CurrentDispatcher;
+
             //_asyncClassLogger = ContextRegistry.GetContext()["StrategyRunnerLogger"] as AsyncClassLogger;
             _asyncClassLogger = new AsyncClassLogger("OptimizationManagerBruteForce");
 
@@ -127,7 +135,7 @@ namespace TradeHubGui.StrategyRunner.Managers
                     var instance = new StrategyInstance(key, instanceParameterDetails, optimizationParameters.StrategyType);
 
                     // Save Strategy details in new Strategy Executor object
-                    var strategyExecutor = new StrategyExecutor(instance);
+                    var strategyExecutor = new StrategyExecutor(instance, _currentDispatcher);
 
                     // Register Event
                     strategyExecutor.StatusChanged += OnStrategyExecutorStatusChanged;

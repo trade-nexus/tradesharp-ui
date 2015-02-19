@@ -747,7 +747,10 @@ namespace TradeHubGui.StrategyRunner.Managers
                     {
                         for (int i = 0; i < _strategyExecutorArray.Length; i++)
                         {
-                            _strategyExecutorArray[i].StopStrategy();
+                            if (_strategyExecutorArray[i] != null)
+                            {
+                                _strategyExecutorArray[i].StopStrategy();
+                            }
                         }
                         Array.Clear(_strategyExecutorArray, 0, _strategyExecutorArray.Length);
                     }

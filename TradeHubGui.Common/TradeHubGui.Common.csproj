@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\OptimizationStatus.cs" />
+    <Compile Include="Constants\ServiceStatus.cs" />
     <Compile Include="Constants\SubscriptionType.cs" />
     <Compile Include="EventSystem.cs" />
     <Compile Include="Models\BruteForceParameters.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Models\Provider.cs" />
     <Compile Include="Models\OptimizationStatistics.cs" />
     <Compile Include="Models\OrderDetails.cs" />
+    <Compile Include="Models\ServiceDetails.cs" />
     <Compile Include="Models\Strategy.cs" />
     <Compile Include="Models\StrategyInstance.cs" />
     <Compile Include="Models\SubscriptionRequest.cs" />

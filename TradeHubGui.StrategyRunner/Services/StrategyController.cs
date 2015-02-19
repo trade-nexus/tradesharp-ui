@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TraceSourceLogger;
 using TraceSourceLogger.ValueObjects;
 using TradeHub.Common.Core.DomainModels;
@@ -24,6 +25,11 @@ namespace TradeHubGui.StrategyRunner.Services
     public class StrategyController
     {
         private Type _type = typeof(StrategyController);
+
+        /// <summary>
+        /// Holds UI thread reference
+        /// </summary>
+        private Dispatcher _currentDispatcher;
 
         /// <summary>
         /// Records of current startegies instances
@@ -57,6 +63,15 @@ namespace TradeHubGui.StrategyRunner.Services
         }
 
         #endregion
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        public StrategyController()
+        {
+            // Save UI thread reference
+            _currentDispatcher = Dispatcher.CurrentDispatcher;
+        }
 
         /// <summary>
         /// Verify and add strategy to TradeHub
@@ -119,7 +134,7 @@ namespace TradeHubGui.StrategyRunner.Services
         public void AddStrategyInstance(StrategyInstance strategyInstance)
         {
             //create strategy executor instance responsible for entire Strategy Instance life cycle
-            StrategyExecutor executor = new StrategyExecutor(strategyInstance);
+            StrategyExecutor executor = new StrategyExecutor(strategyInstance, _currentDispatcher);
 
             //subscribe to strategy event changed event
             executor.StatusChanged += OnStrategyStatusChanged;

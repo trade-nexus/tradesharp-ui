@@ -10,6 +10,8 @@
 
     <UserControl.Resources>
         <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+        <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
+        
     </UserControl.Resources>
 
     <Grid x:Name="ContentGrid">
@@ -145,51 +147,24 @@
                     </DockPanel>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                        <ItemsControl Margin="10,0" Width="310" HorizontalAlignment="Left" UseLayoutRounding="True">
-
-                            <Grid>
-                                <Border Margin="0,4" Background="WhiteSmoke" BorderBrush="{StaticResource GreenBrush}" BorderThickness="4,0,0,0" CornerRadius="0,0,30,0" VerticalAlignment="Center">
-                                    <DockPanel Margin="8,4,4,6">
-                                        <TextBlock DockPanel.Dock="Left" Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps"
+                        <ItemsControl Margin="10,0" Width="310" ItemsSource="{Binding Services}"
+                                      HorizontalAlignment="Left" UseLayoutRounding="True">
+                            
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Border Margin="0,4" Background="WhiteSmoke" BorderBrush="{Binding Status, Converter={StaticResource ServiceStatusToBrush}}" BorderThickness="4,0,0,0" CornerRadius="0,0,30,0" VerticalAlignment="Center">
+                                            <DockPanel Margin="8,4,4,6">
+                                                <TextBlock DockPanel.Dock="Left" Text="{Binding Status}" Foreground="{Binding Status, Converter={StaticResource ServiceStatusToBrush}}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps"
                                                VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Width="60"/>
-                                        <TextBlock Text="Market Data Service" Margin="40,0,0,0" VerticalAlignment="Center" FontSize="12" Typography.Capitals="Normal" FontWeight="Normal"/>
-                                    </DockPanel>
-                                </Border>
-                                <Border Margin="0,4" Width="2" Height="14" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            </Grid>
+                                                <TextBlock Text="{Binding ServiceName}" Margin="40,0,0,0" VerticalAlignment="Center" FontSize="12" Typography.Capitals="Normal" FontWeight="Normal"/>
+                                            </DockPanel>
+                                        </Border>
+                                        <Border Margin="0,4" Width="2" Height="14" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
 
-                            <Grid>
-                                <Border Margin="0,4" Background="WhiteSmoke" BorderBrush="{StaticResource GreenBrush}" BorderThickness="4,0,0,0" CornerRadius="0,0,30,0" VerticalAlignment="Center">
-                                    <DockPanel Margin="8,4,4,6">
-                                        <TextBlock DockPanel.Dock="Left" Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps"
-                                               VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Width="60"/>
-                                        <TextBlock Text="Order Execution Service" Margin="40,0,0,0" VerticalAlignment="Center" FontSize="12" Typography.Capitals="Normal" FontWeight="Normal"/>
-                                    </DockPanel>
-                                </Border>
-                                <Border Margin="0,4" Width="2" Height="14" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            </Grid>
-
-                            <Grid>
-                                <Border Margin="0,4" Background="WhiteSmoke" BorderBrush="{StaticResource GreenBrush}" BorderThickness="4,0,0,0" CornerRadius="0,0,30,0" VerticalAlignment="Center">
-                                    <DockPanel Margin="8,4,4,6">
-                                        <TextBlock DockPanel.Dock="Left" Text="Running" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps"
-                                               VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Width="60"/>
-                                        <TextBlock Text="Position Engine Service" Margin="40,0,0,0" VerticalAlignment="Center" FontSize="12" Typography.Capitals="Normal" FontWeight="Normal"/>
-                                    </DockPanel>
-                                </Border>
-                                <Border Margin="0,4" Width="2" Height="14" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            </Grid>
-
-                            <Grid>
-                                <Border Margin="0,4" Background="WhiteSmoke" BorderBrush="{StaticResource RedBrush}" BorderThickness="4,0,0,0" CornerRadius="0,0,30,0" VerticalAlignment="Center">
-                                    <DockPanel Margin="8,4,4,6">
-                                        <TextBlock DockPanel.Dock="Left" Text="Stopped" Foreground="{StaticResource RedBrush}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps"
-                                               VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Width="60"/>
-                                        <TextBlock Text="Reporting Engine Service" Margin="40,0,0,0" VerticalAlignment="Center" FontSize="12" Typography.Capitals="Normal" FontWeight="Normal"/>
-                                    </DockPanel>
-                                </Border>
-                                <Border Margin="0,4" Width="2" Height="14" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            </Grid>
                         </ItemsControl>
                     </ScrollViewer>
                 </DockPanel>
