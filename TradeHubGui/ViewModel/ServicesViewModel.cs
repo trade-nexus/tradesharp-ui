@@ -16,11 +16,6 @@ namespace TradeHubGui.ViewModel
         #region Fields
 
         /// <summary>
-        /// Holds refernce of Selected Service Details from the UI
-        /// </summary>
-        private ServiceDetails _selectedService;
-
-        /// <summary>
         /// Contains Service Details for the available application services
         /// </summary>
         private ObservableCollection<ServiceDetails> _services;
@@ -46,19 +41,6 @@ namespace TradeHubGui.ViewModel
             }
         }
 
-        /// <summary>
-        /// Holds refernce of Selected Service Details from the UI
-        /// </summary>
-        public ServiceDetails SelectedService
-        {
-            get { return _selectedService; }
-            set
-            {
-                _selectedService = value; 
-                OnPropertyChanged("SelectedService");
-            }
-        }
-
         #endregion
 
         #region Commands
@@ -72,7 +54,7 @@ namespace TradeHubGui.ViewModel
             {
                 return _startServiceCommand ??
                        (_startServiceCommand =
-                           new RelayCommand(param => StartServiceExecute(), param => StartServiceCanExecute()));
+                           new RelayCommand(param => StartServiceExecute(param), param => StartServiceCanExecute(param)));
             }
         }
 
@@ -85,7 +67,7 @@ namespace TradeHubGui.ViewModel
             {
                 return _stopServiceCommand ??
                        (_stopServiceCommand =
-                           new RelayCommand(param => StopServiceExecute(), param => StopServiceCanExecute()));
+                           new RelayCommand(param => StopServiceExecute(param), param => StopServiceCanExecute(param)));
             }
         }
 
@@ -113,8 +95,6 @@ namespace TradeHubGui.ViewModel
 
             // Get Initial Services information
             PopulateServices();
-
-            if (Services.Count > 0) SelectedService = Services[0];
         }
 
         #region Command Trigger Methods
@@ -123,7 +103,7 @@ namespace TradeHubGui.ViewModel
         /// Used to Enable/Disable 'Start' button
         /// </summary>
         /// <returns></returns>
-        private bool StartServiceCanExecute()
+        private bool StartServiceCanExecute(object parameter)
         {
             return true;
         }
@@ -131,16 +111,18 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Called when 'Start' button is clicked
         /// </summary>
-        private void StartServiceExecute()
+        private void StartServiceExecute(object parameter)
         {
-            StartService();
+            string serviceName = (string) parameter;
+
+            StartService(serviceName);
         }
 
         /// <summary>
         /// Used to Enable/Disable 'Stop' button
         /// </summary>
         /// <returns></returns>
-        private bool StopServiceCanExecute()
+        private bool StopServiceCanExecute(object parameter)
         {
             return true;
         }
@@ -148,9 +130,11 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Called when 'Stop' button is clicked
         /// </summary>
-        private void StopServiceExecute()
+        private void StopServiceExecute(object parameter)
         {
-            StopService();
+            string serviceName = (string)parameter;
+
+            StopService(serviceName);
         }
 
         /// <summary>
@@ -189,12 +173,26 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Called when user hits the 'Start' button
         /// </summary>
-        private void StartService()
+        /// <param name="serviceName"></param>
+        private void StartService(string serviceName)
         {
+            ServiceDetails serviceDetails = null;
+
+            foreach (var service in _services)
+            {
+                if (service.ServiceName.Equals(serviceName))
+                {
+                    serviceDetails = service;
+                    break;
+                }
+            }
+
+            if (serviceDetails == null) return;
+
             //NOTE: Test code to simulate Service Start
             // BEGIN:
-            SelectedService.Status=ServiceStatus.Starting;
-            SelectedService.Status=ServiceStatus.Running;
+            serviceDetails.Status = ServiceStatus.Starting;
+            serviceDetails.Status = ServiceStatus.Running;
             return;
             // :END
         }
@@ -202,12 +200,26 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Called when user hits the 'Stop' Button
         /// </summary>
-        private void StopService()
+        /// <param name="serviceName"></param>
+        private void StopService(string serviceName)
         {
+            ServiceDetails serviceDetails = null;
+
+            foreach (var service in _services)
+            {
+                if (service.ServiceName.Equals(serviceName))
+                {
+                    serviceDetails = service;
+                    break;
+                }
+            }
+
+            if (serviceDetails == null) return;
+
             //NOTE: Test code to simulate Service Start
             // BEGIN:
-            SelectedService.Status = ServiceStatus.Stopping;
-            SelectedService.Status = ServiceStatus.Stopped;
+            serviceDetails.Status = ServiceStatus.Stopping;
+            serviceDetails.Status = ServiceStatus.Stopped;
             return;
             // :END
         }
