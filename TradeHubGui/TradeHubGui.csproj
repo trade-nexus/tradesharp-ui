@@ -160,6 +160,9 @@
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\MarketDataScannerView.xaml.cs">
+      <DependentUpon>MarketDataScannerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GeneticOptimizationWindow.xaml.cs">
       <DependentUpon>GeneticOptimizationWindow.xaml</DependentUpon>
     </Compile>
@@ -194,6 +197,10 @@
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\BruteOptimizationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MarketDataScannerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
