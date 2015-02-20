@@ -542,6 +542,9 @@ namespace TradeHubGui.ViewModel
             ((Window)param).Close();
         }
 
+        /// <summary>
+        /// Displays Genetic Optimization Window
+        /// </summary>
         private void ShowGeneticOptimizationWindowExecute()
         {
             if (TryActivateShownWindow(typeof(GeneticOptimizationWindow)))
@@ -557,6 +560,9 @@ namespace TradeHubGui.ViewModel
             window.Show();
         }
 
+        /// <summary>
+        /// Displays Brute Force Optimization Window
+        /// </summary>
         private void ShowBruteOptimizationWindowExecute()
         {
             if (TryActivateShownWindow(typeof(BruteOptimizationWindow)))
@@ -626,6 +632,9 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Opens File Dialog to use '.csv' file for loading strategy instances
+        /// </summary>
         private void ImportInstancesExecute()
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -686,24 +695,6 @@ namespace TradeHubGui.ViewModel
             OrderDetailsCollection = new ObservableCollection<OrderDetails>();
 
             OrderDetailsCollection = SelectedExecutionDetails.OrderDetailsList;
-        }
-
-        /// <summary>
-        /// Dummy method for filling example instances
-        /// </summary>
-        private void FillInstancesAA()
-        {
-            Instances = new ObservableCollection<StrategyInstance>();
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA001", Symbol = "GOOG", Description = "Dynamic trade", Status = DomainModels.StrategyStatus.None });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA002", Symbol = "GOOG", Description = "Test", Status = DomainModels.StrategyStatus.None });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA003", Symbol = "HP", Description = "Test", Status = DomainModels.StrategyStatus.Executing });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA004", Symbol = "AAPL", Description = "Test", Status = DomainModels.StrategyStatus.Executed });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA005", Symbol = "MSFT", Description = "Dynamic trade", Status = DomainModels.StrategyStatus.Executed });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA006", Symbol = "GOOG", Description = "Dynamic trade", Status = DomainModels.StrategyStatus.Executed });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA007", Symbol = "HP", Description = "Test", Status = DomainModels.StrategyStatus.Executed });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA008", Symbol = "HP", Description = "Test", Status = DomainModels.StrategyStatus.None });
-            Instances.Add(new StrategyInstance() { InstanceKey = "AA009", Symbol = "MSFT", Description = "Dynamic trade", Status = DomainModels.StrategyStatus.None });
-            SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
         }
 
         /// <summary>

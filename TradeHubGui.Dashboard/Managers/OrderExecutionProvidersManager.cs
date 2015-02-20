@@ -10,32 +10,32 @@ using TradeHubGui.Common.Models;
 namespace TradeHubGui.Dashboard.Managers
 {
     /// <summary>
-    /// Handles Market Data Provider's related Admin functionality
+    /// Handles Order Execution Provider's related Admin functionality
     /// </summary>
-    public class MarketDataProvidersManager
+    public class OrderExecutionProvidersManager
     {
-        private Type _type = typeof(MarketDataProvidersManager);
+        private Type _type = typeof(OrderExecutionProvidersManager);
 
         /// <summary>
-        /// Directory path at which Market Data Provider's files are located
+        /// Directory path at which Order Execution Provider's files are located
         /// </summary>
-        private readonly string _marketDataProvidersFolderPath;
+        private readonly string _orderExecutionProvidersFolderPath;
 
         /// <summary>
-        /// File name which holds the name of all available market data providers
+        /// File name which holds the name of all available order execution providers
         /// </summary>
-        private readonly string _marketDataProvidersFileName;
+        private readonly string _orderExecutionProvidersFileName;
 
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public MarketDataProvidersManager()
+        public OrderExecutionProvidersManager()
         {
-            _marketDataProvidersFolderPath =
+            _orderExecutionProvidersFolderPath =
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                "\\TradeHub\\MarketDataProviders\\";
+                "\\TradeHub\\OrderExecutionProviders\\";
 
-            _marketDataProvidersFileName = "AvailableProviders.xml";
+            _orderExecutionProvidersFileName = "AvailableOEProviders.xml";
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace TradeHubGui.Dashboard.Managers
         public IDictionary<string, List<ProviderCredential>> GetAvailableProviders()
         {
             // File Saftey Check
-            if (!File.Exists(_marketDataProvidersFolderPath + _marketDataProvidersFileName)) 
+            if (!File.Exists(_orderExecutionProvidersFolderPath + _orderExecutionProvidersFileName)) 
                 return null;
 
             // Will hold credential information against each availale provider
@@ -55,7 +55,7 @@ namespace TradeHubGui.Dashboard.Managers
             var availableProvidersDocument = new XmlDocument();
 
             // Read file to get available provider's names.
-            availableProvidersDocument.Load(_marketDataProvidersFolderPath + _marketDataProvidersFileName);
+            availableProvidersDocument.Load(_orderExecutionProvidersFolderPath + _orderExecutionProvidersFileName);
 
             // Read the all Node value
             XmlNodeList providersInfo = availableProvidersDocument.SelectNodes(xpath: "Providers/*");
@@ -66,7 +66,7 @@ namespace TradeHubGui.Dashboard.Managers
                 foreach (XmlNode node in providersInfo)
                 {
                     // Create file name from which to read Provider Credentials
-                    string credentialsFileName = node.Name + @"Params.xml";
+                    string credentialsFileName = node.Name + @"OrderParams.xml";
 
                     // XML Document to read provider specific xml file
                     var availableCredentialsDoc = new XmlDocument();
@@ -74,10 +74,10 @@ namespace TradeHubGui.Dashboard.Managers
                     // Holds extracted credentials from the xml file
                     var providerCredentialList = new List<ProviderCredential>();
 
-                    if (File.Exists(_marketDataProvidersFolderPath + credentialsFileName))
+                    if (File.Exists(_orderExecutionProvidersFolderPath + credentialsFileName))
                     {
                         // Read configuration file
-                        availableCredentialsDoc.Load(_marketDataProvidersFolderPath + credentialsFileName);
+                        availableCredentialsDoc.Load(_orderExecutionProvidersFolderPath + credentialsFileName);
 
                         // Read all the parametes defined in the configuration file
                         XmlNodeList configNodes = availableCredentialsDoc.SelectNodes(xpath: node.Name + "/*");

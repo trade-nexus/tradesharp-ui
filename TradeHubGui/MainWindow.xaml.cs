@@ -33,6 +33,8 @@ namespace TradeHubGui
         {
             InitializeComponent();
             DataContext = new BaseViewModel();
+            AppDomain.CurrentDomain.UnhandledException +=
+                 new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -76,6 +78,13 @@ namespace TradeHubGui
                     window.Close();
                 }
             }
+        }
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = e.ExceptionObject as Exception;
+            MessageBox.Show(ex.Message, "Uncaught Thread Exception",
+                            MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

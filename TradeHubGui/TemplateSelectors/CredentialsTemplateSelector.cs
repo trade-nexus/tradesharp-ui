@@ -38,6 +38,10 @@ namespace TradeHubGui.TemplateSelectors
                 {
                     return (DataTemplate)element.FindResource("PortDataTemplate");
                 }
+                else
+                {
+                    return (DataTemplate)element.FindResource("GenericDataTemplate");
+                }
             }
 
             return base.SelectTemplate(item, container);

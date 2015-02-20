@@ -39,8 +39,8 @@ namespace TradeHubGui.ViewModel
         {
             _providersController = new ProvidersController();
 
-            InitMarketDataProviders();
-            InitOrderExecutionProviders();
+            InitializeMarketDataProviders();
+            InitializeOrderExecutionProviders();
         }
 
         #endregion
@@ -160,81 +160,7 @@ namespace TradeHubGui.ViewModel
 
         #endregion
 
-        #region Methods
-        /// <summary>
-        /// Initialization of market data providers
-        /// </summary>
-        private void InitMarketDataProviders()
-        {
-            _marketDataProviders = new ObservableCollection<Provider>();
-
-            var availableProviders = _providersController.GetAvailableProviders();
-
-            foreach (var keyValuePair in availableProviders)
-            {
-                Provider tempProvider = new Provider() { ProviderName = keyValuePair.Key, ConnectionStatus = ConnectionStatus.Disconnected };
-                tempProvider.ProviderCredentials = keyValuePair.Value;
-                _marketDataProviders.Add(tempProvider);
-            }
-
-            //#region NOTE: this region is just dummy initialization for testing purpose and this will be replaced with real initialization
-
-            //List<ProviderCredential> credentials = new List<ProviderCredential>();
-            //credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
-            //credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
-            //credentials.Add(new ProviderCredential() { CredentialName = "IP address", CredentialValue = string.Empty });
-            //credentials.Add(new ProviderCredential() { CredentialName = "Port", CredentialValue = string.Empty });
-
-            //Provider provider = new Provider() { ProviderName = MarketDataProvider.Blackwood, ConnectionStatus = ConnectionStatus.Connected };
-            //provider.ProviderCredentials = credentials;
-            //_marketDataProviders.Add(provider);
-
-            //credentials = new List<ProviderCredential>();
-            //credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
-            //credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
-
-            //provider = new Provider() { ProviderName = MarketDataProvider.InteractiveBrokers, ConnectionStatus = ConnectionStatus.Connected };
-            //provider.ProviderCredentials = credentials;
-            //_marketDataProviders.Add(provider);
-
-            //credentials = new List<ProviderCredential>();
-            //credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
-            //credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
-            //credentials.Add(new ProviderCredential() { CredentialName = "IP address", CredentialValue = string.Empty });
-            //credentials.Add(new ProviderCredential() { CredentialName = "Port", CredentialValue = string.Empty });
-
-            //provider = new Provider() { ProviderName = MarketDataProvider.Simulated, ConnectionStatus = ConnectionStatus.Disconnected };
-            //provider.ProviderCredentials = credentials;
-            //_marketDataProviders.Add(provider);
-
-            //credentials = new List<ProviderCredential>();
-            //credentials.Add(new ProviderCredential() { CredentialName = "Username", CredentialValue = string.Empty });
-            //credentials.Add(new ProviderCredential() { CredentialName = "Password", CredentialValue = string.Empty });
-
-            //provider = new Provider() { ProviderName = MarketDataProvider.SimulatedExchange, ConnectionStatus = ConnectionStatus.Connected };
-            //provider.ProviderCredentials = credentials;
-            //_marketDataProviders.Add(provider);
-
-            //#endregion
-
-            // Select initially 1st provider in ComboBox
-            if (_marketDataProviders != null && _marketDataProviders.Count > 0)
-                SelectedMarketDataProvider = _marketDataProviders[0];
-        }
-
-        /// <summary>
-        /// Initialization of order execution providers
-        /// </summary>
-        private void InitOrderExecutionProviders()
-        {
-            _orderExecutionProviders = new ObservableCollection<Provider>();
-
-            // TODO: populate collection
-
-            // Select initially 1st provider in ComboBox
-            if (_orderExecutionProviders != null && _orderExecutionProviders.Count > 0)
-                SelectedOrderExecutionProvider = _orderExecutionProviders[0];
-        }
+        #region Trigger Methods for Commands
 
         /// <summary>
         /// Add new provider to the MarketDataProviders or to the OrderExecutionProviders collection depending on param
@@ -294,6 +220,10 @@ namespace TradeHubGui.ViewModel
             return false;
         }
 
+        /// <summary>
+        /// Called when 'Connect' button command is triggerd
+        /// </summary>
+        /// <param name="param"></param>
         private void ConnectProviderExecute(object param)
         {
             if (param.Equals("MarketDataProvider"))
@@ -318,16 +248,24 @@ namespace TradeHubGui.ViewModel
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
-                //TODO:
+                if (SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
+                {
+                    return true;
+                }
             }
             return false;
         }
 
+        /// <summary>
+        /// Called when 'Disconnect' button command is triggered
+        /// </summary>
+        /// <param name="param"></param>
         private void DisconnectProviderExecute(object param)
         {
             if (param.Equals("MarketDataProvider"))
             {
-                //TODO:
+                // Rasie event to request connection
+                EventSystem.Publish<Provider>(SelectedMarketDataProvider);
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
@@ -337,9 +275,81 @@ namespace TradeHubGui.ViewModel
 
         private bool DisconnectProviderCanExecute(object param)
         {
+            if (param.Equals("MarketDataProvider"))
+            {
+                if (SelectedMarketDataProvider.ConnectionStatus.Equals(ConnectionStatus.Connected))
+                {
+                    return true;
+                }
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+                if (SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected))
+                {
+                    return true;
+                }
+            }
             return false;
         }
 
         #endregion
+
+        /// <summary>
+        /// Initialization of market data providers
+        /// </summary>
+        private async void InitializeMarketDataProviders()
+        {
+            _marketDataProviders = new ObservableCollection<Provider>();
+
+            // Request Controller for infomation
+            var availableProviders = await Task.Run(() => _providersController.GetAvailableMarketDataProviders());
+
+            // Safety check incase information was not populated
+            if (availableProviders == null)
+                return;
+
+            // Populate Individual Market Data Provider details
+            foreach (var keyValuePair in availableProviders)
+            {
+                Provider tempProvider = new Provider() { ProviderName = keyValuePair.Key, ConnectionStatus = ConnectionStatus.Disconnected };
+                tempProvider.ProviderCredentials = keyValuePair.Value;
+
+                // Add to Collection
+                _marketDataProviders.Add(tempProvider);
+            }
+
+            // Select initially 1st provider in ComboBox
+            if (_marketDataProviders != null && _marketDataProviders.Count > 0)
+                SelectedMarketDataProvider = _marketDataProviders[0];
+        }
+
+        /// <summary>
+        /// Initialization of order execution providers
+        /// </summary>
+        private async void InitializeOrderExecutionProviders()
+        {
+            _orderExecutionProviders = new ObservableCollection<Provider>();
+
+            // Request Controller for infomation
+            var availableProviders = await Task.Run(() => _providersController.GetAvailableOrderExecutionProviders());
+
+            // Safety check incase information was not populated
+            if (availableProviders == null)
+                return;
+
+            // Populate Individual Market Data Provider details
+            foreach (var keyValuePair in availableProviders)
+            {
+                Provider tempProvider = new Provider() { ProviderName = keyValuePair.Key, ConnectionStatus = ConnectionStatus.Disconnected };
+                tempProvider.ProviderCredentials = keyValuePair.Value;
+
+                // Add to Collection
+                _orderExecutionProviders.Add(tempProvider);
+            }
+
+            // Select initially 1st provider in ComboBox
+            if (_orderExecutionProviders != null && _orderExecutionProviders.Count > 0)
+                SelectedOrderExecutionProvider = _orderExecutionProviders[0];
+        }
     }
 }

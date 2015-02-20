@@ -18,7 +18,12 @@ namespace TradeHubGui.Dashboard.Services
         /// <summary>
         /// Handle Market Data Provider related functionaltiy
         /// </summary>
-        private MarketDataProvidersManager _dataProvidersManager;
+        private readonly MarketDataProvidersManager _dataProvidersManager;
+
+        /// <summary>
+        /// Handle Order Execution Provider related functionaltiy
+        /// </summary>
+        private readonly OrderExecutionProvidersManager _executionProvidersManager;
 
         /// <summary>
         /// Default Constructor
@@ -26,15 +31,25 @@ namespace TradeHubGui.Dashboard.Services
         public ProvidersController()
         {
             _dataProvidersManager = new MarketDataProvidersManager();
+            _executionProvidersManager = new OrderExecutionProvidersManager();
         }
 
         /// <summary>
-        /// Returns a list of available market data providers
+        /// Returns available market data providers along with there configuration information
         /// </summary>
         /// <returns></returns>
-        public Dictionary<string, List<ProviderCredential>> GetAvailableProviders()
+        public async Task<IDictionary<string, List<ProviderCredential>>> GetAvailableMarketDataProviders()
         {
             return _dataProvidersManager.GetAvailableProviders();
+        }
+
+        /// <summary>
+        /// Returns available order executiom providers along with there configuration information
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IDictionary<string, List<ProviderCredential>>> GetAvailableOrderExecutionProviders()
+        {
+            return _executionProvidersManager.GetAvailableProviders();
         } 
     }
 }
