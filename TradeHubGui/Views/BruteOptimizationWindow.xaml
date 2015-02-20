@@ -74,19 +74,19 @@
 
         <DataTemplate x:Key="IncrementIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1"/>
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="IncrementUnsignedIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0" />
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="IncrementDecimalTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:DecimalUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" FormatString="N0" Increment="0.1" />
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
             </Border>
         </DataTemplate>
         
