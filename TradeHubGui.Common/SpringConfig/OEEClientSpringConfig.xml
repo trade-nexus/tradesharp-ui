@@ -6,7 +6,7 @@
     Spring Config file for Order Execution Engine Client
   </description>
 
-  <object id="OEEClientLogger" type="TraceSourceLogger.AsyncClassLogger, TraceSourceLogger" singleton="true">
+  <object id="OEEClientLogger" type="TraceSourceLogger.AsyncClassLogger, TraceSourceLogger" singleton="false">
     <constructor-arg index="0" value="OEEClient"/>
   </object>
 

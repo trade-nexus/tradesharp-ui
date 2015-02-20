@@ -25,6 +25,7 @@ namespace TradeHubGui.ViewModel
         private ServicesViewModel _servicesViewModel;
 
         private MarketDataController _marketDataController;
+        private OrderExecutionController _orderExecutionController;
 
         /// <summary>
         /// Constructors
@@ -35,6 +36,7 @@ namespace TradeHubGui.ViewModel
             _servicesViewModel = new ServicesViewModel();
 
             _marketDataController = ContextRegistry.GetContext()["MarketDataController"] as MarketDataController;
+            _orderExecutionController = ContextRegistry.GetContext()["OrderExecutionController"] as OrderExecutionController;
 
             EventSystem.Subscribe<string>(OnApplicationClose);
 
@@ -162,6 +164,7 @@ namespace TradeHubGui.ViewModel
             if (message.Equals("Close"))
             {
                 _marketDataController.Stop();
+                _orderExecutionController.Stop();
             }
         }
 

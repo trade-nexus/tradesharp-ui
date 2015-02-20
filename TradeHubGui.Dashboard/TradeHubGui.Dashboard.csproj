@@ -68,16 +68,26 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\tradehub\TradeHub.MarketDataEngine.Client.dll</HintPath>
     </Reference>
+    <Reference Include="TradeHub.OrderExecutionEngine.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.OrderExecutionEngine.Client.dll</HintPath>
+    </Reference>
     <Reference Include="TradeHub.StrategyEngine.MarketData">
       <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.MarketData.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.OrderExecution, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.OrderExecution.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Managers\MarketDataManager.cs" />
     <Compile Include="Managers\MarketDataProvidersManager.cs" />
+    <Compile Include="Managers\OrderExecutionManager.cs" />
     <Compile Include="Managers\OrderExecutionProvidersManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MarketDataController.cs" />
+    <Compile Include="Services\OrderExecutionController.cs" />
     <Compile Include="Services\ProvidersController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +101,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="SpringConfig\MarketDataControllerSpringConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SpringConfig\OrderExecutionControllerSpringConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

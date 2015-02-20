@@ -233,7 +233,8 @@ namespace TradeHubGui.ViewModel
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
-                //TODO:
+                // Rasie event to request connection
+                EventSystem.Publish<Provider>(SelectedOrderExecutionProvider);
             }
         }
 
