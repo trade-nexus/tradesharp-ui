@@ -18,7 +18,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="400"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="0.5*" MinWidth="300"/>
+            <ColumnDefinition Width="0.4*" MinWidth="300"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0" >
@@ -147,16 +147,14 @@
                     </DockPanel>
 
                     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
-                        <ItemsControl Margin="10,0" Width="310" ItemsSource="{Binding Services}"
-                                      HorizontalAlignment="Left" UseLayoutRounding="True">
-                            
+                        <ItemsControl Margin="10,0" ItemsSource="{Binding Services}" UseLayoutRounding="True">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <Border Margin="0,4" Background="WhiteSmoke" BorderBrush="{Binding Status, Converter={StaticResource ServiceStatusToBrush}}" BorderThickness="4,0,0,0" CornerRadius="0,0,30,0" VerticalAlignment="Center">
+                                        <Border Margin="0,4" Background="WhiteSmoke" BorderBrush="{Binding Status, Converter={StaticResource ServiceStatusToBrush}}" BorderThickness="4,0,0,0" VerticalAlignment="Center">
                                             <DockPanel Margin="8,4,4,6">
                                                 <TextBlock DockPanel.Dock="Left" Text="{Binding Status}" Foreground="{Binding Status, Converter={StaticResource ServiceStatusToBrush}}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps"
-                                               VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Width="60"/>
+                                                            VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Width="60"/>
                                                 <TextBlock Text="{Binding ServiceName}" Margin="40,0,0,0" VerticalAlignment="Center" FontSize="12" Typography.Capitals="Normal" FontWeight="Normal"/>
                                             </DockPanel>
                                         </Border>
@@ -164,7 +162,6 @@
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
-
                         </ItemsControl>
                     </ScrollViewer>
                 </DockPanel>
