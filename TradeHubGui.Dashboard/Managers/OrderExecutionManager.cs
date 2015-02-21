@@ -11,12 +11,14 @@ namespace TradeHubGui.Dashboard.Managers
     /// <summary>
     /// Provides Communication access with Order Execution Server
     /// </summary>
-    internal class OrderExecutionManager
+    internal class OrderExecutionManager : IDisposable
     {
         /// <summary>
         /// Provides communication access with Order Execution Server
         /// </summary>
         private readonly OrderExecutionService _orderExecutionService;
+
+        private bool _disposed = false;
 
         #region Events
 
@@ -205,6 +207,29 @@ namespace TradeHubGui.Dashboard.Managers
         public void Stop()
         {
             _orderExecutionService.StopService();
+            _orderExecutionService.Dispose();
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _orderExecutionService.StopService();
+                }
+                // Release unmanaged resources.
+                _disposed = true;
+            }
         }
     }
 }

@@ -78,6 +78,8 @@ namespace TradeHubGui
                     window.Close();
                 }
             }
+
+            Application.Current.Shutdown();
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
