@@ -37,7 +37,7 @@
             <x:Array x:Key="Contents" Type="UserControl">
                 <views:DashboardView/>
                 <views:StrategyRunnerView/>
-                <views:MarketDataScannerView/>
+                <views:MarketScannerView/>
                 <views:OrdersView/>
                 <views:DataDownloaderView/>
             </x:Array>

@@ -31,31 +31,30 @@
             <Grid Margin="20,20,5,20">
                 <Border Style="{StaticResource ContentBorderStyle}"/>
                 <DockPanel Margin="10">
-                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="MARKET DATA" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <Border Style="{StaticResource ContentBorderStyle}"/>
+                    <DockPanel Margin="10">
+                        <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="PENDING ORDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                    <DataGrid x:Name="MarketDataGrid" 
-                              ItemsSource="{Binding Instruments}"
-                              Margin="10"
-                              SelectionMode="Single" 
-                              IsTextSearchEnabled="True"
-                              IsSynchronizedWithCurrentItem="True"
-                              CanUserAddRows="False" CanUserDeleteRows="False"
-                              CanUserResizeRows="False" CanUserSortColumns="True"
-                              IsReadOnly="True"
-                              SelectionUnit="FullRow"
-                              AutoGenerateColumns="False"
-                              RowHeight="22">
+                        <DataGrid x:Name="PendingOrdersDataGrid" Margin="10"
+                            SelectionMode="Single" 
+                            IsTextSearchEnabled="True"
+                            IsSynchronizedWithCurrentItem="True"
+                            CanUserAddRows="False" CanUserDeleteRows="False"
+                            CanUserResizeRows="False" CanUserSortColumns="True"
+                            IsReadOnly="False"
+                            SelectionUnit="FullRow"
+                            AutoGenerateColumns="False"
+                            RowHeight="22">
 
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Symbol" Width="*" Binding="{Binding Path=Symbol}" />
-                            <DataGridTextColumn Header="Bid quantity" Width="*" Binding="{Binding Path=BidQty}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                            <DataGridTextColumn Header="Bid price" Width="*" Binding="{Binding Path=BidPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                            <DataGridTextColumn Header="Ask quantity" Width="*" Binding="{Binding Path=AskQty}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                            <DataGridTextColumn Header="Ask price" Width="*" Binding="{Binding Path=AskPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                            <DataGridTextColumn Header="Last" Width="*" Binding="{Binding Path=Last}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                            <DataGridTextColumn Header="Volume" Width="*" Binding="{Binding Path=Volume}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Symbol" Width="*" Binding="{Binding Path=Symbol}" />
+                                <DataGridTextColumn Header="Buy" Width="*" Binding="{Binding Path=Buy}" />
+                                <DataGridTextColumn Header="Sell" Width="*" Binding="{Binding Path=Sell}" />
+                                <DataGridTextColumn Header="Position" Width="*" Binding="{Binding Path=Position}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+
                 </DockPanel>
             </Grid>
 
@@ -167,33 +166,7 @@
                 </DockPanel>
             </Grid>
         </Grid>
-
-
-        <!--<Grid Grid.Row="3" Grid.RowSpan="2" Grid.Column="0" Margin="20,5,5,20">
-            <Border Style="{StaticResource ContentBorderStyle}"/>
-            <DockPanel Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="PENDING ORDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
-
-                <DataGrid x:Name="PendingOrdersDataGrid" Margin="10"
-                            SelectionMode="Single" 
-                            IsTextSearchEnabled="True"
-                            IsSynchronizedWithCurrentItem="True"
-                            CanUserAddRows="False" CanUserDeleteRows="False"
-                            CanUserResizeRows="False" CanUserSortColumns="True"
-                            IsReadOnly="False"
-                            SelectionUnit="FullRow"
-                            AutoGenerateColumns="False"
-                            RowHeight="22">
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Symbol" Width="*" Binding="{Binding Path=Symbol}" />
-                        <DataGridTextColumn Header="Buy" Width="*" Binding="{Binding Path=Buy}" />
-                        <DataGridTextColumn Header="Sell" Width="*" Binding="{Binding Path=Sell}" />
-                        <DataGridTextColumn Header="Position" Width="*" Binding="{Binding Path=Position}" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
-        </Grid>-->
+        
     </Grid>
 
 

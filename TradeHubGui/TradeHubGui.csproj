@@ -154,14 +154,22 @@
     <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
+    <Compile Include="ViewModel\MarketScannerContentViewModel.cs" />
+    <Compile Include="ViewModel\MarketScannerViewModel.cs" />
     <Compile Include="ViewModel\ProvidersViewModel.cs" />
     <Compile Include="ViewModel\ServicesViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MarketDataScannerView.xaml.cs">
-      <DependentUpon>MarketDataScannerView.xaml</DependentUpon>
+    <Compile Include="Views\MarketScannerContentView.xaml.cs">
+      <DependentUpon>MarketScannerContentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewMarketScannerWindow.xaml.cs">
+      <DependentUpon>NewMarketScannerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MarketScannerView.xaml.cs">
+      <DependentUpon>MarketScannerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GeneticOptimizationWindow.xaml.cs">
       <DependentUpon>GeneticOptimizationWindow.xaml</DependentUpon>
@@ -200,7 +208,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MarketDataScannerView.xaml">
+    <Page Include="Views\MarketScannerContentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NewMarketScannerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MarketScannerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -306,6 +322,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Lib\Xceed.Wpf.AvalonDock.Themes.Flat\Xceed.Wpf.AvalonDock.Themes.Flat.csproj">
+      <Project>{6792a0e0-ca88-4fe2-8bec-0ac7828363c5}</Project>
+      <Name>Xceed.Wpf.AvalonDock.Themes.Flat</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Lib\Xceed.Wpf.AvalonDock\Xceed.Wpf.AvalonDock.csproj">
+      <Project>{db81988f-e0f2-45a0-a1fd-8c37f3d35244}</Project>
+      <Name>Xceed.Wpf.AvalonDock</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Resources\Resources.csproj">
       <Project>{9cc3c15b-6a55-481e-b379-85f86cd1cdbc}</Project>
       <Name>Resources</Name>

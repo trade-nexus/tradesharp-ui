@@ -216,22 +216,22 @@
 
 	<LinearGradientBrush x:Key="NormalBrush" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
 		<GradientStop Offset="0.0" Color="#FFFF" />
-		<GradientStop Offset="1.0" Color="#FEEE" />
+        <GradientStop Offset="1.0" Color="#FFFF" />
 	</LinearGradientBrush>
 
 	<LinearGradientBrush x:Key="HorizontalNormalBrush" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="1,0">
 		<GradientStop Offset="0.0" Color="#FFFF" />
-		<GradientStop Offset="1.0" Color="#FEEE" />
+        <GradientStop Offset="1.0" Color="#FFFF" />
 	</LinearGradientBrush>
 
 	<LinearGradientBrush x:Key="NormalBrushInverted" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
 		<GradientStop Offset="1.0" Color="#FFFF" />
-		<GradientStop Offset="0.0" Color="#FEEE" />
+        <GradientStop Offset="0.0" Color="#FFFF" />
 	</LinearGradientBrush>
 
 	<LinearGradientBrush x:Key="HorizontalNormalBrushInverted" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="1,0">
 		<GradientStop Offset="1.0" Color="#FFFF" />
-		<GradientStop Offset="0.0" Color="#FEEE" />
+        <GradientStop Offset="0.0" Color="#FFFF" />
 	</LinearGradientBrush>
 
 	<LinearGradientBrush x:Key="NormalBorderBrush" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
@@ -904,7 +904,7 @@
 		<Setter Property="HorizontalContentAlignment" Value="Center" />
 		<Setter Property="VerticalContentAlignment" Value="Center" />
 		<Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-		<Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
 		<Setter Property="BorderBrush" Value="Transparent" />
 		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="Padding" Value="8,0" />
@@ -2488,10 +2488,10 @@
 					<DockPanel Margin="{TemplateBinding Margin}">
 						<DockPanel Margin="0,0,0,10" DockPanel.Dock="Top" Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}">
 							<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" Margin="0,0,0,0" VerticalAlignment="Center"
-											  TextBlock.FontSize="13" 
+											  TextBlock.FontSize="16" 
 											  TextBlock.FontWeight="SemiBold" 
-											  TextBlock.Foreground="{StaticResource BaseBrush3}" 
-                                              Typography.Capitals="AllSmallCaps"/>
+											  TextBlock.Foreground="{StaticResource BaseBrush0}" 
+                                              Typography.Capitals="SmallCaps"/>
                             <Border BorderThickness="0,0,0,2" BorderBrush="{StaticResource BaseBrush2}" VerticalAlignment="Center" Margin="6,3,1,0" UseLayoutRounding="True"/>
 						</DockPanel>
 						<ContentPresenter Margin="{TemplateBinding Padding}" TextBlock.Foreground="{StaticResource TextBrush}"/>

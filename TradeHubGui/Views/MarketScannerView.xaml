@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="TradeHubGui.Views.MarketScannerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="900"
+             Tag="MARKET DATA SCANNER">
+
+    <Grid Margin="20">
+        <Border Style="{StaticResource ContentBorderStyle}"/>
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <StackPanel HorizontalAlignment="Left">
+                <Button Margin="4" Height="{Binding}" Command="{Binding ShowNewMarketScannerWindowCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="24" Height="24" Source="{StaticResource imgMarketData}" Margin="0,4,10,4" />
+                        <TextBlock Text="New market scanner" VerticalAlignment="Center" Foreground="{StaticResource BaseBrush3}" FontWeight="Bold"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <ad:DockingManager Grid.Row="1" x:Name="DockManager" Background="White" AllowMixedOrientation="True">
+                <ad:DockingManager.Theme>
+                    <ad:FlatTheme/>
+                </ad:DockingManager.Theme>
+
+                <ad:DockingManager.DocumentHeaderTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding IconSource}" Margin="0,0,4,0"/>
+                            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" FontSize="16" FontWeight="SemiBold" Typography.Capitals="SmallCaps"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ad:DockingManager.DocumentHeaderTemplate>
+
+                <ad:LayoutRoot x:Name="LayoutRoot">
+                    <ad:LayoutPanel Orientation="Horizontal">
+                        <ad:LayoutDocumentPaneGroup>
+                            <ad:LayoutDocumentPane>
+                            </ad:LayoutDocumentPane>
+                        </ad:LayoutDocumentPaneGroup>
+                    </ad:LayoutPanel>
+                </ad:LayoutRoot>
+
+            </ad:DockingManager>
+        </Grid>
+    </Grid>
+</UserControl>

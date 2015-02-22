@@ -261,7 +261,13 @@
 
 
                 <DockPanel Grid.Row="2" Margin="10">
-                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <!--<TextBlock DockPanel.Dock="Top" Margin="10,0" 
+                               Text="{Binding Path=SelectedExecutionDetails.Key, StringFormat='Orders {0}', FallbackValue='Orders'}" 
+                               Style="{StaticResource SubHeaderTextBlockStyle}"/>-->
+                    <StackPanel DockPanel.Dock="Top" Margin="10,0" Orientation="Horizontal">
+                        <TextBlock Text="Orders" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
+                        <TextBlock Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource SubHeaderTextBlockStyle}" FontWeight="SemiBold"/>
+                    </StackPanel>
 
                     <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,10"
                               ItemsSource="{Binding OrderDetailsCollection}"
