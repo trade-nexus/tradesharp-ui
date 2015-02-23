@@ -54,7 +54,7 @@ namespace TradeHubGui.ViewModel
             {
                 return _startServiceCommand ??
                        (_startServiceCommand =
-                           new RelayCommand(param => StartServiceExecute(param), param => StartServiceCanExecute(param)));
+                           new RelayCommand(param => StartServiceExecute(param)));
             }
         }
 
@@ -67,7 +67,7 @@ namespace TradeHubGui.ViewModel
             {
                 return _stopServiceCommand ??
                        (_stopServiceCommand =
-                           new RelayCommand(param => StopServiceExecute(param), param => StopServiceCanExecute(param)));
+                           new RelayCommand(param => StopServiceExecute(param)));
             }
         }
 

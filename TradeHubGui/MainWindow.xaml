@@ -100,6 +100,7 @@
 
             <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
             <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
+            <conv:ServiceStatusToVisibilityConverter x:Key="ServiceStatusToVisibility"/>
             <conv:SelectedProviderToVisibilityConverter x:Key="SelectedProviderToVisibility"/>
             <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
 
@@ -299,7 +300,8 @@
                                                       Margin="10,0,10,0" VerticalAlignment="Center"/>
                                             <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False" 
                                                     Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StopServiceCommand}"
-                                                    CommandParameter="{Binding ServiceName}">
+                                                    CommandParameter="{Binding ServiceName}"
+                                                    Visibility="{Binding Status, Converter={StaticResource ServiceStatusToVisibility}, ConverterParameter=Invert}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
                                                     <TextBlock Text="Stop"/>
@@ -307,7 +309,8 @@
                                             </Button>
                                             <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False" 
                                                     Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StartServiceCommand}"
-                                                    CommandParameter="{Binding ServiceName}">
+                                                    CommandParameter="{Binding ServiceName}"
+                                                    Visibility="{Binding Status, Converter={StaticResource ServiceStatusToVisibility}}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
                                                     <TextBlock Text="Start"/>
