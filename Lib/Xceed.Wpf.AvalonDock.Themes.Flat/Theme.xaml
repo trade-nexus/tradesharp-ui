@@ -119,7 +119,7 @@
                                 VerticalAlignment="Center"
                                 Grid.Column="1">
                                 <avalonDockControls:DropDownButton.DropDownContextMenu>
-                                    <avalonDockControls:ContextMenuEx
+                                    <avalonDockControls:ContextMenuEx Style="{DynamicResource ContextMenuStyle}"
                                         ItemsSource="{Binding Model.ChildrenSorted, RelativeSource={RelativeSource TemplatedParent}}">
                                         <avalonDockControls:ContextMenuEx.ItemContainerStyle>
                                             <Style TargetType="{x:Type avalonDockControls:MenuItemEx}" BasedOn="{StaticResource {x:Type MenuItem}}">

@@ -4520,7 +4520,7 @@
 		<Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
 		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
 	</Style>
-	<Style x:Key="{x:Static controls:ToolBar.MenuStyleKey}" BasedOn="{StaticResource MenuBase}" TargetType="{x:Type Menu}">
+	<Style x:Key="{x:Static controls:ToolBar.MenuStyleKey}" BasedOn="{StaticResource MenuStyle}" TargetType="{x:Type Menu}">
 		<Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
 		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
 	</Style>

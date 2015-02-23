@@ -14,6 +14,7 @@ using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
 using TradeHubGui.Views;
 using Xceed.Wpf.AvalonDock;
+using Xceed.Wpf.AvalonDock.Controls;
 using Xceed.Wpf.AvalonDock.Layout;
 
 namespace TradeHubGui.ViewModel
@@ -78,7 +79,6 @@ namespace TradeHubGui.ViewModel
                 }
             }
         }
-
         #endregion
 
         #region Commands
@@ -131,7 +131,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Create market scanner data grid for selected market data provider
+        /// Create market scanner for selected market data provider
         /// </summary>
         private void CreateMarketScannerExecute()
         {
@@ -139,19 +139,36 @@ namespace TradeHubGui.ViewModel
             var documentPane = _dockManager.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
             if (documentPane != null)
             {
-                // Create content and set DataContext
-                MarketScannerContentView view = new MarketScannerContentView();
-                view.DataContext = new MarketScannerContentViewModel();
+                // Try to find scanner if already created for selected provider
+                LayoutDocument scannerDocument = (LayoutDocument)documentPane.Children.ToList().Find(elem => elem.Title == SelectedMarketDataProvider.ProviderName);
+                // TODO: Title is null from some reason and need to figure out why
+                LayoutFloatingWindowControl scannerFloatingWindow = (LayoutFloatingWindowControl)_dockManager.FloatingWindows.ToList().Find(elem => elem.Title == SelectedMarketDataProvider.ProviderName);
                 
-                // Create document and add content to it
-                LayoutDocument doc = new LayoutDocument();
-                doc.Content = view;
-                doc.IsSelected = true;
-                doc.Title = SelectedMarketDataProvider.ProviderName;
-                doc.ContentId = SelectedMarketDataProvider.ProviderName.Replace(" ", "_");
+                // if scanner is already created, just activate it, otherwise create new scanner document
+                if (scannerDocument != null)
+                {
+                    scannerDocument.IsActive = true;
+                }
+                else if (scannerFloatingWindow != null)
+                {
+                    scannerFloatingWindow.Activate();
+                }
+                else
+                {
+                    // Create content for new scanner document and set DataContext to it
+                    MarketScannerContentView view = new MarketScannerContentView();
+                    view.DataContext = new MarketScannerContentViewModel();
 
-                // Add document to the documentPane
-                documentPane.Children.Add(doc);
+                    // Create new scanner document and add content to it
+                    scannerDocument = new LayoutDocument();
+                    scannerDocument.Content = view;
+                    scannerDocument.IsSelected = true;
+                    scannerDocument.Title = SelectedMarketDataProvider.ProviderName;
+                    scannerDocument.ContentId = SelectedMarketDataProvider.ProviderName.Replace(" ", "_");
+
+                    // Add scanner document to the documentPane
+                    documentPane.Children.Add(scannerDocument);
+                }
             }
 
             // Detach DataContext and close 'New Market Scanner' window
@@ -212,8 +229,11 @@ namespace TradeHubGui.ViewModel
         /// <param name="e"></param>
         void DockingManager_DocumentClosing(object sender, Xceed.Wpf.AvalonDock.DocumentClosingEventArgs e)
         {
-            if (WPFMessageBox.Show(MainWindow, "Are you sure you want to close the document?", "Market Data Scanner", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if (WPFMessageBox.Show(MainWindow, "Are you sure you want to close the scanner?", "Market Data Scanner", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 e.Cancel = true;
+
+            // if document is successfully closed, activate MainWindow
+            MainWindow.Activate();
         }
         #endregion
     }

@@ -8,36 +8,22 @@
 
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="TabControlOuterBorder" Color="#FF121011"/>
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="TabControlInnerBorder" Color="#FF5c5e5b"/>
-
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuForeground" Color="#FF333333"/>
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuHighlightForeground" Color="White"/>
-
-	<LinearGradientBrush PresentationOptions:Freeze="True" x:Key="MenuBorderBrush" StartPoint="0.6,0" EndPoint="1,1">
-		<GradientStop Color="#DDD" Offset="0"/>
-		<GradientStop Color="#888" Offset="1"/>
-	</LinearGradientBrush>
-
-	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuBackground" Color="White"/>
-
+    <SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuBackground" Color="White"/>
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuBorder" Color="#FFD0D0D0"/>
-
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuItemIconBackground" Color="White" />
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="OutherMenuBorderHover" Color="Transparent"/>
-
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuBorderHover" Color="SlateGray"/>
-
-	<LinearGradientBrush PresentationOptions:Freeze="True" x:Key="MenuBackgroundHover" StartPoint="0.5,0" EndPoint="0.5,1">
-		<GradientStop Color="#FF3C3C3D" Offset="0.06"/>
-		<GradientStop Color="#FF626262" Offset="1"/>
-		<GradientStop Color="#FF272727" Offset="0.03"/>
-	</LinearGradientBrush>
-
-	<LinearGradientBrush PresentationOptions:Freeze="True" x:Key="MenuBarBackground" StartPoint="0.5,0" EndPoint="0.5,1">
-		<GradientStop Color="#FF5A5A5A" Offset="0"/>
-		<GradientStop Color="#FF5A5A5A" Offset="1"/>
-	</LinearGradientBrush>
-
+    <SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuBackgroundHover" Color="{DynamicResource BaseColor0}" />
+    <SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuBarBackground" Color="#FF5A5A5A"/>
 	<SolidColorBrush PresentationOptions:Freeze="True" x:Key="MenuRootBackgroundHover" Color="#FDDD" Opacity="0"/>
+    
+    <LinearGradientBrush PresentationOptions:Freeze="True" x:Key="MenuBorderBrush" StartPoint="0.6,0" EndPoint="1,1">
+        <GradientStop Color="#DDD" Offset="0"/>
+        <GradientStop Color="#888" Offset="1"/>
+    </LinearGradientBrush>
+    
 	<LinearGradientBrush PresentationOptions:Freeze="True" x:Key="MenuRootBorderBrush" StartPoint="0.5,0" EndPoint="0.5,1">
 		<GradientStop Color="#FF222222" Offset="0"/>
 		<GradientStop Color="#FF666666" Offset="1"/>
@@ -50,7 +36,7 @@
 	<Geometry x:Key="Checkmark">M 0,5.1 L 1.7,5.2 L 3.4,7.1 L 8,0.4 L 9.2,0 L 3.3,10.8 Z</Geometry>
 
 
-	<Style x:Key="MenuBase" TargetType="{x:Type Menu}">
+	<Style x:Key="MenuStyle" TargetType="{x:Type Menu}">
 		<Setter Property="OverridesDefaultStyle" Value="True"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 		<!--<Setter Property="FontFamily" Value="{DynamicResource DefaultFont}"/>-->
@@ -69,10 +55,10 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-	<Style x:Key="{x:Type Menu}" TargetType="{x:Type Menu}" BasedOn="{StaticResource MenuBase}" />
+    <Style x:Key="{x:Type Menu}" TargetType="{x:Type Menu}" BasedOn="{StaticResource MenuStyle}" />
 
 
-	<Style TargetType="{x:Type ContextMenu}">
+    <Style x:Key="ContextMenuStyle" TargetType="{x:Type ContextMenu}">
 		<Setter Property="HasDropShadow" Value="False"/>
 		<Setter Property="OverridesDefaultStyle" Value="True"/>
 		<Setter Property="Background" Value="{StaticResource MenuBackground}"/>
@@ -102,9 +88,9 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+    <Style x:Key="{x:Type ContextMenu}" TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource ContextMenuStyle}" />
 
-
-	<!-- Menu selection 1 -->
+    <!-- Menu selection 1 -->
 
 	<ControlTemplate x:Key="{ComponentResourceKey ResourceId=SubmenuItemTemplateKey, TypeInTargetAssembly={x:Type MenuItem}}" TargetType="{x:Type MenuItem}">
 		<Grid SnapsToDevicePixels="true">
