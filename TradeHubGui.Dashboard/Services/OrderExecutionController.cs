@@ -7,6 +7,7 @@ using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
 using TradeHub.StrategyEngine.OrderExecution;
 using TradeHubGui.Common;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Managers;
 
@@ -76,6 +77,10 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="orderExecutionProvider"></param>
         private void NewConnectionRequest(Provider orderExecutionProvider)
         {
+            // Only entertain 'Order Execution Provider' related calls
+            if (!orderExecutionProvider.ProviderType.Equals(ProviderType.OrderExecution))
+                return;
+
             if (orderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
             {
                 // Open a new order execution connection

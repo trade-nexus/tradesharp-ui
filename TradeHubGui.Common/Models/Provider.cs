@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TradeHub.Common.Core.Constants;
+using TradeHubGui.Common.Constants;
 
 namespace TradeHubGui.Common.Models
 {
@@ -15,6 +16,7 @@ namespace TradeHubGui.Common.Models
     {
         #region Fields
 
+        private ProviderType _providerType;
         private string _providerName;
         private ConnectionStatus _connectionStatus;
         private List<ProviderCredential> _providerCredentials;
@@ -89,7 +91,7 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
-        /// 
+        /// Contains market information for each subscribed symbol
         /// KEY = Symbol
         /// VALUE = <see cref="TickDetails"/>
         /// </summary>
@@ -97,6 +99,15 @@ namespace TradeHubGui.Common.Models
         {
             get { return _tickDetailsMap; }
             set { _tickDetailsMap = value; }
+        }
+
+        /// <summary>
+        /// Type of Provider e.g Market Data, Order Execution, etc.
+        /// </summary>
+        public ProviderType ProviderType
+        {
+            get { return _providerType; }
+            set { _providerType = value; }
         }
 
         #endregion

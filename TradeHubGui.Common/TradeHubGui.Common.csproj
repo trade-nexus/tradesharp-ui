@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\OptimizationStatus.cs" />
+    <Compile Include="Constants\ProviderType.cs" />
     <Compile Include="Constants\ServiceStatus.cs" />
     <Compile Include="Constants\SubscriptionType.cs" />
     <Compile Include="EventSystem.cs" />

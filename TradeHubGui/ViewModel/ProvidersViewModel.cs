@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
 
@@ -313,7 +314,12 @@ namespace TradeHubGui.ViewModel
             // Populate Individual Market Data Provider details
             foreach (var keyValuePair in availableProviders)
             {
-                Provider tempProvider = new Provider() { ProviderName = keyValuePair.Key, ConnectionStatus = ConnectionStatus.Disconnected };
+                Provider tempProvider = new Provider()
+                {
+                    ProviderType = ProviderType.MarketData,
+                    ProviderName = keyValuePair.Key,
+                    ConnectionStatus = ConnectionStatus.Disconnected
+                };
                 tempProvider.ProviderCredentials = keyValuePair.Value;
 
                 // Add to Collection
@@ -342,7 +348,12 @@ namespace TradeHubGui.ViewModel
             // Populate Individual Market Data Provider details
             foreach (var keyValuePair in availableProviders)
             {
-                Provider tempProvider = new Provider() { ProviderName = keyValuePair.Key, ConnectionStatus = ConnectionStatus.Disconnected };
+                Provider tempProvider = new Provider()
+                {
+                    ProviderType = ProviderType.OrderExecution,
+                    ProviderName = keyValuePair.Key,
+                    ConnectionStatus = ConnectionStatus.Disconnected
+                };
                 tempProvider.ProviderCredentials = keyValuePair.Value;
 
                 // Add to Collection

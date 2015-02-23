@@ -84,6 +84,10 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="marketDataProvider"></param>
         private void NewConnectionRequest(Provider marketDataProvider)
         {
+            // Only entertain 'Market Data Provider' related calls
+            if (!marketDataProvider.ProviderType.Equals(ProviderType.MarketData))
+                return;
+
             if (marketDataProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
             {
                 // Open a new market data connection
