@@ -76,6 +76,10 @@
     <Reference Include="TradeHub.StrategyEngine.MarketData">
       <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.MarketData.dll</HintPath>
     </Reference>
+    <Reference Include="TradeHub.StrategyEngine.OrderExecution, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.OrderExecution.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration\MarketDataControllerTests.cs" />

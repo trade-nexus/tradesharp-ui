@@ -100,15 +100,6 @@ namespace TradeHubGui.ViewModel
         #region Command Trigger Methods
 
         /// <summary>
-        /// Used to Enable/Disable 'Start' button
-        /// </summary>
-        /// <returns></returns>
-        private bool StartServiceCanExecute(object parameter)
-        {
-            return true;
-        }
-
-        /// <summary>
         /// Called when 'Start' button is clicked
         /// </summary>
         private void StartServiceExecute(object parameter)
@@ -116,15 +107,6 @@ namespace TradeHubGui.ViewModel
             string serviceName = (string) parameter;
 
             StartService(serviceName);
-        }
-
-        /// <summary>
-        /// Used to Enable/Disable 'Stop' button
-        /// </summary>
-        /// <returns></returns>
-        private bool StopServiceCanExecute(object parameter)
-        {
-            return true;
         }
 
         /// <summary>

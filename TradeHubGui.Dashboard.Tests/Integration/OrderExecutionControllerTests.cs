@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Spring.Context.Support;
 using TradeHub.Common.Core.Constants;
+using TradeHub.StrategyEngine.OrderExecution;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
@@ -34,7 +35,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         [Category("Integration")]
         public void RequestNewConnection_SendRequestToServer_ReceiveLogon()
         {
-            //Thread.Sleep(9000);
+            Thread.Sleep(9000);
             Provider provider = new Provider();
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
             provider.ProviderName = OrderExecutionProvider.Simulated;
@@ -42,9 +43,9 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             // Rasie event to request connection
             EventSystem.Publish<Provider>(provider);
 
-            //Thread.Sleep(9000);
+            Thread.Sleep(9000);
 
-            //Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
+            Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
         }
     }
 }
