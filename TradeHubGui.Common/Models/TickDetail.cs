@@ -12,7 +12,7 @@ namespace TradeHubGui.Common.Models
     /// <summary>
     /// Contains necessary Tick information to be displayed on the UI
     /// </summary>
-    public class TickDetails : INotifyPropertyChanged
+    public class TickDetail : INotifyPropertyChanged
     {
         /// <summary>
         /// Contains Tick's Symbol information
@@ -53,7 +53,7 @@ namespace TradeHubGui.Common.Models
         /// Argument Constructor
         /// </summary>
         /// <param name="security">Contains symbol information</param>
-        public TickDetails(Security security)
+        public TickDetail(Security security)
         {
             // Save reference
             _security = security;

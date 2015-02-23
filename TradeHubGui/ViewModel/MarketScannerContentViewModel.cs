@@ -5,7 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TradeHub.Common.Core.Constants;
+using TradeHub.Common.Core.DomainModels;
 using TradeHubGui.Common;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 
 namespace TradeHubGui.ViewModel
@@ -13,64 +16,108 @@ namespace TradeHubGui.ViewModel
     public class MarketScannerContentViewModel : BaseViewModel
     {
         #region Fields
-        private ObservableCollection<Instrument> _instruments;
-        private Instrument selectedInstrument;
+
         private string _newSymbol;
+        private Provider _provider;
+        private TickDetail _selectedTickDetail;
+        private ObservableCollection<TickDetail> _tickDetailsCollection;
+
         private RelayCommand _addNewSymbolCommand;
         private RelayCommand _showLimitOrderBookCommand;
         private RelayCommand _showChartCommand;
         private RelayCommand _sendOrderCommand;
         private RelayCommand _unsubscribeCommand;
         private RelayCommand _showPositionStatsCommand;
+
         #endregion
 
         #region Constructor
+
         public MarketScannerContentViewModel()
         {
             #region Temporary fill instruments (this will be removed)
-            _instruments = new ObservableCollection<Instrument>();
-            _instruments.Add(new Instrument("AAPL", 23, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("GOOG", 43, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("MSFT", 33, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("HP", 42, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("AOI", 34, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("WAS", 15, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("AAPL", 23, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("GOOG", 23, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("MSFT", 45, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("HP", 33, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("AOI", 24, 450.34f, 20, 456.00f, 445.34f, 23));
-            _instruments.Add(new Instrument("WAS", 23, 450.34f, 20, 456.00f, 445.34f, 23));
+            _tickDetailsCollection = new ObservableCollection<TickDetail>();
+            _tickDetailsCollection.Add(new TickDetail(new Security(){Symbol = "AAPL"})
+            {
+                BidQuantity = 23,BidPrice = 450.34M, AskQuantity = 20,AskPrice = 456.00M, LastPrice = 445.34M, LastQuantity = 23
+            });
+            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "GOOG" })
+            {
+                BidQuantity = 23,
+                BidPrice = 450.34M,
+                AskQuantity = 20,
+                AskPrice = 456.00M,
+                LastPrice = 445.34M,
+                LastQuantity = 23
+            });
+            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "MSFT" })
+            {
+                BidQuantity = 23,
+                BidPrice = 450.34M,
+                AskQuantity = 20,
+                AskPrice = 456.00M,
+                LastPrice = 445.34M,
+                LastQuantity = 23
+            });
+            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "HP" })
+            {
+                BidQuantity = 23,
+                BidPrice = 450.34M,
+                AskQuantity = 20,
+                AskPrice = 456.00M,
+                LastPrice = 445.34M,
+                LastQuantity = 23
+            });
+            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "AOI" })
+            {
+                BidQuantity = 23,
+                BidPrice = 450.34M,
+                AskQuantity = 20,
+                AskPrice = 456.00M,
+                LastPrice = 445.34M,
+                LastQuantity = 23
+            });
+            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "WAS" })
+            {
+                BidQuantity = 23,
+                BidPrice = 450.34M,
+                AskQuantity = 20,
+                AskPrice = 456.00M,
+                LastPrice = 445.34M,
+                LastQuantity = 23
+            });
             #endregion
         }
+        
         #endregion
 
         #region Properties
+
         /// <summary>
-        /// Collection of instruments for watching related to certain market data provider
+        /// Collection of Tick Details for watching related to certain market data provider
         /// </summary>
-        public ObservableCollection<Instrument> Instruments
+        public ObservableCollection<TickDetail> TickDetailsCollection
         {
-            get { return _instruments; }
+            get { return _tickDetailsCollection; }
             set
             {
-                _instruments = value;
-                OnPropertyChanged("Instruments");
+                _tickDetailsCollection = value;
+                OnPropertyChanged("TickDetailsCollection");
             }
         }
 
         /// <summary>
-        /// Selected istrument
+        /// Selected Tick Detail
         /// </summary>
-        public Instrument SelectedInstrument
+        public TickDetail SelectedTickDetail
         {
-            get { return selectedInstrument; }
+            get { return _selectedTickDetail; }
             set
             {
-                if (selectedInstrument != value)
+                if (_selectedTickDetail != value)
                 {
-                    selectedInstrument = value;
-                    OnPropertyChanged("SelectedInstrument");
+                    _selectedTickDetail = value;
+                    OnPropertyChanged("SelectedTickDetail");
                 }
             }
         }
@@ -90,9 +137,20 @@ namespace TradeHubGui.ViewModel
                 }
             }
         }
+
+        /// <summary>
+        /// Contains Market Data Provider Details
+        /// </summary>
+        public Provider Provider
+        {
+            get { return _provider; }
+            set { _provider = value; }
+        }
+
         #endregion
 
         #region Commands
+
         /// <summary>
         /// Command used for adding new symbol to the scanner
         /// </summary>
@@ -158,24 +216,37 @@ namespace TradeHubGui.ViewModel
                 return _showPositionStatsCommand ?? (_showPositionStatsCommand = new RelayCommand(param => ShowPositionStatsExecute(param)));
             }
         }
+
         #endregion
 
-        #region Methods
+        #region Trigger Methods for Commands
+
         private void AddNewSymbolExecute()
         {
             //TODO: subscribe for watching
+            if (_provider.ConnectionStatus.Equals(ConnectionStatus.Connected))
+            {
+                // Create new tick detail's object
+                TickDetail tickDetail = new TickDetail(new Security() {Symbol = NewSymbol.Trim()});
 
-            // Create new instrument
-            Instrument instrument = new Instrument(NewSymbol.Trim(), 0, 0, 0, 0, 0, 0);
+                // Add Tick Detail object to Provider's local map
+                _provider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
 
-            // Add new instrument to the instruments collection
-            Instruments.Add(instrument);
+                // Add new tick detail to the Tick Detail's Map to show on UI
+                TickDetailsCollection.Add(tickDetail);
 
-            // Select new instrument in DataGrid
-            SelectedInstrument = instrument;
+                // Select new tick detail in DataGrid
+                SelectedTickDetail = tickDetail;
 
-            // Clear NewSymbol string
-            NewSymbol = string.Empty;
+                // Create a new subscription request for requesting market data
+                var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Subscribe);
+
+                // Raise Event to notify listeners
+                EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+
+                // Clear NewSymbol string
+                NewSymbol = string.Empty;
+            }
         }
 
         /// <summary>
@@ -234,6 +305,7 @@ namespace TradeHubGui.ViewModel
         {
             throw new NotImplementedException();
         }
+
         #endregion
     }
 }

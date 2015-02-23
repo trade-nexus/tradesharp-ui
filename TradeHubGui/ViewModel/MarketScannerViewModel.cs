@@ -157,7 +157,7 @@ namespace TradeHubGui.ViewModel
                 {
                     // Create content for new scanner document and set DataContext to it
                     MarketScannerContentView view = new MarketScannerContentView();
-                    view.DataContext = new MarketScannerContentViewModel();
+                    view.DataContext = new MarketScannerContentViewModel() {Provider = SelectedMarketDataProvider};
 
                     // Create new scanner document and add content to it
                     scannerDocument = new LayoutDocument();

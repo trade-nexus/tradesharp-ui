@@ -24,9 +24,9 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// 
         /// KEY = Symbol
-        /// VALUE = <see cref="TickDetails"/>
+        /// VALUE = <see cref="TickDetail"/>
         /// </summary>
-        private Dictionary<string, TickDetails> _tickDetailsMap; 
+        private Dictionary<string, TickDetail> _tickDetailsMap; 
 
         #endregion
 
@@ -35,7 +35,7 @@ namespace TradeHubGui.Common.Models
         public Provider()
         {
             _providerCredentials = new List<ProviderCredential>();
-            _tickDetailsMap = new Dictionary<string, TickDetails>();
+            _tickDetailsMap = new Dictionary<string, TickDetail>();
         }
 
         #endregion
@@ -93,9 +93,9 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Contains market information for each subscribed symbol
         /// KEY = Symbol
-        /// VALUE = <see cref="TickDetails"/>
+        /// VALUE = <see cref="TickDetail"/>
         /// </summary>
-        public Dictionary<string, TickDetails> TickDetailsMap
+        public Dictionary<string, TickDetail> TickDetailsMap
         {
             get { return _tickDetailsMap; }
             set { _tickDetailsMap = value; }

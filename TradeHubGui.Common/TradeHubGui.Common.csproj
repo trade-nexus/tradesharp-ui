@@ -80,7 +80,6 @@
     <Compile Include="Models\ProviderCredential.cs" />
     <Compile Include="Models\ExecutionDetails.cs" />
     <Compile Include="Models\GeneticAlgorithmResult.cs" />
-    <Compile Include="Models\Instrument.cs" />
     <Compile Include="Models\Provider.cs" />
     <Compile Include="Models\OptimizationStatistics.cs" />
     <Compile Include="Models\OrderDetails.cs" />
@@ -88,7 +87,7 @@
     <Compile Include="Models\Strategy.cs" />
     <Compile Include="Models\StrategyInstance.cs" />
     <Compile Include="Models\SubscriptionRequest.cs" />
-    <Compile Include="Models\TickDetails.cs" />
+    <Compile Include="Models\TickDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\FileReader.cs" />
     <Compile Include="Utility\StrategyIdGenerator.cs" />

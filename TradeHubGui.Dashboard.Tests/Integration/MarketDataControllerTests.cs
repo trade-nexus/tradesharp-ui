@@ -76,7 +76,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             var subscriptionRequest = new SubscriptionRequest(security,provider,SubscriptionType.Subscribe);
             
             // Create Tick details to hold market data information
-            TickDetails tickDetails = new TickDetails(security);
+            TickDetail tickDetails = new TickDetail(security);
 
             // Add TickDetails object to 
             provider.TickDetailsMap.Add(security.Symbol, tickDetails);

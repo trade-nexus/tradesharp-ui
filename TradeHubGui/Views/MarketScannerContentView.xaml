@@ -37,8 +37,8 @@
         </StackPanel>
         
         <DataGrid x:Name="MarketDataGrid" Margin="1"
-                  ItemsSource="{Binding Instruments}"
-                  SelectedItem="{Binding SelectedInstrument}"
+                  ItemsSource="{Binding TickDetailsCollection}"
+                  SelectedItem="{Binding SelectedTickDetail}"
                   SelectionMode="Single" 
                   IsTextSearchEnabled="True"
                   IsSynchronizedWithCurrentItem="True"
@@ -51,13 +51,13 @@
                   RowStyle="{StaticResource DefaultRowStyle}">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Symbol" Width="70" Binding="{Binding Path=Symbol}" />
-                <DataGridTextColumn Header="Bid quantity" Width="100" Binding="{Binding Path=BidQty}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Symbol" Width="70" Binding="{Binding Path=Security.Symbol}" />
+                <DataGridTextColumn Header="Bid quantity" Width="100" Binding="{Binding Path=BidQuantity}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                 <DataGridTextColumn Header="Bid price" Width="100" Binding="{Binding Path=BidPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Ask quantity" Width="100" Binding="{Binding Path=AskQty}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Ask quantity" Width="100" Binding="{Binding Path=AskQuantity}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                 <DataGridTextColumn Header="Ask price" Width="100" Binding="{Binding Path=AskPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Last" Width="70" Binding="{Binding Path=Last}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Volume" Width="70" Binding="{Binding Path=Volume}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Last" Width="70" Binding="{Binding Path=LastPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Volume" Width="70" Binding="{Binding Path=LastQuantity}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
             </DataGrid.Columns>
         </DataGrid>
         
