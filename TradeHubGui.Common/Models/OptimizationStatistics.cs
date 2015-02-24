@@ -25,7 +25,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Contains executions information occured during optimization cycle
         /// </summary>
-        private ExecutionDetails _executionDetails;
+        private StrategyExecutionDetails _executionDetails;
 
         #region Properties
 
@@ -58,7 +58,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Contains executions information occured during optimization cycle
         /// </summary>
-        public ExecutionDetails ExecutionDetails
+        public StrategyExecutionDetails ExecutionDetails
         {
             get { return _executionDetails; }
             set

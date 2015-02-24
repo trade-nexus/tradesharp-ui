@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeHub.Common.Core.DomainModels.OrderDomain;
 using TradeHub.Common.Core.ValueObjects.AdminMessages;
 using TradeHub.StrategyEngine.OrderExecution;
 
@@ -27,6 +28,10 @@ namespace TradeHubGui.Dashboard.Managers
         private event Action _disconnectedEvent;
         private event Action<string> _logonArrivedEvent;
         private event Action<string> _logoutArrivedEvent;
+        private event Action<Order> _orderAcceptedEvent;
+        private event Action<Execution> _executionArrivedEvent;
+        private event Action<Order> _cancellationArrivedEvent;
+        private event Action<Rejection> _rejectionArrivedEvent; 
         // ReSharper restore InconsistentNaming
 
         public event Action ConnectedEvent
@@ -77,6 +82,54 @@ namespace TradeHubGui.Dashboard.Managers
             remove { _logoutArrivedEvent -= value; }
         }
 
+        public event Action<Order> OrderAcceptedEvent
+        {
+            add
+            {
+                if (_orderAcceptedEvent == null)
+                {
+                    _orderAcceptedEvent += value;
+                }
+            }
+            remove { _orderAcceptedEvent -= value; }
+        }
+
+        public event Action<Execution> ExecutionArrivedEvent
+        {
+            add
+            {
+                if (_executionArrivedEvent == null)
+                {
+                    _executionArrivedEvent += value;
+                }
+            }
+            remove { _executionArrivedEvent -= value; }
+        }
+
+        public event Action<Order> CancellationArrivedEvent
+        {
+            add
+            {
+                if (_cancellationArrivedEvent == null)
+                {
+                    _cancellationArrivedEvent += value;
+                }
+            }
+            remove { _cancellationArrivedEvent -= value; }
+        }
+
+        public event Action<Rejection> RejectionArrivedEvent
+        {
+            add
+            {
+                if (_rejectionArrivedEvent == null)
+                {
+                    _rejectionArrivedEvent += value;
+                }
+            }
+            remove { _rejectionArrivedEvent -= value; }
+        }
+
         #endregion
 
         /// <summary>
@@ -85,6 +138,7 @@ namespace TradeHubGui.Dashboard.Managers
         /// <param name="orderExecutionService">Provides communication access with Order Execution Server</param>
         public OrderExecutionManager(OrderExecutionService orderExecutionService)
         {
+            // Save object reference
             _orderExecutionService = orderExecutionService;
 
             SubscribeExecutionServiceEvents();
@@ -106,6 +160,11 @@ namespace TradeHubGui.Dashboard.Managers
 
             _orderExecutionService.LogonArrived += OnLogonArrived;
             _orderExecutionService.LogoutArrived += OnLogoutArrived;
+
+            _orderExecutionService.NewArrived += OnOrderAccepted;
+            _orderExecutionService.ExecutionArrived += OnExecutionArrived;
+            _orderExecutionService.RejectionArrived += OnRejectionArrived;
+            _orderExecutionService.CancellationArrived += OnCancellationArrived;
         }
 
         /// <summary>
@@ -118,8 +177,14 @@ namespace TradeHubGui.Dashboard.Managers
 
             _orderExecutionService.LogonArrived -= OnLogonArrived;
             _orderExecutionService.LogoutArrived -= OnLogoutArrived;
+
+            _orderExecutionService.NewArrived -= OnOrderAccepted;
+            _orderExecutionService.ExecutionArrived -= OnExecutionArrived;
+            _orderExecutionService.RejectionArrived -= OnRejectionArrived;
+            _orderExecutionService.CancellationArrived -= OnCancellationArrived;
         }
 
+        #region Connect/Disconnect methods
 
         /// <summary>
         /// Sends Connection request to Order Execution Server
@@ -150,6 +215,30 @@ namespace TradeHubGui.Dashboard.Managers
 
             _orderExecutionService.Logout(logout);
         }
+
+        #endregion
+
+        #region Incoming Order Requests
+
+        /// <summary>
+        /// Sends a new Market Order Request to 'Order Execution Server'
+        /// </summary>
+        /// <param name="marketOrder">Contains market order information</param>
+        public void MarketOrderRequests(MarketOrder marketOrder)
+        {
+            _orderExecutionService.SendOrder(marketOrder);
+        }
+
+        /// <summary>
+        /// Sends a new Limit Order Request to 'Order Execution Server'
+        /// </summary>
+        /// <param name="limitOrder">Contains limit order information</param>
+        public void LimitOrderRequest(LimitOrder limitOrder)
+        {
+            _orderExecutionService.SendOrder(limitOrder);
+        }
+
+        #endregion
 
         #region Order Execution Service Events
 
@@ -196,6 +285,54 @@ namespace TradeHubGui.Dashboard.Managers
             if (_logoutArrivedEvent != null)
             {
                 _logoutArrivedEvent(providerName);
+            }
+        }
+
+        /// <summary>
+        /// Called when the requested order is accepted by respective Order Execution Provider
+        /// </summary>
+        /// <param name="order">Contains accepted order details</param>
+        private void OnOrderAccepted(Order order)
+        {
+            if (_orderAcceptedEvent != null)
+            {
+                _orderAcceptedEvent(order);
+            }
+        }
+
+        /// <summary>
+        /// Called when order execution is receievd from 'Order Execution Server'
+        /// </summary>
+        /// <param name="execution">Contains execution details</param>
+        private void OnExecutionArrived(Execution execution)
+        {
+            if (_executionArrivedEvent != null)
+            {
+                _executionArrivedEvent(execution);
+            }
+        }
+
+        /// <summary>
+        /// Called when requested order is rejected
+        /// </summary>
+        /// <param name="rejection">Contains rejection details</param>
+        private void OnRejectionArrived(Rejection rejection)
+        {
+            if (_rejectionArrivedEvent != null)
+            {
+                _rejectionArrivedEvent(rejection);
+            }
+        }
+
+        /// <summary>
+        /// Called when order cancellaiton request is successful
+        /// </summary>
+        /// <param name="order">Contains cancelled order details</param>
+        private void OnCancellationArrived(Order order)
+        {
+            if (_cancellationArrivedEvent != null)
+            {
+                _cancellationArrivedEvent(order);
             }
         }
 

@@ -34,9 +34,9 @@ namespace TradeHubGui.ViewModel
         private MetroDialogSettings _dialogSettings;
         private ObservableCollection<Strategy> _strategies;
         private ObservableCollection<StrategyInstance> _instances;
-        private ObservableCollection<ExecutionDetails> _executionDetailsCollection;
+        private ObservableCollection<StrategyExecutionDetails> _executionDetailsCollection;
         private ObservableCollection<OrderDetails> _orderDetailsCollection;
-        private ExecutionDetails _selectedExecutionDetails;
+        private StrategyExecutionDetails _selectedExecutionDetails;
         private bool _executionDetailsForAllInstances;
         private Strategy _selectedStrategy;
         private StrategyInstance _selectedInstance;
@@ -111,11 +111,11 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Collection of execution details for SelectedInstance or for all instances of SelectedStrategy (depends on toggle bool)
         /// </summary>
-        public ObservableCollection<ExecutionDetails> ExecutionDetailsCollection
+        public ObservableCollection<StrategyExecutionDetails> ExecutionDetailsCollection
         {
             get
             {
-                _executionDetailsCollection = new ObservableCollection<ExecutionDetails>();
+                _executionDetailsCollection = new ObservableCollection<StrategyExecutionDetails>();
 
                 //NOTE: This logic can stay here in getter, or can be moved to method for that purpose. 
                 //NOTE: Refresh of this collection is neccessary when SelectedInstance is changed, or when ExecutionDetailsForAllInstances bool is changed
@@ -222,7 +222,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Currently selected execution details in DataGrid
         /// </summary>
-        public ExecutionDetails SelectedExecutionDetails
+        public StrategyExecutionDetails SelectedExecutionDetails
         {
             get { return _selectedExecutionDetails; }
             set
