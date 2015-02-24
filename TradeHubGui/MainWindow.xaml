@@ -34,6 +34,12 @@
 
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
+            <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+            <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
+            <conv:ServiceStatusToVisibilityConverter x:Key="ServiceStatusToVisibility"/>
+            <conv:SelectedProviderToVisibilityConverter x:Key="SelectedProviderToVisibility"/>
+            <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
+            
             <x:Array x:Key="Contents" Type="UserControl">
                 <views:DashboardView/>
                 <views:StrategyRunnerView/>
@@ -97,12 +103,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-
-            <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
-            <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
-            <conv:ServiceStatusToVisibilityConverter x:Key="ServiceStatusToVisibility"/>
-            <conv:SelectedProviderToVisibilityConverter x:Key="SelectedProviderToVisibility"/>
-            <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
 
             <DataTemplate x:Key="UsernameDataTemplate">
                 <Grid>
@@ -208,8 +208,8 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Content="Connection status"/>
-                            <Border Grid.Column="1" Padding="4,1,4,3" CornerRadius="3" 
-                                    Background="{Binding SelectedItem.ConnectionStatus, ElementName=MarketDataProvidersComboBox, Converter={StaticResource ConnectionStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Border Grid.Column="1" Padding="10,1,10,3" CornerRadius="3" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    Background="{Binding SelectedItem.ConnectionStatus, ElementName=MarketDataProvidersComboBox, Converter={StaticResource ConnectionStatusToBrush}}" >
                                 <TextBlock Text="{Binding SelectedItem.ConnectionStatus, ElementName=MarketDataProvidersComboBox}" 
                                            Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
                             </Border>
@@ -269,8 +269,8 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Content="Connection status"/>
-                            <Border Grid.Column="1" Padding="4,1,4,3" CornerRadius="3" 
-                                    Background="{Binding SelectedItem.ConnectionStatus, ElementName=OrderExecutionProvidersComboBox, Converter={StaticResource ConnectionStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Border Grid.Column="1" Padding="10,1,10,3" CornerRadius="3" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    Background="{Binding SelectedItem.ConnectionStatus, ElementName=OrderExecutionProvidersComboBox, Converter={StaticResource ConnectionStatusToBrush}}" >
                                 <TextBlock Text="{Binding SelectedItem.ConnectionStatus, ElementName=OrderExecutionProvidersComboBox}" 
                                            Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
                             </Border>

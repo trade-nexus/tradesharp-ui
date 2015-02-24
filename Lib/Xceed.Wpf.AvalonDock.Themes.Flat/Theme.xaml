@@ -203,7 +203,7 @@
                     <Setter Property="BorderBrush" Value="{DynamicResource AvalonDock_FlatTheme_BaseColor4}"/>
                     <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
                     <Setter Property="ToolTip" Value="{Binding ToolTip}"/>
-                    <Setter Property="Padding" Value="2,0,2,0"/>
+                    <Setter Property="Padding" Value="4,0,4,0"/>
 					<Setter Property="Margin" Value="0,0,8,0"/>
 					<Setter Property="Template">
                         <Setter.Value>
@@ -897,7 +897,7 @@
 							Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            Padding="0,2,0,1">
+                            Padding="0,0,0,2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -914,7 +914,7 @@
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Center"
                                     Grid.Column="1" 
-                                    Margin="5,0,0,0" 
+                                    Margin="5,4,0,0" 
                                     Visibility="Hidden" 
                                     Command="{Binding Path=LayoutItem.CloseCommand, RelativeSource={RelativeSource TemplatedParent}}"
                                     ToolTip="{x:Static avalonDockProperties:Resources.Document_Close}">

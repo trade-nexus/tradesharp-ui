@@ -37,9 +37,14 @@ namespace TradeHubGui.ViewModel
         {
             #region Temporary fill instruments (this will be removed)
             _tickDetailsCollection = new ObservableCollection<TickDetail>();
-            _tickDetailsCollection.Add(new TickDetail(new Security(){Symbol = "AAPL"})
+            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "AAPL" })
             {
-                BidQuantity = 23,BidPrice = 450.34M, AskQuantity = 20,AskPrice = 456.00M, LastPrice = 445.34M, LastQuantity = 23
+                BidQuantity = 23,
+                BidPrice = 450.34M,
+                AskQuantity = 20,
+                AskPrice = 456.00M,
+                LastPrice = 445.34M,
+                LastQuantity = 23
             });
             _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "GOOG" })
             {
@@ -88,7 +93,7 @@ namespace TradeHubGui.ViewModel
             });
             #endregion
         }
-        
+
         #endregion
 
         #region Properties
@@ -144,7 +149,14 @@ namespace TradeHubGui.ViewModel
         public Provider Provider
         {
             get { return _provider; }
-            set { _provider = value; }
+            set 
+            {
+                if (_provider != value)
+                {
+                    _provider = value;
+                    OnPropertyChanged("Provider");
+                }
+            }
         }
 
         #endregion
@@ -223,39 +235,34 @@ namespace TradeHubGui.ViewModel
 
         private void AddNewSymbolExecute()
         {
-            //TODO: subscribe for watching
-            if (_provider.ConnectionStatus.Equals(ConnectionStatus.Connected))
-            {
-                // Create new tick detail's object
-                TickDetail tickDetail = new TickDetail(new Security() {Symbol = NewSymbol.Trim()});
+            // Create new tick detail's object
+            TickDetail tickDetail = new TickDetail(new Security() { Symbol = NewSymbol.Trim() });
 
-                // Add Tick Detail object to Provider's local map
-                _provider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
+            // Add Tick Detail object to Provider's local map
+            _provider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
 
-                // Add new tick detail to the Tick Detail's Map to show on UI
-                TickDetailsCollection.Add(tickDetail);
+            // Add new tick detail to the Tick Detail's Map to show on UI
+            TickDetailsCollection.Add(tickDetail);
 
-                // Select new tick detail in DataGrid
-                SelectedTickDetail = tickDetail;
+            // Select new tick detail in DataGrid
+            SelectedTickDetail = tickDetail;
 
-                // Create a new subscription request for requesting market data
-                var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Subscribe);
+            // Create a new subscription request for requesting market data
+            var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Subscribe);
 
-                // Raise Event to notify listeners
-                EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+            // Raise Event to notify listeners
+            EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
 
-                // Clear NewSymbol string
-                NewSymbol = string.Empty;
-            }
+            // Clear NewSymbol string
+            NewSymbol = string.Empty;
         }
 
         /// <summary>
-        /// If no entered new symbol, return false
+        /// If new symbol is not entered or if market provider is disconneted, return false, otherwise return true
         /// </summary>
-        /// <returns></returns>
         private bool AddNewSymbolCanExecute()
         {
-            if (string.IsNullOrWhiteSpace(NewSymbol))
+            if (string.IsNullOrWhiteSpace(NewSymbol) || _provider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
                 return false;
 
             return true;
