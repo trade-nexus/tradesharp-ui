@@ -10,7 +10,7 @@ namespace TradeHubGui.Common.Models
     /// <summary>
     /// 
     /// </summary>
-    public class ExecutionDetails : INotifyPropertyChanged
+    public class StrategyExecutionDetails : INotifyPropertyChanged
     {
         #region Fields
 
@@ -152,7 +152,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public ExecutionDetails()
+        public StrategyExecutionDetails()
         {
             // Initialize Objects
             OrderDetailsList = new ObservableCollection<OrderDetails>();

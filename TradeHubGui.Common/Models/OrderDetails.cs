@@ -1,17 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using TradeHub.Common.Core.Constants;
+using TradeHub.Common.Core.DomainModels;
+using TradeHub.Common.Core.DomainModels.OrderDomain;
+using TradeHubGui.Common.Constants;
 
 namespace TradeHubGui.Common.Models
 {
     public class OrderDetails : INotifyPropertyChanged
     {
         private string _id;
+        private Security _security;
         private string _side;
-        private string _type;
+        private OrderType _type;
         private decimal _price;
+        private decimal _stopPrice;
         private int _quantity;
         private DateTime _time;
         private string _status;
+        private string _provider;
+
+        /// <summary>
+        /// Holds all related fills for the order
+        /// </summary>
+        private ObservableCollection<FillDetail> _fillDetails;
+
+        public OrderDetails()
+        {
+            _fillDetails = new ObservableCollection<FillDetail>();
+        }
 
         #region Properties
 
@@ -35,7 +54,7 @@ namespace TradeHubGui.Common.Models
             }
         }
 
-        public string Type
+        public OrderType Type
         {
             get { return _type; }
             set
@@ -89,8 +108,51 @@ namespace TradeHubGui.Common.Models
             }
         }
 
-        #endregion
+        /// <summary>
+        /// Stop price to be used with Stop/Stop Limit orders
+        /// </summary>
+        public decimal StopPrice
+        {
+            get { return _stopPrice; }
+            set { _stopPrice = value; }
+        }
 
+        /// <summary>
+        /// Holds all related fills for the order
+        /// </summary>
+        public ObservableCollection<FillDetail> FillDetails
+        {
+            get { return _fillDetails; }
+            set { _fillDetails = value; }
+        }
+
+        /// <summary>
+        /// Order execution provider name
+        /// </summary>
+        public string Provider
+        {
+            get { return _provider; }
+            set
+            {
+                _provider = value; 
+                OnPropertyChanged("Provider");
+            }
+        }
+
+        /// <summary>
+        /// Contains Symbol information
+        /// </summary>
+        public Security Security
+        {
+            get { return _security; }
+            set
+            {
+                _security = value;
+                OnPropertyChanged("Security");
+            }
+        }
+
+        #endregion
 
         #region INotifyPropertyChanged members
         public event PropertyChangedEventHandler PropertyChanged;

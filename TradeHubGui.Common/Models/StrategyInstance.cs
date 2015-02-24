@@ -51,7 +51,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Holds basic execution information for the current instance to be used for UI
         /// </summary>
-        private ExecutionDetails _executionDetails;
+        private StrategyExecutionDetails _executionDetails;
 
         #endregion
 
@@ -158,7 +158,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Holds basic execution information for the current instance to be used for UI
         /// </summary>
-        public ExecutionDetails ExecutionDetails
+        public StrategyExecutionDetails ExecutionDetails
         {
             get { return _executionDetails; }
             set
@@ -187,7 +187,7 @@ namespace TradeHubGui.Common.Models
         public StrategyInstance(string instanceKey, Dictionary<string, ParameterDetail> parameters, Type strategyType)
         {
             // Initialize
-            _executionDetails = new ExecutionDetails();
+            _executionDetails = new StrategyExecutionDetails();
 
             // Save information
             _instanceKey = instanceKey;

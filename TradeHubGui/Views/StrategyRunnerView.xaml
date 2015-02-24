@@ -284,7 +284,6 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Order ID" Width="0.22*" Binding="{Binding Path=ID}" />
                             <DataGridTextColumn Header="Side" Width="0.15*" Binding="{Binding Path=Side}" />
-                            <DataGridTextColumn Header="Type" Width="0.15*" Binding="{Binding Path=Type}" />
                             <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" />
                             <DataGridTextColumn Header="Quantity" Width="0.22*" Binding="{Binding Path=Quantity}" />
                             <DataGridTextColumn Header="Time" Width="0.4*" Binding="{Binding Path=Time}" />

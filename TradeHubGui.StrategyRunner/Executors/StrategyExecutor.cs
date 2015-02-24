@@ -549,7 +549,6 @@ namespace TradeHubGui.StrategyRunner.Executors
             orderDetails.Price = execution.Fill.ExecutionPrice;
             orderDetails.Quantity = execution.Fill.ExecutionSize;
             orderDetails.Side = execution.Fill.ExecutionSide;
-            orderDetails.Type = execution.Fill.ExecutionType.ToString();
             orderDetails.Status = execution.Order.OrderStatus;
             orderDetails.Time = execution.Fill.ExecutionDateTime;
 
@@ -576,7 +575,6 @@ namespace TradeHubGui.StrategyRunner.Executors
                 orderDetails.Price = execution.Fill.ExecutionPrice;
                 orderDetails.Quantity = execution.Fill.ExecutionSize;
                 orderDetails.Side = execution.Fill.ExecutionSide;
-                orderDetails.Type = execution.Fill.ExecutionType.ToString();
                 orderDetails.Status = execution.Order.OrderStatus;
 
                 // Add new information to execution details

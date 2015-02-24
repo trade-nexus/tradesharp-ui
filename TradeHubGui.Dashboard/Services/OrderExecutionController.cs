@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
+using TradeHub.Common.Core.DomainModels.OrderDomain;
+using TradeHub.Common.Core.FactoryMethods;
 using TradeHub.StrategyEngine.OrderExecution;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
@@ -58,6 +60,7 @@ namespace TradeHubGui.Dashboard.Services
         {
             // Register Event to receive connect/disconnect requests
             EventSystem.Subscribe<Provider>(NewConnectionRequest);
+            EventSystem.Subscribe<OrderRequest>(NewOrderRequest);
         }
 
         /// <summary>
@@ -67,6 +70,11 @@ namespace TradeHubGui.Dashboard.Services
         {
             _orderExecutionManager.LogonArrivedEvent += OnLogonArrived;
             _orderExecutionManager.LogoutArrivedEvent += OnLogoutArrived;
+
+            _orderExecutionManager.OrderAcceptedEvent += OnOrderAccepted;
+            _orderExecutionManager.ExecutionArrivedEvent += OnExecutionArrived;
+            _orderExecutionManager.CancellationArrivedEvent += OnCancellationArrived;
+            _orderExecutionManager.RejectionArrivedEvent += OnRejectionArrived;
         }
 
         #region Incoming Requests
@@ -144,6 +152,77 @@ namespace TradeHubGui.Dashboard.Services
             }
         }
 
+        /// <summary>
+        /// Called when new order related request is made by the user
+        /// </summary>
+        /// <param name="orderRequest">Contains Order details</param>
+        private void NewOrderRequest(OrderRequest orderRequest)
+        {
+            Provider provider;
+            //Find respective Provider
+            if (_providersMap.TryGetValue(orderRequest.OrderDetails.Provider, out provider))
+            {
+                // Only entertain request if provider is connected
+                if (provider.ConnectionStatus.Equals(ConnectionStatus.Connected))
+                {
+                    // Hanlde New Order Requests
+                    if (orderRequest.RequestType.Equals(OrderRequestType.New))
+                    {
+                        // Handle Market Order Request
+                        if (orderRequest.OrderDetails.Type.Equals(OrderType.Market))
+                        {
+                            MarketOrderRequest(orderRequest.OrderDetails);      
+                        }
+                    }
+                }
+                else
+                {
+                    if (Logger.IsInfoEnabled)
+                    {
+                        Logger.Info(orderRequest.OrderDetails.Provider + " provider not connected.",
+                            _type.FullName, "NewOrderRequest");
+                    }
+                }
+
+            }
+            else
+            {
+                if (Logger.IsInfoEnabled)
+                {
+                    Logger.Info(orderRequest.OrderDetails.Provider + " provider not found.",
+                        _type.FullName, "NewOrderRequest");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called if the incoming order request is for Market Order
+        /// </summary>
+        /// <param name="orderDetails">Contains all order details</param>
+        private void MarketOrderRequest(OrderDetails orderDetails)
+        {
+            // Create Market Order object to be sent to 'Order Execution Service'
+            MarketOrder marketOrder = OrderMessage.GenerateMarketOrder(orderDetails.Security, orderDetails.Side,
+                orderDetails.Quantity, orderDetails.Provider);
+
+            // Forward market order request
+            _orderExecutionManager.MarketOrderRequests(marketOrder);
+        }
+
+        /// <summary>
+        /// Called if the incoming order request is for Limit Order
+        /// </summary>
+        /// <param name="orderDetails">Contains all order details</param>
+        private void LimitOrderRequest(OrderDetails orderDetails)
+        {
+            // Create Market Order object to be sent to 'Order Execution Service'
+            LimitOrder limitOrder = OrderMessage.GenerateLimitOrder(orderDetails.Security, orderDetails.Side,
+                orderDetails.Quantity, orderDetails.Price, orderDetails.Provider);
+
+            // Forward limit order request
+            _orderExecutionManager.LimitOrderRequest(limitOrder);
+        }
+
         #endregion
 
         #region Order Execution Manager Events
@@ -172,6 +251,38 @@ namespace TradeHubGui.Dashboard.Services
             {
                 provider.ConnectionStatus = ConnectionStatus.Disconnected;
             }
+        }
+
+        /// <summary>
+        /// Called when the requested order is accepted
+        /// </summary>
+        /// <param name="order">Contains accepted order details</param>
+        private void OnOrderAccepted(Order order)
+        {
+        }
+
+        /// <summary>
+        /// Called when order execution is receievd
+        /// </summary>
+        /// <param name="execution">Contains execution details</param>
+        private void OnExecutionArrived(Execution execution)
+        {
+        }
+
+        /// <summary>
+        /// Called when requested order is rejected
+        /// </summary>
+        /// <param name="rejection">Contains rejection details</param>
+        private void OnRejectionArrived(Rejection rejection)
+        {
+        }
+
+        /// <summary>
+        /// Called when order cancellaiton request is successful
+        /// </summary>
+        /// <param name="order">Contains cancelled order details</param>
+        private void OnCancellationArrived(Order order)
+        {
         }
 
         #endregion
