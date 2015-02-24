@@ -27,14 +27,12 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _createMarketScannerCommand;
         private NewMarketScannerWindow _newMarketScannerWindow;
         private ObservableCollection<Provider> _marketDataProviders;
-        private ProvidersController _providersController;
         private Provider _selectedMarketDataProvider;
         #endregion
 
         #region Constructor
         public MarketScannerViewModel(DockingManager dockManager)
         {
-            _providersController = new ProvidersController();
             _dockManager = dockManager;
             _dockManager.DocumentClosing += DockingManager_DocumentClosing;
             _dockManager.Layout.PropertyChanged += LayoutRoot_PropertyChanged;
@@ -184,21 +182,11 @@ namespace TradeHubGui.ViewModel
         {
             _marketDataProviders = new ObservableCollection<Provider>();
 
-            // Request Controller for infomation
-            var availableProviders = await Task.Run(() => _providersController.GetAvailableMarketDataProviders());
-
-            // Safety check incase information was not populated
-            if (availableProviders == null)
-                return;
-
             // Populate Individual Market Data Provider details
-            foreach (var keyValuePair in availableProviders)
+            foreach (var provider in ProvidersController.MarketDataProviders)
             {
-                Provider tempProvider = new Provider() { ProviderName = keyValuePair.Key, ConnectionStatus = ConnectionStatus.Disconnected };
-                tempProvider.ProviderCredentials = keyValuePair.Value;
-
                 // Add to Collection
-                _marketDataProviders.Add(tempProvider);
+                _marketDataProviders.Add(provider);
             }
 
             // Select initially 1st provider in ComboBox

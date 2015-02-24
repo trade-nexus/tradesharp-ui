@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeHub.Common.Core.Constants;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Managers;
 
@@ -26,6 +28,16 @@ namespace TradeHubGui.Dashboard.Services
         private readonly OrderExecutionProvidersManager _executionProvidersManager;
 
         /// <summary>
+        /// Holds Available Market Data Provider objects
+        /// </summary>
+        public static List<Provider> MarketDataProviders = new List<Provider>();
+
+        /// <summary>
+        /// Holds Available Order Execution Provider Objects
+        /// </summary>
+        public static List<Provider> OrderExecutionProviders = new List<Provider>();
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public ProvidersController()
@@ -38,18 +50,60 @@ namespace TradeHubGui.Dashboard.Services
         /// Returns available market data providers along with there configuration information
         /// </summary>
         /// <returns></returns>
-        public async Task<IDictionary<string, List<ProviderCredential>>> GetAvailableMarketDataProviders()
+        public async Task<IList<Provider>> GetAvailableMarketDataProviders()
         {
-            return _dataProvidersManager.GetAvailableProviders();
+            var availableProvidersInformation = _dataProvidersManager.GetAvailableProviders();
+
+            // Safety check incase information was not populated
+            if (availableProvidersInformation == null)
+                return null;
+
+            // Populate Individual Market Data Provider details
+            foreach (var keyValuePair in availableProvidersInformation)
+            {
+                Provider tempProvider = new Provider()
+                {
+                    ProviderType = ProviderType.MarketData,
+                    ProviderName = keyValuePair.Key,
+                    ConnectionStatus = ConnectionStatus.Disconnected
+                };
+                tempProvider.ProviderCredentials = keyValuePair.Value;
+
+                // Add to Collection
+                MarketDataProviders.Add(tempProvider);
+            }
+
+            return MarketDataProviders;
         }
 
         /// <summary>
         /// Returns available order executiom providers along with there configuration information
         /// </summary>
         /// <returns></returns>
-        public async Task<IDictionary<string, List<ProviderCredential>>> GetAvailableOrderExecutionProviders()
+        public async Task<List<Provider>> GetAvailableOrderExecutionProviders()
         {
-            return _executionProvidersManager.GetAvailableProviders();
+            var availableProvidersInformation = _executionProvidersManager.GetAvailableProviders();
+
+            // Safety check incase information was not populated
+            if (availableProvidersInformation == null)
+                return null;
+
+            // Populate Individual Order Execution Provider details
+            foreach (var keyValuePair in availableProvidersInformation)
+            {
+                Provider tempProvider = new Provider()
+                {
+                    ProviderType = ProviderType.OrderExecution,
+                    ProviderName = keyValuePair.Key,
+                    ConnectionStatus = ConnectionStatus.Disconnected
+                };
+                tempProvider.ProviderCredentials = keyValuePair.Value;
+
+                // Add to Collection
+                OrderExecutionProviders.Add(tempProvider);
+            }
+
+            return OrderExecutionProviders;
         } 
     }
 }

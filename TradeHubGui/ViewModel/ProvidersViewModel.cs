@@ -311,19 +311,11 @@ namespace TradeHubGui.ViewModel
             if (availableProviders == null)
                 return;
 
-            // Populate Individual Market Data Provider details
-            foreach (var keyValuePair in availableProviders)
+            // Populate Individual Market Data Provider details to show on UI
+            foreach (var provider in availableProviders)
             {
-                Provider tempProvider = new Provider()
-                {
-                    ProviderType = ProviderType.MarketData,
-                    ProviderName = keyValuePair.Key,
-                    ConnectionStatus = ConnectionStatus.Disconnected
-                };
-                tempProvider.ProviderCredentials = keyValuePair.Value;
-
                 // Add to Collection
-                _marketDataProviders.Add(tempProvider);
+                _marketDataProviders.Add(provider);
             }
 
             // Select initially 1st provider in ComboBox
@@ -345,19 +337,11 @@ namespace TradeHubGui.ViewModel
             if (availableProviders == null)
                 return;
 
-            // Populate Individual Market Data Provider details
-            foreach (var keyValuePair in availableProviders)
+            // Populate Individual Order Execution Provider details to show on UI
+            foreach (var provider in availableProviders)
             {
-                Provider tempProvider = new Provider()
-                {
-                    ProviderType = ProviderType.OrderExecution,
-                    ProviderName = keyValuePair.Key,
-                    ConnectionStatus = ConnectionStatus.Disconnected
-                };
-                tempProvider.ProviderCredentials = keyValuePair.Value;
-
                 // Add to Collection
-                _orderExecutionProviders.Add(tempProvider);
+                _orderExecutionProviders.Add(provider);
             }
 
             // Select initially 1st provider in ComboBox
