@@ -15,8 +15,10 @@ https://aurorasolutions.atlassian.net
 ## Setting up the code ##
 ### Database ###
 Settings:
+
 * Username = `root`
 * Password = `root`
 * host = `localhost`
+
 Create a new database named `TradeHub`
 Run sql script: `TradeHubDBScript.sql` located in `..\tradehub-ui\database\`
