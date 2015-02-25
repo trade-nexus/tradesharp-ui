@@ -173,6 +173,11 @@ namespace TradeHubGui.Dashboard.Services
                         {
                             MarketOrderRequest(orderRequest.OrderDetails);      
                         }
+                        // Handle Limit Order Request
+                        else if (orderRequest.OrderDetails.Type.Equals(OrderType.Limit))
+                        {
+                            LimitOrderRequest(orderRequest.OrderDetails);
+                        }
                     }
                 }
                 else
@@ -202,7 +207,7 @@ namespace TradeHubGui.Dashboard.Services
         private void MarketOrderRequest(OrderDetails orderDetails)
         {
             // Create Market Order object to be sent to 'Order Execution Service'
-            MarketOrder marketOrder = OrderMessage.GenerateMarketOrder(orderDetails.Security, orderDetails.Side,
+            MarketOrder marketOrder = OrderMessage.GenerateMarketOrder(orderDetails.ID, orderDetails.Security, orderDetails.Side,
                 orderDetails.Quantity, orderDetails.Provider);
 
             // Forward market order request
@@ -216,7 +221,7 @@ namespace TradeHubGui.Dashboard.Services
         private void LimitOrderRequest(OrderDetails orderDetails)
         {
             // Create Market Order object to be sent to 'Order Execution Service'
-            LimitOrder limitOrder = OrderMessage.GenerateLimitOrder(orderDetails.Security, orderDetails.Side,
+            LimitOrder limitOrder = OrderMessage.GenerateLimitOrder(orderDetails.ID, orderDetails.Security, orderDetails.Side,
                 orderDetails.Quantity, orderDetails.Price, orderDetails.Provider);
 
             // Forward limit order request
@@ -259,6 +264,27 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="order">Contains accepted order details</param>
         private void OnOrderAccepted(Order order)
         {
+            Provider provider;
+
+            // Get Order Execution Provider
+            if (_providersMap.TryGetValue(order.OrderExecutionProvider, out provider))
+            {
+                OrderDetails orderDetails = null;
+
+                // Find 'Order Details' object 
+                foreach (OrderDetails tempOrderDetails in provider.OrdersCollection)
+                {
+                    if (tempOrderDetails.ID.Equals(order.OrderID))
+                    {
+                        orderDetails = tempOrderDetails;
+                        break;
+                    }
+                }
+
+                // Update order status
+                if (orderDetails != null) 
+                    orderDetails.Status = order.OrderStatus;
+            }
         }
 
         /// <summary>
@@ -267,6 +293,41 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="execution">Contains execution details</param>
         private void OnExecutionArrived(Execution execution)
         {
+            Provider provider;
+
+            // Get Order Execution Provider
+            if (_providersMap.TryGetValue(execution.OrderExecutionProvider, out provider))
+            {
+                OrderDetails orderDetails = null;
+
+                // Find 'Order Details' object 
+                foreach (OrderDetails tempOrderDetails in provider.OrdersCollection)
+                {
+                    if (tempOrderDetails.ID.Equals(execution.Order.OrderID))
+                    {
+                        orderDetails = tempOrderDetails;
+                        break;
+                    }
+                }
+
+                // Update order parameters
+                if (orderDetails != null)
+                {
+                    orderDetails.Status = execution.Order.OrderStatus;
+
+                    // Create fill information
+                    var fillDetail = new FillDetail();
+
+                    fillDetail.FillId = execution.Fill.ExecutionId;
+                    fillDetail.FillPrice = execution.Fill.ExecutionPrice;
+                    fillDetail.FillQuantity = execution.Fill.ExecutionSize;
+                    fillDetail.FillDatetime = execution.Fill.ExecutionDateTime;
+                    fillDetail.FillType = execution.Fill.ExecutionType;
+
+                    // Add to order details object
+                    orderDetails.FillDetails.Add(fillDetail);
+                }
+            }
         }
 
         /// <summary>
@@ -275,6 +336,27 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="rejection">Contains rejection details</param>
         private void OnRejectionArrived(Rejection rejection)
         {
+            Provider provider;
+
+            // Get Order Execution Provider
+            if (_providersMap.TryGetValue(rejection.OrderExecutionProvider, out provider))
+            {
+                OrderDetails orderDetails = null;
+
+                // Find 'Order Details' object 
+                foreach (OrderDetails tempOrderDetails in provider.OrdersCollection)
+                {
+                    if (tempOrderDetails.ID.Equals(rejection.OrderId))
+                    {
+                        orderDetails = tempOrderDetails;
+                        break;
+                    }
+                }
+
+                // Update order parameters
+                if (orderDetails != null)
+                    orderDetails.Status = OrderStatus.REJECTED;
+            }
         }
 
         /// <summary>
@@ -283,6 +365,27 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="order">Contains cancelled order details</param>
         private void OnCancellationArrived(Order order)
         {
+            Provider provider;
+
+            // Get Order Execution Provider
+            if (_providersMap.TryGetValue(order.OrderExecutionProvider, out provider))
+            {
+                OrderDetails orderDetails = null;
+
+                // Find 'Order Details' object 
+                foreach (OrderDetails tempOrderDetails in provider.OrdersCollection)
+                {
+                    if (tempOrderDetails.ID.Equals(order.OrderID))
+                    {
+                        orderDetails = tempOrderDetails;
+                        break;
+                    }
+                }
+
+                // Update order parameters
+                if (orderDetails != null)
+                    orderDetails.Status = OrderStatus.CANCELLED;
+            }
         }
 
         #endregion

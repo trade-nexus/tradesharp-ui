@@ -42,6 +42,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         {
             Thread.Sleep(5000);
             Provider provider = new Provider();
+            provider.ProviderType= ProviderType.MarketData;
             provider.ConnectionStatus= ConnectionStatus.Disconnected;
             provider.ProviderName = MarketDataProvider.Simulated;
 

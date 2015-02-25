@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -22,11 +23,16 @@ namespace TradeHubGui.Common.Models
         private List<ProviderCredential> _providerCredentials;
 
         /// <summary>
-        /// 
+        /// Contains subscribed symbol's tick information (Valid if the provider is type 'Market Data')
         /// KEY = Symbol
         /// VALUE = <see cref="TickDetail"/>
         /// </summary>
-        private Dictionary<string, TickDetail> _tickDetailsMap; 
+        private Dictionary<string, TickDetail> _tickDetailsMap;
+
+        /// <summary>
+        /// Contains all orders information during the current application session
+        /// </summary>
+        private ObservableCollection<OrderDetails> _ordersCollection;  
 
         #endregion
 
@@ -34,8 +40,10 @@ namespace TradeHubGui.Common.Models
 
         public Provider()
         {
+            // Initialize Maps
             _providerCredentials = new List<ProviderCredential>();
             _tickDetailsMap = new Dictionary<string, TickDetail>();
+            _ordersCollection = new ObservableCollection<OrderDetails>();
         }
 
         #endregion
@@ -91,23 +99,47 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
-        /// Contains market information for each subscribed symbol
-        /// KEY = Symbol
-        /// VALUE = <see cref="TickDetail"/>
-        /// </summary>
-        public Dictionary<string, TickDetail> TickDetailsMap
-        {
-            get { return _tickDetailsMap; }
-            set { _tickDetailsMap = value; }
-        }
-
-        /// <summary>
         /// Type of Provider e.g Market Data, Order Execution, etc.
         /// </summary>
         public ProviderType ProviderType
         {
             get { return _providerType; }
             set { _providerType = value; }
+        }
+
+        /// <summary>
+        /// Contains market information for each subscribed symbol
+        /// KEY = Symbol
+        /// VALUE = <see cref="TickDetail"/>
+        /// </summary>
+        public Dictionary<string, TickDetail> TickDetailsMap
+        {
+            get
+            {
+                if (_providerType.Equals(ProviderType.MarketData))
+                {
+                    return _tickDetailsMap;
+                }
+                return null;
+            }
+            set { _tickDetailsMap = value; }
+        }
+
+        /// <summary>
+        /// Contains all orders information during the current application session
+        /// </summary>
+        public ObservableCollection<OrderDetails> OrdersCollection
+        {
+            get
+            {
+                if (_providerType.Equals(ProviderType.OrderExecution))
+                {
+                    return _ordersCollection;   
+                }
+
+                return null;
+            }
+            set { _ordersCollection = value; }
         }
 
         #endregion
