@@ -27,8 +27,12 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         private ObservableCollection<FillDetail> _fillDetails;
 
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public OrderDetails()
         {
+            _status = OrderStatus.OPEN;
             _fillDetails = new ObservableCollection<FillDetail>();
         }
 
