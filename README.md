@@ -21,3 +21,6 @@ https://aurorasolutions.atlassian.net
 
 + Create a new database named `TradeHub`.
 + Run sql script: `TradeHubDBScript.sql` located in `..\tradehub-ui\database\`
+
+### Sample Data ###
+Located in `..\tradehub-ui\Sample Data\`. Follow the instructions in `Read Me.txt` (as it will be updated depending on sample data added) located in the same folder to place the sample data.
