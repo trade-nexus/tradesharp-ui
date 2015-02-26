@@ -209,5 +209,59 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             Assert.IsTrue(orderDetails.Status.Equals(OrderStatus.EXECUTED));
             Assert.IsTrue(orderDetails.FillDetails.Count.Equals(1));
         }
+
+        [Test]
+        [Category("Integration")]
+        public void RequestOrderCancellation_SendNewOrderRequest_ReceiveOrderAcceptance_SendOrderCancellation_ReceiveOrderCancellation()
+        {
+            Thread.Sleep(5000);
+            Provider provider = new Provider();
+            provider.ProviderType = ProviderType.OrderExecution;
+            provider.ConnectionStatus = ConnectionStatus.Disconnected;
+            provider.ProviderName = OrderExecutionProvider.Simulated;
+
+            // Rasie event to request connection
+            EventSystem.Publish<Provider>(provider);
+
+            Thread.Sleep(5000);
+
+            Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
+
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.ID = "01";
+            orderDetails.Type = OrderType.Limit;
+            orderDetails.Quantity = 10;
+            orderDetails.Price = 45.98M;
+            orderDetails.Security = new Security() { Symbol = "AAPL" };
+            orderDetails.Side = OrderSide.BUY;
+            orderDetails.Provider = OrderExecutionProvider.Simulated;
+
+            {
+                // Create Order Request
+                OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
+
+                // Add Order Details object to Provider's Order Map
+                provider.OrdersCollection.Add(orderDetails);
+
+                // Rasie event to request order
+                EventSystem.Publish<OrderRequest>(orderRequest);
+            }
+
+            Thread.Sleep(5000);
+
+            Assert.IsTrue(orderDetails.Status.Equals(OrderStatus.SUBMITTED));
+            
+            {
+                // Create Cancel Order Request
+                OrderRequest cancelOrderRequest = new OrderRequest(orderDetails, OrderRequestType.Cancel);
+
+                // Rasie event to request order
+                EventSystem.Publish<OrderRequest>(cancelOrderRequest);
+            }
+
+            Thread.Sleep(5000);
+
+            Assert.IsTrue(orderDetails.Status.Equals(OrderStatus.CANCELLED));
+        }
     }
 }

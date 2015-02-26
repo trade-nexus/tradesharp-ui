@@ -88,5 +88,47 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             Assert.IsTrue(tickDetails.AskPrice.Equals(1.24M));
         }
+
+        [Test]
+        [Category("Integration")]
+        public void UnsubscribeMarketData_SendRequestToServer()
+        {
+            Thread.Sleep(5000);
+            Provider provider = new Provider();
+            provider.ConnectionStatus = ConnectionStatus.Disconnected;
+            provider.ProviderName = MarketDataProvider.Simulated;
+
+            // Rasie event to request connection
+            EventSystem.Publish<Provider>(provider);
+
+            Thread.Sleep(5000);
+
+            Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
+
+            // Create Security to use the Symbol information
+            Security security = new Security() { Symbol = "AAPL" };
+
+            // Create Tick details to hold market data information
+            TickDetail tickDetails = new TickDetail(security);
+
+            // Add TickDetails object to 
+            provider.TickDetailsMap.Add(security.Symbol, tickDetails);
+
+            {
+                // Create a new subscription request for requesting market data
+                var subscriptionRequest = new SubscriptionRequest(security, provider, SubscriptionType.Subscribe);
+
+                EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+            }
+
+            Thread.Sleep(2000);
+
+            {
+                // Create a new subscription request for requesting market data
+                var subscriptionRequest = new SubscriptionRequest(security, provider, SubscriptionType.Unsubscribe);
+
+                EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+            }
+        }
     }
 }

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TradeHub.Common.Core.DomainModels.OrderDomain;
+using TradeHub.Common.Core.FactoryMethods;
 using TradeHub.Common.Core.ValueObjects.AdminMessages;
 using TradeHub.StrategyEngine.OrderExecution;
+using TradeHubGui.Common.Models;
 
 namespace TradeHubGui.Dashboard.Managers
 {
@@ -223,19 +225,44 @@ namespace TradeHubGui.Dashboard.Managers
         /// <summary>
         /// Sends a new Market Order Request to 'Order Execution Server'
         /// </summary>
-        /// <param name="marketOrder">Contains market order information</param>
-        public void MarketOrderRequests(MarketOrder marketOrder)
+        /// <param name="orderDetails">Contains market order information</param>
+        public void MarketOrderRequests(OrderDetails orderDetails)
         {
+            // Get new Order ID
+            orderDetails.ID = _orderExecutionService.GetOrderId();
+
+            // Create Market Order object to be sent to 'Order Execution Service'
+            MarketOrder marketOrder = OrderMessage.GenerateMarketOrder(orderDetails.ID, orderDetails.Security, orderDetails.Side,
+                orderDetails.Quantity, orderDetails.Provider);
+
+            // Send Request to Server
             _orderExecutionService.SendOrder(marketOrder);
         }
 
         /// <summary>
         /// Sends a new Limit Order Request to 'Order Execution Server'
         /// </summary>
-        /// <param name="limitOrder">Contains limit order information</param>
-        public void LimitOrderRequest(LimitOrder limitOrder)
+        /// <param name="orderDetails">Contains limit order information</param>
+        public void LimitOrderRequest(OrderDetails orderDetails)
         {
+            // Get new Order ID
+            orderDetails.ID = _orderExecutionService.GetOrderId();
+
+            // Create Limit Order object to be sent to 'Order Execution Service'
+            LimitOrder limitOrder = OrderMessage.GenerateLimitOrder(orderDetails.ID, orderDetails.Security, orderDetails.Side,
+                orderDetails.Quantity, orderDetails.Price, orderDetails.Provider);
+
+            // Send Reques to Server
             _orderExecutionService.SendOrder(limitOrder);
+        }
+
+        /// <summary>
+        /// Sends order cancellation request to 'Order Execution Server'
+        /// </summary>
+        /// <param name="orderId">ID for the order to be cancelled</param>
+        public void CancelOrderRequest(string orderId)
+        {
+            _orderExecutionService.CancelOrder(orderId);
         }
 
         #endregion
