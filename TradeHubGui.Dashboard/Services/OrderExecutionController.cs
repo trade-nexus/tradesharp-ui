@@ -211,12 +211,8 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="orderDetails">Contains all order details</param>
         private void MarketOrderRequest(OrderDetails orderDetails)
         {
-            // Create Market Order object to be sent to 'Order Execution Service'
-            MarketOrder marketOrder = OrderMessage.GenerateMarketOrder(orderDetails.ID, orderDetails.Security, orderDetails.Side,
-                orderDetails.Quantity, orderDetails.Provider);
-
             // Forward market order request
-            _orderExecutionManager.MarketOrderRequests(marketOrder);
+            _orderExecutionManager.MarketOrderRequests(orderDetails);
         }
 
         /// <summary>
@@ -225,12 +221,8 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="orderDetails">Contains all order details</param>
         private void LimitOrderRequest(OrderDetails orderDetails)
         {
-            // Create Limit Order object to be sent to 'Order Execution Service'
-            LimitOrder limitOrder = OrderMessage.GenerateLimitOrder(orderDetails.ID, orderDetails.Security, orderDetails.Side,
-                orderDetails.Quantity, orderDetails.Price, orderDetails.Provider);
-
             // Forward limit order request
-            _orderExecutionManager.LimitOrderRequest(limitOrder);
+            _orderExecutionManager.LimitOrderRequest(orderDetails);
         }
 
         /// <summary>
