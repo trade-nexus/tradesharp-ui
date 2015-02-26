@@ -1,4 +1,5 @@
-﻿using MessageBoxUtils;
+﻿using MahApps.Metro.Controls;
+using MessageBoxUtils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,14 +20,13 @@ using TradeHubGui.ViewModel;
 namespace TradeHubGui.Views
 {
     /// <summary>
-    /// Interaction logic for MarketScannerView.xaml
+    /// Interaction logic for MarketScannerWindow.xaml
     /// </summary>
-    public partial class MarketScannerView : UserControl
+    public partial class MarketScannerWindow : MetroWindow
     {
-        public MarketScannerView()
+        public MarketScannerWindow()
         {
             InitializeComponent();
-            DataContext = new MarketScannerViewModel();
         }
     }
 }
