@@ -238,6 +238,15 @@ namespace TradeHubGui.Dashboard.Managers
             _orderExecutionService.SendOrder(limitOrder);
         }
 
+        /// <summary>
+        /// Sends order cancellation request to 'Order Execution Server'
+        /// </summary>
+        /// <param name="orderId">ID for the order to be cancelled</param>
+        public void CancelOrderRequest(string orderId)
+        {
+            _orderExecutionService.CancelOrder(orderId);
+        }
+
         #endregion
 
         #region Order Execution Service Events
