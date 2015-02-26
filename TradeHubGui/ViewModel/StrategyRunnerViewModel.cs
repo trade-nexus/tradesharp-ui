@@ -658,7 +658,7 @@ namespace TradeHubGui.ViewModel
                 {
                     if (window.GetType() == typeOfWindow)
                     {
-                        window.Focus();
+                        window.WindowState = WindowState.Normal;
                         window.Activate();
                         return true;
                     }

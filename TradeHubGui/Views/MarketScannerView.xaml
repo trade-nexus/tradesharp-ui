@@ -25,30 +25,8 @@
                 </Button>
             </StackPanel>
 
-            <ad:DockingManager Grid.Row="1" x:Name="DockManager" Background="White" AllowMixedOrientation="True">
-                <ad:DockingManager.Theme>
-                    <ad:FlatTheme/>
-                </ad:DockingManager.Theme>
+            <ItemsControl/>
 
-                <ad:DockingManager.DocumentHeaderTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding IconSource}" Margin="0,0,4,0"/>
-                            <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" FontSize="16" FontWeight="SemiBold" Typography.Capitals="SmallCaps"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ad:DockingManager.DocumentHeaderTemplate>
-
-                <ad:LayoutRoot x:Name="LayoutRoot">
-                    <ad:LayoutPanel Orientation="Horizontal">
-                        <ad:LayoutDocumentPaneGroup>
-                            <ad:LayoutDocumentPane>
-                            </ad:LayoutDocumentPane>
-                        </ad:LayoutDocumentPaneGroup>
-                    </ad:LayoutPanel>
-                </ad:LayoutRoot>
-
-            </ad:DockingManager>
         </Grid>
     </Grid>
 </UserControl>

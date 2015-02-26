@@ -1,4 +1,5 @@
-﻿using MessageBoxUtils;
+﻿using MahApps.Metro.Controls;
+using MessageBoxUtils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,16 +14,12 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
 using TradeHubGui.Views;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Controls;
-using Xceed.Wpf.AvalonDock.Layout;
 
 namespace TradeHubGui.ViewModel
 {
     public class MarketScannerViewModel : BaseViewModel
     {
         #region Fields
-        private DockingManager _dockManager;
         private RelayCommand _showNewMarketScannerWindowCommand;
         private RelayCommand _createMarketScannerCommand;
         private NewMarketScannerWindow _newMarketScannerWindow;
@@ -31,20 +28,13 @@ namespace TradeHubGui.ViewModel
         #endregion
 
         #region Constructor
-        public MarketScannerViewModel(DockingManager dockManager)
+        public MarketScannerViewModel()
         {
-            _dockManager = dockManager;
-            _dockManager.DocumentClosing += DockingManager_DocumentClosing;
-            _dockManager.Layout.PropertyChanged += LayoutRoot_PropertyChanged;
+
         }
         #endregion
 
         #region Properties
-        public DockingManager DockManager
-        {
-            get { return _dockManager; }
-            set { _dockManager = value; }
-        }
 
         /// <summary>
         /// Collection of market data providers
@@ -92,7 +82,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Creating of new market scanner document window for chosen market data provider
+        /// Creating of new market scanner window for chosen market data provider
         /// </summary>
         public ICommand CreateMarketScannerCommand
         {
@@ -109,7 +99,7 @@ namespace TradeHubGui.ViewModel
             _newMarketScannerWindow = new NewMarketScannerWindow();
             _newMarketScannerWindow.Owner = MainWindow;
             _newMarketScannerWindow.DataContext = this;
-            
+
             // Populate MarketDataProviders with actual list of market data providers
             InitializeMarketDataProviders();
 
@@ -133,40 +123,33 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void CreateMarketScannerExecute()
         {
-            // Add new scanner document window for selected market data provider
-            var documentPane = _dockManager.Layout.Descendents().OfType<LayoutDocumentPane>().FirstOrDefault();
-            if (documentPane != null)
+            // Try to find scanner window if already created for selected provider
+            MarketScannerWindow scannerWindow = null;
+            foreach (Window window in Application.Current.Windows)
             {
-                // Try to find scanner if already created for selected provider
-                LayoutDocument scannerDocument = (LayoutDocument)documentPane.Children.ToList().Find(elem => elem.Title == SelectedMarketDataProvider.ProviderName);
-                // TODO: Title is null from some reason and need to figure out why
-                LayoutFloatingWindowControl scannerFloatingWindow = (LayoutFloatingWindowControl)_dockManager.FloatingWindows.ToList().Find(elem => elem.Title == SelectedMarketDataProvider.ProviderName);
-                
-                // if scanner is already created, just activate it, otherwise create new scanner document
-                if (scannerDocument != null)
+                if (window is MarketScannerWindow && window.Title == SelectedMarketDataProvider.ProviderName)
                 {
-                    scannerDocument.IsActive = true;
+                    scannerWindow = (MarketScannerWindow)window;
+                    break;
                 }
-                else if (scannerFloatingWindow != null)
-                {
-                    scannerFloatingWindow.Activate();
-                }
-                else
-                {
-                    // Create content for new scanner document and set DataContext to it
-                    MarketScannerContentView view = new MarketScannerContentView();
-                    view.DataContext = new MarketScannerContentViewModel() {Provider = SelectedMarketDataProvider};
+            }
 
-                    // Create new scanner document and add content to it
-                    scannerDocument = new LayoutDocument();
-                    scannerDocument.Content = view;
-                    scannerDocument.IsSelected = true;
-                    scannerDocument.Title = SelectedMarketDataProvider.ProviderName;
-                    scannerDocument.ContentId = SelectedMarketDataProvider.ProviderName.Replace(" ", "_");
+            // if scanner is already created, just activate it, otherwise create new scanner window for slected data provider
+            if (scannerWindow != null)
+            {
+                scannerWindow.WindowState = WindowState.Normal;
+                scannerWindow.Activate();
+            }
+            else
+            {
+                scannerWindow = new MarketScannerWindow();
+                scannerWindow.DataContext = new MarketScannerContentViewModel() { Provider = SelectedMarketDataProvider };
+                scannerWindow.Title = SelectedMarketDataProvider.ProviderName;
+                scannerWindow.Closing += scannerWindow_Closing;
+                scannerWindow.Show();
 
-                    // Add scanner document to the documentPane
-                    documentPane.Children.Add(scannerDocument);
-                }
+                // Add scanner info to the Market Data Scanner dashboard
+                //TODO:
             }
 
             // Detach DataContext and close 'New Market Scanner' window
@@ -174,11 +157,10 @@ namespace TradeHubGui.ViewModel
             _newMarketScannerWindow.Close();
         }
 
-
         /// <summary>
         /// Initialization of market data providers
         /// </summary>
-        private async void InitializeMarketDataProviders()
+        private void InitializeMarketDataProviders()
         {
             _marketDataProviders = new ObservableCollection<Provider>();
 
@@ -196,32 +178,22 @@ namespace TradeHubGui.ViewModel
         #endregion
 
         #region Events
+
         /// <summary>
-        /// Handles changing of Active content
+        /// Handles closing event if invoked for certain scanner window
         /// </summary>
-        /// <param name="sender">LayoutRoot</param>
-        /// <param name="e"></param>
-        void LayoutRoot_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void scannerWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var activeContent = ((LayoutRoot)sender).ActiveContent;
-            if (e.PropertyName == "ActiveContent")
+            if (WPFMessageBox.Show((MetroWindow)sender, "Are you sure you want to close the scanner window?", "Market Data Scanner", 
+                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
             {
-                Debug.WriteLine(string.Format("ActiveContent-> {0}", activeContent));
-            }
-        }
-
-        /// <summary>
-        /// Handles closing event if invoked for certain document
-        /// </summary>
-        /// <param name="sender">DockingManager</param>
-        /// <param name="e"></param>
-        void DockingManager_DocumentClosing(object sender, Xceed.Wpf.AvalonDock.DocumentClosingEventArgs e)
-        {
-            if (WPFMessageBox.Show(MainWindow, "Are you sure you want to close the scanner?", "Market Data Scanner", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
                 e.Cancel = true;
-
-            // if document is successfully closed, activate MainWindow
-            MainWindow.Activate();
+            }
+            else
+            {
+                // if scanner window is successfully closed, activate MainWindow
+                MainWindow.Activate();
+            }
         }
         #endregion
     }

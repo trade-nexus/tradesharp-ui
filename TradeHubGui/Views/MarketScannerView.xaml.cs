@@ -15,8 +15,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TradeHubGui.ViewModel;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
 
 namespace TradeHubGui.Views
 {
@@ -28,7 +26,7 @@ namespace TradeHubGui.Views
         public MarketScannerView()
         {
             InitializeComponent();
-            DataContext = new MarketScannerViewModel(DockManager);
+            DataContext = new MarketScannerViewModel();
         }
     }
 }

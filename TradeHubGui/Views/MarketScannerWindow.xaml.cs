@@ -1,4 +1,5 @@
-﻿using MessageBoxUtils;
+﻿using MahApps.Metro.Controls;
+using MessageBoxUtils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,17 +16,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TradeHubGui.ViewModel;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
 
 namespace TradeHubGui.Views
 {
     /// <summary>
-    /// Interaction logic for MarketScannerContentView.xaml
+    /// Interaction logic for MarketScannerWindow.xaml
     /// </summary>
-    public partial class MarketScannerContentView : UserControl
+    public partial class MarketScannerWindow : MetroWindow
     {
-        public MarketScannerContentView()
+        public MarketScannerWindow()
         {
             InitializeComponent();
         }

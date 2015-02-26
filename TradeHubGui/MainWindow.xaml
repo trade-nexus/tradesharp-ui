@@ -406,9 +406,7 @@
                         Foreground="White" FontSize="34" VerticalAlignment="Top" Margin="90,0,0,0" />
         </Border>
 
-        <mah:TransitioningContentControl Grid.Row="1" Grid.Column="1" 
-                                        Transition="Default" RestartTransitionOnContentChange="True" 
-                                        Content="{Binding SelectedItem.Tag, ElementName=NavigationListBox}"/>
+        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding SelectedItem.Tag, ElementName=NavigationListBox}"/>
 
         <Button Grid.RowSpan="3" Grid.ColumnSpan="2" Style="{StaticResource ButtonToolBar}" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                 ToolTip="Show logs" Width="46" Height="46" Margin="4,4,4,40"
