@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
 using TradeHub.Common.Core.FactoryMethods;
+using TradeHub.Common.Core.Utility;
 using TradeHub.Common.Core.ValueObjects.AdminMessages;
 using TradeHub.Common.Core.ValueObjects.MarketData;
 using TradeHub.StrategyEngine.MarketData;
@@ -21,6 +22,11 @@ namespace TradeHubGui.Dashboard.Managers
         /// Provides communication access with Market Data Server
         /// </summary>
         private readonly MarketDataService _marketDataService;
+
+        /// <summary>
+        /// Responsible for creating ID's for market data requests
+        /// </summary>
+        private IMarketDataIdGenerator _idGenerator;
 
         #region Events
 
@@ -103,6 +109,9 @@ namespace TradeHubGui.Dashboard.Managers
             // Save Instance
             _marketDataService = marketDataService;
 
+            // Initialize Id Generator
+            _idGenerator = new MarketDataIdGenerator();
+
             SubscribeDataServiceEvents();
 
             _marketDataService.StartService();
@@ -177,7 +186,7 @@ namespace TradeHubGui.Dashboard.Managers
         public void Subscribe(Security security, string providerName)
         {
             // Create subscription message
-            Subscribe subscribe = SubscriptionMessage.TickSubscription("", security, providerName);
+            Subscribe subscribe = SubscriptionMessage.TickSubscription(_idGenerator.NextTickId(), security, providerName);
 
             _marketDataService.Subscribe(subscribe);
         }
