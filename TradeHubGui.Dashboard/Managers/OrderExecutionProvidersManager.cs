@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using TraceSourceLogger;
 using TradeHubGui.Common.Models;
 
 namespace TradeHubGui.Dashboard.Managers
@@ -12,7 +13,7 @@ namespace TradeHubGui.Dashboard.Managers
     /// <summary>
     /// Handles Order Execution Provider's related Admin functionality
     /// </summary>
-    public class OrderExecutionProvidersManager
+    internal class OrderExecutionProvidersManager
     {
         private Type _type = typeof(OrderExecutionProvidersManager);
 
@@ -102,6 +103,45 @@ namespace TradeHubGui.Dashboard.Managers
             }
 
             return availableProviders;
+        }
+
+        /// <summary>
+        /// Edits given Order Execution provider credentails with the new values
+        /// </summary>
+        /// <param name="provider">Contains provider details</param>
+        public void EditProviderCredentials(Provider provider)
+        {
+            try
+            {
+                // Create file path
+                string filePath = _orderExecutionProvidersFolderPath + provider.ProviderName + @"OrderParams.xml";
+
+                // Create XML Document Object to read credentials file
+                XmlDocument document = new XmlDocument();
+
+                // Load credentials file
+                document.Load(filePath);
+
+                XmlNode root = document.DocumentElement;
+
+                // Travers all credential values
+                foreach (ProviderCredential providerCredential in provider.ProviderCredentials)
+                {
+                    XmlNode xmlNode = root.SelectSingleNode("descendant::" + providerCredential.CredentialName);
+
+                    if (xmlNode != null)
+                    {
+                        xmlNode.InnerText = providerCredential.CredentialValue;
+                    }
+                }
+
+                // Save document
+                document.Save(filePath);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "EditProviderCredentials");
+            }
         }
     }
 }

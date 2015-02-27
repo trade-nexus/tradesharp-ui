@@ -104,6 +104,24 @@ namespace TradeHubGui.Dashboard.Services
             }
 
             return OrderExecutionProviders;
-        } 
+        }
+
+        /// <summary>
+        /// Modifies respective provider credentails as per given details
+        /// </summary>
+        /// <param name="provider">Provider who's credentials are to be modified</param>
+        public void EditProviderCredentials(Provider provider)
+        {
+            // Handle Market Data Provider
+            if (provider.ProviderType.Equals(ProviderType.MarketData))
+            {
+                _dataProvidersManager.EditProviderCredentials(provider);
+            }
+            // Handle Order Execution Provider
+            else if (provider.ProviderType.Equals(ProviderType.OrderExecution))
+            {
+                _executionProvidersManager.EditProviderCredentials(provider);
+            }
+        }
     }
 }
