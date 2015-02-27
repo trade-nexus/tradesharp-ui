@@ -11,7 +11,7 @@
     <UserControl.Resources>
         <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
         <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
-        
+
     </UserControl.Resources>
 
     <Grid x:Name="ContentGrid">
@@ -31,11 +31,9 @@
             <Grid Margin="20,20,5,20">
                 <Border Style="{StaticResource ContentBorderStyle}"/>
                 <DockPanel Margin="10">
-                    <Border Style="{StaticResource ContentBorderStyle}"/>
-                    <DockPanel Margin="10">
-                        <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="PENDING ORDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="PENDING ORDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                        <DataGrid x:Name="PendingOrdersDataGrid" Margin="10"
+                    <DataGrid x:Name="PendingOrdersDataGrid" Margin="10"
                             SelectionMode="Single" 
                             IsTextSearchEnabled="True"
                             IsSynchronizedWithCurrentItem="True"
@@ -46,15 +44,13 @@
                             AutoGenerateColumns="False"
                             RowHeight="22">
 
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Symbol" Width="*" Binding="{Binding Path=Symbol}" />
-                                <DataGridTextColumn Header="Buy" Width="*" Binding="{Binding Path=Buy}" />
-                                <DataGridTextColumn Header="Sell" Width="*" Binding="{Binding Path=Sell}" />
-                                <DataGridTextColumn Header="Position" Width="*" Binding="{Binding Path=Position}" />
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </DockPanel>
-
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Symbol" Width="*" Binding="{Binding Path=Symbol}" />
+                            <DataGridTextColumn Header="Buy" Width="*" Binding="{Binding Path=Buy}" />
+                            <DataGridTextColumn Header="Sell" Width="*" Binding="{Binding Path=Sell}" />
+                            <DataGridTextColumn Header="Position" Width="*" Binding="{Binding Path=Position}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </DockPanel>
             </Grid>
 
@@ -166,7 +162,7 @@
                 </DockPanel>
             </Grid>
         </Grid>
-        
+
     </Grid>
 
 

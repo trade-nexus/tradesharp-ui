@@ -13,7 +13,7 @@ using TradeHubGui.Common.Models;
 
 namespace TradeHubGui.ViewModel
 {
-    public class MarketScannerContentViewModel : BaseViewModel
+    public class MarketScannerWindowViewModel : BaseViewModel
     {
         #region Fields
 
@@ -33,7 +33,7 @@ namespace TradeHubGui.ViewModel
 
         #region Constructor
 
-        public MarketScannerContentViewModel()
+        public MarketScannerWindowViewModel()
         {
             #region Temporary fill instruments (this will be removed)
             _tickDetailsCollection = new ObservableCollection<TickDetail>();

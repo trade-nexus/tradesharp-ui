@@ -156,7 +156,7 @@
     <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
-    <Compile Include="ViewModel\MarketScannerContentViewModel.cs" />
+    <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
     <Compile Include="ViewModel\ProvidersViewModel.cs" />
     <Compile Include="ViewModel\ServicesViewModel.cs" />
