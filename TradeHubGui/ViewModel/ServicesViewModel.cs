@@ -8,12 +8,18 @@ using System.Windows.Input;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Dashboard.Services;
 
 namespace TradeHubGui.ViewModel
 {
     public class ServicesViewModel : BaseViewModel
     {
         #region Fields
+
+        /// <summary>
+        /// Provides TradeHub services related functionality
+        /// </summary>
+        private TradeHubServicesController _servicesController;
 
         /// <summary>
         /// Contains Service Details for the available application services
@@ -92,6 +98,7 @@ namespace TradeHubGui.ViewModel
         public ServicesViewModel()
         {
             _services = new ObservableCollection<ServiceDetails>();
+            _servicesController = new TradeHubServicesController();
 
             // Get Initial Services information
             PopulateServices();
@@ -150,6 +157,14 @@ namespace TradeHubGui.ViewModel
             TestCodeToGenerateDummayServicesData();
             return;
             // :END
+
+            var availableServices = _servicesController.GetAvailableServices();
+            foreach (var availableService in availableServices)
+            {
+                Services.Add(availableService);
+            }
+
+            InitializeServices();
         }
 
         /// <summary>
@@ -177,6 +192,8 @@ namespace TradeHubGui.ViewModel
             serviceDetails.Status = ServiceStatus.Running;
             return;
             // :END
+
+            Task.Run(()=>_servicesController.StartService(serviceDetails));
         }
 
         /// <summary>
@@ -204,8 +221,17 @@ namespace TradeHubGui.ViewModel
             serviceDetails.Status = ServiceStatus.Stopped;
             return;
             // :END
+
+            Task.Run(() => _servicesController.StopService(serviceDetails));
         }
 
+        /// <summary>
+        /// Intialize Application Services
+        /// </summary>
+        private async void InitializeServices()
+        {
+            await Task.Run(() => _servicesController.InitializeServices());
+        }
 
         /// <summary>
         /// Dummy services information
