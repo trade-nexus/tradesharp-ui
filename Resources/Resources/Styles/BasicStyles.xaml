@@ -2488,7 +2488,7 @@
 					<DockPanel Margin="{TemplateBinding Margin}">
 						<DockPanel Margin="0,0,0,10" DockPanel.Dock="Top" Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}">
 							<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" Margin="0,0,0,0" VerticalAlignment="Center"
-											  TextBlock.FontSize="16" 
+											  TextBlock.FontSize="14" 
 											  TextBlock.FontWeight="SemiBold" 
 											  TextBlock.Foreground="{StaticResource BaseBrush0}" 
                                               Typography.Capitals="SmallCaps"/>

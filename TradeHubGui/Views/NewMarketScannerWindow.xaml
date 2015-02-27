@@ -31,7 +31,7 @@
 
         <StackPanel Grid.Row="2" Margin="10" Orientation="Horizontal" HorizontalAlignment="Right">
             <Button DockPanel.Dock="Right" Content="Create" MinWidth="70" IsDefault="True" Margin="3"
-                    Command="{Binding CreateMarketScannerCommand}" CommandParameter="{Binding SelectedItem, ElementName=MarketDataProvidersComboBox}"/>
+                    Command="{Binding CreateScannerWindowCommand}" CommandParameter="{Binding SelectedItem, ElementName=MarketDataProvidersComboBox}"/>
             <Button DockPanel.Dock="Right" Content="Cancel" MinWidth="70" IsCancel="True" Margin="3"/>
         </StackPanel>
     </Grid>

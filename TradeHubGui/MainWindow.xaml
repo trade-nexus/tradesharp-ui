@@ -10,6 +10,7 @@
                  WindowStartupLocation="CenterScreen"
                  Title="TradeHUB" 
                  Height="850" Width="1280"
+                 MinHeight="400" MinWidth="650"
                  NonActiveGlowBrush="Silver"
                  ShowIconOnTitleBar="True"
                  ShowTitleBar="True"

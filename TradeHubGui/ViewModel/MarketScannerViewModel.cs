@@ -20,17 +20,21 @@ namespace TradeHubGui.ViewModel
     public class MarketScannerViewModel : BaseViewModel
     {
         #region Fields
-        private RelayCommand _showNewMarketScannerWindowCommand;
-        private RelayCommand _createMarketScannerCommand;
         private NewMarketScannerWindow _newMarketScannerWindow;
         private ObservableCollection<Provider> _marketDataProviders;
         private Provider _selectedMarketDataProvider;
+        private ObservableCollection<MarketScannerWindowViewModel> _scannerWindowViewModels;
+        
+        private RelayCommand _showNewScannerWindowCommand;
+        private RelayCommand _createScannerWindowCommand;
+        private RelayCommand _closeScannerWindowCommand;
+        private RelayCommand _focusScannerWindowCommand;
         #endregion
 
         #region Constructor
         public MarketScannerViewModel()
         {
-
+            _scannerWindowViewModels = new ObservableCollection<MarketScannerWindowViewModel>();
         }
         #endregion
 
@@ -67,34 +71,73 @@ namespace TradeHubGui.ViewModel
                 }
             }
         }
+
+        /// <summary>
+        /// Collection of ViewModels for displaying infos about scanner windows
+        /// </summary>
+        public ObservableCollection<MarketScannerWindowViewModel> ScannerWindowViewModels
+        {
+            get { return _scannerWindowViewModels; }
+            set
+            {
+                if (_scannerWindowViewModels != value)
+                {
+                    _scannerWindowViewModels = value;
+                    OnPropertyChanged("ScannerWindowViewModels");
+                }
+            }
+        }
         #endregion
 
         #region Commands
         /// <summary>
         /// Opens 'New Market Scanner' window for chosing market data provider for scanning
         /// </summary>
-        public ICommand ShowNewMarketScannerWindowCommand
+        public ICommand ShowNewScannerWindowCommand
         {
             get
             {
-                return _showNewMarketScannerWindowCommand ?? (_showNewMarketScannerWindowCommand = new RelayCommand(param => ShowNewMarketScannerWindowExecute()));
+                return _showNewScannerWindowCommand ?? (_showNewScannerWindowCommand = new RelayCommand(param => ShowNewScannerWindowExecute()));
             }
         }
 
         /// <summary>
         /// Creating of new market scanner window for chosen market data provider
         /// </summary>
-        public ICommand CreateMarketScannerCommand
+        public ICommand CreateScannerWindowCommand
         {
             get
             {
-                return _createMarketScannerCommand ?? (_createMarketScannerCommand = new RelayCommand(param => CreateMarketScannerExecute(), param => CreateMarketScannerCanExecute(param)));
+                return _createScannerWindowCommand ?? (_createScannerWindowCommand = new RelayCommand(param => CreateScannerWindowExecute(), param => CreateScannerWindowCanExecute(param)));
             }
         }
+
+        /// <summary>
+        /// Focus certain market scanner window
+        /// </summary>
+        public ICommand FocusScannerWindowCommand
+        {
+            get
+            {
+                return _focusScannerWindowCommand ?? (_focusScannerWindowCommand = new RelayCommand(param => FocusScannerWindowExecute(param)));
+            }
+        }
+
+        /// <summary>
+        /// Close certain market scanner window
+        /// </summary>
+        public ICommand CloseScannerWindowCommand
+        {
+            get
+            {
+                return _closeScannerWindowCommand ?? (_closeScannerWindowCommand = new RelayCommand(param => CloseScannerWindowExecute(param)));
+            }
+        }
+
         #endregion
 
         #region Methods
-        private void ShowNewMarketScannerWindowExecute()
+        private void ShowNewScannerWindowExecute()
         {
             _newMarketScannerWindow = new NewMarketScannerWindow();
             _newMarketScannerWindow.Owner = MainWindow;
@@ -110,7 +153,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// If selected market data provider is not null, return true
         /// </summary>
-        private bool CreateMarketScannerCanExecute(object param)
+        private bool CreateScannerWindowCanExecute(object param)
         {
             if (param != null)
                 return true;
@@ -121,18 +164,10 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Create market scanner for selected market data provider
         /// </summary>
-        private void CreateMarketScannerExecute()
+        private void CreateScannerWindowExecute()
         {
             // Try to find scanner window if already created for selected provider
-            MarketScannerWindow scannerWindow = null;
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window is MarketScannerWindow && window.Title == SelectedMarketDataProvider.ProviderName)
-                {
-                    scannerWindow = (MarketScannerWindow)window;
-                    break;
-                }
-            }
+            MarketScannerWindow scannerWindow = FindScannerWindowByTitle(SelectedMarketDataProvider.ProviderName);
 
             // if scanner is already created, just activate it, otherwise create new scanner window for slected data provider
             if (scannerWindow != null)
@@ -143,18 +178,71 @@ namespace TradeHubGui.ViewModel
             else
             {
                 scannerWindow = new MarketScannerWindow();
-                scannerWindow.DataContext = new MarketScannerContentViewModel() { Provider = SelectedMarketDataProvider };
+                MarketScannerWindowViewModel scannerWindowViewModel = new MarketScannerWindowViewModel() { Provider = SelectedMarketDataProvider };
+                
+                // Add scanner window VeiwModel in collection for displaying on Market Scanner Dashboard
+                ScannerWindowViewModels.Add(scannerWindowViewModel);
+
+                scannerWindow.DataContext = scannerWindowViewModel;
                 scannerWindow.Title = SelectedMarketDataProvider.ProviderName;
                 scannerWindow.Closing += scannerWindow_Closing;
                 scannerWindow.Show();
-
-                // Add scanner info to the Market Data Scanner dashboard
-                //TODO:
             }
 
             // Detach DataContext and close 'New Market Scanner' window
             _newMarketScannerWindow.DataContext = null;
             _newMarketScannerWindow.Close();
+        }
+
+        /// <summary>
+        /// Focus certain market scanner window
+        /// </summary>
+        /// <param name="param">ProviderName</param>
+        private void FocusScannerWindowExecute(object param)
+        {
+            MarketScannerWindow scannerWindow = FindScannerWindowByTitle((string)param);
+            if(scannerWindow != null)
+                scannerWindow.Activate();
+        }
+
+        /// <summary>
+        /// Close certain market scanner window
+        /// </summary>
+        /// <param name="param">ProviderName</param>
+        private void CloseScannerWindowExecute(object param)
+        {
+            // Close scanner window
+            MarketScannerWindow scannerWindow = FindScannerWindowByTitle((string)param);
+            if (scannerWindow != null)
+                scannerWindow.Close();
+
+            // If scanner window is closed, remove that MarketScannerWindowViewModel from collection
+            //if (FindScannerWindowByTitle((string)param) == null)
+            //{
+            //    MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.Provider.ProviderName == param.ToString());
+            //    if (scannerViewModel != null)
+            //        ScannerWindowViewModels.Remove(scannerViewModel);
+            //}
+        }
+
+        /// <summary>
+        /// Traverse through all windows of application and trying to find scanner window by title
+        /// </summary>
+        /// <param name="title">scanner window title</param>
+        /// <returns></returns>
+        private MarketScannerWindow FindScannerWindowByTitle(string title)
+        {
+            MarketScannerWindow scannerWindow = null;
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is MarketScannerWindow && window.Title == title)
+                {
+                    scannerWindow = (MarketScannerWindow)window;
+                    break;
+                }
+            }
+
+            return scannerWindow;
         }
 
         /// <summary>
@@ -184,13 +272,20 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         void scannerWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (WPFMessageBox.Show((MetroWindow)sender, "Are you sure you want to close the scanner window?", "Market Data Scanner", 
+            MarketScannerWindow scannerWindow = (MarketScannerWindow)sender;
+
+            if (WPFMessageBox.Show(scannerWindow, string.Format("Are you sure you want to close '{0}' scanner window?", scannerWindow.Title), "Market Data Scanner", 
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 e.Cancel = true;
             }
             else
             {
+                // If scanner window is closing, remove that MarketScannerWindowViewModel from collection
+                MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.Provider.ProviderName == scannerWindow.Title);
+                if (scannerViewModel != null)
+                    ScannerWindowViewModels.Remove(scannerViewModel);
+
                 // if scanner window is successfully closed, activate MainWindow
                 MainWindow.Activate();
             }
