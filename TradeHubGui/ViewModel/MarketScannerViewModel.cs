@@ -201,8 +201,11 @@ namespace TradeHubGui.ViewModel
         private void FocusScannerWindowExecute(object param)
         {
             MarketScannerWindow scannerWindow = FindScannerWindowByTitle((string)param);
-            if(scannerWindow != null)
+            if (scannerWindow != null)
+            {
+                scannerWindow.WindowState = WindowState.Normal;
                 scannerWindow.Activate();
+            }
         }
 
         /// <summary>
@@ -215,14 +218,6 @@ namespace TradeHubGui.ViewModel
             MarketScannerWindow scannerWindow = FindScannerWindowByTitle((string)param);
             if (scannerWindow != null)
                 scannerWindow.Close();
-
-            // If scanner window is closed, remove that MarketScannerWindowViewModel from collection
-            //if (FindScannerWindowByTitle((string)param) == null)
-            //{
-            //    MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.Provider.ProviderName == param.ToString());
-            //    if (scannerViewModel != null)
-            //        ScannerWindowViewModels.Remove(scannerViewModel);
-            //}
         }
 
         /// <summary>
@@ -274,7 +269,7 @@ namespace TradeHubGui.ViewModel
         {
             MarketScannerWindow scannerWindow = (MarketScannerWindow)sender;
 
-            if (WPFMessageBox.Show(scannerWindow, string.Format("Are you sure you want to close '{0}' scanner window?", scannerWindow.Title), "Market Data Scanner", 
+            if (WPFMessageBox.Show(scannerWindow, string.Format("Close scanner window {0}?", scannerWindow.Title), "Market Data Scanner", 
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 e.Cancel = true;

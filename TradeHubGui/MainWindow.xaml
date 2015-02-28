@@ -44,7 +44,6 @@
             <x:Array x:Key="Contents" Type="UserControl">
                 <views:DashboardView/>
                 <views:StrategyRunnerView/>
-                <views:MarketScannerView/>
                 <views:OrdersView/>
                 <views:DataDownloaderView/>
             </x:Array>
@@ -382,16 +381,11 @@
                 </Border>
             </ListBoxItem>
             <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[2]}">
-                <Border Background="Transparent" ToolTip="Market Data Scanner">
-                    <Image Width="32" Height="32" Source="{StaticResource imgMarketDataScanner}" Margin="14,10,10,10"/>
-                </Border>
-            </ListBoxItem>
-            <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[3]}">
                 <Border Background="Transparent" ToolTip="Orders">
                     <Image Width="32" Height="32" Source="{StaticResource imgActiveOrders}" Margin="10,10,10,10"/>
                 </Border>
             </ListBoxItem>
-            <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[4]}">
+            <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[3]}">
                 <Border Background="Transparent" ToolTip="Data Downloader">
                     <Image Width="32" Height="32" Source="{StaticResource imgDataDownloader}" Margin="14,10,10,10"/>
                 </Border>

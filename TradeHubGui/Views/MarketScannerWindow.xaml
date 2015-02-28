@@ -60,7 +60,7 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
                     <Label Content="Symbol for scannig:"/>
                     <TextBox Text="{Binding NewSymbol, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"
-                     IsEnabled="{Binding Provider.ConnectionStatus, Converter={StaticResource ConnectionStatusToBool}}"/>
+                            IsEnabled="{Binding Provider.ConnectionStatus, Converter={StaticResource ConnectionStatusToBool}}"/>
                     <Button Content="Add" Command="{Binding AddNewSymbolCommand}"/>
                 </StackPanel>
             </DockPanel>

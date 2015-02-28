@@ -2461,6 +2461,30 @@
 
 	<!--  BasicStyles: HeaderedContentControl  -->
 
+	<Style x:Key="HeaderedContentControl" TargetType="{x:Type HeaderedContentControl}">
+		<Setter Property="Margin" Value="0,4" />
+		<Setter Property="Padding" Value="0" />
+		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type HeaderedContentControl}">
+					<DockPanel Margin="{TemplateBinding Margin}">
+						<DockPanel Margin="0,0,0,10" DockPanel.Dock="Top" Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}">
+							<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" Margin="0,0,0,0" VerticalAlignment="Center"
+											  TextBlock.FontSize="14" 
+											  TextBlock.FontWeight="Normal" 
+											  TextBlock.Foreground="{StaticResource BaseBrush0}" 
+                                              Typography.Capitals="SmallCaps"/>
+                            <Border BorderThickness="0,0,0,2" BorderBrush="{StaticResource BaseBrush1}" VerticalAlignment="Center" Margin="6,3,1,0" UseLayoutRounding="True"/>
+						</DockPanel>
+						<ContentPresenter Margin="{TemplateBinding Padding}" TextBlock.Foreground="{StaticResource TextBrush}"/>
+					</DockPanel>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+	<Style BasedOn="{StaticResource HeaderedContentControl}" TargetType="{x:Type HeaderedContentControl}" />
+    
 	<Style x:Key="BigHeaderedContentControl" TargetType="{x:Type HeaderedContentControl}">
 		<Setter Property="Margin" Value="0,4" />
 		<Setter Property="Focusable" Value="False"/>
@@ -2477,30 +2501,6 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
-
-	<Style x:Key="HeaderedContentControl" TargetType="{x:Type HeaderedContentControl}">
-		<Setter Property="Margin" Value="0,4" />
-		<Setter Property="Padding" Value="0" />
-		<Setter Property="Focusable" Value="False"/>
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type HeaderedContentControl}">
-					<DockPanel Margin="{TemplateBinding Margin}">
-						<DockPanel Margin="0,0,0,10" DockPanel.Dock="Top" Visibility="{TemplateBinding Header, Converter={StaticResource StringToVisibility}}">
-							<ContentPresenter ContentSource="Header" DockPanel.Dock="Left" Margin="0,0,0,0" VerticalAlignment="Center"
-											  TextBlock.FontSize="14" 
-											  TextBlock.FontWeight="SemiBold" 
-											  TextBlock.Foreground="{StaticResource BaseBrush0}" 
-                                              Typography.Capitals="SmallCaps"/>
-                            <Border BorderThickness="0,0,0,2" BorderBrush="{StaticResource BaseBrush2}" VerticalAlignment="Center" Margin="6,3,1,0" UseLayoutRounding="True"/>
-						</DockPanel>
-						<ContentPresenter Margin="{TemplateBinding Padding}" TextBlock.Foreground="{StaticResource TextBrush}"/>
-					</DockPanel>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-	<Style BasedOn="{StaticResource HeaderedContentControl}" TargetType="{x:Type HeaderedContentControl}" />
 
 	<!--  BasicStyles: Slider  -->
 
