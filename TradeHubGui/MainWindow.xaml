@@ -40,7 +40,7 @@
             <conv:ServiceStatusToVisibilityConverter x:Key="ServiceStatusToVisibility"/>
             <conv:SelectedProviderToVisibilityConverter x:Key="SelectedProviderToVisibility"/>
             <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
-            
+
             <x:Array x:Key="Contents" Type="UserControl">
                 <views:DashboardView/>
                 <views:StrategyRunnerView/>
@@ -393,13 +393,30 @@
         </ListBox>
 
 
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Height="50" Background="{StaticResource BaseBrush0}">
-            <!--<Controls:TransitioningContentControl VerticalAlignment="Top" Margin="90,0,0,0"
-                    Transition="Right" Content="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox}"
-                    Foreground="White" FontSize="34" />-->
-            <TextBlock Text="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox}" 
-                        Foreground="White" FontSize="34" VerticalAlignment="Top" Margin="90,0,0,0" />
-        </Border>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Height="50" Margin="0,0,0,2">
+            <Border Background="{StaticResource BaseBrush0}" >
+                <Border.Effect>
+                    <DropShadowEffect Direction="270" ShadowDepth="2" Opacity="0.2" BlurRadius="3"/>
+                </Border.Effect>
+            </Border>
+            
+            <Grid Background="Transparent" Margin="0,0,20,0" Opacity="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Name="TitleBorder" Grid.Column="0" Margin="0,0,-1,0" Background="{StaticResource BaseBrush3}"/>
+                <Path Grid.Column="1" Data="M0.5,0.5 L34.5,17.583333 0.5,34.5 z" Fill="{Binding Background, ElementName=TitleBorder}"
+                                HorizontalAlignment="Left" Height="{Binding Height, ElementName=border}" Stretch="Fill" Width="15"  />
+            </Grid>
+            
+            <!--<TextBlock Text="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox, FallbackValue='DASHBOARD'}" 
+                        Foreground="White" FontSize="34" VerticalAlignment="Top" Margin="90,0,0,0" />-->
+
+            <mah:TransitioningContentControl VerticalAlignment="Top" Margin="90,0,0,0" Foreground="White" FontSize="34" FontWeight="Normal"
+                                            Transition="Right" RestartTransitionOnContentChange="True" TextOptions.TextHintingMode="Animated" TextOptions.TextFormattingMode="Ideal"
+                                            Content="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox, FallbackValue='DASHBOARD'}"/>
+        </Grid>
 
         <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding SelectedItem.Tag, ElementName=NavigationListBox}"/>
 
