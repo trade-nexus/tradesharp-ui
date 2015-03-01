@@ -1,9 +1,12 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using MessageBoxUtils;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
@@ -18,11 +21,13 @@ namespace TradeHubGui.ViewModel
         #region Fields
 
         private string _newSymbol;
+        private MetroWindow _scannerWindow;
         private Provider _provider;
         private TickDetail _selectedTickDetail;
         private ObservableCollection<TickDetail> _tickDetailsCollection;
 
         private RelayCommand _addNewSymbolCommand;
+        private RelayCommand _deleteSymbolCommand;
         private RelayCommand _showLimitOrderBookCommand;
         private RelayCommand _showChartCommand;
         private RelayCommand _sendOrderCommand;
@@ -33,8 +38,11 @@ namespace TradeHubGui.ViewModel
 
         #region Constructor
 
-        public MarketScannerWindowViewModel()
+        public MarketScannerWindowViewModel(MetroWindow scannerWindow, Provider provider)
         {
+            _scannerWindow = scannerWindow;
+            _provider = provider;
+
             #region Temporary fill instruments (this will be removed)
             _tickDetailsCollection = new ObservableCollection<TickDetail>();
             _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "AAPL" })
@@ -175,6 +183,17 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
+        /// Command used for deleting symbol from scanner
+        /// </summary>
+        public ICommand DeleteSymbolCommand
+        {
+            get
+            {
+                return _deleteSymbolCommand ?? (_deleteSymbolCommand = new RelayCommand(param => DeleteSymbolCommandExecute(param)));
+            }
+        }
+        
+        /// <summary>
         /// Command used for showing LOB
         /// </summary>
         public ICommand ShowLimitOrderBookCommand
@@ -266,6 +285,20 @@ namespace TradeHubGui.ViewModel
                 return false;
 
             return true;
+        }
+
+        /// <summary>
+        /// Delete symbol from scanner
+        /// </summary>
+        private void DeleteSymbolCommandExecute(object param)
+        {
+            if (WPFMessageBox.Show(_scannerWindow, 
+                string.Format("Delete symbol {0}?", (param as TickDetail).Security.Symbol), 
+                string.Format("{0} Scanner", _provider.ProviderName),
+                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                TickDetailsCollection.Remove((TickDetail)param);
+            }
         }
 
         /// <summary>

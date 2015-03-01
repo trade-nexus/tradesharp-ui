@@ -178,7 +178,7 @@ namespace TradeHubGui.ViewModel
             else
             {
                 scannerWindow = new MarketScannerWindow();
-                MarketScannerWindowViewModel scannerWindowViewModel = new MarketScannerWindowViewModel() { Provider = SelectedMarketDataProvider };
+                MarketScannerWindowViewModel scannerWindowViewModel = new MarketScannerWindowViewModel(scannerWindow, SelectedMarketDataProvider);
                 
                 // Add scanner window VeiwModel in collection for displaying on Market Scanner Dashboard
                 ScannerWindowViewModels.Add(scannerWindowViewModel);

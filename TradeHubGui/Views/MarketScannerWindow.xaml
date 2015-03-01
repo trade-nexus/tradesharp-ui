@@ -43,7 +43,7 @@
             <Setter Property="ContextMenu" Value="{StaticResource RowContextMenu}" />
         </Style>
     </mah:MetroWindow.Resources>
-    
+
     <DockPanel Background="#FFEEEEEE">
 
         <Border DockPanel.Dock="Top" BorderBrush="{Binding Provider.ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" BorderThickness="0,0,0,2">
@@ -77,10 +77,20 @@
                   IsReadOnly="True"
                   SelectionUnit="FullRow"
                   AutoGenerateColumns="False"
-                  RowHeight="22"
                   RowStyle="{StaticResource DefaultRowStyle}">
 
             <DataGrid.Columns>
+                <DataGridTemplateColumn Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete symbol"
+                                    Command="{Binding DataContext.DeleteSymbolCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                    CommandParameter="{Binding}">
+                                <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Symbol" Width="70" Binding="{Binding Path=Security.Symbol}" />
                 <DataGridTextColumn Header="Bid quantity" Width="100" Binding="{Binding Path=BidQuantity}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                 <DataGridTextColumn Header="Bid price" Width="100" Binding="{Binding Path=BidPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
@@ -90,6 +100,6 @@
                 <DataGridTextColumn Header="Volume" Width="70" Binding="{Binding Path=LastQuantity}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
             </DataGrid.Columns>
         </DataGrid>
-        
+
     </DockPanel>
 </mah:MetroWindow>
