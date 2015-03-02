@@ -84,11 +84,12 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="Control">
-					<local:ButtonSpinner x:Name="Spinner"
-                                    IsTabStop="False"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    AllowSpin="{Binding AllowSpin, RelativeSource={RelativeSource TemplatedParent}}"
-                                    ShowButtonSpinner="{Binding ShowButtonSpinner, RelativeSource={RelativeSource TemplatedParent}}">
+					<local:ButtonSpinner x:Name="Spinner" 
+                                         Height="{TemplateBinding Height}"
+                                         IsTabStop="False"
+                                         BorderThickness="{TemplateBinding BorderThickness}"
+                                         AllowSpin="{Binding AllowSpin, RelativeSource={RelativeSource TemplatedParent}}"
+                                         ShowButtonSpinner="{Binding ShowButtonSpinner, RelativeSource={RelativeSource TemplatedParent}}">
 						<local:WatermarkTextBox x:Name="TextBox"
                                           BorderThickness="1,1,0,1"
                                           Background="{TemplateBinding Background}"
@@ -132,8 +133,9 @@
 	<!-- =============================================================================== -->
 
 	<Style TargetType="{x:Type local:DecimalUpDown}" BasedOn="{StaticResource NumericUpDown}">
-		<Setter Property="TextAlignment" Value="Right" />
-		<Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
+        <Setter Property="Height" Value="24" />
 	</Style>
 
 	<!-- =============================================================================== -->
@@ -141,8 +143,9 @@
 	<!-- =============================================================================== -->
 
 	<Style TargetType="{x:Type local:DoubleUpDown}" BasedOn="{StaticResource NumericUpDown}">
-		<Setter Property="TextAlignment" Value="Right" />
-		<Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
+        <Setter Property="Height" Value="24" />
 	</Style>
 
 	<!-- =============================================================================== -->
@@ -150,7 +153,8 @@
 	<!-- =============================================================================== -->
 
 	<Style TargetType="{x:Type local:IntegerUpDown}" BasedOn="{StaticResource NumericUpDown}">
-		<Setter Property="TextAlignment" Value="Right" />
-		<Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
+        <Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
+        <Setter Property="Height" Value="24" />
 	</Style>
 </ResourceDictionary>

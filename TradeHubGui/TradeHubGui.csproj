@@ -168,6 +168,9 @@
     <Compile Include="Views\MarketScannerWindow.xaml.cs">
       <DependentUpon>MarketScannerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SendOrderWindow.xaml.cs">
+      <DependentUpon>SendOrderWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\NewMarketScannerWindow.xaml.cs">
       <DependentUpon>NewMarketScannerWindow.xaml</DependentUpon>
     </Compile>
@@ -212,6 +215,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MarketScannerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SendOrderWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

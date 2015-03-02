@@ -178,7 +178,7 @@ namespace TradeHubGui.ViewModel
             else
             {
                 scannerWindow = new MarketScannerWindow();
-                MarketScannerWindowViewModel scannerWindowViewModel = new MarketScannerWindowViewModel(scannerWindow, SelectedMarketDataProvider);
+                MarketScannerWindowViewModel scannerWindowViewModel = new MarketScannerWindowViewModel(scannerWindow, SelectedMarketDataProvider, MarketDataProviders);
                 
                 // Add scanner window VeiwModel in collection for displaying on Market Scanner Dashboard
                 ScannerWindowViewModels.Add(scannerWindowViewModel);
@@ -277,7 +277,7 @@ namespace TradeHubGui.ViewModel
             else
             {
                 // If scanner window is closing, remove that MarketScannerWindowViewModel from collection
-                MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.Provider.ProviderName == scannerWindow.Title);
+                MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.SelectedProvider.ProviderName == scannerWindow.Title);
                 if (scannerViewModel != null)
                     ScannerWindowViewModels.Remove(scannerViewModel);
 

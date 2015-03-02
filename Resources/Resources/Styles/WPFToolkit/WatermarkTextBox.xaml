@@ -40,7 +40,6 @@
 		<Setter Property="Background" Value="White" />
 		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
-		<Setter Property="Height" Value="24" />
 		<Setter Property="Padding" Value="1" />
         <Setter Property="Margin" Value="0"/>
 		<Setter Property="AllowDrop" Value="true" />
