@@ -23,7 +23,7 @@ namespace TradeHubGui.ViewModel
 
         private string _newSymbol;
         private MetroWindow _scannerWindow;
-        private Provider _selectedProvider;
+        private Provider _provider;
         private TickDetail _selectedTickDetail;
         private ObservableCollection<TickDetail> _tickDetailsCollection;
         private ObservableCollection<Provider> _providers;
@@ -43,7 +43,7 @@ namespace TradeHubGui.ViewModel
         public MarketScannerWindowViewModel(MetroWindow scannerWindow, Provider provider, ObservableCollection<Provider> providers)
         {
             _scannerWindow = scannerWindow;
-            _selectedProvider = provider;
+            _provider = provider;
             _providers = providers;
 
             #region Temporary fill instruments (this will be removed)
@@ -157,14 +157,14 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Contains Market Data Provider Details
         /// </summary>
-        public Provider SelectedProvider
+        public Provider Provider
         {
-            get { return _selectedProvider; }
+            get { return _provider; }
             set 
             {
-                if (_selectedProvider != value)
+                if (_provider != value)
                 {
-                    _selectedProvider = value;
+                    _provider = value;
                     OnPropertyChanged("Provider");
                 }
             }
@@ -277,7 +277,7 @@ namespace TradeHubGui.ViewModel
             TickDetail tickDetail = new TickDetail(new Security() { Symbol = NewSymbol.Trim() });
 
             // Add Tick Detail object to Provider's local map
-            _selectedProvider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
+            _provider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
 
             // Add new tick detail to the Tick Detail's Map to show on UI
             TickDetailsCollection.Add(tickDetail);
@@ -286,7 +286,7 @@ namespace TradeHubGui.ViewModel
             SelectedTickDetail = tickDetail;
 
             // Create a new subscription request for requesting market data
-            var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _selectedProvider, SubscriptionType.Subscribe);
+            var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Subscribe);
 
             // Raise Event to notify listeners
             EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
@@ -300,7 +300,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private bool AddNewSymbolCanExecute()
         {
-            if (string.IsNullOrWhiteSpace(NewSymbol) || _selectedProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
+            if (string.IsNullOrWhiteSpace(NewSymbol) || _provider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
                 return false;
 
             return true;
@@ -313,7 +313,7 @@ namespace TradeHubGui.ViewModel
         {
             if (WPFMessageBox.Show(_scannerWindow, 
                 string.Format("Delete symbol {0}?", (param as TickDetail).Security.Symbol), 
-                string.Format("{0} Scanner", _selectedProvider.ProviderName),
+                string.Format("{0} Scanner", _provider.ProviderName),
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 TickDetailsCollection.Remove((TickDetail)param);

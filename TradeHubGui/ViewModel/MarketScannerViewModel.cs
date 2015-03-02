@@ -24,7 +24,7 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<Provider> _marketDataProviders;
         private Provider _selectedMarketDataProvider;
         private ObservableCollection<MarketScannerWindowViewModel> _scannerWindowViewModels;
-        
+
         private RelayCommand _showNewScannerWindowCommand;
         private RelayCommand _createScannerWindowCommand;
         private RelayCommand _closeScannerWindowCommand;
@@ -179,7 +179,7 @@ namespace TradeHubGui.ViewModel
             {
                 scannerWindow = new MarketScannerWindow();
                 MarketScannerWindowViewModel scannerWindowViewModel = new MarketScannerWindowViewModel(scannerWindow, SelectedMarketDataProvider, MarketDataProviders);
-                
+
                 // Add scanner window VeiwModel in collection for displaying on Market Scanner Dashboard
                 ScannerWindowViewModels.Add(scannerWindowViewModel);
 
@@ -269,7 +269,7 @@ namespace TradeHubGui.ViewModel
         {
             MarketScannerWindow scannerWindow = (MarketScannerWindow)sender;
 
-            if (WPFMessageBox.Show(scannerWindow, string.Format("Close scanner window {0}?", scannerWindow.Title), "Market Data Scanner", 
+            if (WPFMessageBox.Show(scannerWindow, string.Format("Close scanner window {0}?", scannerWindow.Title), "Market Data Scanner",
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 e.Cancel = true;
@@ -277,7 +277,7 @@ namespace TradeHubGui.ViewModel
             else
             {
                 // If scanner window is closing, remove that MarketScannerWindowViewModel from collection
-                MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.SelectedProvider.ProviderName == scannerWindow.Title);
+                MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.Provider.ProviderName == scannerWindow.Title);
                 if (scannerViewModel != null)
                     ScannerWindowViewModels.Remove(scannerViewModel);
 
