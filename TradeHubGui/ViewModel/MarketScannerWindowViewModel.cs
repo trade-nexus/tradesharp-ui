@@ -23,8 +23,15 @@ namespace TradeHubGui.ViewModel
 
         private string _newSymbol;
         private MetroWindow _scannerWindow;
+
         private Provider _provider;
         private TickDetail _selectedTickDetail;
+
+        /// <summary>
+        /// Data Context for SendOrder Window
+        /// </summary>
+        private SendOrderViewModel _sendOrderViewModel;
+
         private ObservableCollection<TickDetail> _tickDetailsCollection;
         private ObservableCollection<Provider> _providers;
 
@@ -42,6 +49,8 @@ namespace TradeHubGui.ViewModel
 
         public MarketScannerWindowViewModel(MetroWindow scannerWindow, Provider provider, ObservableCollection<Provider> providers)
         {
+            _sendOrderViewModel = new SendOrderViewModel();
+
             _scannerWindow = scannerWindow;
             _provider = provider;
             _providers = providers;
@@ -316,7 +325,15 @@ namespace TradeHubGui.ViewModel
                 string.Format("{0} Scanner", _provider.ProviderName),
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                TickDetailsCollection.Remove((TickDetail)param);
+                var tickDetail = (TickDetail) param;
+
+                TickDetailsCollection.Remove(tickDetail);
+
+                // Create a new un-subscription request for requesting market data
+                var unsubscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Unsubscribe);
+
+                // Raise Event to notify listeners
+                EventSystem.Publish<SubscriptionRequest>(unsubscriptionRequest);
             }
         }
 
@@ -347,8 +364,13 @@ namespace TradeHubGui.ViewModel
             SelectedTickDetail = (TickDetail)param;
 
             SendOrderWindow orderWindow = new SendOrderWindow();
-            orderWindow.DataContext = this;
+            orderWindow.DataContext = _sendOrderViewModel;
             orderWindow.Owner = _scannerWindow;
+
+            _sendOrderViewModel.OrderModel.Security = SelectedTickDetail.Security;
+            _sendOrderViewModel.OrderModel.SellPrice = SelectedTickDetail.AskPrice;
+            _sendOrderViewModel.OrderModel.BuyPrice = SelectedTickDetail.BidPrice;
+
             orderWindow.ShowDialog();
         }
 

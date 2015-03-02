@@ -160,6 +160,7 @@
     <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
     <Compile Include="ViewModel\ProvidersViewModel.cs" />
+    <Compile Include="ViewModel\SendOrderViewModel.cs" />
     <Compile Include="ViewModel\ServicesViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">

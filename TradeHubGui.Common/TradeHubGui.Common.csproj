@@ -82,6 +82,7 @@
     <Compile Include="Models\FillDetail.cs" />
     <Compile Include="Models\OrderRequest.cs" />
     <Compile Include="Models\ProviderCredential.cs" />
+    <Compile Include="Models\SendOrderModel.cs" />
     <Compile Include="Models\StrategyExecutionDetails.cs" />
     <Compile Include="Models\GeneticAlgorithmResult.cs" />
     <Compile Include="Models\Provider.cs" />
