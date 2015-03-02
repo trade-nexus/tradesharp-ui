@@ -1,0 +1,102 @@
+﻿<mah:MetroWindow x:Class="TradeHubGui.Views.SendOrderWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+                 xmlns:views="clr-namespace:TradeHubGui.Views"
+                 GlowBrush="Silver"
+                 ShowInTaskbar="False"
+                 WindowStartupLocation="CenterOwner"
+                 Title="Send Order"
+                 SizeToContent="WidthAndHeight"
+                 MinWidth="580" MinHeight="460">
+
+    <Grid Grid.IsSharedSizeScope="True" Background="White" VerticalAlignment="Center" MaxWidth="800">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="gr1"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="gr1"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Margin="22,10,0,0" Text="{Binding SelectedTickDetail.Security.Symbol, FallbackValue=N/A}" TextAlignment="Center" MinWidth="72"
+                       Style="{StaticResource HeaderTextBlockStyle}" FontWeight="Thin" FontSize="36"/>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="20,60,20,10">
+            <Label Content="Market data provider" />
+            <ComboBox Name="MarketDataProvidersComboBox" FontWeight="Bold"
+                      ItemsSource="{Binding Providers}" 
+                      SelectedItem="{Binding Provider}"
+                      DisplayMemberPath="ProviderName"/>
+            
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,10,0">
+                    <Label Content="Type" />
+                    <ComboBox FontWeight="Bold" 
+                              ItemsSource="{Binding Types}" 
+                              SelectedItem="{Binding SelectedType}"
+                              DisplayMemberPath="ProviderName"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="2" Margin="10,0,0,0">
+                    <Label Content="Trigger price"/>
+                    <wpfToolkitExtended:DecimalUpDown Value="{Binding TriggerPrice, FallbackValue=450.20}" FontWeight="Bold" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+
+        <Border Grid.Row="1" Grid.ColumnSpan="3" Background="{StaticResource GrayBrush}" Opacity="0.15"/>
+        
+        <Grid Grid.Row="1" Grid.Column="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="0" Margin="10">
+                <Label Content="Price"/>
+                <wpfToolkitExtended:DecimalUpDown Height="28" Value="{Binding BuyPrice, FallbackValue=450.20}" 
+                                                  FontWeight="SemiBold" FontSize="16" Foreground="{StaticResource RedBrush}"/>
+                <Button Content="Buy" Height="{Binding}" FontSize="22" Padding="8" FontWeight="Bold" Foreground="{StaticResource RedBrush}"
+                        Command="{Binding BuyCommand}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Margin="10">
+                <Label Content="Size"/>
+                <wpfToolkitExtended:IntegerUpDown Height="28" VerticalAlignment="Center" Value="{Binding Size, FallbackValue=0}" Minimum="0" FontWeight="Bold" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Margin="10">
+                <Label Content="Price"/>
+                <wpfToolkitExtended:DecimalUpDown Height="28" Value="{Binding SellPrice, FallbackValue=451.80}" 
+                                                  FontWeight="SemiBold" FontSize="16" Foreground="{StaticResource BlueBrush}"/>
+                <Button Content="Sell" Height="{Binding}" FontSize="22" Padding="8" FontWeight="Bold" Foreground="{StaticResource BlueBrush}"
+                        Command="{Binding SellCommand}"/>
+            </StackPanel>
+        </Grid>
+
+        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="20">
+            <StackPanel Orientation="Vertical" Margin="10">
+                <Label Content="Position"/>
+                <TextBlock Text="{Binding Position, FallbackValue=-150}" FontWeight="Bold" FontSize="14" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0"/>
+                <Button Content="Close" Margin="0,2,0,0" Height="{Binding}" Padding="3" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource GreenBrush}"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="10" Orientation="Vertical" HorizontalAlignment="Right">
+                <Label Content="PnL"/>
+                <TextBlock Text="{Binding PnL, FallbackValue=15.3}" FontWeight="Normal" FontSize="34" TextAlignment="Left" VerticalAlignment="Center" Margin="0,0"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</mah:MetroWindow>

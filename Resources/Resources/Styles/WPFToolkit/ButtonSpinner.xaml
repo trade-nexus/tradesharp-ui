@@ -144,7 +144,6 @@
 		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 		<Setter Property="Focusable" Value="False"/>
-		<Setter Property="Height" Value="10"/>
 		<Setter Property="Padding" Value="2,0"/>
 		<Setter Property="Background" Value="{DynamicResource NormalBrush}"/>
 		<Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}"/>
@@ -199,7 +198,6 @@
 		<Setter Property="FontSize" Value="{DynamicResource NormalFontSize}"/>
 		<Setter Property="Background" Value="White"/>
 		<Setter Property="IsTabStop" Value="True" />
-		<Setter Property="Height" Value="24" />
 		<Setter Property="Validation.ErrorTemplate" Value="{DynamicResource DefaultErrorTemplate}"/>
 		<Setter Property="Template">
 			<Setter.Value>
@@ -210,14 +208,14 @@
 							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
 
-						<ContentPresenter Focusable="False"
+                        <Border Background="{TemplateBinding Background}" Margin="1,1,0,1"/>
+                        
+                        <ContentPresenter Focusable="False" Height="{TemplateBinding Height}"
 										  HorizontalAlignment="Stretch" 
 										  VerticalAlignment="Center" 
 										  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
-						<Grid Grid.Column="1"
-							  Visibility="{TemplateBinding ShowButtonSpinner, Converter={StaticResource BooleanToVisibilityConverter}}" 
-							  Width="18">
+                        <Grid Grid.Column="1" Visibility="{TemplateBinding ShowButtonSpinner, Converter={StaticResource BooleanToVisibilityConverter}}" Width="18">
 							<Grid.RowDefinitions>
 								<RowDefinition Height="*" />
 								<RowDefinition Height="*" />

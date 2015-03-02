@@ -31,7 +31,6 @@ namespace TradeHubGui.ViewModel
     {
         private Type _type = typeof(StrategyRunnerViewModel);
 
-        private MetroDialogSettings _dialogSettings;
         private ObservableCollection<Strategy> _strategies;
         private ObservableCollection<StrategyInstance> _instances;
         private ObservableCollection<StrategyExecutionDetails> _executionDetailsCollection;
@@ -712,6 +711,8 @@ namespace TradeHubGui.ViewModel
                 var strategy = CreateStrategyObject(path);
 
                 // Update Observable Collection
+                Strategies.Add(strategy);
+                Strategies.Add(strategy);
                 Strategies.Add(strategy);
             }
         }

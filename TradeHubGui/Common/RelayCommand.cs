@@ -31,7 +31,6 @@ namespace TradeHubGui.Common
 
         private Action<T> execute;
         private Predicate<T> canExecute;
-        private bool isActive;
 
         #endregion // Fields
 
@@ -74,11 +73,6 @@ namespace TradeHubGui.Common
                 }
             }
         }
-
-        /// <summary>
-        /// Fired if the <see cref="IsActive"/> property changes.
-        /// </summary>
-        public event EventHandler IsActiveChanged;
 
         #endregion // Events
 

@@ -11,97 +11,119 @@
         <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
     </UserControl.Resources>
 
-    <Grid Margin="20">
+    <Grid Margin="20,20,5,20">
         <Border Style="{StaticResource ContentBorderStyle}"/>
-        <Grid Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
 
-            <StackPanel HorizontalAlignment="Left">
-                <Button Margin="10,10" Height="{Binding}" Command="{Binding ShowNewScannerWindowCommand}">
+        <DockPanel Margin="10">
+            <DockPanel DockPanel.Dock="Top">
+                <TextBlock DockPanel.Dock="Left" Margin="10,0" Text="MARKET DATA SCANNER" Style="{StaticResource HeaderTextBlockStyle}" HorizontalAlignment="Left"/>
+
+                <TextBlock Text="{Binding ScannerWindowViewModels.Count, StringFormat='running scanners: {0}', FallbackValue='running scanners: 0'}" FontSize="14"
+                           HorizontalAlignment="Right" Margin="10,0,10,10" Foreground="{StaticResource BaseBrush3}" FontWeight="Thin" Typography.Capitals="SmallCaps"/>
+            </DockPanel>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Button Margin="10,20" Height="{Binding}" Command="{Binding ShowNewScannerWindowCommand}" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal">
                         <Image Width="24" Height="24" Source="{StaticResource imgMarketData}" Margin="0,4,10,4" />
-                        <TextBlock Text="New market scanner" VerticalAlignment="Center" Foreground="{StaticResource BaseBrush3}" FontWeight="Bold"/>
+                        <TextBlock Text="New Market Scanner" VerticalAlignment="Center" Foreground="{StaticResource BaseBrush3}" 
+                                   FontWeight="SemiBold" FontSize="12" Typography.Capitals="SmallCaps"/>
                     </StackPanel>
                 </Button>
-            </StackPanel>
 
-            <ItemsControl Grid.Row="1" ItemsSource="{Binding ScannerWindowViewModels}" Margin="100">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding ScannerWindowViewModels}" Margin="10,20">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid MinWidth="300" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4">
-                            <Button Height="{Binding}" 
-                                    Command="{Binding DataContext.FocusScannerWindowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
-                                    CommandParameter="{Binding Provider.ProviderName}">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Grid Name="PART_LayoutRoot" Opacity="1">
-                                            <Border Name="PART_ShadowBorder" Background="White">
-                                                <Border.Effect>
-                                                    <DropShadowEffect Opacity="0.3" ShadowDepth="2"/>
-                                                </Border.Effect>
-                                            </Border>
-
-                                            <DockPanel>
-                                                <Border Name="PART_Header" DockPanel.Dock="Top" Background="{StaticResource BaseBrush2}">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Image Width="18" Height="18" Source="{StaticResource imgMarketDataScanner}" Margin="4,2"/>
-                                                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Provider.ProviderName, FallbackValue=Blackwood}" 
-                                                            FontWeight="Thin" FontSize="18" Foreground="{StaticResource WhiteBrush}" Margin="4,1,40,3" Typography.Capitals="SmallCaps"/>
-                                                    </StackPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid MinWidth="300" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4">
+                                <Button Height="{Binding}" 
+                                        Command="{Binding DataContext.FocusScannerWindowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
+                                        CommandParameter="{Binding Provider.ProviderName}">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Grid Name="PART_LayoutRoot" Opacity="1">
+                                                <Border Name="PART_ShadowBorder" Background="White">
+                                                    <Border.Effect>
+                                                        <DropShadowEffect Opacity="0.3" ShadowDepth="2"/>
+                                                    </Border.Effect>
                                                 </Border>
 
-                                                <Border Background="WhiteSmoke">
-                                                    <TextBlock Text="{Binding Provider.ConnectionStatus, FallbackValue=Disconnected}" Foreground="{Binding Provider.ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}, FallbackValue={StaticResource RedBrush}}" 
-                                                                FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Margin="20"/>
-                                                </Border>
-                                            </DockPanel>
-                                        </Grid>
+                                                <DockPanel>
+                                                    <Border Name="PART_Header" DockPanel.Dock="Top" Background="{StaticResource BaseBrush2}">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Width="18" Height="18" Source="{StaticResource imgMarketDataScanner}" Margin="4,2"/>
+                                                            <TextBlock Name="PART_HeaderText" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding Provider.ProviderName}" 
+                                                                       FontWeight="Thin" FontSize="18" Foreground="{StaticResource WhiteBrush}" Margin="8,1,40,3" Typography.Capitals="SmallCaps"/>
+                                                        </StackPanel>
+                                                    </Border>
 
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter TargetName="PART_LayoutRoot" Property="Opacity" Value="1"/>
-                                                <Setter TargetName="PART_Header" Property="Background" Value="{StaticResource BaseBrush0}"/>
-                                            </Trigger>
-                                            <Trigger Property="IsPressed" Value="True">
-                                                <Setter TargetName="PART_ShadowBorder" Property="Margin" Value="2,2,0,0"/>
-                                                <Setter TargetName="PART_ShadowBorder" Property="Effect">
-                                                    <Setter.Value>
-                                                        <DropShadowEffect Opacity="0.3" ShadowDepth="0"/>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Trigger>
-                                            <DataTrigger Binding="{Binding Path=IsMouseOver, ElementName=CloseScannerButton}" Value="True">
-                                                <Setter TargetName="PART_LayoutRoot" Property="Opacity" Value="1"/>
-                                                <Setter TargetName="PART_Header" Property="Background" Value="{StaticResource BaseBrush0}"/>
-                                            </DataTrigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            
-                            <Button Name="CloseScannerButton" MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="0,3,3,0" BorderThickness="0"
+
+                                                    <Border Background="WhiteSmoke">
+                                                        <DockPanel>
+                                                            <StackPanel Name="PART_SymbolCount" DockPanel.Dock="Left" TextBlock.Foreground="{StaticResource BaseBrush3}">
+                                                                <TextBlock Text="{Binding TickDetailsCollection.Count, StringFormat='Scanning symbols'}" Margin="35,10,20,0" 
+                                                                       FontWeight="SemiBold" Typography.Capitals="SmallCaps" FontSize="10" HorizontalAlignment="Center"/>
+                                                                <Border  CornerRadius="4" HorizontalAlignment="Center" Margin="35,0,20,10" MinWidth="40" Opacity="0.3">
+                                                                    <TextBlock  Text="{Binding TickDetailsCollection.Count}" HorizontalAlignment="Center"
+                                                                               FontWeight="Bold" Typography.Capitals="SmallCaps" FontSize="30" />
+                                                                </Border>
+                                                            </StackPanel>
+                                                            <TextBlock Text="{Binding Provider.ConnectionStatus, FallbackValue=Disconnected}" 
+                                                                       Foreground="{Binding Provider.ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" 
+                                                                       FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Margin="20"/>
+                                                        </DockPanel>
+                                                    </Border>
+                                                </DockPanel>
+                                            </Grid>
+
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="PART_LayoutRoot" Property="Opacity" Value="1"/>
+                                                    <Setter TargetName="PART_Header" Property="Background" Value="{StaticResource BaseBrush0}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter TargetName="PART_ShadowBorder" Property="Margin" Value="2,2,0,0"/>
+                                                    <Setter TargetName="PART_ShadowBorder" Property="Effect">
+                                                        <Setter.Value>
+                                                            <DropShadowEffect Opacity="0.3" ShadowDepth="0"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                                <DataTrigger Binding="{Binding Path=IsMouseOver, ElementName=CloseScannerButton}" Value="True">
+                                                    <Setter TargetName="PART_LayoutRoot" Property="Opacity" Value="1"/>
+                                                    <Setter TargetName="PART_Header" Property="Background" Value="{StaticResource BaseBrush0}"/>
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+
+                                <Button Name="CloseScannerButton" MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="0,3,3,0" BorderThickness="0"
                                     Focusable="False" HorizontalAlignment="Right" VerticalAlignment="Top"
                                     Command="{Binding DataContext.CloseScannerWindowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
                                     CommandParameter="{Binding Provider.ProviderName}">
-                                <Button.ToolTip>
-                                    <ToolTip Content="{Binding Provider.ProviderName}" ContentStringFormat="{}Close Scanner Window {0}"/>
-                                </Button.ToolTip>
-                                <Image Width="10" Height="10" Margin="2" Source="{StaticResource imgClose}" UseLayoutRounding="True"/>
-                            </Button>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                    <Button.ToolTip>
+                                        <ToolTip Content="{Binding Provider.ProviderName}" ContentStringFormat="{}Close Scanner Window {0}"/>
+                                    </Button.ToolTip>
+                                    <Image Width="10" Height="10" Margin="2" Source="{StaticResource imgClose}" UseLayoutRounding="True"/>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
-        </Grid>
+            </Grid>
+
+        </DockPanel>
     </Grid>
 </UserControl>
