@@ -316,7 +316,15 @@ namespace TradeHubGui.ViewModel
                 string.Format("{0} Scanner", _provider.ProviderName),
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                TickDetailsCollection.Remove((TickDetail)param);
+                var tickDetail = (TickDetail) param;
+
+                TickDetailsCollection.Remove(tickDetail);
+
+                // Create a new un-subscription request for requesting market data
+                var unsubscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Unsubscribe);
+
+                // Raise Event to notify listeners
+                EventSystem.Publish<SubscriptionRequest>(unsubscriptionRequest);
             }
         }
 
