@@ -123,7 +123,9 @@ namespace TradeHubGui.ViewModel
         {
             get
             {
-                return _sendBuyOrderCommand ?? (_sendBuyOrderCommand = new RelayCommand(param => SendBuyOrderExecute()));
+                return _sendBuyOrderCommand ??
+                       (_sendBuyOrderCommand =
+                           new RelayCommand(param => SendBuyOrderExecute(), param => SendBuyOrderCanExecute()));
             }
         }
 
@@ -134,7 +136,9 @@ namespace TradeHubGui.ViewModel
         {
             get
             {
-                return _sendSellOrderCommand ?? (_sendSellOrderCommand = new RelayCommand(param => SendSellOrderExecute()));
+                return _sendSellOrderCommand ??
+                       (_sendSellOrderCommand =
+                           new RelayCommand(param => SendSellOrderExecute(), param => SendSellOrderCanExecute()));
             }
         }
 
@@ -153,12 +157,22 @@ namespace TradeHubGui.ViewModel
 
         #region Command Trigger Methods
 
+        private bool SendBuyOrderCanExecute()
+        {
+            return SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected);
+        }
+
         /// <summary>
         /// Called when 'Buy' button is clicked
         /// </summary>
         private void SendBuyOrderExecute()
         {
             SendOrder(OrderSide.BUY);
+        }
+
+        private bool SendSellOrderCanExecute()
+        {
+            return SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected);
         }
 
         /// <summary>
@@ -229,6 +243,26 @@ namespace TradeHubGui.ViewModel
 
             // Raise event to notify listener
             EventSystem.Publish<OrderRequest>(orderRequest);
+        }
+
+        /// <summary>
+        /// Sets selected Order Execution Provider depending on the incoming provider name
+        /// </summary>
+        /// <param name="providerName">Order Execution Provider name</param>
+        public bool SetOrderExecutionProvider(string providerName)
+        {
+            // Traverse all available providers
+            foreach (Provider orderExecutionProvider in _orderExecutionProviders)
+            {
+                if (orderExecutionProvider.ProviderName.EndsWith(providerName))
+                {
+                    SelectedOrderExecutionProvider = orderExecutionProvider;
+                    return true;
+                }
+            }
+
+            // Provider not found
+            return false;
         }
     }
 }
