@@ -712,8 +712,6 @@ namespace TradeHubGui.ViewModel
 
                 // Update Observable Collection
                 Strategies.Add(strategy);
-                Strategies.Add(strategy);
-                Strategies.Add(strategy);
             }
         }
 
