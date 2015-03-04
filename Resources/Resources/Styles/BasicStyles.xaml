@@ -3198,9 +3198,6 @@
 				<ColumnDefinition />
 				<ColumnDefinition Width="17" />
 			</Grid.ColumnDefinitions>
-			<Border x:Name="OutherBorder" Grid.ColumnSpan="2" Background="Transparent"
-			        BorderBrush="{StaticResource OutherBorderBrush}"
-			        BorderThickness="1" CornerRadius="0" />
 			<Border x:Name="Border" Grid.ColumnSpan="2" Margin="1"
 			        Background="{StaticResource NormalBrush}"
 			        BorderBrush="{StaticResource NormalBorderBrush}"
@@ -3226,9 +3223,6 @@
 				<ColumnDefinition />
 				<ColumnDefinition Width="17" />
 			</Grid.ColumnDefinitions>
-			<Border x:Name="OutherBorder" Grid.ColumnSpan="2" Background="Transparent"
-			        BorderBrush="{StaticResource OutherBorderBrush}"
-			        BorderThickness="1" CornerRadius="0" />
 			<Border x:Name="TextBorder" Grid.Column="0" Margin="1,1,0,1"
 			        Background="White"
 			        BorderBrush="{StaticResource NormalBorderBrush}"
@@ -3289,7 +3283,8 @@
 						         VerticalAlignment="Center" 
 						         Focusable="True"
 						         IsReadOnly="{TemplateBinding IsReadOnly}"
-						         Visibility="Hidden" />
+						         Visibility="Hidden" 
+                                 Height="{TemplateBinding Height}"/>
 						<Popup x:Name="Popup" AllowsTransparency="True" Focusable="False"
 						       IsOpen="{TemplateBinding IsDropDownOpen}"
 						       Placement="Bottom" PopupAnimation="Slide">

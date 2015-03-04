@@ -11,6 +11,7 @@
 
     <UserControl.Resources>
         <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+        <conv:ProviderConnectionStatusToImageConverter x:Key="ConnectionStatusToImage"/>
         <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
 
     </UserControl.Resources>
@@ -53,7 +54,7 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal" Margin="1">
-                                                    <Ellipse Width="8" Height="8" Fill="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" Margin="8,0"/>
+                                                    <Image Width="16" Height="16" Source="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToImage}}" Margin="8,0"/>
                                                     <TextBlock Text="{Binding ProviderName}"/>
                                                 </StackPanel>
                                             </DataTemplate>
@@ -72,7 +73,7 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal" Margin="1">
-                                                    <Ellipse Width="8" Height="8" Fill="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" Margin="8,0"/>
+                                                    <Image Width="16" Height="16" Source="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToImage}}" Margin="8,0"/>
                                                     <TextBlock Text="{Binding ProviderName}"/>
                                                 </StackPanel>
                                             </DataTemplate>

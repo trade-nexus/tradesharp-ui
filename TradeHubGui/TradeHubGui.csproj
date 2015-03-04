@@ -140,6 +140,7 @@
     <Compile Include="Converters\InstanceExecutionStatusToBoolConverter.cs" />
     <Compile Include="Converters\OptimizationExecutionStatusToBrushConverter.cs" />
     <Compile Include="Converters\ProviderConnectionStatusToBoolConverter.cs" />
+    <Compile Include="Converters\ProviderConnectionStatusToImageConverter.cs" />
     <Compile Include="Converters\ProviderConnectionStatusToBrushConverter.cs" />
     <Compile Include="Converters\OrderStatusToBrushConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToVisibilityConverter.cs" />
