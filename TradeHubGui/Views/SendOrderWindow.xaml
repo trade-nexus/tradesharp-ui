@@ -30,13 +30,7 @@
         <TextBlock Margin="22,10,0,0" Text="{Binding OrderModel.Security.Symbol, FallbackValue=N/A}" TextAlignment="Center" MinWidth="72"
                        Style="{StaticResource HeaderTextBlockStyle}" FontWeight="Thin" FontSize="36"/>
 
-        <Border Grid.Column="2" Padding="10,1,10,3" CornerRadius="3" VerticalAlignment="Top" Margin="0,30,20,0" HorizontalAlignment="Center"
-                    Background="{Binding SelectedOrderExecutionProvider.ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}, FallbackValue={StaticResource RedBrush}}" >
-            <TextBlock Text="{Binding SelectedOrderExecutionProvider.ConnectionStatus, FallbackValue=Disconnected}"
-                            Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
-        </Border>
-
-        <!--<Border Grid.ColumnSpan="3" VerticalAlignment="Bottom" BorderThickness="0,0,0,2" Margin="0,6,0,0"
+        <!--<Border Grid.Row="0" Grid.ColumnSpan="3" VerticalAlignment="Center" BorderThickness="0,0,0,2" Margin="0,6,0,0"
                 BorderBrush="{Binding SelectedOrderExecutionProvider.ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}, FallbackValue={StaticResource RedBrush}}" />-->
 
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="20,60,20,20">
@@ -48,8 +42,8 @@
                     <DataTemplate>
                         <DockPanel Margin="0,2">
                             <TextBlock DockPanel.Dock="Left" Text="{Binding ProviderName}" VerticalAlignment="Center"/>
-                            <!--<TextBlock DockPanel.Dock="Left" Text="{Binding ConnectionStatus}" Foreground="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" 
-                                        FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Margin="0,0,0,2" HorizontalAlignment="Right" MinWidth="70"/>-->
+                            <TextBlock DockPanel.Dock="Left" Text="{Binding ConnectionStatus}" Foreground="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" 
+                                        FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Margin="0,0,0,2" HorizontalAlignment="Right" MinWidth="70"/>
                         </DockPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
