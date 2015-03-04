@@ -13,6 +13,8 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
+using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
+using TradeHubConstants = TradeHub.Common.Core.Constants;
 
 namespace TradeHubGui.Dashboard.Tests.Integration
 {
@@ -40,7 +42,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             Thread.Sleep(9000);
             Provider provider = new Provider();
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
-            provider.ProviderName = OrderExecutionProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
             EventSystem.Publish<Provider>(provider);
@@ -55,10 +57,10 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void RequestNewMarketOrder_SendRequestToServer_ReceiveOrderAcceptance()
         {
             Thread.Sleep(5000);
-            Provider provider = new Provider();
+            OrderExecutionProvider provider = new OrderExecutionProvider();
             provider.ProviderType = ProviderType.OrderExecution;
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
-            provider.ProviderName = OrderExecutionProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
             EventSystem.Publish<Provider>(provider);
@@ -73,13 +75,13 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             orderDetails.Quantity = 10;
             orderDetails.Security = new Security() {Symbol = "AAPL"};
             orderDetails.Side = OrderSide.BUY;
-            orderDetails.Provider = OrderExecutionProvider.Simulated;
+            orderDetails.Provider = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Create Order Request
             OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
 
             // Add Order Details object to Provider's Order Map
-            provider.OrdersCollection.Add(orderDetails);
+            provider.AddOrder(orderDetails);
 
             // Rasie event to request order
             EventSystem.Publish<OrderRequest>(orderRequest);
@@ -94,10 +96,10 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void RequestNewLimitOrder_SendRequestToServer_ReceiveOrderAcceptance()
         {
             Thread.Sleep(5000);
-            Provider provider = new Provider();
+            OrderExecutionProvider provider = new OrderExecutionProvider();
             provider.ProviderType = ProviderType.OrderExecution;
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
-            provider.ProviderName = OrderExecutionProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
             EventSystem.Publish<Provider>(provider);
@@ -113,7 +115,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             orderDetails.Quantity = 10;
             orderDetails.Security = new Security() { Symbol = "AAPL" };
             orderDetails.Side = OrderSide.BUY;
-            orderDetails.Provider = OrderExecutionProvider.Simulated;
+            orderDetails.Provider = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Create Order Request
             OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
@@ -134,13 +136,13 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void RequestNewMarketOrderForExecution_SendRequestToServer_ReceiveOrderExecution()
         {
             Thread.Sleep(5000);
-            Provider provider = new Provider();
+            OrderExecutionProvider provider = new OrderExecutionProvider();
             provider.ProviderType = ProviderType.OrderExecution;
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
-            provider.ProviderName = OrderExecutionProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<OrderExecutionProvider>(provider);
 
             Thread.Sleep(5000);
 
@@ -152,21 +154,23 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             orderDetails.Quantity = 10;
             orderDetails.Security = new Security() { Symbol = "AAPL" };
             orderDetails.Side = OrderSide.BUY;
-            orderDetails.Provider = OrderExecutionProvider.Simulated;
+            orderDetails.Provider = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Create Order Request
             OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
 
             // Add Order Details object to Provider's Order Map
-            provider.OrdersCollection.Add(orderDetails);
+            provider.AddOrder(orderDetails);
 
             // Rasie event to request order
             EventSystem.Publish<OrderRequest>(orderRequest);
 
-            Thread.Sleep(9000);
+            Thread.Sleep(20000);
 
             Assert.IsTrue(orderDetails.Status.Equals(OrderStatus.EXECUTED));
             Assert.IsTrue(orderDetails.FillDetails.Count.Equals(1));
+            Assert.IsTrue(provider.PositionStatisticsCollection["AAPL"].Position.Equals(10));
+            Assert.IsTrue(provider.PositionStatisticsCollection["AAPL"].Pnl.Equals(-10*1.7M));
         }
 
         [Test]
@@ -174,10 +178,10 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void RequestNewLimitOrderForExecution_SendRequestToServer_ReceiveOrderExecution()
         {
             Thread.Sleep(5000);
-            Provider provider = new Provider();
+            OrderExecutionProvider provider = new OrderExecutionProvider();
             provider.ProviderType = ProviderType.OrderExecution;
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
-            provider.ProviderName = OrderExecutionProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
             EventSystem.Publish<Provider>(provider);
@@ -193,7 +197,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             orderDetails.Quantity = 10;
             orderDetails.Security = new Security() { Symbol = "AAPL" };
             orderDetails.Side = OrderSide.BUY;
-            orderDetails.Provider = OrderExecutionProvider.Simulated;
+            orderDetails.Provider = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Create Order Request
             OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
@@ -215,10 +219,10 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void RequestOrderCancellation_SendNewOrderRequest_ReceiveOrderAcceptance_SendOrderCancellation_ReceiveOrderCancellation()
         {
             Thread.Sleep(5000);
-            Provider provider = new Provider();
+            OrderExecutionProvider provider = new OrderExecutionProvider();
             provider.ProviderType = ProviderType.OrderExecution;
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
-            provider.ProviderName = OrderExecutionProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
             EventSystem.Publish<Provider>(provider);
@@ -234,7 +238,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             orderDetails.Price = 45.98M;
             orderDetails.Security = new Security() { Symbol = "AAPL" };
             orderDetails.Side = OrderSide.BUY;
-            orderDetails.Provider = OrderExecutionProvider.Simulated;
+            orderDetails.Provider = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             {
                 // Create Order Request

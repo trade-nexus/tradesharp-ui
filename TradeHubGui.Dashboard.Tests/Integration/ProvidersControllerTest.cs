@@ -86,7 +86,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void LoadOrderExecutionProviders()
         {
             // Request Controller for infomation
-            Task<List<Provider>> availableProviders = _providersController.GetAvailableOrderExecutionProviders();
+            Task<List<OrderExecutionProvider>> availableProviders = _providersController.GetAvailableOrderExecutionProviders();
 
             Assert.IsTrue(availableProviders.Result.Count.Equals(3));
         }
@@ -96,7 +96,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void EditOrderExecutionProviderCredentials()
         {
             // Request Controller for infomation
-            Task<List<Provider>> availableProviders = _providersController.GetAvailableOrderExecutionProviders();
+            Task<List<OrderExecutionProvider>> availableProviders = _providersController.GetAvailableOrderExecutionProviders();
 
             Assert.IsTrue(availableProviders.Result.Count.Equals(3));
 

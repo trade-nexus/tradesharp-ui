@@ -11,6 +11,7 @@ using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
+using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
 namespace TradeHubGui.ViewModel
 {
@@ -53,7 +54,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Collection of order execution providers for displaying on Dashboard
         /// </summary>
-        public ObservableCollection<Provider> OrderExecutionProviders
+        public ObservableCollection<OrderExecutionProvider> OrderExecutionProviders
         {
             get { return _providersViewModel.OrderExecutionProviders; }
         }

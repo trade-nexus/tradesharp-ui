@@ -7,6 +7,7 @@ using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Managers;
+using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
 namespace TradeHubGui.Dashboard.Services
 {
@@ -35,7 +36,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <summary>
         /// Holds Available Order Execution Provider Objects
         /// </summary>
-        public static List<Provider> OrderExecutionProviders = new List<Provider>();
+        public static List<OrderExecutionProvider> OrderExecutionProviders = new List<OrderExecutionProvider>();
 
         /// <summary>
         /// Default Constructor
@@ -80,7 +81,7 @@ namespace TradeHubGui.Dashboard.Services
         /// Returns available order executiom providers along with there configuration information
         /// </summary>
         /// <returns></returns>
-        public async Task<List<Provider>> GetAvailableOrderExecutionProviders()
+        public async Task<List<OrderExecutionProvider>> GetAvailableOrderExecutionProviders()
         {
             var availableProvidersInformation = _executionProvidersManager.GetAvailableProviders();
 
@@ -91,7 +92,7 @@ namespace TradeHubGui.Dashboard.Services
             // Populate Individual Order Execution Provider details
             foreach (var keyValuePair in availableProvidersInformation)
             {
-                Provider tempProvider = new Provider()
+                OrderExecutionProvider tempProvider = new OrderExecutionProvider()
                 {
                     ProviderType = ProviderType.OrderExecution,
                     ProviderName = keyValuePair.Key,

@@ -12,6 +12,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Managers;
+using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
 namespace TradeHubGui.Dashboard.Services
 {
@@ -30,9 +31,9 @@ namespace TradeHubGui.Dashboard.Services
         /// <summary>
         /// Keeps tracks of all the Providers
         /// KEY = Provider Name
-        /// Value = Provider details <see cref="Provider"/>
+        /// Value = Provider details <see cref="OrderExecutionProvider"/>
         /// </summary>
-        private IDictionary<string, Provider> _providersMap;
+        private IDictionary<string, OrderExecutionProvider> _providersMap;
 
         /// <summary>
         /// Argument Constructor
@@ -44,7 +45,7 @@ namespace TradeHubGui.Dashboard.Services
             _orderExecutionManager = new OrderExecutionManager(orderExecutionService);
 
             // Intialize local maps
-            _providersMap = new Dictionary<string, Provider>();
+            _providersMap = new Dictionary<string, OrderExecutionProvider>();
 
             // Subscribe Application events
             SubscribeEvents();
@@ -59,7 +60,7 @@ namespace TradeHubGui.Dashboard.Services
         private void SubscribeEvents()
         {
             // Register Event to receive connect/disconnect requests
-            EventSystem.Subscribe<Provider>(NewConnectionRequest);
+            EventSystem.Subscribe<OrderExecutionProvider>(NewConnectionRequest);
             EventSystem.Subscribe<OrderRequest>(NewOrderRequest);
         }
 
@@ -83,7 +84,7 @@ namespace TradeHubGui.Dashboard.Services
         /// Called when new Connection request is made by the user
         /// </summary>
         /// <param name="orderExecutionProvider"></param>
-        private void NewConnectionRequest(Provider orderExecutionProvider)
+        private void NewConnectionRequest(OrderExecutionProvider orderExecutionProvider)
         {
             // Only entertain 'Order Execution Provider' related calls
             if (!orderExecutionProvider.ProviderType.Equals(ProviderType.OrderExecution))
@@ -105,7 +106,7 @@ namespace TradeHubGui.Dashboard.Services
         /// Called when connection request is received for given Order Execution Provider
         /// </summary>
         /// <param name="orderExecutionProvider">Contains provider details</param>
-        private void ConnectOrderExecutionProvider(Provider orderExecutionProvider)
+        private void ConnectOrderExecutionProvider(OrderExecutionProvider orderExecutionProvider)
         {
             // Check if the provider already exists in the local map
             if (!_providersMap.ContainsKey(orderExecutionProvider.ProviderName))
@@ -134,7 +135,7 @@ namespace TradeHubGui.Dashboard.Services
         /// Called when disconnect request is received for given Order Execution Provider
         /// </summary>
         /// <param name="orderExecutionProvider">Contains provider details</param>
-        private void DisconnectOrderExecutionProvider(Provider orderExecutionProvider)
+        private void DisconnectOrderExecutionProvider(OrderExecutionProvider orderExecutionProvider)
         {
             // Check current provider status
             if (orderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected))
@@ -158,7 +159,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="orderRequest">Contains Order details</param>
         private void NewOrderRequest(OrderRequest orderRequest)
         {
-            Provider provider;
+            OrderExecutionProvider provider;
             //Find respective Provider
             if (_providersMap.TryGetValue(orderRequest.OrderDetails.Provider, out provider))
             {
@@ -245,7 +246,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="providerName"></param>
         private void OnLogonArrived(string providerName)
         {
-            Provider provider;
+            OrderExecutionProvider provider;
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Connected;
@@ -258,7 +259,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="providerName"></param>
         private void OnLogoutArrived(string providerName)
         {
-            Provider provider;
+            OrderExecutionProvider provider;
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Disconnected;
@@ -271,22 +272,12 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="order">Contains accepted order details</param>
         private void OnOrderAccepted(Order order)
         {
-            Provider provider;
+            OrderExecutionProvider provider;
 
             // Get Order Execution Provider
             if (_providersMap.TryGetValue(order.OrderExecutionProvider, out provider))
             {
-                OrderDetails orderDetails = null;
-
-                // Find 'Order Details' object 
-                foreach (OrderDetails tempOrderDetails in provider.OrdersCollection)
-                {
-                    if (tempOrderDetails.ID.Equals(order.OrderID))
-                    {
-                        orderDetails = tempOrderDetails;
-                        break;
-                    }
-                }
+                OrderDetails orderDetails = provider.GetOrderDetail(order.OrderID, order.OrderStatus);
 
                 // Update order status
                 if (orderDetails != null) 
@@ -300,7 +291,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="execution">Contains execution details</param>
         private void OnExecutionArrived(Execution execution)
         {
-            Provider provider;
+            OrderExecutionProvider provider;
 
             // Get Order Execution Provider
             if (_providersMap.TryGetValue(execution.OrderExecutionProvider, out provider))
@@ -333,6 +324,9 @@ namespace TradeHubGui.Dashboard.Services
 
                     // Add to order details object
                     orderDetails.FillDetails.Add(fillDetail);
+
+                    // Use incoming information to update position statistics
+                    provider.UpdatePosition(orderDetails);
                 }
             }
         }
@@ -343,22 +337,12 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="rejection">Contains rejection details</param>
         private void OnRejectionArrived(Rejection rejection)
         {
-            Provider provider;
+            OrderExecutionProvider provider;
 
             // Get Order Execution Provider
             if (_providersMap.TryGetValue(rejection.OrderExecutionProvider, out provider))
             {
-                OrderDetails orderDetails = null;
-
-                // Find 'Order Details' object 
-                foreach (OrderDetails tempOrderDetails in provider.OrdersCollection)
-                {
-                    if (tempOrderDetails.ID.Equals(rejection.OrderId))
-                    {
-                        orderDetails = tempOrderDetails;
-                        break;
-                    }
-                }
+                OrderDetails orderDetails = provider.GetOrderDetail(rejection.OrderId, OrderStatus.REJECTED);
 
                 // Update order parameters
                 if (orderDetails != null)
@@ -372,22 +356,12 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="order">Contains cancelled order details</param>
         private void OnCancellationArrived(Order order)
         {
-            Provider provider;
+            OrderExecutionProvider provider;
 
             // Get Order Execution Provider
             if (_providersMap.TryGetValue(order.OrderExecutionProvider, out provider))
             {
-                OrderDetails orderDetails = null;
-
-                // Find 'Order Details' object 
-                foreach (OrderDetails tempOrderDetails in provider.OrdersCollection)
-                {
-                    if (tempOrderDetails.ID.Equals(order.OrderID))
-                    {
-                        orderDetails = tempOrderDetails;
-                        break;
-                    }
-                }
+                OrderDetails orderDetails = provider.GetOrderDetail(order.OrderID, OrderStatus.CANCELLED);
 
                 // Update order parameters
                 if (orderDetails != null)
@@ -403,7 +377,7 @@ namespace TradeHubGui.Dashboard.Services
         public void Stop()
         {
             // Send logout for each connected order execution provider
-            foreach (KeyValuePair<string, Provider> keyValuePair in _providersMap)
+            foreach (KeyValuePair<string, OrderExecutionProvider> keyValuePair in _providersMap)
             {
                 if (keyValuePair.Value.ConnectionStatus.Equals(ConnectionStatus.Connected))
                 {

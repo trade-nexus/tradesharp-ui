@@ -19,6 +19,7 @@ using TradeHub.StrategyEngine.TradeHub;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common.Models;
 using TradeHubGui.StrategyRunner.Representations;
+using OrderExecutionProvider = TradeHub.Common.Core.Constants.OrderExecutionProvider;
 using Strategy = TradeHub.Common.Core.DomainModels.Strategy;
 
 namespace TradeHubGui.StrategyRunner.Executors
