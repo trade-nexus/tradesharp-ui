@@ -29,11 +29,6 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         private Dictionary<string, TickDetail> _tickDetailsMap;
 
-        /// <summary>
-        /// Contains all orders information during the current application session
-        /// </summary>
-        private ObservableCollection<OrderDetails> _ordersCollection;  
-
         #endregion
 
         #region Constructors
@@ -43,7 +38,6 @@ namespace TradeHubGui.Common.Models
             // Initialize Maps
             _providerCredentials = new List<ProviderCredential>();
             _tickDetailsMap = new Dictionary<string, TickDetail>();
-            _ordersCollection = new ObservableCollection<OrderDetails>();
         }
 
         #endregion
@@ -123,23 +117,6 @@ namespace TradeHubGui.Common.Models
                 return null;
             }
             set { _tickDetailsMap = value; }
-        }
-
-        /// <summary>
-        /// Contains all orders information during the current application session
-        /// </summary>
-        public ObservableCollection<OrderDetails> OrdersCollection
-        {
-            get
-            {
-                if (_providerType.Equals(ProviderType.OrderExecution))
-                {
-                    return _ordersCollection;   
-                }
-
-                return null;
-            }
-            set { _ordersCollection = value; }
         }
 
         #endregion

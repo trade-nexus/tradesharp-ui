@@ -12,6 +12,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
+using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
 namespace TradeHubGui.ViewModel
 {
@@ -20,10 +21,10 @@ namespace TradeHubGui.ViewModel
         #region Fields
 
         private ObservableCollection<Provider> _marketDataProviders;
-        private ObservableCollection<Provider> _orderExecutionProviders;
+        private ObservableCollection<OrderExecutionProvider> _orderExecutionProviders;
 
         private Provider _selectedMarketDataProvider;
-        private Provider _selectedOrderExecutionProvider;
+        private OrderExecutionProvider _selectedOrderExecutionProvider;
 
         private RelayCommand _addProviderCommand;
         private RelayCommand _removeProviderCommand;
@@ -67,7 +68,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Collection of order execution providers
         /// </summary>
-        public ObservableCollection<Provider> OrderExecutionProviders
+        public ObservableCollection<OrderExecutionProvider> OrderExecutionProviders
         {
             get { return _orderExecutionProviders; }
             set
@@ -99,7 +100,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Selected order execution provider
         /// </summary>
-        public Provider SelectedOrderExecutionProvider
+        public OrderExecutionProvider SelectedOrderExecutionProvider
         {
             get { return _selectedOrderExecutionProvider; }
             set
@@ -235,7 +236,7 @@ namespace TradeHubGui.ViewModel
             else if (param.Equals("OrderExecutionProvider"))
             {
                 // Rasie event to request connection
-                EventSystem.Publish<Provider>(SelectedOrderExecutionProvider);
+                EventSystem.Publish<OrderExecutionProvider>(SelectedOrderExecutionProvider);
             }
         }
 
@@ -328,7 +329,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private async void InitializeOrderExecutionProviders()
         {
-            _orderExecutionProviders = new ObservableCollection<Provider>();
+            _orderExecutionProviders = new ObservableCollection<OrderExecutionProvider>();
 
             // Request Controller for infomation
             var availableProviders = await Task.Run(() => _providersController.GetAvailableOrderExecutionProviders());

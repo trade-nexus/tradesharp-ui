@@ -10,6 +10,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
+using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
 namespace TradeHubGui.ViewModel
 {
@@ -22,7 +23,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Holds reference of currently selected order execution provider
         /// </summary>
-        private Provider _selectedOrderExecutionProvider;
+        private OrderExecutionProvider _selectedOrderExecutionProvider;
 
         /// <summary>
         /// Contains information for the order to be sent
@@ -42,7 +43,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Contains collection of available Order Execution Providers
         /// </summary>
-        private ObservableCollection<Provider> _orderExecutionProviders;
+        private ObservableCollection<OrderExecutionProvider> _orderExecutionProviders;
 
         private RelayCommand _sendBuyOrderCommand;
         private RelayCommand _sendSellOrderCommand;
@@ -54,7 +55,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Holds reference of currently selected order execution provider
         /// </summary>
-        public Provider SelectedOrderExecutionProvider
+        public OrderExecutionProvider SelectedOrderExecutionProvider
         {
             get { return _selectedOrderExecutionProvider; }
             set
@@ -80,7 +81,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Contains collection of available Order Execution Providers
         /// </summary>
-        public ObservableCollection<Provider> OrderExecutionProviders
+        public ObservableCollection<OrderExecutionProvider> OrderExecutionProviders
         {
             get { return _orderExecutionProviders; }
             set { _orderExecutionProviders = value; }
@@ -167,7 +168,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void SendBuyOrderExecute()
         {
-            SendOrder(OrderSide.BUY);
+            SendOrder(OrderSide.BUY, OrderModel.BuyPrice);
         }
 
         private bool SendSellOrderCanExecute()
@@ -180,7 +181,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void SendSellOrderExecute()
         {
-            SendOrder(OrderSide.SELL);
+            SendOrder(OrderSide.SELL, OrderModel.SellPrice);
         }
 
         #endregion
@@ -190,7 +191,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void InitializeOrderExecutionProviders()
         {
-            _orderExecutionProviders = new ObservableCollection<Provider>();
+            _orderExecutionProviders = new ObservableCollection<OrderExecutionProvider>();
 
             // Populate Individual Order Execution Provider details
             foreach (var provider in ProvidersController.OrderExecutionProviders)
@@ -222,12 +223,14 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Send a new Order Request
         /// </summary>
-        private void SendOrder(string orderSide)
+        /// <param name="orderSide">Order Side 'BUY/SELL'</param>
+        /// <param name="orderPrice">limit price at which to send the order</param>
+        private void SendOrder(string orderSide, decimal orderPrice)
         {
             // Create a new Object which will be used across the application
             OrderDetails orderDetails = new OrderDetails();
 
-            orderDetails.Price = OrderModel.BuyPrice;
+            orderDetails.Price = orderPrice;
             orderDetails.StopPrice = OrderModel.TriggerPrice;
             orderDetails.Quantity = OrderModel.Size;
             orderDetails.Side = orderSide;
@@ -236,7 +239,7 @@ namespace TradeHubGui.ViewModel
             orderDetails.Provider = SelectedOrderExecutionProvider.ProviderName;
 
             // Add to selected provider collection for future reference and updates
-            SelectedOrderExecutionProvider.OrdersCollection.Add(orderDetails);
+            SelectedOrderExecutionProvider.AddOrder(orderDetails);
 
             // Create new order request
             OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
@@ -252,7 +255,7 @@ namespace TradeHubGui.ViewModel
         public bool SetOrderExecutionProvider(string providerName)
         {
             // Traverse all available providers
-            foreach (Provider orderExecutionProvider in _orderExecutionProviders)
+            foreach (OrderExecutionProvider orderExecutionProvider in _orderExecutionProviders)
             {
                 if (orderExecutionProvider.ProviderName.EndsWith(providerName))
                 {

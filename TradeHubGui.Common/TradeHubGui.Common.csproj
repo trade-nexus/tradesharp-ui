@@ -80,7 +80,9 @@
     <Compile Include="EventSystem.cs" />
     <Compile Include="Models\BruteForceParameters.cs" />
     <Compile Include="Models\FillDetail.cs" />
+    <Compile Include="Models\OrderExecutionProvider.cs" />
     <Compile Include="Models\OrderRequest.cs" />
+    <Compile Include="Models\PositionStatistics.cs" />
     <Compile Include="Models\ProviderCredential.cs" />
     <Compile Include="Models\SendOrderModel.cs" />
     <Compile Include="Models\StrategyExecutionDetails.cs" />

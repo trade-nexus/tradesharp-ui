@@ -13,6 +13,7 @@ using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Representations;
 using TradeHubGui.StrategyRunner.Services;
+using OrderExecutionProvider = TradeHub.Common.Core.Constants.OrderExecutionProvider;
 
 namespace TradeHubGui.StrategyRunner.Tests.Integration
 {
