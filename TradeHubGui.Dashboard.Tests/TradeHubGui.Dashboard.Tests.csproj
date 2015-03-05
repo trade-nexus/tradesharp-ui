@@ -81,6 +81,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.OrderExecution.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration\MarketDataControllerTests.cs" />

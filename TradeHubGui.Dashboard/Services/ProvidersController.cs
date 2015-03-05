@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
@@ -17,6 +19,11 @@ namespace TradeHubGui.Dashboard.Services
     public class ProvidersController
     {
         private Type _type = typeof (ProvidersController);
+
+        /// <summary>
+        /// Holds UI thread reference
+        /// </summary>
+        private Dispatcher _currentDispatcher;
 
         /// <summary>
         /// Handle Market Data Provider related functionaltiy
@@ -43,6 +50,8 @@ namespace TradeHubGui.Dashboard.Services
         /// </summary>
         public ProvidersController()
         {
+            _currentDispatcher = Dispatcher.CurrentDispatcher;
+
             _dataProvidersManager = new MarketDataProvidersManager();
             _executionProvidersManager = new OrderExecutionProvidersManager();
         }
@@ -92,7 +101,7 @@ namespace TradeHubGui.Dashboard.Services
             // Populate Individual Order Execution Provider details
             foreach (var keyValuePair in availableProvidersInformation)
             {
-                OrderExecutionProvider tempProvider = new OrderExecutionProvider()
+                OrderExecutionProvider tempProvider = new OrderExecutionProvider(_currentDispatcher)
                 {
                     ProviderType = ProviderType.OrderExecution,
                     ProviderName = keyValuePair.Key,

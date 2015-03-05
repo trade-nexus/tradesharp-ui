@@ -99,7 +99,7 @@
                         <TextBlock DockPanel.Dock="Top" Margin="10,20,10,0" Text="Position Stats" Style="{StaticResource SubHeaderTextBlockStyle}"/>
 
                         <DataGrid x:Name="PositonStatsDataGrid" Margin="10"
-                              ItemsSource="{Binding Orders}"
+                              ItemsSource="{Binding PositionStatisticsCollection}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
                               IsSynchronizedWithCurrentItem="True"
@@ -111,9 +111,9 @@
                               RowHeight="22">
 
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Symbol}" />
+                                <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Security.Symbol}" />
                                 <DataGridTextColumn Header="Position" Width="0.3*" Binding="{Binding Path=Position}" />
-                                <DataGridTextColumn Header="Profit and Losses" Width="0.4*" Binding="{Binding Path=PnL}" />
+                                <DataGridTextColumn Header="Profit and Losses" Width="0.4*" Binding="{Binding Path=Pnl}" />
                                 <DataGridTemplateColumn Header="Actions" Width="0.3*" SortMemberPath="Status">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -137,7 +137,7 @@
                            Style="{StaticResource HeaderTextBlockStyle}"/>
 
                 <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,10"
-                              ItemsSource="{Binding OrderCollection}"
+                              ItemsSource="{Binding Orders}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
                               IsSynchronizedWithCurrentItem="True"
