@@ -22,10 +22,84 @@
         <Grid Grid.Column="0" Margin="20,20,5,20">
             <Border Style="{StaticResource ContentBorderStyle}"/>
             <DockPanel Grid.Row="0" Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="ACTIVE ORDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <TextBlock DockPanel.Dock="Top" Margin="10,0,10,20" Text="EXECUTION PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                <DataGrid x:Name="ActiveOrdersDataGrid" Margin="10,20,10,10"
-                              ItemsSource="{Binding ActiveOrders}"
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <ListBox Name="ExecutionProvidersListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,5,10,0" Padding="0" 
+                             SelectedItem="{Binding SelectedProvider}" ItemsSource="{Binding ExecutionProviders}">
+                        <ListBox.Resources>
+                            <ResourceDictionary>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                    <Setter Property="SnapsToDevicePixels" Value="true" />
+                                    <Setter Property="OverridesDefaultStyle" Value="true" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="MinHeight" Value="40" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <Grid>
+                                                    <Border x:Name="Border" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="0" />
+                                                    <ContentPresenter Name="Content" Margin="{TemplateBinding Padding}" 
+                                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource HoverListBoxItemBackground}" />
+                                                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource HoverListBoxItemBorder}" />
+                                                        <Setter Property="Foreground" Value="Black" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="true">
+                                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource BaseBrush0}" />
+                                                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BaseBrush0}" />
+                                                        <Setter Property="Foreground" Value="White" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="false">
+                                                        <Setter TargetName="Border" Property="Opacity" Value="0.2" />
+                                                        <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ResourceDictionary>
+                        </ListBox.Resources>
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Margin="0">
+                                    <Border DockPanel.Dock="Left" Background="Gainsboro">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,2,14,4" >
+                                            <TextBlock Text="{Binding ConnectionStatus}" FontWeight="SemiBold" FontSize="18"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <TextBlock Text="{Binding ProviderName}" FontSize="18" FontWeight="SemiBold" Typography.Capitals="SmallCaps" 
+                                               VerticalAlignment="Center" Margin="20,0"/>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+
+                    <DockPanel Grid.Row="2">
+                        <TextBlock DockPanel.Dock="Top" Margin="10,20,10,0" Text="Position Stats" Style="{StaticResource SubHeaderTextBlockStyle}"/>
+
+                        <DataGrid x:Name="PositonStatsDataGrid" Margin="10"
+                              ItemsSource="{Binding Orders}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
                               IsSynchronizedWithCurrentItem="True"
@@ -36,13 +110,21 @@
                               AutoGenerateColumns="False"
                               RowHeight="22">
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Symbol" Width="0.2*" Binding="{Binding Path=Symbol}" />
-                        <DataGridTextColumn Header="Buy" Width="0.2*" Binding="{Binding Path=Buy}" />
-                        <DataGridTextColumn Header="Sell" Width="0.2*" Binding="{Binding Path=Sell}" />
-                        <DataGridTextColumn Header="Position" Width="0.2*" Binding="{Binding Path=Position}" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Symbol}" />
+                                <DataGridTextColumn Header="Position" Width="0.3*" Binding="{Binding Path=Position}" />
+                                <DataGridTextColumn Header="Profit and Losses" Width="0.4*" Binding="{Binding Path=PnL}" />
+                                <DataGridTemplateColumn Header="Actions" Width="0.3*" SortMemberPath="Status">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Close" Command="{Binding CloseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" Height="20"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
             </DockPanel>
         </Grid>
 
@@ -51,10 +133,11 @@
         <Grid Grid.Column="2" Margin="5,20,20,20">
             <Border Style="{StaticResource ContentBorderStyle}"/>
             <DockPanel Grid.Row="0" Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="{Binding SelectedOrderEntry.Symbol, StringFormat='Orders {0}', FallbackValue='Orders N/A'}" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="{Binding SelectedProvider.ProviderName, StringFormat='Orders {0}', FallbackValue='Orders N/A'}" 
+                           Style="{StaticResource HeaderTextBlockStyle}"/>
 
                 <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,10"
-                              ItemsSource="{Binding Orders}"
+                              ItemsSource="{Binding OrderCollection}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
                               IsSynchronizedWithCurrentItem="True"
@@ -67,6 +150,7 @@
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Order ID" Width="0.22*" Binding="{Binding Path=ID}" />
+                        <DataGridTextColumn Header="Symbol" Width="0.15*" Binding="{Binding Path=Security.Symbol}" />
                         <DataGridTextColumn Header="Side" Width="0.15*" Binding="{Binding Path=Side}" />
                         <DataGridTextColumn Header="Type" Width="0.15*" Binding="{Binding Path=Type}" />
                         <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" />
