@@ -41,9 +41,9 @@
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel Margin="0,2">
-                            <TextBlock DockPanel.Dock="Left" Text="{Binding ProviderName}" VerticalAlignment="Center"/>
-                            <TextBlock DockPanel.Dock="Left" Text="{Binding ConnectionStatus}" Foreground="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" 
-                                        FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Margin="0,0,0,2" HorizontalAlignment="Right" MinWidth="70"/>
+                            <TextBlock DockPanel.Dock="Right" Text="{Binding ConnectionStatus}" Foreground="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" 
+                                    FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Margin="0,0,0,2" FontSize="12"/>
+                            <TextBlock Text="{Binding ProviderName}" VerticalAlignment="Center"/>
                         </DockPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
@@ -95,8 +95,8 @@
             <StackPanel Grid.Column="2" Margin="10">
                 <Label Content="Price"/>
                 <wpfToolkitExtended:DecimalUpDown Height="28" Value="{Binding OrderModel.SellPrice, FallbackValue=0}" Minimum="0" Increment="0.01"
-                                                  FontWeight="SemiBold" FontSize="16" Foreground="{StaticResource BlueBrush}"/>
-                <Button Content="Sell" Height="{Binding}" FontSize="22" Padding="8" FontWeight="Bold" Foreground="{StaticResource BlueBrush}"
+                                                  FontWeight="SemiBold" FontSize="16" Foreground="{StaticResource BaseBrush3}"/>
+                <Button Content="Sell" Height="{Binding}" FontSize="22" Padding="8" FontWeight="Bold" Foreground="{StaticResource BaseBrush3}"
                         Command="{Binding SendSellOrderCommand}"/>
             </StackPanel>
         </Grid>
