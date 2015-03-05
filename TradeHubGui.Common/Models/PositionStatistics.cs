@@ -58,7 +58,11 @@ namespace TradeHubGui.Common.Models
         public int Position
         {
             get { return _position; }
-            set { _position = value; }
+            set
+            {
+                _position = value; 
+                OnPropertyChanged("Position");
+            }
         }
 
         /// <summary>
@@ -67,7 +71,11 @@ namespace TradeHubGui.Common.Models
         public decimal Pnl
         {
             get { return _pnl; }
-            set { _pnl = value; }
+            set
+            {
+                _pnl = value; 
+                OnPropertyChanged("Pnl");
+            }
         }
 
         protected void OnPropertyChanged(string propertyName)

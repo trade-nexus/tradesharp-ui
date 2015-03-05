@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels.OrderDomain;
 using TradeHubGui.Common.Constants;
@@ -20,6 +21,11 @@ namespace TradeHubGui.Common.Models
         #region Fields
 
         /// <summary>
+        /// Hold UI thread reference
+        /// </summary>
+        private Dispatcher _currentDispatcher;
+
+        /// <summary>
         /// Contains current active orders for the given provider
         /// </summary>
         private List<OrderDetails> _activeOrdersList;
@@ -30,22 +36,31 @@ namespace TradeHubGui.Common.Models
         private ObservableCollection<OrderDetails> _ordersCollection;
 
         /// <summary>
-        /// Contains positions stats for all traded securities
+        /// Contains positions stats for all traded securities Grouped by symbol
         /// KEY = Symbol
         /// VALUE = Position information <see cref="PositionStatistics"/>
         /// </summary>
-        private Dictionary<string, PositionStatistics> _positionStatisticsCollection;
+        private Dictionary<string, PositionStatistics> _positionStatisticsDictionary;
+
+        /// <summary>
+        ///  Contains positions stats for all traded securities to be used for UI reference
+        /// </summary>
+        private ObservableCollection<PositionStatistics> _positionStatisticsCollection; 
 
         #endregion
 
         /// <summary>
-        /// Default Constructor
+        /// Argument Constructor
         /// </summary>
-        public OrderExecutionProvider()
+        /// <param name="currentDispatcher">UI Dispatcher to be used</param>
+        public OrderExecutionProvider(Dispatcher currentDispatcher)
         {
+            _currentDispatcher = currentDispatcher;
+
             _activeOrdersList = new List<OrderDetails>();
             _ordersCollection = new ObservableCollection<OrderDetails>();
-            _positionStatisticsCollection = new Dictionary<string, PositionStatistics>();
+            _positionStatisticsCollection = new ObservableCollection<PositionStatistics>();
+            _positionStatisticsDictionary = new Dictionary<string, PositionStatistics>();
         }
 
         #region Properties
@@ -56,27 +71,24 @@ namespace TradeHubGui.Common.Models
         public ObservableCollection<OrderDetails> OrdersCollection
         {
             get { return _ordersCollection; }
-            set { _ordersCollection = value; }
-        }
-
-        /// <summary>
-        /// Contains current active orders for the given provider
-        /// </summary>
-        public List<OrderDetails> ActiveOrdersList
-        {
-            get { return _activeOrdersList; }
-            set { _activeOrdersList = value; }
+            set
+            {
+                _ordersCollection = value;
+                OnPropertyChanged("OrdersCollection");
+            }
         }
 
         /// <summary>
         /// Contains positions stats for all traded securities
-        /// KEY = Symbol
-        /// VALUE = Position information <see cref="PositionStatistics"/>
         /// </summary>
-        public Dictionary<string, PositionStatistics> PositionStatisticsCollection
+        public ObservableCollection<PositionStatistics> PositionStatisticsCollection
         {
             get { return _positionStatisticsCollection; }
-            set { _positionStatisticsCollection = value; }
+            set
+            {
+                _positionStatisticsCollection = value;
+                OnPropertyChanged("PositionStatisticsCollection");
+            }
         }
 
         #endregion
@@ -88,7 +100,7 @@ namespace TradeHubGui.Common.Models
         public void AddOrder(OrderDetails orderDetails)
         {
             // Add to active orders list
-            ActiveOrdersList.Add(orderDetails);
+            _activeOrdersList.Add(orderDetails);
 
             // Add to global orders collection
             OrdersCollection.Add(orderDetails);
@@ -133,13 +145,19 @@ namespace TradeHubGui.Common.Models
         {
             PositionStatistics statistics;
             // Find Existing Statistics for the incoming order security
-            if (!PositionStatisticsCollection.TryGetValue(orderDetails.Security.Symbol, out statistics))
+            if (!_positionStatisticsDictionary.TryGetValue(orderDetails.Security.Symbol, out statistics))
             {
                 // Create a new object 
                 statistics = new PositionStatistics(orderDetails.Security);
 
-                // Add to collection
-                PositionStatisticsCollection.Add(orderDetails.Security.Symbol, statistics);
+                // Add to dictionary collection
+                _positionStatisticsDictionary.Add(orderDetails.Security.Symbol, statistics);
+
+                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                {
+                    // Add to Collection to dispaly on UI
+                    PositionStatisticsCollection.Add(statistics);
+                }));
             }
 
             // Handle BUY Order
