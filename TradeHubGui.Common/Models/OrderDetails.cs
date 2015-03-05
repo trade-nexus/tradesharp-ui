@@ -43,8 +43,11 @@ namespace TradeHubGui.Common.Models
             get { return _id; }
             set
             {
-                _id = value;
-                OnPropertyChanged("ID");
+                if (_id != value)
+                {
+                    _id = value;
+                    OnPropertyChanged("ID");
+                }
             }
         }
 
@@ -53,8 +56,11 @@ namespace TradeHubGui.Common.Models
             get { return _side; }
             set
             {
-                _side = value;
-                OnPropertyChanged("Side");
+                if (_side != value)
+                {
+                    _side = value;
+                    OnPropertyChanged("Side");
+                }
             }
         }
 
@@ -63,8 +69,11 @@ namespace TradeHubGui.Common.Models
             get { return _type; }
             set
             {
-                _type = value;
-                OnPropertyChanged("Type");
+                if (_type != value)
+                {
+                    _type = value;
+                    OnPropertyChanged("Type");
+                }
             }
         }
 
@@ -73,8 +82,11 @@ namespace TradeHubGui.Common.Models
             get { return _price; }
             set
             {
-                _price = value;
-                OnPropertyChanged("Price");
+                if (_price != value)
+                {
+                    _price = value;
+                    OnPropertyChanged("Price");
+                }
             }
         }
 
@@ -83,8 +95,11 @@ namespace TradeHubGui.Common.Models
             get { return _quantity; }
             set
             {
-                _quantity = value;
-                OnPropertyChanged("Quantity");
+                if (_quantity != value)
+                {
+                    _quantity = value;
+                    OnPropertyChanged("Quantity");
+                }
             }
         }
 
@@ -93,8 +108,11 @@ namespace TradeHubGui.Common.Models
             get { return _time; }
             set
             {
-                _time = value;
-                OnPropertyChanged("Time");
+                if (_time != value)
+                {
+                    _time = value;
+                    OnPropertyChanged("Time");
+                }
             }
         }
 
@@ -107,8 +125,11 @@ namespace TradeHubGui.Common.Models
             get { return _status; }
             set
             {
-                _status = value;
-                OnPropertyChanged("Status");
+                if (_status != value)
+                {
+                    _status = value;
+                    OnPropertyChanged("Status");
+                }
             }
         }
 
@@ -118,7 +139,14 @@ namespace TradeHubGui.Common.Models
         public decimal StopPrice
         {
             get { return _stopPrice; }
-            set { _stopPrice = value; }
+            set 
+            {
+                if (_stopPrice != value)
+                {
+                    _stopPrice = value;
+                    OnPropertyChanged("StopPrice");
+                }
+            }
         }
 
         /// <summary>
@@ -127,7 +155,14 @@ namespace TradeHubGui.Common.Models
         public ObservableCollection<FillDetail> FillDetails
         {
             get { return _fillDetails; }
-            set { _fillDetails = value; }
+            set 
+            {
+                if (_fillDetails != value)
+                {
+                    _fillDetails = value;
+                    OnPropertyChanged("FillDetails");
+                }
+            }
         }
 
         /// <summary>
@@ -138,8 +173,11 @@ namespace TradeHubGui.Common.Models
             get { return _provider; }
             set
             {
-                _provider = value; 
-                OnPropertyChanged("Provider");
+                if (_provider != value)
+                {
+                    _provider = value;
+                    OnPropertyChanged("Provider");
+                }
             }
         }
 
@@ -151,8 +189,11 @@ namespace TradeHubGui.Common.Models
             get { return _security; }
             set
             {
-                _security = value;
-                OnPropertyChanged("Security");
+                if (_security != value)
+                {
+                    _security = value;
+                    OnPropertyChanged("Security");
+                }
             }
         }
 

@@ -82,7 +82,7 @@
 
 	<Color x:Key="RedColor" PresentationOptions:Freeze="True">#FFCF2C3F</Color>
 	<Color x:Key="BlueColor" PresentationOptions:Freeze="True">#ff4f8cbb</Color>
-	<Color x:Key="GreenColor" PresentationOptions:Freeze="True">#FF3AA577</Color>
+	<Color x:Key="GreenColor" PresentationOptions:Freeze="True">#ff00a05c</Color>
 	<Color x:Key="LightGreenColor" PresentationOptions:Freeze="True">#FF7FFF00</Color>
 	<Color x:Key="MediumTurquoiseColor" PresentationOptions:Freeze="True">#FF48D1CC</Color>
 	<Color x:Key="OrangeColor" PresentationOptions:Freeze="True">#FFD78E2C</Color>
