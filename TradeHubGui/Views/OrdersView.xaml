@@ -10,6 +10,7 @@
 
     <UserControl.Resources>
         <conv:OrderStatusToBrushConverter x:Key="OrderStatusToBrush"/>
+        <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
     </UserControl.Resources>
 
     <Grid x:Name="ContentGrid">
@@ -26,13 +27,14 @@
 
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="0.5*"/>
+                        <RowDefinition Height="0.8*"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
                     <ListBox Name="ExecutionProvidersListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,5,10,0" Padding="0" 
-                             SelectedItem="{Binding SelectedProvider}" ItemsSource="{Binding ExecutionProviders}">
+                             SelectedItem="{Binding SelectedProvider}" 
+                             ItemsSource="{Binding ExecutionProviders}">
                         <ListBox.Resources>
                             <ResourceDictionary>
                                 <Style TargetType="{x:Type ListBoxItem}">
@@ -44,7 +46,7 @@
                                     <Setter Property="Background" Value="Transparent" />
                                     <Setter Property="BorderBrush" Value="Transparent" />
                                     <Setter Property="Padding" Value="0" />
-                                    <Setter Property="MinHeight" Value="40" />
+                                    <Setter Property="MinHeight" Value="20" />
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ListBoxItem}">
@@ -80,14 +82,16 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel Margin="0">
-                                    <Border DockPanel.Dock="Left" Background="Gainsboro">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,2,14,4" >
-                                            <TextBlock Text="{Binding ConnectionStatus}" FontWeight="SemiBold" FontSize="18"/>
+                                    <Border DockPanel.Dock="Right" Background="#AFFF" Margin="0" CornerRadius="0" MinWidth="100">
+                                        <StackPanel Orientation="Horizontal" Margin="4,2,4,4" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding Provider.ConnectionStatus, FallbackValue=Disconnected}" 
+                                                    Foreground="{Binding Provider.ConnectionStatus, FallbackValue=Crimson, Converter={StaticResource ConnectionStatusToBrush}}" 
+                                                    FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" TextAlignment="Center" FontSize="12" Margin="10,0"/>
                                         </StackPanel>
                                     </Border>
 
-                                    <TextBlock Text="{Binding ProviderName}" FontSize="18" FontWeight="SemiBold" Typography.Capitals="SmallCaps" 
-                                               VerticalAlignment="Center" Margin="20,0"/>
+                                    <TextBlock Text="{Binding ProviderName, FallbackValue=InteractiveBroker}" 
+                                               FontSize="16" FontWeight="SemiBold" Typography.Capitals="Normal" VerticalAlignment="Center" Margin="20,2,20,4"/>
                                 </DockPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -132,11 +136,18 @@
 
         <Grid Grid.Column="2" Margin="5,20,20,20">
             <Border Style="{StaticResource ContentBorderStyle}"/>
-            <DockPanel Grid.Row="0" Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="{Binding SelectedProvider.ProviderName, StringFormat='Orders {0}', FallbackValue='Orders N/A'}" 
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="80"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition MinHeight="80"/>
+                </Grid.RowDefinitions>
+
+                <DockPanel Grid.Row="0" Margin="10">
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="{Binding SelectedProvider.ProviderName, StringFormat='ORDERS {0}', FallbackValue='ORDERS N/A'}" 
                            Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,10"
+                    <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,10"
                               ItemsSource="{Binding Orders}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
@@ -148,26 +159,67 @@
                               AutoGenerateColumns="False"
                               RowHeight="22">
 
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Order ID" Width="0.22*" Binding="{Binding Path=ID}" />
-                        <DataGridTextColumn Header="Symbol" Width="0.15*" Binding="{Binding Path=Security.Symbol}" />
-                        <DataGridTextColumn Header="Side" Width="0.15*" Binding="{Binding Path=Side}" />
-                        <DataGridTextColumn Header="Type" Width="0.15*" Binding="{Binding Path=Type}" />
-                        <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" />
-                        <DataGridTextColumn Header="Quantity" Width="0.22*" Binding="{Binding Path=Quantity}" />
-                        <DataGridTextColumn Header="Time" Width="0.4*" Binding="{Binding Path=Time}" />
-                        <DataGridTemplateColumn Header="Status" Width="0.4*" SortMemberPath="Status">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource OrderStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Status}" Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
-                                    </Border>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </DockPanel>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Order ID" Width="0.22*" Binding="{Binding Path=ID}" />
+                            <DataGridTextColumn Header="Symbol" Width="0.15*" Binding="{Binding Path=Security.Symbol}" />
+                            <DataGridTextColumn Header="Side" Width="0.15*" Binding="{Binding Path=Side}" />
+                            <DataGridTextColumn Header="Type" Width="0.15*" Binding="{Binding Path=Type}" />
+                            <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" />
+                            <DataGridTextColumn Header="Quantity" Width="0.22*" Binding="{Binding Path=Quantity}" />
+                            <DataGridTextColumn Header="Time" Width="0.4*" Binding="{Binding Path=Time}" />
+                            <DataGridTemplateColumn Header="Status" Width="0.4*" SortMemberPath="Status">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource OrderStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Status}" Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" />
+
+                <DockPanel Grid.Row="2" Margin="10,7,10,10">
+                    <StackPanel DockPanel.Dock="Top" Margin="10,0" Orientation="Horizontal">
+                        <TextBlock Text="Order details" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
+                        <TextBlock Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource SubHeaderTextBlockStyle}" FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <DataGrid x:Name="OrderDetailsDataGrid" Margin="10"
+                              ItemsSource="{Binding OrderDetailsCollection}"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False"
+                              RowHeight="22">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Order ID" Width="0.22*" Binding="{Binding Path=ID}" />
+                            <DataGridTextColumn Header="Side" Width="0.15*" Binding="{Binding Path=Side}" />
+                            <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" />
+                            <DataGridTextColumn Header="Quantity" Width="0.22*" Binding="{Binding Path=Quantity}" />
+                            <DataGridTextColumn Header="Time" Width="0.4*" Binding="{Binding Path=Time}" />
+                            <DataGridTemplateColumn Header="Status" Width="0.4*" SortMemberPath="Status">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource OrderStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Status}" Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
