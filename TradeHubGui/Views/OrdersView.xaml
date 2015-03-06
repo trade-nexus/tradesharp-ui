@@ -22,15 +22,15 @@
 
         <Grid Grid.Column="0" Margin="20,20,5,20">
             <Border Style="{StaticResource ContentBorderStyle}"/>
-            <DockPanel Grid.Row="0" Margin="10">
-                <TextBlock DockPanel.Dock="Top" Margin="10,0,10,20" Text="EXECUTION PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="80" Height="0.7*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition MinHeight="80"/>
+                </Grid.RowDefinitions>
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.8*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" Margin="10,10,10,0">
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0,10,20" Text="EXECUTION PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
                     <ListBox Name="ExecutionProvidersListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,5,10,0" Padding="0" 
                              SelectedItem="{Binding SelectedProvider}" 
@@ -96,13 +96,14 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
+                </DockPanel>
 
-                    <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
 
-                    <DockPanel Grid.Row="2">
-                        <TextBlock DockPanel.Dock="Top" Margin="10,20,10,0" Text="Position Stats" Style="{StaticResource SubHeaderTextBlockStyle}"/>
+                <DockPanel Grid.Row="2" Margin="10,20,10,0">
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0,10,0" Text="Position Stats" Style="{StaticResource SubHeaderTextBlockStyle}"/>
 
-                        <DataGrid x:Name="PositonStatsDataGrid" Margin="10"
+                    <DataGrid x:Name="PositonStatsDataGrid" Margin="10"
                               ItemsSource="{Binding PositionStatisticsCollection}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
@@ -114,22 +115,21 @@
                               AutoGenerateColumns="False"
                               RowHeight="22">
 
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Security.Symbol}" />
-                                <DataGridTextColumn Header="Position" Width="0.3*" Binding="{Binding Path=Position}" />
-                                <DataGridTextColumn Header="Profit and Losses" Width="0.4*" Binding="{Binding Path=Pnl}" />
-                                <DataGridTemplateColumn Header="Actions" Width="0.3*" SortMemberPath="Status">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Content="Close" Command="{Binding CloseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" Height="20"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </DockPanel>
-                </Grid>
-            </DockPanel>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Security.Symbol}" />
+                            <DataGridTextColumn Header="Position" Width="0.3*" Binding="{Binding Path=Position}" />
+                            <DataGridTextColumn Header="Profit and Losses" Width="0.4*" Binding="{Binding Path=Pnl}" />
+                            <DataGridTemplateColumn Header="Actions" Width="0.3*" SortMemberPath="Status">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Close" Command="{Binding CloseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" Height="20"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Grid>
         </Grid>
 
         <GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
@@ -138,16 +138,16 @@
             <Border Style="{StaticResource ContentBorderStyle}"/>
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition MinHeight="80"/>
+                    <RowDefinition MinHeight="80" Height="0.7*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition MinHeight="80"/>
                 </Grid.RowDefinitions>
 
-                <DockPanel Grid.Row="0" Margin="10">
+                <DockPanel Grid.Row="0" Margin="10,10,10,0">
                     <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="{Binding SelectedProvider.ProviderName, StringFormat='ORDERS {0}', FallbackValue='ORDERS N/A'}" 
                            Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                    <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,10"
+                    <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,0"
                               ItemsSource="{Binding Orders}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
@@ -182,7 +182,7 @@
 
                 <GridSplitter Grid.Row="1" ResizeDirection="Rows" />
 
-                <DockPanel Grid.Row="2" Margin="10,7,10,10">
+                <DockPanel Grid.Row="2" Margin="10,20,10,10">
                     <StackPanel DockPanel.Dock="Top" Margin="10,0" Orientation="Horizontal">
                         <TextBlock Text="Order details" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
                         <TextBlock Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource SubHeaderTextBlockStyle}" FontWeight="SemiBold"/>

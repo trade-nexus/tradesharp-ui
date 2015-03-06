@@ -105,7 +105,7 @@
             <StackPanel Orientation="Vertical" Margin="10">
                 <Label Content="Position"/>
                 <TextBlock Text="{Binding Position, FallbackValue=-150}" FontWeight="Bold" FontSize="14" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0"/>
-                <Button Content="Close" Margin="0,2,0,0" Height="{Binding}" Padding="3" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource GreenBrush}"/>
+                <Button Content="Close" Margin="0,2,0,0" Height="{Binding}" Padding="3" FontSize="14" FontWeight="SemiBold" />
             </StackPanel>
 
             <StackPanel Grid.Row="2" Margin="10" Orientation="Vertical" HorizontalAlignment="Right">
