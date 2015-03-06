@@ -206,12 +206,12 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             try
             {
-                //NOTE: Test code to simulate Strategy working
-                // BEGIN:
-                OnStrategyStatusChanged(true);
-                TestCodeToGenerateExecutions();
-                return;
-                // :END
+                ////NOTE: Test code to simulate Strategy working
+                //// BEGIN:
+                //OnStrategyStatusChanged(true);
+                //TestCodeToGenerateExecutions();
+                //return;
+                //// :END
 
                 bool parameterChanged = true;
 

@@ -227,7 +227,7 @@ namespace TradeHubGui.ViewModel
                     lines = new List<string>();
 
                     // Create header row
-                    string header = "Property Info,Bought,Sold,Avg Buy Price,Avg Sell Price, Profit";
+                    string header = "Property Info,Bought,Sold,Avg Buy Price,Avg Sell Price,Profit";
 
                     // Add Header Row
                     lines.Add(header);

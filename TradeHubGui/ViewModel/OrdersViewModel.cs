@@ -176,29 +176,12 @@ namespace TradeHubGui.ViewModel
         private void PopulateOrderDetails()
         {
             // Clear current values
-            Orders.Clear();
-            PositionStatisticsCollection.Clear();
             Orders = new ObservableCollection<OrderDetails>();
             PositionStatisticsCollection = new ObservableCollection<PositionStatistics>();
 
             // Set New Values
             Orders = SelectedProvider.OrdersCollection;
             PositionStatisticsCollection = SelectedProvider.PositionStatisticsCollection;
-
-            //// Populate Order Details
-            //foreach (var orderDetails in SelectedProvider.OrdersCollection)
-            //{
-            //    Orders.Add(orderDetails);
-            //}
-
-            //// Populate Position Details
-            //foreach (var positionStats in SelectedProvider.PositionStatisticsCollection.Values)
-            //{
-            //    PositionStatisticsCollection.Add(positionStats);
-            //}
-
-            // Select the 1st instance from DataGrid
-            //SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
         }
 
         #endregion
