@@ -230,7 +230,7 @@ namespace TradeHubGui.ViewModel
             // Create a new Object which will be used across the application
             OrderDetails orderDetails = new OrderDetails();
 
-            orderDetails.Price = orderPrice;
+            orderDetails.Price = SelectedOrderType.Equals(OrderType.Market) ? 0 : orderPrice;
             orderDetails.StopPrice = OrderModel.TriggerPrice;
             orderDetails.Quantity = OrderModel.Size;
             orderDetails.Side = orderSide;

@@ -34,6 +34,7 @@ namespace TradeHubGui.Common.Models
         {
             _status = OrderStatus.OPEN;
             _fillDetails = new ObservableCollection<FillDetail>();
+            _time = DateTime.UtcNow;
         }
 
         #region Properties

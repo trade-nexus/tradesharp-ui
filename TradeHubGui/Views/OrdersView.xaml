@@ -84,8 +84,8 @@
                                 <DockPanel Margin="0">
                                     <Border DockPanel.Dock="Right" Background="#AFFF" Margin="0" CornerRadius="0" MinWidth="100">
                                         <StackPanel Orientation="Horizontal" Margin="4,2,4,4" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                            <TextBlock Text="{Binding Provider.ConnectionStatus, FallbackValue=Disconnected}" 
-                                                    Foreground="{Binding Provider.ConnectionStatus, FallbackValue=Crimson, Converter={StaticResource ConnectionStatusToBrush}}" 
+                                            <TextBlock Text="{Binding ConnectionStatus, FallbackValue=Disconnected}" 
+                                                    Foreground="{Binding ConnectionStatus, FallbackValue=Crimson, Converter={StaticResource ConnectionStatusToBrush}}" 
                                                     FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" TextAlignment="Center" FontSize="12" Margin="10,0"/>
                                         </StackPanel>
                                     </Border>
@@ -149,6 +149,7 @@
 
                     <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,0"
                               ItemsSource="{Binding Orders}"
+                              SelectedItem="{Binding SelectedOrderDetail}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
                               IsSynchronizedWithCurrentItem="True"
@@ -184,12 +185,12 @@
 
                 <DockPanel Grid.Row="2" Margin="10,20,10,10">
                     <StackPanel DockPanel.Dock="Top" Margin="10,0" Orientation="Horizontal">
-                        <TextBlock Text="Order details" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
+                        <TextBlock Text="Fill details" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
                         <TextBlock Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource SubHeaderTextBlockStyle}" FontWeight="SemiBold"/>
                     </StackPanel>
 
                     <DataGrid x:Name="OrderDetailsDataGrid" Margin="10"
-                              ItemsSource="{Binding OrderDetailsCollection}"
+                              ItemsSource="{Binding FillDetailCollection}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
                               IsSynchronizedWithCurrentItem="True"
