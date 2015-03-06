@@ -35,10 +35,14 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<StrategyInstance> _instances;
         private ObservableCollection<StrategyExecutionDetails> _executionDetailsCollection;
         private ObservableCollection<OrderDetails> _orderDetailsCollection;
-        private StrategyExecutionDetails _selectedExecutionDetails;
+
+        private bool _enablePersistence;
         private bool _executionDetailsForAllInstances;
+
         private Strategy _selectedStrategy;
         private StrategyInstance _selectedInstance;
+        private StrategyExecutionDetails _selectedExecutionDetails;
+
         private RelayCommand _showCreateInstanceWindowCommand;
         private RelayCommand _createInstanceCommand;
         private RelayCommand _runInstanceCommand;
@@ -52,8 +56,10 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _removeStrategyCommand;
         private RelayCommand _selectProviderCommand;
         private RelayCommand _importInstancesCommand;
+
         private string _strategyPath;
         private string _csvInstancesPath;
+
         private Dictionary<string, ParameterDetail> _parameterDetails;
 
         /// <summary>
@@ -66,6 +72,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public StrategyRunnerViewModel()
         {
+            EnablePersistence = false;
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
 
@@ -235,6 +242,19 @@ namespace TradeHubGui.ViewModel
                         OrderDetailsCollection = new ObservableCollection<OrderDetails>();
                     OnPropertyChanged("SelectedExecutionDetails");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Used to indicate if the order pesistence is required by the user
+        /// </summary>
+        public bool EnablePersistence
+        {
+            get { return _enablePersistence; }
+            set
+            {
+                _enablePersistence = value;
+                OnPropertyChanged("EnablePersistence");
             }
         }
 
@@ -429,7 +449,7 @@ namespace TradeHubGui.ViewModel
             window.Tag = string.Format("Instance {0}", SelectedInstance.InstanceKey);
             window.Owner = MainWindow;
 
-            ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());;
+            ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
 
             window.ShowDialog();
         }

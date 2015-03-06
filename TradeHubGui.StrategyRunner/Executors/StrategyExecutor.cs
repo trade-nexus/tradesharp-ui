@@ -263,8 +263,7 @@ namespace TradeHubGui.StrategyRunner.Executors
                     _tradeHubStrategy.StrategyName = StrategyHelper.GetCustomClassSummary(_strategyType);
 
                     // Register Events
-                    _tradeHubStrategy.OnStrategyStatusChanged += OnStrategyStatusChanged;
-                    _tradeHubStrategy.OnNewExecutionReceived += OnNewExecutionReceived;
+                    RegisterTradeHubStrategyEvent();
                 }
 
                 if (_asyncClassLogger.IsInfoEnabled)
@@ -318,6 +317,20 @@ namespace TradeHubGui.StrategyRunner.Executors
             {
                 _asyncClassLogger.Error(exception, _type.FullName, "StopStrategy");
             }
+        }
+
+        /// <summary>
+        /// Subscribe events from TradeHub Strategy
+        /// </summary>
+        private void RegisterTradeHubStrategyEvent()
+        {
+            _tradeHubStrategy.OnStrategyStatusChanged += OnStrategyStatusChanged;
+            
+            _tradeHubStrategy.OrderAcceptedEvent += OnOrderAccepted;
+            _tradeHubStrategy.OnNewExecutionReceived += OnNewExecutionReceived;
+            _tradeHubStrategy.CancellationArrivedEvent += OnCancellationReceived;
+            _tradeHubStrategy.RejectionArrivedEvent += OnRejectionReceived;
+
         }
 
         #region Manage Back-Testing Strategy (i.e. Provider = SimulatedExchange)
@@ -504,6 +517,8 @@ namespace TradeHubGui.StrategyRunner.Executors
 
             // Update UI
             AddOrderDetails(orderDetails);
+
+            PersistencePublisher.PublishDataForPersistence(order);
         }
 
         /// <summary>
@@ -522,13 +537,16 @@ namespace TradeHubGui.StrategyRunner.Executors
 
             // Update UI
             AddOrderDetails(orderDetails);
+
+            // Handle Persistence
+            PersistencePublisher.PublishDataForPersistence(order);
         }
 
         /// <summary>
         /// Called when Custom Strategy's order is rejected
         /// </summary>
         /// <param name="rejection">Contains rejection details</param>
-        private void OnRejectionreceived(Rejection rejection)
+        private void OnRejectionReceived(Rejection rejection)
         {
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = rejection.OrderId;
@@ -555,6 +573,9 @@ namespace TradeHubGui.StrategyRunner.Executors
 
             // Update UI
             AddOrderDetails(orderDetails);
+
+            PersistencePublisher.PublishDataForPersistence(execution.Fill);
+            PersistencePublisher.PublishDataForPersistence(execution.Order);
         }
 
         /// <summary>

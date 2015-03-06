@@ -150,6 +150,12 @@
                                 <TextBlock Text="Import instances" />
                             </StackPanel>
                         </Button>
+
+                        <StackPanel>
+                            <CheckBox DockPanel.Dock="Right" Content="Enable Order Persistence" 
+                                    IsChecked="{Binding EnablePersistence, UpdateSourceTrigger=PropertyChanged}"
+                                    Margin="10,4,10,0" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
 
                     <DataGrid x:Name="StrategyInstancesDataGrid" Margin="10"

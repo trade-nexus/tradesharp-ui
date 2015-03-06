@@ -5,10 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Spring.Context.Support;
 using TraceSourceLogger;
 using TraceSourceLogger.ValueObjects;
 using TradeHub.Common.Core.DomainModels;
 using TradeHub.Common.Core.DomainModels.OrderDomain;
+using TradeHub.Common.Core.Repositories;
+using TradeHub.Common.Persistence;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
@@ -69,8 +72,12 @@ namespace TradeHubGui.StrategyRunner.Services
         /// </summary>
         public StrategyController()
         {
+            IPersistRepository<object> persistRepository = ContextRegistry.GetContext()["PersistRepository"] as IPersistRepository<object>;
+
             // Save UI thread reference
             _currentDispatcher = Dispatcher.CurrentDispatcher;
+
+            PersistencePublisher.InitializeDisruptor(persistRepository);
         }
 
         /// <summary>
