@@ -72,14 +72,14 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// <param name="strategyInfo">Information to optimized specified strategy</param>
         private void OptimizeStrategy(GeneticAlgorithmParameters strategyInfo)
         {
-            //// NOTE: Test code to simulate GA Results
-            //// BEGIN:
-            //for (int i = 0; i < strategyInfo.Rounds; i++)
-            //{
-            //    TestCodeToGenerateResults(strategyInfo);
-            //}
-            //return;
-            //// :END
+            // NOTE: Test code to simulate GA Results
+            // BEGIN:
+            for (int i = 0; i < strategyInfo.Rounds; i++)
+            {
+                TestCodeToGenerateResults(strategyInfo);
+            }
+            return;
+            // :END
 
             // Save constructor arguments
             _ctorArguments = strategyInfo.CtorArgs;
