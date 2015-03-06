@@ -323,7 +323,7 @@ namespace TradeHubGui.Dashboard.Services
                     fillDetail.FillType = execution.Fill.ExecutionType;
 
                     // Add to order details object
-                    orderDetails.FillDetails.Add(fillDetail);
+                    provider.AddFill(orderDetails, fillDetail);
 
                     // Use incoming information to update position statistics
                     provider.UpdatePosition(orderDetails);

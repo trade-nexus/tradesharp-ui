@@ -23,13 +23,15 @@ namespace TradeHubGui.ViewModel
 
         private string _filterString;
 
+        private OrderDetails _selectedOrderDetail;
         private OrderExecutionProvider _selectedProvider;
 
         private ICollectionView _orderCollection;
 
         private ObservableCollection<OrderDetails> _orders;
+        private ObservableCollection<FillDetail> _fillDetailCollection;
         private ObservableCollection<PositionStatistics> _positionStatisticsCollection; 
-        private ObservableCollection<OrderExecutionProvider> _executionProviders; 
+        private ObservableCollection<OrderExecutionProvider> _executionProviders;
         
         #endregion
 
@@ -38,6 +40,7 @@ namespace TradeHubGui.ViewModel
         public OrdersViewModel()
         {
             _orders = new ObservableCollection<OrderDetails>();
+            _fillDetailCollection = new ObservableCollection<FillDetail>();
             _executionProviders = new ObservableCollection<OrderExecutionProvider>();
             _positionStatisticsCollection = new ObservableCollection<PositionStatistics>();
 
@@ -139,6 +142,35 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Contains all fills for the selected order
+        /// </summary>
+        public ObservableCollection<FillDetail> FillDetailCollection
+        {
+            get { return _fillDetailCollection; }
+            set
+            {
+                _fillDetailCollection = value;
+                OnPropertyChanged("FillDetailCollection");
+            }
+        }
+
+        /// <summary>
+        /// Currently selected order in the UI
+        /// </summary>
+        public OrderDetails SelectedOrderDetail
+        {
+            get { return _selectedOrderDetail; }
+            set
+            {
+                _selectedOrderDetail = value;
+                if (value != null)
+                    PopulateFillDetail();
+
+                OnPropertyChanged("SelectedOrderDetail");
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -176,29 +208,24 @@ namespace TradeHubGui.ViewModel
         private void PopulateOrderDetails()
         {
             // Clear current values
-            Orders.Clear();
-            PositionStatisticsCollection.Clear();
             Orders = new ObservableCollection<OrderDetails>();
             PositionStatisticsCollection = new ObservableCollection<PositionStatistics>();
 
             // Set New Values
             Orders = SelectedProvider.OrdersCollection;
             PositionStatisticsCollection = SelectedProvider.PositionStatisticsCollection;
+        }
 
-            //// Populate Order Details
-            //foreach (var orderDetails in SelectedProvider.OrdersCollection)
-            //{
-            //    Orders.Add(orderDetails);
-            //}
+        /// <summary>
+        /// Displays Fill Details for the selected Order
+        /// </summary>
+        private void PopulateFillDetail()
+        {
+            // Clear current values
+            FillDetailCollection = new ObservableCollection<FillDetail>();
 
-            //// Populate Position Details
-            //foreach (var positionStats in SelectedProvider.PositionStatisticsCollection.Values)
-            //{
-            //    PositionStatisticsCollection.Add(positionStats);
-            //}
-
-            // Select the 1st instance from DataGrid
-            //SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
+            // Set New Values
+            FillDetailCollection = SelectedOrderDetail.FillDetails;
         }
 
         #endregion

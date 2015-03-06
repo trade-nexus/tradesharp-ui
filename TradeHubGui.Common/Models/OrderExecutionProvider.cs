@@ -107,6 +107,20 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
+        /// Adds a Fill information to existing collection
+        /// </summary>
+        /// <param name="orderDetails">Order in which to add Fill information</param>
+        /// <param name="fillDetail">Contains Fill information</param>
+        public void AddFill(OrderDetails orderDetails, FillDetail fillDetail)
+        {
+            _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+            {
+                // Add to given orders fill list
+                orderDetails.FillDetails.Add(fillDetail);
+            }));
+        }
+
+        /// <summary>
         /// Returns Order Details object for the given 'Order-ID'
         /// </summary>
         /// <param name="orderId">Unique ID to identity order</param>

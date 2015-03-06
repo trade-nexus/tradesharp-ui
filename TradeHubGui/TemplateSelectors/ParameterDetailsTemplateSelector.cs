@@ -32,7 +32,7 @@ namespace TradeHubGui.TemplateSelectors
                 {
                     return element.FindResource("UnsignedIntegerDataTemplate") as DataTemplate;
                 }
-                else if (pair.Value.ParameterType == typeof(float) || pair.Value.ParameterType == typeof(decimal))
+                else if (pair.Value.ParameterType == typeof(float) || pair.Value.ParameterType == typeof(decimal)|| pair.Value.ParameterType == typeof(System.Single))
                 {
                     return element.FindResource("DecimalDataTemplate") as DataTemplate;
                 }

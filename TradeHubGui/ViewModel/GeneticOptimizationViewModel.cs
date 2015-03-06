@@ -509,12 +509,12 @@ namespace TradeHubGui.ViewModel
                     lines = new List<string>();
 
                     // Create header row
-                    string header = "Property Info,Bought,Sold,Avg Buy Price,Avg Sell Price,Profit";
+                    string header = "Round,";
                     foreach (var optimizationParameterDetail in _optimizationParameters)
                     {
-                        header += "," + optimizationParameterDetail.Description;
+                        header += optimizationParameterDetail.Description + ",";
                     }
-                    header += ",Risk";
+                    header += "Risk";
 
                     // Add Header Row
                     lines.Add(header);
@@ -541,8 +541,10 @@ namespace TradeHubGui.ViewModel
                         }
                     }
 
+                    // NOTE: Below line is wrong (wrong file name and path probably.)
+
                     // Create file path
-                    string path = folderPath + "\\" + "BruteForce-Results.csv";
+                    string path = folderPath + "\\" + "GA-Results.csv";
 
                     // Write data
                     File.WriteAllLines(path, lines);
