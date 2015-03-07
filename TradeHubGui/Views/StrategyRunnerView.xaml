@@ -133,30 +133,28 @@
 
                 <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
 
-                <DockPanel Grid.Row="2" Margin="10,0">
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10,20,0,0">
-                        <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
-                                    Command="{Binding ShowCreateInstanceWindowCommand}">
+                <DockPanel Grid.Row="2" Margin="10,0,10,10">
+                    <DockPanel DockPanel.Dock="Top" Margin="10,20,0,0">
+                        <Button DockPanel.Dock="Left" MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
+                                Command="{Binding ShowCreateInstanceWindowCommand}">
                             <StackPanel Orientation="Horizontal" Margin="4,0">
                                 <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgAdd}" UseLayoutRounding="True"/>
                                 <TextBlock Text="Create instance" />
                             </StackPanel>
                         </Button>
 
-                        <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
-                                    Command="{Binding ImportInstancesCommand}">
+                        <Button DockPanel.Dock="Left" MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
+                                Command="{Binding ImportInstancesCommand}">
                             <StackPanel Orientation="Horizontal" Margin="4,0">
                                 <Image Width="15" Height="15" Margin="0,0,4,0" Source="{StaticResource imgImport}" UseLayoutRounding="True"/>
                                 <TextBlock Text="Import instances" />
                             </StackPanel>
                         </Button>
 
-                        <StackPanel>
-                            <CheckBox DockPanel.Dock="Right" Content="Enable Order Persistence" 
-                                    IsChecked="{Binding EnablePersistence, UpdateSourceTrigger=PropertyChanged}"
-                                    Margin="10,4,10,0" VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </StackPanel>
+                        <CheckBox DockPanel.Dock="Right" Content="Enable order persistence"
+                                  IsChecked="{Binding EnablePersistence, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="10,4,10,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    </DockPanel>
 
                     <DataGrid x:Name="StrategyInstancesDataGrid" Margin="10"
                                     ItemsSource="{Binding Instances}"
@@ -269,9 +267,9 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Instance key" Width="*" Binding="{Binding Path=Key}" />
-                            <DataGridTextColumn Header="Executed" Width="*" Binding="{Binding Path=Executed}" />
-                            <DataGridTextColumn Header="Buy count" Width="*" Binding="{Binding Path=BuyCount}" />
-                            <DataGridTextColumn Header="Sell count" Width="*" Binding="{Binding Path=SellCount}" />
+                            <DataGridTextColumn Header="Executed" Width="0.34*" Binding="{Binding Path=Executed}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Buy count" Width="0.34*" Binding="{Binding Path=BuyCount}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Sell count" Width="0.34*" Binding="{Binding Path=SellCount}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </DockPanel>
@@ -299,8 +297,8 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Order ID" Width="0.22*" Binding="{Binding Path=ID}" />
                             <DataGridTextColumn Header="Side" Width="0.15*" Binding="{Binding Path=Side}" />
-                            <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" />
-                            <DataGridTextColumn Header="Quantity" Width="0.22*" Binding="{Binding Path=Quantity}" />
+                            <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Quantity" Width="0.22*" Binding="{Binding Path=Quantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                             <DataGridTextColumn Header="Time" Width="0.4*" Binding="{Binding Path=Time}" />
                             <DataGridTemplateColumn Header="Status" Width="0.4*" SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
