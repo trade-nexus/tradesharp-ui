@@ -169,7 +169,7 @@ namespace TradeHubGui.ViewModel
         public Provider Provider
         {
             get { return _provider; }
-            set 
+            set
             {
                 if (_provider != value)
                 {
@@ -220,7 +220,7 @@ namespace TradeHubGui.ViewModel
                 return _deleteSymbolCommand ?? (_deleteSymbolCommand = new RelayCommand(param => DeleteSymbolCommandExecute(param)));
             }
         }
-        
+
         /// <summary>
         /// Command used for showing LOB
         /// </summary>
@@ -320,12 +320,12 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void DeleteSymbolCommandExecute(object param)
         {
-            if (WPFMessageBox.Show(_scannerWindow, 
-                string.Format("Delete symbol {0}?", (param as TickDetail).Security.Symbol), 
+            if (WPFMessageBox.Show(_scannerWindow,
+                string.Format("Delete symbol {0}?", (param as TickDetail).Security.Symbol),
                 string.Format("{0} Scanner", _provider.ProviderName),
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var tickDetail = (TickDetail) param;
+                var tickDetail = (TickDetail)param;
 
                 TickDetailsCollection.Remove(tickDetail);
 
@@ -338,34 +338,40 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Show LOB for current instrument
+        /// Show LOB for current TickDetail
         /// </summary>
-        /// <param name="param">current instrument</param>
+        /// <param name="param">current TickDetail</param>
         private void ShowLimitOrderBookExecute(object param)
         {
-            throw new NotImplementedException();
+            SelectedTickDetail = (TickDetail)param;
+
+            LimitOrderBookWindow lobWindow = new LimitOrderBookWindow();
+            lobWindow.Title = string.Format("LOB - {0} ({1})", SelectedTickDetail.Security.Symbol, Provider.ProviderName);
+            lobWindow.DataContext = new LimitOrderBookViewModel(SelectedTickDetail);
+            lobWindow.Owner = _scannerWindow;
+            lobWindow.ShowDialog();
         }
 
         /// <summary>
-        /// Show Chart for current instrument
+        /// Show Chart for current TickDetail
         /// </summary>
-        /// <param name="param">current instrument</param>
+        /// <param name="param">current TickDetail</param>
         private void ShowChartExecute(object param)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Send Order for current instrument
+        /// Send Order for current TickDetail
         /// </summary>
-        /// <param name="param">current instrument</param>
+        /// <param name="param">current TickDetail</param>
         private void SendOrderExecute(object param)
         {
             SelectedTickDetail = (TickDetail)param;
 
             if (!_sendOrderViewModel.SetOrderExecutionProvider(Provider.ProviderName))
             {
-                
+
             }
             _sendOrderViewModel.OrderModel.Security = SelectedTickDetail.Security;
             _sendOrderViewModel.OrderModel.SellPrice = SelectedTickDetail.AskPrice;
@@ -379,18 +385,18 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Unsubsribe from current instrument
+        /// Unsubsribe from current TickDetail
         /// </summary>
-        /// <param name="param">current instrument</param>
+        /// <param name="param">current TickDetail</param>
         private void UnsubsribeExecute(object param)
         {
             throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Show Position Stats for current instrument
+        /// Show Position Stats for current TickDetail
         /// </summary>
-        /// <param name="param">current instrument</param>
+        /// <param name="param">current TickDetail</param>
         private void ShowPositionStatsExecute(object param)
         {
             throw new NotImplementedException();
