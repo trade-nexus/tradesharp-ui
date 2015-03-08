@@ -8,7 +8,8 @@
                  WindowStartupLocation="CenterScreen"
                  Background="{StaticResource BaseBackground}"
                  Icon="{StaticResource imgMarketDataScanner}"
-                 Width="700" Height="400">
+                 Width="700" Height="400"
+                 MinWidth="200" MinHeight="200">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Height="20" Width="20" Source="{StaticResource imgMarketDataScanner}"/>

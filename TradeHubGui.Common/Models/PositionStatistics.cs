@@ -39,9 +39,7 @@ namespace TradeHubGui.Common.Models
             _pnl = default(decimal);
         }
 
-        #region INotifyPropertyChanged members
-
-        public event PropertyChangedEventHandler PropertyChanged;
+        #region Properties
 
         /// <summary>
         /// Contains Symbol information
@@ -60,7 +58,7 @@ namespace TradeHubGui.Common.Models
             get { return _position; }
             set
             {
-                _position = value; 
+                _position = value;
                 OnPropertyChanged("Position");
             }
         }
@@ -73,10 +71,16 @@ namespace TradeHubGui.Common.Models
             get { return _pnl; }
             set
             {
-                _pnl = value; 
+                _pnl = value;
                 OnPropertyChanged("Pnl");
             }
         }
+
+        #endregion
+
+        #region INotifyPropertyChanged members
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
         {

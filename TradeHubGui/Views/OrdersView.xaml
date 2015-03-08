@@ -82,7 +82,7 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel Margin="0">
-                                    <Border DockPanel.Dock="Right" Background="#AFFF" Margin="0" CornerRadius="0" MinWidth="100">
+                                    <Border DockPanel.Dock="Right" Background="#AFFF" Margin="0" CornerRadius="0" MinWidth="110">
                                         <StackPanel Orientation="Horizontal" Margin="4,2,4,4" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding ConnectionStatus, FallbackValue=Disconnected}" 
                                                     Foreground="{Binding ConnectionStatus, FallbackValue=Crimson, Converter={StaticResource ConnectionStatusToBrush}}" 
@@ -113,7 +113,8 @@
                               IsReadOnly="True"
                               SelectionUnit="FullRow"
                               AutoGenerateColumns="False"
-                              RowHeight="22">
+                              RowHeight="22"
+                              SelectionChanged="DataGrid_SelectionChanged">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Security.Symbol}" />
@@ -199,7 +200,8 @@
                               IsReadOnly="True"
                               SelectionUnit="FullRow"
                               AutoGenerateColumns="False"
-                              RowHeight="22">
+                              RowHeight="22"
+                              SelectionChanged="DataGrid_SelectionChanged">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Fill ID" Width="0.12*" Binding="{Binding Path=FillId}" />

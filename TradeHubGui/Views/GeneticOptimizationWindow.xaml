@@ -151,16 +151,17 @@
                     </DockPanel>
 
                     <DataGrid x:Name="StrategyParametersDataGrid" Margin="0,20,0,0" 
-                                ItemsSource="{Binding OptimizationParameters}"
-                                SelectionMode="Single" 
-                                IsTextSearchEnabled="True"
-                                IsSynchronizedWithCurrentItem="True"
-                                CanUserAddRows="False" CanUserDeleteRows="False"
-                                CanUserResizeRows="False" CanUserSortColumns="True"
-                                IsReadOnly="True"
-                                SelectionUnit="FullRow"
-                                AutoGenerateColumns="False"
-                                RowHeight="24">
+                              ItemsSource="{Binding OptimizationParameters}"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False"
+                              RowHeight="24"
+                              SelectionChanged="DataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Index" Width="0.4*" Binding="{Binding Path=Index}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Description" Width="0.7*" Binding="{Binding Path=Description}" IsReadOnly="True"/>
@@ -198,16 +199,17 @@
 
             <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Results" Margin="10,0,10,10">
                 <DataGrid x:Name="ResultDataGrid" 
-                            ItemsSource="{Binding OptimizedParameters}"
-                            SelectionMode="Single" 
-                            IsTextSearchEnabled="True"
-                            IsSynchronizedWithCurrentItem="True"
-                            CanUserAddRows="False" CanUserDeleteRows="False"
-                            CanUserResizeRows="False" CanUserSortColumns="True"
-                            IsReadOnly="True"
-                            SelectionUnit="FullRow"
-                            AutoGenerateColumns="False"
-                            RowHeight="22">
+                          ItemsSource="{Binding OptimizedParameters}"
+                          SelectionMode="Single" 
+                          IsTextSearchEnabled="True"
+                          IsSynchronizedWithCurrentItem="True"
+                          CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserResizeRows="False" CanUserSortColumns="True"
+                          IsReadOnly="True"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False"
+                          RowHeight="22"
+                          SelectionChanged="DataGrid_SelectionChanged">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Property" Width="*" Binding="{Binding Path=Description}" />

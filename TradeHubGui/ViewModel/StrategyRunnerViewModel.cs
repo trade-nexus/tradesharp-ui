@@ -701,7 +701,7 @@ namespace TradeHubGui.ViewModel
                 Instances.Add(strategyInstance.Value);
             }
 
-            // Select the 1st instance from DataGrid
+            // Select the 1st instance initially
             SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
         }
 

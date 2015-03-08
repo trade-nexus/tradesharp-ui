@@ -292,7 +292,8 @@
                               IsReadOnly="True"
                               SelectionUnit="FullRow"
                               AutoGenerateColumns="False"
-                              RowHeight="22">
+                              RowHeight="22"
+                              SelectionChanged="DataGrid_SelectionChanged">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Order ID" Width="0.22*" Binding="{Binding Path=ID}" />
