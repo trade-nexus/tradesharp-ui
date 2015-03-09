@@ -369,13 +369,8 @@ namespace TradeHubGui.ViewModel
         {
             SelectedTickDetail = (TickDetail)param;
 
-            if (!_sendOrderViewModel.SetOrderExecutionProvider(Provider.ProviderName))
-            {
-
-            }
-            _sendOrderViewModel.OrderModel.Security = SelectedTickDetail.Security;
-            _sendOrderViewModel.OrderModel.SellPrice = SelectedTickDetail.AskPrice;
-            _sendOrderViewModel.OrderModel.BuyPrice = SelectedTickDetail.BidPrice;
+            _sendOrderViewModel.SetOrderExecutionProvider(Provider.ProviderName);
+            _sendOrderViewModel.SetSecurityInformation(SelectedTickDetail.Security, SelectedTickDetail.BidPrice, SelectedTickDetail.AskPrice);
 
             SendOrderWindow orderWindow = new SendOrderWindow();
             orderWindow.DataContext = _sendOrderViewModel;

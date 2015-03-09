@@ -186,5 +186,20 @@ namespace TradeHubGui.Common.Models
                 statistics.Pnl += orderDetails.Quantity * orderDetails.FillDetails.Last().FillPrice;
             }
         }
+
+        /// <summary>
+        /// Returns Position Statistics for the requested Symbol
+        /// </summary>
+        /// <param name="symbol">Symbol Name</param>
+        /// <returns></returns>
+        public PositionStatistics GetPositionStatistics(string symbol)
+        {
+            PositionStatistics positionStatistics = null;
+
+            // Get information from local dictionary
+            _positionStatisticsDictionary.TryGetValue(symbol, out positionStatistics);
+
+            return positionStatistics;
+        }
     }
 }

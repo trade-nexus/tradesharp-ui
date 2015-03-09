@@ -104,13 +104,13 @@
         <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="20">
             <StackPanel Orientation="Vertical" Margin="10">
                 <Label Content="Position"/>
-                <TextBlock Text="{Binding Position, FallbackValue=-150}" FontWeight="Bold" FontSize="14" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0"/>
-                <Button Content="Close" Margin="0,2,0,0" Height="{Binding}" Padding="3" FontSize="14" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding PositionStatistics.Position, FallbackValue=-150}" FontWeight="Bold" FontSize="14" TextAlignment="Center" VerticalAlignment="Center" Margin="4,0"/>
+                <Button Content="Close" Command="{Binding ClosePositionCommand}" Margin="0,2,0,0" Height="{Binding}" Padding="3" FontSize="14" FontWeight="SemiBold" />
             </StackPanel>
 
             <StackPanel Grid.Row="2" Margin="10" Orientation="Vertical" HorizontalAlignment="Right">
                 <Label Content="PnL"/>
-                <TextBlock Text="{Binding PnL, FallbackValue=15.3}" FontWeight="Normal" FontSize="34" TextAlignment="Left" VerticalAlignment="Center" Margin="0,0"/>
+                <TextBlock Text="{Binding PositionStatistics.Pnl, FallbackValue=15.3}" FontWeight="Normal" FontSize="34" TextAlignment="Left" VerticalAlignment="Center" Margin="0,0"/>
             </StackPanel>
         </DockPanel>
     </Grid>
