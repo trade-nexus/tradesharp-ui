@@ -42,12 +42,12 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void RequestNewConnection_SendRequestToServer_ReceiveLogon()
         {
             Thread.Sleep(9000);
-            Provider provider = new Provider();
+            OrderExecutionProvider provider = new OrderExecutionProvider(Dispatcher.CurrentDispatcher);
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
             provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<OrderExecutionProvider>(provider);
 
             Thread.Sleep(9000);
 
@@ -65,7 +65,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<OrderExecutionProvider>(provider);
 
             Thread.Sleep(5000);
 
@@ -104,7 +104,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<OrderExecutionProvider>(provider);
 
             Thread.Sleep(5000);
 
@@ -186,7 +186,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<OrderExecutionProvider>(provider);
 
             Thread.Sleep(5000);
 
@@ -227,7 +227,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             provider.ProviderName = TradeHubConstants.OrderExecutionProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<OrderExecutionProvider>(provider);
 
             Thread.Sleep(5000);
 

@@ -14,6 +14,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
 using TradeHubGui.Views;
+using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 
 namespace TradeHubGui.ViewModel
 {
@@ -21,8 +22,8 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
         private NewMarketScannerWindow _newMarketScannerWindow;
-        private ObservableCollection<Provider> _marketDataProviders;
-        private Provider _selectedMarketDataProvider;
+        private ObservableCollection<MarketDataProvider> _marketDataProviders;
+        private MarketDataProvider _selectedMarketDataProvider;
         private ObservableCollection<MarketScannerWindowViewModel> _scannerWindowViewModels;
 
         private RelayCommand _showNewScannerWindowCommand;
@@ -43,7 +44,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Collection of market data providers
         /// </summary>
-        public ObservableCollection<Provider> MarketDataProviders
+        public ObservableCollection<MarketDataProvider> MarketDataProviders
         {
             get { return _marketDataProviders; }
             set
@@ -59,7 +60,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Selected market data provider
         /// </summary>
-        public Provider SelectedMarketDataProvider
+        public MarketDataProvider SelectedMarketDataProvider
         {
             get { return _selectedMarketDataProvider; }
             set
@@ -245,7 +246,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void InitializeMarketDataProviders()
         {
-            _marketDataProviders = new ObservableCollection<Provider>();
+            _marketDataProviders = new ObservableCollection<MarketDataProvider>();
 
             // Populate Individual Market Data Provider details
             foreach (var provider in ProvidersController.MarketDataProviders)

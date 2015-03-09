@@ -12,6 +12,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
+using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
 namespace TradeHubGui.ViewModel
@@ -20,10 +21,10 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
 
-        private ObservableCollection<Provider> _marketDataProviders;
+        private ObservableCollection<MarketDataProvider> _marketDataProviders;
         private ObservableCollection<OrderExecutionProvider> _orderExecutionProviders;
 
-        private Provider _selectedMarketDataProvider;
+        private MarketDataProvider _selectedMarketDataProvider;
         private OrderExecutionProvider _selectedOrderExecutionProvider;
 
         private RelayCommand _addProviderCommand;
@@ -52,7 +53,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Collection of market data providers
         /// </summary>
-        public ObservableCollection<Provider> MarketDataProviders
+        public ObservableCollection<MarketDataProvider> MarketDataProviders
         {
             get { return _marketDataProviders; }
             set
@@ -84,7 +85,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Selected market data provider
         /// </summary>
-        public Provider SelectedMarketDataProvider
+        public MarketDataProvider SelectedMarketDataProvider
         {
             get { return _selectedMarketDataProvider; }
             set
@@ -188,7 +189,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void RemoveProviderExecute(object param)
         {
-            Provider selectedProvider = param.Equals("MarketDataProvider") ? SelectedMarketDataProvider : SelectedOrderExecutionProvider;
+            Provider selectedProvider = param.Equals("MarketDataProvider") ? (Provider) SelectedMarketDataProvider : SelectedOrderExecutionProvider;
 
             if ((System.Windows.Forms.DialogResult)WPFMessageBox.Show(MainWindow, string.Format("Remove provider {0}?", selectedProvider.ProviderName), "Question",
                  MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == System.Windows.Forms.DialogResult.Yes)
@@ -237,7 +238,7 @@ namespace TradeHubGui.ViewModel
                 // :END
 
                 // Rasie event to request connection
-                EventSystem.Publish<Provider>(SelectedMarketDataProvider);
+                EventSystem.Publish<MarketDataProvider>(SelectedMarketDataProvider);
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
@@ -286,7 +287,7 @@ namespace TradeHubGui.ViewModel
                 // :END
 
                 // Rasie event to request connection
-                EventSystem.Publish<Provider>(SelectedMarketDataProvider);
+                EventSystem.Publish<MarketDataProvider>(SelectedMarketDataProvider);
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
@@ -327,7 +328,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private async void InitializeMarketDataProviders()
         {
-            _marketDataProviders = new ObservableCollection<Provider>();
+            _marketDataProviders = new ObservableCollection<MarketDataProvider>();
 
             // Request Controller for infomation
             var availableProviders = await Task.Run(() => _providersController.GetAvailableMarketDataProviders());

@@ -26,7 +26,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Market Data Provider details
         /// </summary>
-        private Provider _provider;
+        private MarketDataProvider _provider;
 
         /// <summary>
         /// Argument Constructor
@@ -34,7 +34,7 @@ namespace TradeHubGui.Common.Models
         /// <param name="security">Contains Symbol information</param>
         /// <param name="provider">Market Data Provider details</param>
         /// <param name="subscriptionType">Subscription category e.g. Subscribe, Un-Subscribe</param>
-        public SubscriptionRequest(Security security, Provider provider, SubscriptionType subscriptionType)
+        public SubscriptionRequest(Security security, MarketDataProvider provider, SubscriptionType subscriptionType)
         {
             _security = security;
             _provider = provider;
@@ -62,7 +62,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Market Data Provider details
         /// </summary>
-        public Provider Provider
+        public MarketDataProvider Provider
         {
             get { return _provider; }
             set { _provider = value; }

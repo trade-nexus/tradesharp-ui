@@ -7,8 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Forms.VisualStyles;
+using System.Windows.Input;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
+using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
@@ -25,6 +27,7 @@ namespace TradeHubGui.ViewModel
 
         private OrderDetails _selectedOrderDetail;
         private OrderExecutionProvider _selectedProvider;
+        private PositionStatistics _selectedPosition;
 
         private ICollectionView _orderCollection;
 
@@ -32,11 +35,16 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<FillDetail> _fillDetailCollection;
         private ObservableCollection<PositionStatistics> _positionStatisticsCollection; 
         private ObservableCollection<OrderExecutionProvider> _executionProviders;
+
+        private RelayCommand _closePositionCommand;
         
         #endregion
 
         #region Constructor
 
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public OrdersViewModel()
         {
             _orders = new ObservableCollection<OrderDetails>();
@@ -53,9 +61,6 @@ namespace TradeHubGui.ViewModel
             }
 
             PopulateExecutionProviders();
-
-            ////Dummy Function
-            //TestCodeToAddOrderDetailsToExecutionProvider();
         }
         
         #endregion
@@ -171,9 +176,48 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Currently Selected Position Statistics object from the grid view
+        /// </summary>
+        public PositionStatistics SelectedPosition
+        {
+            get { return _selectedPosition; }
+            set
+            {
+                _selectedPosition = value;
+                OnPropertyChanged("SelectedPosition");
+            }
+        }
+
         #endregion
 
         #region Commands
+        
+        /// <summary>
+        /// Used for 'Close' button for sending an order to close position on given symbol
+        /// </summary>
+        public ICommand ClosePositionCommand
+        {
+            get
+            {
+                return _closePositionCommand ??
+                       (_closePositionCommand =
+                           new RelayCommand(param => ClosePositionExecute()));
+            }
+        }
+
+        #endregion
+
+        #region Command Trigger Methods
+
+        /// <summary>
+        /// Called when 'Close' button is clicked
+        /// </summary>
+        private void ClosePositionExecute()
+        {
+            ClosePosition();
+        }
+
         #endregion
 
         #region Methods
@@ -230,38 +274,41 @@ namespace TradeHubGui.ViewModel
             // Set New Values
             FillDetailCollection = SelectedOrderDetail.FillDetails;
         }
+        
+        /// <summary>
+        /// Closes current open position for the selected Position 
+        /// </summary>
+        private void ClosePosition()
+        {
+            // Find Order Side
+            string orderSide = SelectedPosition.Position > 0 ? OrderSide.SELL : OrderSide.BUY;
 
+            // Find Order Quantity
+            int orderQuantity = Math.Abs(SelectedPosition.Position);
+
+            // Create a new Object which will be used across the application
+            OrderDetails orderDetails = new OrderDetails();
+
+            orderDetails.Price = 0;
+            orderDetails.StopPrice = 0;
+            orderDetails.Quantity = orderQuantity;
+            orderDetails.Side = orderSide;
+            orderDetails.Type = OrderType.Market;
+            orderDetails.Security = SelectedPosition.Security;
+            orderDetails.Provider = SelectedProvider.ProviderName;
+
+            // Add to selected provider collection for future reference and updates
+            SelectedProvider.AddOrder(orderDetails);
+
+            // Create new order request
+            OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
+
+            // Raise event to notify listener
+            EventSystem.Publish<OrderRequest>(orderRequest);
+        }
         #endregion
 
         #region Events
         #endregion
-
-        private void TestCodeToAddOrderDetailsToExecutionProvider()
-        {
-            OrderDetails orderDetails = new OrderDetails();
-            orderDetails.ID = "01";
-            orderDetails.Type = OrderType.Market;
-            orderDetails.Quantity = 10;
-            orderDetails.Security = new Security() { Symbol = "AAPL" };
-            orderDetails.Side = OrderSide.BUY;
-            orderDetails.Provider = TradeHubConstants.OrderExecutionProvider.Simulated;
-            orderDetails.Status = OrderStatus.EXECUTED;
-
-            FillDetail fillDetail = new FillDetail();
-            fillDetail.FillPrice = 123.76M;
-            fillDetail.FillQuantity = 10;
-            fillDetail.FillType = ExecutionType.Fill;
-
-            orderDetails.FillDetails.Add(fillDetail);
-
-            foreach (var provider in ExecutionProviders)
-            {
-                if (provider.ProviderName.Equals(TradeHubConstants.OrderExecutionProvider.Simulated))
-                {
-                    provider.AddOrder(orderDetails);
-                    provider.UpdatePosition(orderDetails);
-                }
-            }
-        }
     }
 }

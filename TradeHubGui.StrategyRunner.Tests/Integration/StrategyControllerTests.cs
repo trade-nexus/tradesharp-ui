@@ -13,7 +13,7 @@ using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Representations;
 using TradeHubGui.StrategyRunner.Services;
-using OrderExecutionProvider = TradeHub.Common.Core.Constants.OrderExecutionProvider;
+using TradeHubConstats = TradeHub.Common.Core.Constants;
 
 namespace TradeHubGui.StrategyRunner.Tests.Integration
 {
@@ -39,13 +39,13 @@ namespace TradeHubGui.StrategyRunner.Tests.Integration
             parameters.Add("5", new ParameterDetail(typeof(decimal), 1000));
             parameters.Add("6", new ParameterDetail(typeof(string), BarFormat.TIME));
             parameters.Add("7", new ParameterDetail(typeof(string), BarPriceType.LAST));
-            parameters.Add("8", new ParameterDetail(typeof(string), MarketDataProvider.SimulatedExchange));
-            parameters.Add("9", new ParameterDetail(typeof(string), OrderExecutionProvider.SimulatedExchange));
+            parameters.Add("8", new ParameterDetail(typeof(string), TradeHubConstats.MarketDataProvider.SimulatedExchange));
+            parameters.Add("9", new ParameterDetail(typeof(string), TradeHubConstats.OrderExecutionProvider.SimulatedExchange));
 
             object[] paramters =
             {
                 (int)10, (int)15, (string)"LAST", (string)"ERX", (decimal)1000, BarFormat.TIME, BarPriceType.LAST,
-                MarketDataProvider.SimulatedExchange, OrderExecutionProvider.SimulatedExchange
+                TradeHubConstats.MarketDataProvider.SimulatedExchange, TradeHubConstats.OrderExecutionProvider.SimulatedExchange
             };
 
             var instance = StrategyHelper.CreateStrategyInstance(classtype, paramters);

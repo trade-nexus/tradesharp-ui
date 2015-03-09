@@ -31,7 +31,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void LoadMarketDataProviders()
         {
             // Request Controller for infomation
-            Task<IList<Provider>> availableProviders = _providersController.GetAvailableMarketDataProviders();
+            Task<IList<MarketDataProvider>> availableProviders = _providersController.GetAvailableMarketDataProviders();
 
             Assert.IsTrue(availableProviders.Result.Count.Equals(4));
         }
@@ -41,7 +41,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void EditMarketDataProviderCredentials()
         {
             // Request Controller for infomation
-            Task<IList<Provider>> availableProviders = _providersController.GetAvailableMarketDataProviders();
+            Task<IList<MarketDataProvider>> availableProviders = _providersController.GetAvailableMarketDataProviders();
 
             Assert.IsTrue(availableProviders.Result.Count.Equals(4));
 
