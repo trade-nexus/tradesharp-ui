@@ -9,6 +9,7 @@ using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Managers;
+using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
 namespace TradeHubGui.Dashboard.Services
@@ -38,7 +39,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <summary>
         /// Holds Available Market Data Provider objects
         /// </summary>
-        public static List<Provider> MarketDataProviders = new List<Provider>();
+        public static List<MarketDataProvider> MarketDataProviders = new List<MarketDataProvider>();
 
         /// <summary>
         /// Holds Available Order Execution Provider Objects
@@ -60,7 +61,7 @@ namespace TradeHubGui.Dashboard.Services
         /// Returns available market data providers along with there configuration information
         /// </summary>
         /// <returns></returns>
-        public async Task<IList<Provider>> GetAvailableMarketDataProviders()
+        public async Task<IList<MarketDataProvider>> GetAvailableMarketDataProviders()
         {
             var availableProvidersInformation = _dataProvidersManager.GetAvailableProviders();
 
@@ -71,7 +72,7 @@ namespace TradeHubGui.Dashboard.Services
             // Populate Individual Market Data Provider details
             foreach (var keyValuePair in availableProvidersInformation)
             {
-                Provider tempProvider = new Provider()
+                MarketDataProvider tempProvider = new MarketDataProvider()
                 {
                     ProviderType = ProviderType.MarketData,
                     ProviderName = keyValuePair.Key,

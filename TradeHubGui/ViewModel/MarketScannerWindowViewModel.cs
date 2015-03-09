@@ -14,6 +14,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Views;
+using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 
 namespace TradeHubGui.ViewModel
 {
@@ -24,7 +25,7 @@ namespace TradeHubGui.ViewModel
         private string _newSymbol;
         private MetroWindow _scannerWindow;
 
-        private Provider _provider;
+        private MarketDataProvider _provider;
         private TickDetail _selectedTickDetail;
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace TradeHubGui.ViewModel
         private SendOrderViewModel _sendOrderViewModel;
 
         private ObservableCollection<TickDetail> _tickDetailsCollection;
-        private ObservableCollection<Provider> _providers;
+        private ObservableCollection<MarketDataProvider> _providers;
 
         private RelayCommand _addNewSymbolCommand;
         private RelayCommand _deleteSymbolCommand;
@@ -47,7 +48,7 @@ namespace TradeHubGui.ViewModel
 
         #region Constructor
 
-        public MarketScannerWindowViewModel(MetroWindow scannerWindow, Provider provider, ObservableCollection<Provider> providers)
+        public MarketScannerWindowViewModel(MetroWindow scannerWindow, MarketDataProvider provider, ObservableCollection<MarketDataProvider> providers)
         {
             _sendOrderViewModel = new SendOrderViewModel();
 
@@ -166,7 +167,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Contains Market Data Provider Details
         /// </summary>
-        public Provider Provider
+        public MarketDataProvider Provider
         {
             get { return _provider; }
             set
@@ -182,7 +183,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Collection of market data providers used for 'Send Order' window
         /// </summary>
-        public ObservableCollection<Provider> Providers
+        public ObservableCollection<MarketDataProvider> Providers
         {
             get { return _providers; }
             set

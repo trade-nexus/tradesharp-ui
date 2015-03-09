@@ -12,6 +12,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Managers;
+using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 
 namespace TradeHubGui.Dashboard.Services
 {
@@ -32,7 +33,7 @@ namespace TradeHubGui.Dashboard.Services
         /// KEY = Provider Name
         /// Value = Provider details <see cref="Provider"/>
         /// </summary>
-        private IDictionary<string, Provider> _providersMap; 
+        private IDictionary<string, MarketDataProvider> _providersMap; 
 
         /// <summary>
         /// Argument Constructor
@@ -44,7 +45,7 @@ namespace TradeHubGui.Dashboard.Services
             _marketDataManager = new MarketDataManager(marketDataService);
 
             // Intialize local maps
-            _providersMap = new Dictionary<string, Provider>();
+            _providersMap = new Dictionary<string, MarketDataProvider>();
 
             // Subscribe Application events
             SubscribeEvents();
@@ -59,7 +60,7 @@ namespace TradeHubGui.Dashboard.Services
         private void SubscribeEvents()
         {
             // Register Event to receive connect/disconnect requests
-            EventSystem.Subscribe<Provider>(NewConnectionRequest);
+            EventSystem.Subscribe<MarketDataProvider>(NewConnectionRequest);
 
             // Register Event to receive subscribe/unsubscribe requests
             EventSystem.Subscribe<SubscriptionRequest>(NewSubscriptionRequest);
@@ -82,7 +83,7 @@ namespace TradeHubGui.Dashboard.Services
         /// Called when new Connection request is made by the user
         /// </summary>
         /// <param name="marketDataProvider"></param>
-        private void NewConnectionRequest(Provider marketDataProvider)
+        private void NewConnectionRequest(MarketDataProvider marketDataProvider)
         {
             // Only entertain 'Market Data Provider' related calls
             if (!marketDataProvider.ProviderType.Equals(ProviderType.MarketData))
@@ -120,7 +121,7 @@ namespace TradeHubGui.Dashboard.Services
         /// Called when connection request is received for given Market Data Provider
         /// </summary>
         /// <param name="marketDataProvider">Contains provider details</param>
-        private void ConnectMarketDataProvider(Provider marketDataProvider)
+        private void ConnectMarketDataProvider(MarketDataProvider marketDataProvider)
         {
             // Check if the provider already exists in the local map
             if (!_providersMap.ContainsKey(marketDataProvider.ProviderName))
@@ -149,7 +150,7 @@ namespace TradeHubGui.Dashboard.Services
         /// Called when disconnect request is received for given Market Data Provider
         /// </summary>
         /// <param name="marketDataProvider">Contains provider details</param>
-        private void DisconnectMarketDataProvider(Provider marketDataProvider)
+        private void DisconnectMarketDataProvider(MarketDataProvider marketDataProvider)
         {
             // Check current provider status
             if (marketDataProvider.ConnectionStatus.Equals(ConnectionStatus.Connected))
@@ -195,7 +196,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="providerName"></param>
         private void OnLogonArrived(string providerName)
         {
-            Provider provider;
+            MarketDataProvider provider;
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Connected;
@@ -208,7 +209,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="providerName"></param>
         private void OnLogoutArrived(string providerName)
         {
-            Provider provider;
+            MarketDataProvider provider;
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Disconnected;
@@ -221,7 +222,7 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="tick">Contains market details</param>
         private void OnTickArrived(Tick tick)
         {
-            Provider provider;
+            MarketDataProvider provider;
 
             // Get Provider object
             if (_providersMap.TryGetValue(tick.MarketDataProvider, out provider))
@@ -254,7 +255,7 @@ namespace TradeHubGui.Dashboard.Services
         public void Stop()
         {
             // Send logout for each connected market data provider
-            foreach (KeyValuePair<string, Provider> keyValuePair in _providersMap)
+            foreach (KeyValuePair<string, MarketDataProvider> keyValuePair in _providersMap)
             {
                 if (keyValuePair.Value.ConnectionStatus.Equals(ConnectionStatus.Connected))
                 {

@@ -11,6 +11,7 @@ using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
+using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
 namespace TradeHubGui.ViewModel
@@ -46,7 +47,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Collection of market data providers for displaying on Dashboard
         /// </summary>
-        public ObservableCollection<Provider> MarketDataProviders
+        public ObservableCollection<MarketDataProvider> MarketDataProviders
         {
             get { return _providersViewModel.MarketDataProviders; }
         }
