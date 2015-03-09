@@ -200,6 +200,9 @@ namespace TradeHubGui.ViewModel
             {
                 _executionProviders.Add(provider);
             }
+
+            // Select the 1st provider initially
+            SelectedProvider = _executionProviders.Count > 0 ? _executionProviders[0] : null;
         }
 
         /// <summary>

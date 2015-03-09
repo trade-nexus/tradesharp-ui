@@ -26,5 +26,10 @@ namespace TradeHubGui.Views
             InitializeComponent();
             DataContext = new OrdersViewModel();
         }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (sender as DataGrid).UnselectAllCells();
+        }
     }
 }

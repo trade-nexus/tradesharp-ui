@@ -32,7 +32,7 @@
                 <DockPanel Grid.Row="0" Margin="10,10,10,0">
                     <TextBlock DockPanel.Dock="Top" Margin="10,0,10,20" Text="EXECUTION PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                    <ListBox Name="ExecutionProvidersListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,5,10,0" Padding="0" 
+                    <ListBox Name="ExecutionProvidersListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,24,10,0" Padding="0" 
                              SelectedItem="{Binding SelectedProvider}" 
                              ItemsSource="{Binding ExecutionProviders}">
                         <ListBox.Resources>
@@ -82,7 +82,7 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel Margin="0">
-                                    <Border DockPanel.Dock="Right" Background="#AFFF" Margin="0" CornerRadius="0" MinWidth="100">
+                                    <Border DockPanel.Dock="Right" Background="#AFFF" Margin="0" CornerRadius="0" MinWidth="110">
                                         <StackPanel Orientation="Horizontal" Margin="4,2,4,4" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding ConnectionStatus, FallbackValue=Disconnected}" 
                                                     Foreground="{Binding ConnectionStatus, FallbackValue=Crimson, Converter={StaticResource ConnectionStatusToBrush}}" 
@@ -113,12 +113,13 @@
                               IsReadOnly="True"
                               SelectionUnit="FullRow"
                               AutoGenerateColumns="False"
-                              RowHeight="22">
+                              RowHeight="22"
+                              SelectionChanged="DataGrid_SelectionChanged">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Security.Symbol}" />
-                            <DataGridTextColumn Header="Position" Width="0.3*" Binding="{Binding Path=Position}" />
-                            <DataGridTextColumn Header="Profit and Losses" Width="0.4*" Binding="{Binding Path=Pnl}" />
+                            <DataGridTextColumn Header="Position" Width="0.3*" Binding="{Binding Path=Position}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Profit and Losses" Width="0.4*" Binding="{Binding Path=Pnl}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                             <DataGridTemplateColumn Header="Actions" Width="0.3*" SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -161,14 +162,14 @@
                               RowHeight="22">
 
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Order ID" Width="0.22*" Binding="{Binding Path=ID}" />
-                            <DataGridTextColumn Header="Symbol" Width="0.15*" Binding="{Binding Path=Security.Symbol}" />
+                            <DataGridTextColumn Header="Order ID" Width="0.2*" Binding="{Binding Path=ID}" />
+                            <DataGridTextColumn Header="Symbol" Width="0.2*" Binding="{Binding Path=Security.Symbol}" />
                             <DataGridTextColumn Header="Side" Width="0.15*" Binding="{Binding Path=Side}" />
                             <DataGridTextColumn Header="Type" Width="0.15*" Binding="{Binding Path=Type}" />
-                            <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" />
-                            <DataGridTextColumn Header="Quantity" Width="0.22*" Binding="{Binding Path=Quantity}" />
-                            <DataGridTextColumn Header="Time" Width="0.4*" Binding="{Binding Path=Time}" />
-                            <DataGridTemplateColumn Header="Status" Width="0.4*" SortMemberPath="Status">
+                            <DataGridTextColumn Header="Price" Width="0.2*" Binding="{Binding Path=Price}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Quantity" Width="0.2*" Binding="{Binding Path=Quantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Time" Width="0.35*" Binding="{Binding Path=Time}" />
+                            <DataGridTemplateColumn Header="Status" Width="0.3*" SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource OrderStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -199,12 +200,13 @@
                               IsReadOnly="True"
                               SelectionUnit="FullRow"
                               AutoGenerateColumns="False"
-                              RowHeight="22">
+                              RowHeight="22"
+                              SelectionChanged="DataGrid_SelectionChanged">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Fill ID" Width="0.12*" Binding="{Binding Path=FillId}" />
-                            <DataGridTextColumn Header="Quantity" Width="0.15*" Binding="{Binding Path=FillQuantity}" />
-                            <DataGridTextColumn Header="Price" Width="0.15*" Binding="{Binding Path=FillPrice}" />
+                            <DataGridTextColumn Header="Quantity" Width="0.15*" Binding="{Binding Path=FillQuantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Price" Width="0.15*" Binding="{Binding Path=FillPrice}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                             <DataGridTextColumn Header="Time" Width="0.15*" Binding="{Binding Path=FillDatetime}" />
                             <DataGridTextColumn Header="Type" Width="0.2*" Binding="{Binding Path=FillType}" />
                         </DataGrid.Columns>

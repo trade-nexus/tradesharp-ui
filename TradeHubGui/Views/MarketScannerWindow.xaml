@@ -8,7 +8,8 @@
                  WindowStartupLocation="CenterScreen"
                  Background="{StaticResource BaseBackground}"
                  Icon="{StaticResource imgMarketDataScanner}"
-                 Width="700" Height="400">
+                 Width="700" Height="400"
+                 MinWidth="200" MinHeight="200">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Height="20" Width="20" Source="{StaticResource imgMarketDataScanner}"/>
@@ -33,10 +34,10 @@
             <MenuItem Header="Unsubsribe"
                       CommandParameter="{Binding}"
                       Command="{Binding DataContext.UnsubscribeCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
-            <Separator/>
+            <!--<Separator/>
             <MenuItem Header="Position Stats"
                       CommandParameter="{Binding}"
-                      Command="{Binding DataContext.ShowPositionStatsCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
+                      Command="{Binding DataContext.ShowPositionStatsCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />-->
         </ContextMenu>
 
         <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
@@ -92,12 +93,12 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Symbol" Width="70" Binding="{Binding Path=Security.Symbol}" />
-                <DataGridTextColumn Header="Bid quantity" Width="100" Binding="{Binding Path=BidQuantity}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Bid price" Width="100" Binding="{Binding Path=BidPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Ask quantity" Width="100" Binding="{Binding Path=AskQuantity}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Ask price" Width="100" Binding="{Binding Path=AskPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Last" Width="70" Binding="{Binding Path=LastPrice}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Volume" Width="70" Binding="{Binding Path=LastQuantity}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Bid quantity" Width="100" Binding="{Binding Path=BidQuantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Bid price" Width="100" Binding="{Binding Path=BidPrice}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Ask quantity" Width="100" Binding="{Binding Path=AskQuantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Ask price" Width="100" Binding="{Binding Path=AskPrice}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Last" Width="70" Binding="{Binding Path=LastPrice}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                <DataGridTextColumn Header="Volume" Width="70" Binding="{Binding Path=LastQuantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
             </DataGrid.Columns>
         </DataGrid>
 

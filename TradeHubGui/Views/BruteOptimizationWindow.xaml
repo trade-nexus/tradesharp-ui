@@ -148,16 +148,17 @@
 
             <HeaderedContentControl Grid.Row="1" Header="Parameters" Margin="10,0,10,10">
                 <DataGrid x:Name="StrategyParametersDataGrid"
-                            ItemsSource="{Binding BruteForceParameters.ParameterDetails}"
-							SelectionMode="Single" 
-							IsTextSearchEnabled="True"
-							IsSynchronizedWithCurrentItem="True"
-							CanUserAddRows="False" CanUserDeleteRows="False"
-							CanUserResizeRows="False" CanUserSortColumns="True"
-							IsReadOnly="False"
-							SelectionUnit="FullRow"
-							AutoGenerateColumns="False"
-							RowHeight="24">
+                          ItemsSource="{Binding BruteForceParameters.ParameterDetails}"
+                          SelectionMode="Single" 
+                          IsTextSearchEnabled="True"
+                          IsSynchronizedWithCurrentItem="True"
+                          CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserResizeRows="False" CanUserSortColumns="True"
+                          IsReadOnly="False"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False"
+                          RowHeight="24"
+                          SelectionChanged="DataGrid_SelectionChanged">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Parameter" Width="0.7*" Binding="{Binding Path=Description}" IsReadOnly="True"/>
                         <DataGridTemplateColumn Header="Value" Width="0.6*" SortMemberPath="ParameterValue">
@@ -204,16 +205,17 @@
 
             <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Results" Margin="10,0,10,10">
                 <DataGrid x:Name="ResultDataGrid" 
-                            ItemsSource="{Binding OptimizationStatisticsCollection}"
-							SelectionMode="Single" 
-							IsTextSearchEnabled="True"
-							IsSynchronizedWithCurrentItem="True"
-							CanUserAddRows="False" CanUserDeleteRows="False"
-							CanUserResizeRows="False" CanUserSortColumns="True"
-							IsReadOnly="False"
-							SelectionUnit="FullRow"
-							AutoGenerateColumns="False"
-							RowHeight="22">
+                          ItemsSource="{Binding OptimizationStatisticsCollection}"
+                          SelectionMode="Single" 
+                          IsTextSearchEnabled="True"
+                          IsSynchronizedWithCurrentItem="True"
+                          CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserResizeRows="False" CanUserSortColumns="True"
+                          IsReadOnly="False"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False"
+                          RowHeight="22"
+                          SelectionChanged="DataGrid_SelectionChanged">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Property info" Width="*" Binding="{Binding Path=Description}" />

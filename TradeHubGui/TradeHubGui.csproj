@@ -138,6 +138,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\UIHelper.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBoolConverter.cs" />
+    <Compile Include="Converters\LobValueToStringConverter.cs" />
     <Compile Include="Converters\OptimizationExecutionStatusToBrushConverter.cs" />
     <Compile Include="Converters\ProviderConnectionStatusToBoolConverter.cs" />
     <Compile Include="Converters\ProviderConnectionStatusToImageConverter.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
+    <Compile Include="ViewModel\LimitOrderBookViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
     <Compile Include="ViewModel\OrdersViewModel.cs" />
@@ -167,6 +169,9 @@
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LimitOrderBookWindow.xaml.cs">
+      <DependentUpon>LimitOrderBookWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MarketScannerWindow.xaml.cs">
       <DependentUpon>MarketScannerWindow.xaml</DependentUpon>
@@ -214,6 +219,10 @@
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\BruteOptimizationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LimitOrderBookWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
