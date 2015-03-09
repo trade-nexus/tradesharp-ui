@@ -115,8 +115,7 @@
                               IsReadOnly="False"
                               SelectionUnit="FullRow"
                               AutoGenerateColumns="False"
-                              RowHeight="22"
-                              SelectionChanged="DataGrid_SelectionChanged">
+                              RowHeight="22">
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Security.Symbol}" />
