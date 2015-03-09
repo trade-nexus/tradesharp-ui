@@ -1,12 +1,137 @@
 ﻿<UserControl x:Class="TradeHubGui.Views.DataDownloaderView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:TradeHubGui.Converters"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
+             d:DesignHeight="700" d:DesignWidth="1200"
              Tag="DATA DOWNLOADER">
-    <Grid>
 
+    <UserControl.Resources>
+        <conv:OrderStatusToBrushConverter x:Key="OrderStatusToBrush"/>
+        <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*" MinWidth="330" MaxWidth="500"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="0.7*" MinWidth="300"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.ColumnSpan="3" Style="{StaticResource ContentBorderStyle}" Margin="20"/>
+
+        <Grid Grid.Column="0" Margin="20,20,5,20">
+            <DockPanel Grid.Row="0" Margin="10,10,10,0">
+                <TextBlock DockPanel.Dock="Top" Margin="10,0,10,20" Text="MARKET DATA PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+                <Grid Margin="10,15,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0">
+                        <Label Content="Chose market data provider" Margin="0,0,0,2"/>
+                        <ComboBox Name="MarketDataProvidersComboBox" FontWeight="Bold" Height="26"
+                                  ItemsSource="{Binding MarketDataProviders}" 
+                                  SelectedItem="{Binding SelectedMarketDataProvider}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,2">
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding ConnectionStatus}" Foreground="{Binding ConnectionStatus, Converter={StaticResource ConnectionStatusToBrush}}" 
+                                                   FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" Margin="0,0,0,2" FontSize="12"/>
+                                        <TextBlock Text="{Binding ProviderName}" VerticalAlignment="Center"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <Button Grid.Row="0" Grid.Column="1" Content="Connect" Command="{Binding ConnectProviderCommand}" VerticalAlignment="Bottom" Margin="10,2,2,2" HorizontalAlignment="Left"/>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,10">
+                        <CheckBox Content="Write binary" IsChecked="{Binding WriteBinary}"/>
+                        <CheckBox Content="Write CSV" IsChecked="{Binding WriteCsv}"/>
+                    </StackPanel>
+                </Grid>
+            </DockPanel>
+        </Grid>
+
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
+
+        <Grid Grid.Column="2" Margin="0,20,20,20">
+            <TabControl Margin="4,10,10,10">
+                <TabItem >
+                    <TabItem.Header>
+                        <DockPanel>                            
+                            <TextBlock Text="Blackwood" Margin="4,4,10,4" FontWeight="SemiBold" FontSize="14" Typography.Capitals="SmallCaps" Foreground="{StaticResource BaseBrush3}"/>
+                        </DockPanel>
+                    </TabItem.Header>
+
+                    <DockPanel>
+                        <DockPanel DockPanel.Dock="Top" Margin="10,22,10,0">
+                            <Button DockPanel.Dock="Right" Content="Disconnect provider" Margin="0" VerticalAlignment="Bottom"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0">
+                                <StackPanel>
+                                    <Label Content="New instrument:" Margin="0,0,0,2"/>
+                                    <TextBox Text="{Binding NewSymbol, UpdateSourceTrigger=PropertyChanged}" Width="100" Margin="0,0,10,0"/>
+                                </StackPanel>
+                                <Button Content="Add" Command="{Binding AddNewInstrumentCommand}" VerticalAlignment="Bottom" Margin="0"/>
+                            </StackPanel>
+                        </DockPanel>
+
+                        <DataGrid x:Name="OrderDetailsDataGrid" Margin="10"
+                              ItemsSource="{Binding Instruments}"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Instrument" Width="0.12*" Binding="{Binding Path=Instrument}" />
+                                <DataGridTextColumn Header="Trades" Width="0.15*" Binding="{Binding Path=Trades}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                <DataGridTextColumn Header="Quotes" Width="0.15*" Binding="{Binding Path=Quotes}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                <DataGridTextColumn Header="Bars" Width="0.15*" Binding="{Binding Path=Bars}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                <DataGridTemplateColumn Header="Historic bars" Width="0.3*" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Fetch"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <DockPanel>
+                            <TextBlock Text="InteractiveBrockers" Margin="4,4,10,4" FontWeight="SemiBold" FontSize="14" Typography.Capitals="SmallCaps" Foreground="{StaticResource BaseBrush3}"/>
+                        </DockPanel>
+                    </TabItem.Header>
+
+                </TabItem>
+
+                <TabItem>
+                    <TabItem.Header>
+                        <DockPanel>
+                            <TextBlock Text="Simulated" Margin="4,4,10,4" FontWeight="SemiBold" FontSize="14" Typography.Capitals="SmallCaps" Foreground="{StaticResource BaseBrush3}"/>
+                        </DockPanel>
+                    </TabItem.Header>
+
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </UserControl>

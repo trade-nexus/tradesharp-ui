@@ -132,18 +132,6 @@
 		<GradientStop Color="{StaticResource BaseColor0}" Offset="0"/>
 	</LinearGradientBrush>
 
-	<SolidColorBrush x:Key="TabHoverBackground" PresentationOptions:Freeze="True" Color="#FDDD" />
-
-	<LinearGradientBrush x:Key="TabBarBackground" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
-		<GradientStop Offset="0" Color="#FAAA" />
-		<GradientStop Offset="1" Color="#FFF8F8F8" />
-	</LinearGradientBrush>
-
-	<LinearGradientBrush x:Key="TabPanelBorder" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
-		<GradientStop Offset="0" Color="#FEEE" />
-		<GradientStop Offset="1" Color="#F888" />
-	</LinearGradientBrush>
-
 	<SolidColorBrush x:Key="HoverListBoxItemBorder" PresentationOptions:Freeze="True" Color="#1F7080A0" />
 	<LinearGradientBrush x:Key="HoverListBoxItemBackground" PresentationOptions:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
 		<GradientStop Offset="0" Color="#1F909090" />
@@ -2784,7 +2772,7 @@
 
 	<Style TargetType="{x:Type TabControl}">
 		<Setter Property="OverridesDefaultStyle" Value="True" />
-		<Setter Property="Background" Value="{StaticResource TabBarBackground}" />
+		<Setter Property="Background" Value="Silver" />
 		<Setter Property="SnapsToDevicePixels" Value="True" />
 		<Setter Property="Margin" Value="10"/>
 		<Setter Property="Template">
@@ -2795,11 +2783,10 @@
 							<RowDefinition Height="Auto" />
 							<RowDefinition Height="*" />
 						</Grid.RowDefinitions>
-						<TabPanel x:Name="HeaderPanel" Grid.Row="0" Margin="1,2,1,0"
+						<TabPanel x:Name="HeaderPanel" Grid.Row="0" Margin="0"
 						          Panel.ZIndex="1" IsItemsHost="True" KeyboardNavigation.TabIndex="1" />
-						<Border x:Name="ContentPanel" Grid.Row="1" Margin="2,0"
+						<Border x:Name="ContentPanel" Grid.Row="1" Margin="1,0,1,1"
 						        Background="WhiteSmoke"
-						        BorderBrush="{StaticResource TabPanelBorder}"
 						        BorderThickness="0" CornerRadius="0" KeyboardNavigation.DirectionalNavigation="Contained"
 						        KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
 							<ContentPresenter x:Name="PART_SelectedContentHost" Margin="0" ContentSource="SelectedContent" />
@@ -2846,7 +2833,7 @@
 					<Grid>
 						<Border x:Name="Border"
 						        MinHeight="{TemplateBinding MinHeight}"
-						        Margin="0,1,-1,0" Background="#CCC" BorderBrush="Transparent"
+						        Margin="0,1,-1,0" Background="#DDD" BorderBrush="Transparent"
 						        BorderThickness="1,1,1,1" CornerRadius="0">
 							<Grid>
 								<Border Background="{TemplateBinding Background}" CornerRadius="0" Opacity="0.7" />
@@ -2870,7 +2857,7 @@
 								<Condition Property="IsSelected" Value="False" />
 								<Condition Property="IsMouseOver" Value="True" />
 							</MultiTrigger.Conditions>
-							<Setter TargetName="Border" Property="Background" Value="{StaticResource TabHoverBackground}" />
+							<Setter TargetName="Border" Property="Background" Value="{StaticResource BaseBrush1}" />
 						</MultiTrigger>
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter TargetName="Border" Property="Background" Value="{StaticResource DisabledBrush}" />
