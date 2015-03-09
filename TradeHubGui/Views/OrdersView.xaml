@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <conv:OrderStatusToBrushConverter x:Key="OrderStatusToBrush"/>
         <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+        <conv:PositionToVisibilityConverter x:Key="PositionToVisibility"/>
     </UserControl.Resources>
 
     <Grid x:Name="ContentGrid">
@@ -105,12 +106,13 @@
 
                     <DataGrid x:Name="PositonStatsDataGrid" Margin="10"
                               ItemsSource="{Binding PositionStatisticsCollection}"
+                              SelectedItem="{Binding SelectedPosition}"
                               SelectionMode="Single" 
                               IsTextSearchEnabled="True"
                               IsSynchronizedWithCurrentItem="True"
                               CanUserAddRows="False" CanUserDeleteRows="False"
                               CanUserResizeRows="False" CanUserSortColumns="True"
-                              IsReadOnly="True"
+                              IsReadOnly="False"
                               SelectionUnit="FullRow"
                               AutoGenerateColumns="False"
                               RowHeight="22"
@@ -119,11 +121,13 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Security.Symbol}" />
                             <DataGridTextColumn Header="Position" Width="0.3*" Binding="{Binding Path=Position}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                            <DataGridTextColumn Header="Profit and Losses" Width="0.4*" Binding="{Binding Path=Pnl}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Profit and Loss" Width="0.4*" Binding="{Binding Path=Pnl}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                             <DataGridTemplateColumn Header="Actions" Width="0.3*" SortMemberPath="Status">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Close" Command="{Binding CloseCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" Height="20"/>
+                                        <Button Content="Close" Height="20" 
+                                                Command="{Binding DataContext.ClosePositionCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                Visibility="{Binding Path=Position, Converter={StaticResource PositionToVisibility}}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

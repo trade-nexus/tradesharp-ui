@@ -225,7 +225,8 @@ namespace TradeHubGui.ViewModel
 
         private bool ClosePositionCanExecute()
         {
-            return SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected);
+            return SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected)
+                   && Math.Abs(PositionStatistics.Position) > 0;
         }
 
         /// <summary>
@@ -233,7 +234,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ClosePositionExecute()
         {
-            //SendOrder(OrderSide.SELL, OrderModel.SellPrice);
+            ClosePosition();
         }
 
         #endregion
@@ -287,6 +288,38 @@ namespace TradeHubGui.ViewModel
             orderDetails.Quantity = OrderModel.Size;
             orderDetails.Side = orderSide;
             orderDetails.Type = SelectedOrderType;
+            orderDetails.Security = OrderModel.Security;
+            orderDetails.Provider = SelectedOrderExecutionProvider.ProviderName;
+
+            // Add to selected provider collection for future reference and updates
+            SelectedOrderExecutionProvider.AddOrder(orderDetails);
+
+            // Create new order request
+            OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
+
+            // Raise event to notify listener
+            EventSystem.Publish<OrderRequest>(orderRequest);
+        }
+
+        /// <summary>
+        /// Closes current open position for the selected Symbol
+        /// </summary>
+        private void ClosePosition()
+        {
+            // Find Order Side
+            string orderSide = PositionStatistics.Position > 0 ? OrderSide.SELL : OrderSide.BUY;
+
+            // Find Order Quantity
+            int orderQuantity = Math.Abs(PositionStatistics.Position);
+
+            // Create a new Object which will be used across the application
+            OrderDetails orderDetails = new OrderDetails();
+
+            orderDetails.Price = 0 ;
+            orderDetails.StopPrice = 0;
+            orderDetails.Quantity = orderQuantity;
+            orderDetails.Side = orderSide;
+            orderDetails.Type = OrderType.Market;
             orderDetails.Security = OrderModel.Security;
             orderDetails.Provider = SelectedOrderExecutionProvider.ProviderName;
 
