@@ -31,13 +31,6 @@
             <MenuItem Header="Send Order"
                       CommandParameter="{Binding}"
                       Command="{Binding DataContext.SendOrderCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
-            <MenuItem Header="Unsubsribe"
-                      CommandParameter="{Binding}"
-                      Command="{Binding DataContext.UnsubscribeCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />
-            <!--<Separator/>
-            <MenuItem Header="Position Stats"
-                      CommandParameter="{Binding}"
-                      Command="{Binding DataContext.ShowPositionStatsCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}" />-->
         </ContextMenu>
 
         <Style x:Key="DefaultRowStyle" TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
