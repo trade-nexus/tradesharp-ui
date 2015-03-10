@@ -71,6 +71,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\LobRecordType.cs" />
     <Compile Include="Constants\OptimizationStatus.cs" />
     <Compile Include="Constants\OrderRequestType.cs" />
     <Compile Include="Constants\OrderType.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="EventSystem.cs" />
     <Compile Include="Models\BruteForceParameters.cs" />
     <Compile Include="Models\FillDetail.cs" />
+    <Compile Include="Models\LimitOrderBookRecord.cs" />
     <Compile Include="Models\LobRecord.cs" />
     <Compile Include="Models\MarketDataProvider.cs" />
     <Compile Include="Models\OrderExecutionProvider.cs" />

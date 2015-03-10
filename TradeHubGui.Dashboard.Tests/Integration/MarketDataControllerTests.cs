@@ -73,7 +73,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
 
             // Create Security to use the Symbol information
-            Security security = new Security(){Symbol = "AAPL"};
+            Security security = new Security(){Symbol = "ERX"};
             
             // Create a new subscription request for requesting market data
             var subscriptionRequest = new SubscriptionRequest(security,provider,SubscriptionType.Subscribe);
@@ -88,7 +88,44 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             Thread.Sleep(5000);
 
-            Assert.IsTrue(tickDetails.AskPrice.Equals(1.24M));
+            Assert.IsTrue(tickDetails.AskPrice.Equals(1.23M));
+        }
+
+        [Test]
+        [Category("Integration")]
+        public void RequestMarketData_SendRequestToServer_ReceiveMultipleMarketDataMessages()
+        {
+            Thread.Sleep(5000);
+            MarketDataProvider provider = new MarketDataProvider();
+            provider.ConnectionStatus = ConnectionStatus.Disconnected;
+            provider.ProviderName = TradeHubConstants.MarketDataProvider.Simulated;
+
+            // Rasie event to request connection
+            EventSystem.Publish<MarketDataProvider>(provider);
+
+            Thread.Sleep(5000);
+
+            Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
+
+            // Create Security to use the Symbol information
+            Security security = new Security() { Symbol = "ERX" };
+
+            // Create a new subscription request for requesting market data
+            var subscriptionRequest = new SubscriptionRequest(security, provider, SubscriptionType.Subscribe);
+
+            // Create Tick details to hold market data information
+            TickDetail tickDetails = new TickDetail(security);
+
+            // Add TickDetails object to 
+            provider.TickDetailsMap.Add(security.Symbol, tickDetails);
+
+            EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+
+            Thread.Sleep(60000);
+
+            Assert.IsTrue(tickDetails.AskPrice.Equals(1.23M), "Ask Price");
+            Assert.IsTrue(tickDetails.BidsCollection.Last().Price.Equals(1.19M), "BID depth 2");
+            Assert.IsTrue(tickDetails.AsksCollection.Last().Price.Equals(1.25M), "ASK depth 2");
         }
 
         [Test]
