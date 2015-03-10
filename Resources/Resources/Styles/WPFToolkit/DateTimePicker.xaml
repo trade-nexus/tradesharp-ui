@@ -108,6 +108,8 @@
 		<Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
 		<Setter Property="HorizontalContentAlignment" Value="Right" />
 		<Setter Property="TextAlignment" Value="Right" />
+        <Setter Property="Format" Value="Custom"/>
+        <Setter Property="FormatString" Value="M/d/yyyy h:mm tt"/>
 		<Setter Property="TimeWatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
 		<Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
 		<Setter Property="Validation.ErrorTemplate" Value="{DynamicResource DefaultErrorTemplate}"/>

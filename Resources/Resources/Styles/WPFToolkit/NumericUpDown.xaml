@@ -85,8 +85,8 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="Control">
 					<local:ButtonSpinner x:Name="Spinner" 
-                                         Height="{TemplateBinding Height}"
                                          IsTabStop="False"
+                                         Height="{TemplateBinding Height}"
                                          BorderThickness="{TemplateBinding BorderThickness}"
                                          AllowSpin="{Binding AllowSpin, RelativeSource={RelativeSource TemplatedParent}}"
                                          ShowButtonSpinner="{Binding ShowButtonSpinner, RelativeSource={RelativeSource TemplatedParent}}">

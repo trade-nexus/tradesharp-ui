@@ -42,6 +42,9 @@
 		<Setter Property="HorizontalContentAlignment" Value="Right" />
 		<Setter Property="TextAlignment" Value="Right" />
 		<Setter Property="AllowDrop" Value="True"/>
+        <Setter Property="Height" Value="24" />
+        <Setter Property="Format" Value="Custom"/>
+        <Setter Property="FormatString" Value="M/d/yyyy h:mm tt"/>
 		<Setter Property="WatermarkTemplate" Value="{StaticResource DefaultWatermarkTemplate}" />
 		<Setter Property="Validation.ErrorTemplate" Value="{DynamicResource DefaultErrorTemplate}"/>
 		<Setter Property="Template">
@@ -49,6 +52,7 @@
 				<ControlTemplate TargetType="{x:Type local:DateTimeUpDown}">
 					<local:ButtonSpinner x:Name="Spinner"
 										IsTabStop="False"
+                                        Height="{TemplateBinding Height}"
 										Background="{TemplateBinding Background}"
 										BorderThickness="{TemplateBinding BorderThickness}"
 										AllowSpin="{TemplateBinding AllowSpin}"
