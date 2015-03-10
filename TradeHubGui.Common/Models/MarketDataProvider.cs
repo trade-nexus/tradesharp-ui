@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeHub.Common.Core.DomainModels;
 
 namespace TradeHubGui.Common.Models
 {
@@ -39,5 +40,21 @@ namespace TradeHubGui.Common.Models
             set { _tickDetailsMap = value; }
         }
 
+        /// <summary>
+        /// Updates tick information for the given Symbol
+        /// </summary>
+        /// <param name="symbol">Symbol Name</param>
+        /// <param name="tick">Contains market data information</param>
+        public void UpdateTickDetail(string symbol, Tick tick)
+        {
+            TickDetail tickDetails;
+
+            // Get TickDetails object to update tick information
+            if (_tickDetailsMap.TryGetValue(tick.Security.Symbol, out tickDetails))
+            {
+                // Update collections for Depth information
+                tickDetails.Update(tick);
+            }
+        }
     }
 }

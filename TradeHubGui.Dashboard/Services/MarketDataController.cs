@@ -227,23 +227,7 @@ namespace TradeHubGui.Dashboard.Services
             // Get Provider object
             if (_providersMap.TryGetValue(tick.MarketDataProvider, out provider))
             {
-                TickDetail tickDetails;
-
-                // Get TickDetails object to update tick information
-                if (provider.TickDetailsMap.TryGetValue(tick.Security.Symbol, out tickDetails))
-                {
-                    // Update Bid
-                    tickDetails.BidPrice = tick.BidPrice;
-                    tickDetails.BidQuantity = tick.BidSize;
-
-                    // Update Ask
-                    tickDetails.AskPrice = tick.AskPrice;
-                    tickDetails.AskQuantity = tick.AskSize;
-
-                    // Update Last
-                    tickDetails.LastPrice = tick.LastPrice;
-                    tickDetails.LastQuantity = tick.LastSize;
-                }
+                provider.UpdateTickDetail(tick.Security.Symbol, tick);
             }
         }
 
