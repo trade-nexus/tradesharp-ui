@@ -22,13 +22,6 @@ namespace TradeHubGui.Common.Models
         private ConnectionStatus _connectionStatus;
         private List<ProviderCredential> _providerCredentials;
 
-        /// <summary>
-        /// Contains subscribed symbol's tick information (Valid if the provider is type 'Market Data')
-        /// KEY = Symbol
-        /// VALUE = <see cref="TickDetail"/>
-        /// </summary>
-        private Dictionary<string, TickDetail> _tickDetailsMap;
-
         #endregion
 
         #region Constructors
@@ -37,7 +30,6 @@ namespace TradeHubGui.Common.Models
         {
             // Initialize Maps
             _providerCredentials = new List<ProviderCredential>();
-            _tickDetailsMap = new Dictionary<string, TickDetail>();
         }
 
         #endregion
@@ -99,24 +91,6 @@ namespace TradeHubGui.Common.Models
         {
             get { return _providerType; }
             set { _providerType = value; }
-        }
-
-        /// <summary>
-        /// Contains market information for each subscribed symbol
-        /// KEY = Symbol
-        /// VALUE = <see cref="TickDetail"/>
-        /// </summary>
-        public Dictionary<string, TickDetail> TickDetailsMap
-        {
-            get
-            {
-                if (_providerType.Equals(ProviderType.MarketData))
-                {
-                    return _tickDetailsMap;
-                }
-                return null;
-            }
-            set { _tickDetailsMap = value; }
         }
 
         #endregion

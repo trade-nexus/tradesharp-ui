@@ -11,16 +11,19 @@ namespace TradeHubGui.ViewModel
     public class LimitOrderBookViewModel : BaseViewModel
     {
         #region Fields
+
         private ObservableCollection<LobRecord> _limitOrderBookRecords;
         
         #endregion
 
         #region Constructors
+
         public LimitOrderBookViewModel(TickDetail tickDetail)
         {
             _limitOrderBookRecords = new ObservableCollection<LobRecord>();
             
             #region Dummy population of LOB
+
             _limitOrderBookRecords.Add(new LobRecord() { BidSize = -1, BidPrice = -1, AskPrice = 517.00m, AskSize = 1 });
             _limitOrderBookRecords.Add(new LobRecord() { BidSize = -1, BidPrice = -1, AskPrice = 513.00m, AskSize = 3 });
             _limitOrderBookRecords.Add(new LobRecord() { BidSize = -1, BidPrice = -1, AskPrice = 512.00m, AskSize = 13 });
@@ -32,8 +35,10 @@ namespace TradeHubGui.ViewModel
             _limitOrderBookRecords.Add(new LobRecord() { BidSize = 9, BidPrice = 504.00m, AskPrice = -1, AskSize = -1 });
             _limitOrderBookRecords.Add(new LobRecord() { BidSize = 2, BidPrice = 501.00m, AskPrice = -1, AskSize = -1 });
             _limitOrderBookRecords.Add(new LobRecord() { BidSize = 1, BidPrice = 498.00m, AskPrice = -1, AskSize = -1 });
+            
             #endregion
         }
+
         #endregion
 
         #region Properties

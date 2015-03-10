@@ -81,6 +81,15 @@ namespace TradeHubGui.StrategyRunner.Services
         }
 
         /// <summary>
+        /// Sets database persistence status
+        /// </summary>
+        /// <param name="enablePersistence">indicates if the orders are to be persisted or not</param>
+        public void AllowPersistence(bool enablePersistence)
+        {
+            PersistencePublisher.AllowPersistence(enablePersistence);
+        }
+
+        /// <summary>
         /// Verify and add strategy to TradeHub
         /// </summary>
         /// <param name="assemblyPath"></param>

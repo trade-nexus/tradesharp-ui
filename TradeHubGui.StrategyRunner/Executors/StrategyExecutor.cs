@@ -21,6 +21,7 @@ using TradeHubGui.Common.Models;
 using TradeHubGui.StrategyRunner.Representations;
 using OrderExecutionProvider = TradeHub.Common.Core.Constants.OrderExecutionProvider;
 using Strategy = TradeHub.Common.Core.DomainModels.Strategy;
+using TradeHubConstants = TradeHub.Common.Core.Constants;
 
 namespace TradeHubGui.StrategyRunner.Executors
 {
@@ -342,7 +343,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             if (_tradeHubStrategy != null)
             {
-                if (_tradeHubStrategy.MarketDataProviderName.Equals(MarketDataProvider.SimulatedExchange))
+                if (_tradeHubStrategy.MarketDataProviderName.Equals(TradeHubConstants.MarketDataProvider.SimulatedExchange))
                     OverrideStrategyDataEvents();
                 if (_tradeHubStrategy.OrderExecutionProviderName.Equals(OrderExecutionProvider.SimulatedExchange))
                     OverrideStrategyOrderRequests();

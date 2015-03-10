@@ -72,9 +72,10 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public StrategyRunnerViewModel()
         {
-            EnablePersistence = false;
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
+
+            EnablePersistence = false;
 
             // Get Existing Strategies in the system and populate on UI
             LoadExistingStrategies();
@@ -254,6 +255,12 @@ namespace TradeHubGui.ViewModel
             set
             {
                 _enablePersistence = value;
+
+                if (_strategyController!=null)
+                {
+                    _strategyController.AllowPersistence(value);
+                }
+
                 OnPropertyChanged("EnablePersistence");
             }
         }

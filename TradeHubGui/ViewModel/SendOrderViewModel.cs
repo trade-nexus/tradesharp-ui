@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using TradeHub.Common.Core.Constants;
+using TradeHub.Common.Core.DomainModels;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
@@ -36,6 +37,11 @@ namespace TradeHubGui.ViewModel
         private OrderType _selectedOrderType;
 
         /// <summary>
+        /// Position statistics for the currently selected Symbol on given Order Execution Provider
+        /// </summary>
+        private PositionStatistics _positionStatistics;
+
+        /// <summary>
         /// Contains supported order types
         /// </summary>
         private ObservableCollection<OrderType> _orderTypesCollection; 
@@ -47,6 +53,7 @@ namespace TradeHubGui.ViewModel
 
         private RelayCommand _sendBuyOrderCommand;
         private RelayCommand _sendSellOrderCommand;
+        private RelayCommand _closePositionCommand;
 
         #endregion
 
@@ -61,6 +68,12 @@ namespace TradeHubGui.ViewModel
             set
             {
                 _selectedOrderExecutionProvider = value;
+                
+                if (value != null && OrderModel.Security != null)
+                {
+                    UpdatePositionInformation(OrderModel.Security);
+                }
+
                 OnPropertyChanged("SelectedOrderExecutionProvider");
             }
         }
@@ -75,6 +88,19 @@ namespace TradeHubGui.ViewModel
             {
                 _selectedOrderType = value;
                 OnPropertyChanged("SelectedOrderType");
+            }
+        }
+
+        /// <summary>
+        /// Position statistics for the currently selected Symbol on given Order Execution Provider
+        /// </summary>
+        public PositionStatistics PositionStatistics
+        {
+            get { return _positionStatistics; }
+            set
+            {
+                _positionStatistics = value;
+                OnPropertyChanged("PositionStatistics");
             }
         }
 
@@ -143,6 +169,19 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Used for 'Close' button for sending an order to close position on given symbol
+        /// </summary>
+        public ICommand ClosePositionCommand
+        {
+            get
+            {
+                return _closePositionCommand ??
+                       (_closePositionCommand =
+                           new RelayCommand(param => ClosePositionExecute(), param => ClosePositionCanExecute()));
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -182,6 +221,20 @@ namespace TradeHubGui.ViewModel
         private void SendSellOrderExecute()
         {
             SendOrder(OrderSide.SELL, OrderModel.SellPrice);
+        }
+
+        private bool ClosePositionCanExecute()
+        {
+            return SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected)
+                   && Math.Abs(PositionStatistics.Position) > 0;
+        }
+
+        /// <summary>
+        /// Called when 'Close' button is clicked
+        /// </summary>
+        private void ClosePositionExecute()
+        {
+            ClosePosition();
         }
 
         #endregion
@@ -249,6 +302,38 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
+        /// Closes current open position for the selected Symbol
+        /// </summary>
+        private void ClosePosition()
+        {
+            // Find Order Side
+            string orderSide = PositionStatistics.Position > 0 ? OrderSide.SELL : OrderSide.BUY;
+
+            // Find Order Quantity
+            int orderQuantity = Math.Abs(PositionStatistics.Position);
+
+            // Create a new Object which will be used across the application
+            OrderDetails orderDetails = new OrderDetails();
+
+            orderDetails.Price = 0 ;
+            orderDetails.StopPrice = 0;
+            orderDetails.Quantity = orderQuantity;
+            orderDetails.Side = orderSide;
+            orderDetails.Type = OrderType.Market;
+            orderDetails.Security = OrderModel.Security;
+            orderDetails.Provider = SelectedOrderExecutionProvider.ProviderName;
+
+            // Add to selected provider collection for future reference and updates
+            SelectedOrderExecutionProvider.AddOrder(orderDetails);
+
+            // Create new order request
+            OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.New);
+
+            // Raise event to notify listener
+            EventSystem.Publish<OrderRequest>(orderRequest);
+        }
+
+        /// <summary>
         /// Sets selected Order Execution Provider depending on the incoming provider name
         /// </summary>
         /// <param name="providerName">Order Execution Provider name</param>
@@ -266,6 +351,34 @@ namespace TradeHubGui.ViewModel
 
             // Provider not found
             return false;
+        }
+
+        /// <summary>
+        /// Sets requried security information to be displayed on UI and used while sending out order requests
+        /// </summary>
+        /// <param name="security">Contains Symbol information</param>
+        /// <param name="bidPrice">Current Bid price</param>
+        /// <param name="askPrice">Current Ask Price</param>
+        public void SetSecurityInformation(Security security, decimal bidPrice, decimal askPrice)
+        {
+            OrderModel.Security = security;
+            OrderModel.SellPrice = askPrice;
+            OrderModel.BuyPrice = bidPrice;
+
+            UpdatePositionInformation(security);
+        }
+
+        /// <summary>
+        /// Update variable to display Position Statistics on UI
+        /// </summary>
+        /// <param name="security">Contains Symbol information</param>
+        private void UpdatePositionInformation(Security security)
+        {
+            // Fetch Position Information
+            var postionStatistics = SelectedOrderExecutionProvider.GetPositionStatistics(security.Symbol);
+
+            // Update values to show on UI
+            PositionStatistics = postionStatistics ?? new PositionStatistics(security);
         }
     }
 }

@@ -13,6 +13,8 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
+using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
+using TradeHubConstants = TradeHub.Common.Core.Constants;
 
 namespace TradeHubGui.Dashboard.Tests.Integration
 {
@@ -41,13 +43,13 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void RequestNewConnection_SendRequestToServer_ReceiveLogon()
         {
             Thread.Sleep(5000);
-            Provider provider = new Provider();
+            MarketDataProvider provider = new MarketDataProvider();
             provider.ProviderType= ProviderType.MarketData;
             provider.ConnectionStatus= ConnectionStatus.Disconnected;
-            provider.ProviderName = MarketDataProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.MarketDataProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<MarketDataProvider>(provider);
 
             Thread.Sleep(5000);
 
@@ -59,12 +61,12 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void RequestMarketData_SendRequestToServer_ReceiveMarketData()
         {
             Thread.Sleep(5000);
-            Provider provider = new Provider();
+            MarketDataProvider provider = new MarketDataProvider();
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
-            provider.ProviderName = MarketDataProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.MarketDataProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<MarketDataProvider>(provider);
 
             Thread.Sleep(5000);
 
@@ -94,12 +96,12 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         public void UnsubscribeMarketData_SendRequestToServer()
         {
             Thread.Sleep(5000);
-            Provider provider = new Provider();
+            MarketDataProvider provider = new MarketDataProvider();
             provider.ConnectionStatus = ConnectionStatus.Disconnected;
-            provider.ProviderName = MarketDataProvider.Simulated;
+            provider.ProviderName = TradeHubConstants.MarketDataProvider.Simulated;
 
             // Rasie event to request connection
-            EventSystem.Publish<Provider>(provider);
+            EventSystem.Publish<MarketDataProvider>(provider);
 
             Thread.Sleep(5000);
 
