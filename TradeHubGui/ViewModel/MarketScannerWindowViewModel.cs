@@ -26,14 +26,14 @@ namespace TradeHubGui.ViewModel
         private MetroWindow _scannerWindow;
 
         private MarketDataProvider _provider;
-        private TickDetail _selectedTickDetail;
+        private MarketDataDetail _selectedTickDetail;
 
         /// <summary>
         /// Data Context for SendOrder Window
         /// </summary>
         private SendOrderViewModel _sendOrderViewModel;
 
-        private ObservableCollection<TickDetail> _tickDetailsCollection;
+        private ObservableCollection<MarketDataDetail> _tickDetailsCollection;
         private ObservableCollection<MarketDataProvider> _providers;
 
         private RelayCommand _addNewSymbolCommand;
@@ -51,68 +51,69 @@ namespace TradeHubGui.ViewModel
         public MarketScannerWindowViewModel(MetroWindow scannerWindow, MarketDataProvider provider, ObservableCollection<MarketDataProvider> providers)
         {
             _sendOrderViewModel = new SendOrderViewModel();
+            _tickDetailsCollection = new ObservableCollection<MarketDataDetail>();
 
             _scannerWindow = scannerWindow;
             _provider = provider;
             _providers = providers;
 
-            #region Temporary fill instruments (this will be removed)
-            _tickDetailsCollection = new ObservableCollection<TickDetail>();
-            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "AAPL" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "GOOG" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "MSFT" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "HP" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "AOI" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new TickDetail(new Security() { Symbol = "WAS" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            #endregion
+            //#region Temporary fill instruments (this will be removed)
+            //_tickDetailsCollection = new ObservableCollection<MarketDataDetail>();
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "AAPL" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "GOOG" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "MSFT" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "HP" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "AOI" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "WAS" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //#endregion
         }
 
         #endregion
@@ -122,7 +123,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Collection of Tick Details for watching related to certain market data provider
         /// </summary>
-        public ObservableCollection<TickDetail> TickDetailsCollection
+        public ObservableCollection<MarketDataDetail> TickDetailsCollection
         {
             get { return _tickDetailsCollection; }
             set
@@ -135,7 +136,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Selected Tick Detail
         /// </summary>
-        public TickDetail SelectedTickDetail
+        public MarketDataDetail SelectedTickDetail
         {
             get { return _selectedTickDetail; }
             set
@@ -284,7 +285,7 @@ namespace TradeHubGui.ViewModel
         private void AddNewSymbolExecute()
         {
             // Create new tick detail's object
-            TickDetail tickDetail = new TickDetail(new Security() { Symbol = NewSymbol.Trim() });
+            MarketDataDetail tickDetail = new MarketDataDetail(new Security() { Symbol = NewSymbol.Trim() });
 
             // Add Tick Detail object to Provider's local map
             _provider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
@@ -322,11 +323,11 @@ namespace TradeHubGui.ViewModel
         private void DeleteSymbolCommandExecute(object param)
         {
             if (WPFMessageBox.Show(_scannerWindow,
-                string.Format("Delete symbol {0}?", (param as TickDetail).Security.Symbol),
+                string.Format("Delete symbol {0}?", (param as MarketDataDetail).Security.Symbol),
                 string.Format("{0} Scanner", _provider.ProviderName),
                 MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var tickDetail = (TickDetail)param;
+                var tickDetail = (MarketDataDetail)param;
 
                 TickDetailsCollection.Remove(tickDetail);
 
@@ -344,7 +345,7 @@ namespace TradeHubGui.ViewModel
         /// <param name="param">current TickDetail</param>
         private void ShowLimitOrderBookExecute(object param)
         {
-            SelectedTickDetail = (TickDetail)param;
+            SelectedTickDetail = (MarketDataDetail)param;
             string title = string.Format("LOB - {0} ({1})", SelectedTickDetail.Security.Symbol, Provider.ProviderName);
             LimitOrderBookWindow lobWindow = (LimitOrderBookWindow)FindWindowByTitle(title);
             if(lobWindow != null)
@@ -375,7 +376,7 @@ namespace TradeHubGui.ViewModel
         /// <param name="param">current TickDetail</param>
         private void SendOrderExecute(object param)
         {
-            SelectedTickDetail = (TickDetail)param;
+            SelectedTickDetail = (MarketDataDetail)param;
 
             _sendOrderViewModel.SetOrderExecutionProvider(Provider.ProviderName);
             _sendOrderViewModel.SetSecurityInformation(SelectedTickDetail.Security, SelectedTickDetail.BidPrice, SelectedTickDetail.AskPrice);
@@ -406,5 +407,21 @@ namespace TradeHubGui.ViewModel
         }
 
         #endregion
+
+        public void RemoveAllSymbols()
+        {
+            foreach (MarketDataDetail marketDataDetail in TickDetailsCollection)
+            {
+                // Create a new un-subscription request for requesting market data
+                var unsubscriptionRequest = new SubscriptionRequest(marketDataDetail.Security, _provider, SubscriptionType.Unsubscribe);
+
+                // Raise Event to notify listeners
+                EventSystem.Publish<SubscriptionRequest>(unsubscriptionRequest);
+
+                _provider.TickDetailsMap.Remove(marketDataDetail.Security.Symbol);
+            }
+
+            TickDetailsCollection.Clear();
+        }
     }
 }

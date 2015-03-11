@@ -13,9 +13,9 @@ using TradeHubGui.Common.Constants;
 namespace TradeHubGui.Common.Models
 {
     /// <summary>
-    /// Contains necessary Tick information to be displayed on the UI
+    /// Contains necessary Market data information to be displayed on the UI for given Symbol
     /// </summary>
-    public class TickDetail : INotifyPropertyChanged
+    public class MarketDataDetail : INotifyPropertyChanged
     {
         /// <summary>
         /// Holds UI thread reference
@@ -72,20 +72,15 @@ namespace TradeHubGui.Common.Models
         private Dictionary<int, LimitOrderBookRecord> _askRecordsMap;
 
         /// <summary>
-        /// Contains bids for Limit order book 
+        /// Contains Limit order book entries
         /// </summary>
-        private ObservableCollection<LimitOrderBookRecord> _bidsCollection; 
-
-        /// <summary>
-        /// Contains asks for Limit order book
-        /// </summary>
-        private ObservableCollection<LimitOrderBookRecord> _asksCollection; 
+        private ObservableCollection<LimitOrderBookRecord> _limitOrderBookCollection; 
 
         /// <summary>
         /// Argument Constructor
         /// </summary>
         /// <param name="security">Contains symbol information</param>
-        public TickDetail(Security security)
+        public MarketDataDetail(Security security)
         {
             // Save UI thread reference
             _currentDispatcher = Dispatcher.CurrentDispatcher;
@@ -96,8 +91,7 @@ namespace TradeHubGui.Common.Models
             _bidRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
             _askRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
 
-            _bidsCollection = new ObservableCollection<LimitOrderBookRecord>();
-            _asksCollection = new ObservableCollection<LimitOrderBookRecord>();
+            _limitOrderBookCollection = new ObservableCollection<LimitOrderBookRecord>();
         }
 
         #region Properties
@@ -190,28 +184,15 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
-        /// Contains bids for Limit order book 
+        /// Contains all Limit order book entries
         /// </summary>
-        public ObservableCollection<LimitOrderBookRecord> BidsCollection
+        public ObservableCollection<LimitOrderBookRecord> LimitOrderBookCollection
         {
-            get { return _bidsCollection; }
+            get { return _limitOrderBookCollection; }
             set
             {
-                _bidsCollection = value;
-                OnPropertyChanged("BidsCollection");
-            }
-        }
-
-        /// <summary>
-        /// Contains asks for Limit order book
-        /// </summary>
-        public ObservableCollection<LimitOrderBookRecord> AsksCollection
-        {
-            get { return _asksCollection; }
-            set
-            {
-                _asksCollection = value;
-                OnPropertyChanged("AsksCollection");
+                _limitOrderBookCollection = value;
+                OnPropertyChanged("LimitOrderBookCollection");
             }
         }
 
@@ -237,7 +218,7 @@ namespace TradeHubGui.Common.Models
                     _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
                     {
                         // Add new value to Collection
-                        BidsCollection.Add(bidRecord);
+                        LimitOrderBookCollection.Add(bidRecord);
                     }));
                 }
 
@@ -252,8 +233,8 @@ namespace TradeHubGui.Common.Models
 
                     // Update values
                     bidRecord.Depth = tick.Depth;
-                    bidRecord.Price = tick.BidPrice;
-                    bidRecord.Quantity = tick.BidSize;
+                    bidRecord.BidPrice = tick.BidPrice;
+                    bidRecord.BidQuantity = tick.BidSize;
                 }));
             }
 
@@ -271,7 +252,7 @@ namespace TradeHubGui.Common.Models
                     _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
                     {
                         // Add new value to Collection
-                        AsksCollection.Add(askRecord);
+                        LimitOrderBookCollection.Add(askRecord);
                     }));
                 }
 
@@ -286,8 +267,8 @@ namespace TradeHubGui.Common.Models
 
                     // Update values
                     askRecord.Depth = tick.Depth;
-                    askRecord.Price = tick.AskPrice;
-                    askRecord.Quantity = tick.AskSize;
+                    askRecord.AskPrice = tick.AskPrice;
+                    askRecord.AskQuantity = tick.AskSize;
                 }));
             }
 

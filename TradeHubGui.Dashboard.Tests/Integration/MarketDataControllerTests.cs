@@ -57,7 +57,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
-        [Category("Integration")]
+        [Category("Console")]
         public void RequestMarketData_SendRequestToServer_ReceiveMarketData()
         {
             Thread.Sleep(5000);
@@ -79,7 +79,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             var subscriptionRequest = new SubscriptionRequest(security,provider,SubscriptionType.Subscribe);
             
             // Create Tick details to hold market data information
-            TickDetail tickDetails = new TickDetail(security);
+            MarketDataDetail tickDetails = new MarketDataDetail(security);
 
             // Add TickDetails object to 
             provider.TickDetailsMap.Add(security.Symbol, tickDetails);
@@ -92,7 +92,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
-        [Category("Integration")]
+        [Category("Console")]
         public void RequestMarketData_SendRequestToServer_ReceiveMultipleMarketDataMessages()
         {
             Thread.Sleep(5000);
@@ -114,7 +114,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             var subscriptionRequest = new SubscriptionRequest(security, provider, SubscriptionType.Subscribe);
 
             // Create Tick details to hold market data information
-            TickDetail tickDetails = new TickDetail(security);
+            MarketDataDetail tickDetails = new MarketDataDetail(security);
 
             // Add TickDetails object to 
             provider.TickDetailsMap.Add(security.Symbol, tickDetails);
@@ -123,9 +123,8 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             Thread.Sleep(60000);
 
-            Assert.IsTrue(tickDetails.AskPrice.Equals(1.23M), "Ask Price");
-            Assert.IsTrue(tickDetails.BidsCollection.Last().Price.Equals(1.19M), "BID depth 2");
-            Assert.IsTrue(tickDetails.AsksCollection.Last().Price.Equals(1.25M), "ASK depth 2");
+            Assert.IsTrue(tickDetails.AskPrice.Equals(1.23M), "Best Ask Price");
+            Assert.IsTrue(tickDetails.LimitOrderBookCollection.Count.Equals(6), "LOB Collection count");
         }
 
         [Test]
@@ -148,7 +147,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             Security security = new Security() { Symbol = "AAPL" };
 
             // Create Tick details to hold market data information
-            TickDetail tickDetails = new TickDetail(security);
+            MarketDataDetail tickDetails = new MarketDataDetail(security);
 
             // Add TickDetails object to 
             provider.TickDetailsMap.Add(security.Symbol, tickDetails);

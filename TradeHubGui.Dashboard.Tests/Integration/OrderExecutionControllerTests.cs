@@ -55,7 +55,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
-        [Category("Integration")]
+        [Category("Console")]
         public void RequestNewMarketOrder_SendRequestToServer_ReceiveOrderAcceptance()
         {
             Thread.Sleep(5000);
@@ -94,7 +94,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
-        [Category("Integration")]
+        [Category("Console")]
         public void RequestNewLimitOrder_SendRequestToServer_ReceiveOrderAcceptance()
         {
             Thread.Sleep(5000);
@@ -134,7 +134,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
-        [Category("Integration")]
+        [Category("Console")]
         public void RequestNewMarketOrderForExecution_SendRequestToServer_ReceiveOrderExecution()
         {
             Thread.Sleep(5000);
@@ -176,7 +176,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
-        [Category("Integration")]
+        [Category("Console")]
         public void RequestNewLimitOrderForExecution_SendRequestToServer_ReceiveOrderExecution()
         {
             Thread.Sleep(5000);
@@ -217,7 +217,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
-        [Category("Integration")]
+        [Category("Console")]
         public void RequestOrderCancellation_SendNewOrderRequest_ReceiveOrderAcceptance_SendOrderCancellation_ReceiveOrderCancellation()
         {
             Thread.Sleep(5000);

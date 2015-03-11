@@ -169,6 +169,9 @@ namespace TradeHubGui.Dashboard.Managers
         /// <param name="providerName">Market Data Provider to disconnect</param>
         public void Disconnect(string providerName)
         {
+            // Unsubscribe all Symbols before sending logout.
+            _marketDataService.UnsubscribeAllSecurities(providerName);
+
             // Create a new logout message
             Logout logout = new Logout()
             {
@@ -271,6 +274,10 @@ namespace TradeHubGui.Dashboard.Managers
         /// </summary>
         public void Stop()
         {
+            // Unsubscribe all existing securities
+            _marketDataService.UnsubscribeAllSecurities();
+
+            // Stop Service
             _marketDataService.StopService();
         }
     }

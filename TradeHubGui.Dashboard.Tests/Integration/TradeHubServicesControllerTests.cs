@@ -29,6 +29,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
+        [Category("Integration")]
         public void StartMarketDataService_Success()
         {
             var availableService = _servicesController.GetAvailableServices();
@@ -44,6 +45,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
         }
 
         [Test]
+        [Category("Integration")]
         public void StartOrderExecutionService_Fail()
         {
             var availableService = _servicesController.GetAvailableServices();
