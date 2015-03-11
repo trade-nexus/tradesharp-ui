@@ -163,7 +163,7 @@
 
     <mah:MetroWindow.Flyouts>
         <mah:FlyoutsControl x:Name="FlayoutOrderAPIConfiguration">
-            <mah:Flyout Header="Market Data API Configuration" Position="Right" Theme="Adapt" IsModal="True">
+            <mah:Flyout Header="Market Data Configuration" Position="Right" Theme="Adapt" IsModal="True">
                 <Grid Margin="20" Width="400">
                     <Grid Grid.IsSharedSizeScope="True">
                         <Grid.RowDefinitions>
@@ -224,7 +224,7 @@
                 </Grid>
             </mah:Flyout>
 
-            <mah:Flyout Header="Order Execution API Configuration" Position="Right" Theme="Adapt" IsModal="True">
+            <mah:Flyout Header="Order Execution Configuration" Position="Right" Theme="Adapt" IsModal="True">
                 <Grid Margin="20" Width="400">
                     <Grid Grid.IsSharedSizeScope="True">
                         <Grid.RowDefinitions>
