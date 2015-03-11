@@ -207,7 +207,7 @@
                               SelectionChanged="DataGrid_SelectionChanged">
 
                         <DataGrid.Columns>
-                            
+                            <DataGridTextColumn Header="Fill ID" Width="0.1*" Binding="{Binding Path=FillId}" />
                             <DataGridTextColumn Header="Quantity" Width="0.15*" Binding="{Binding Path=FillQuantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                             <DataGridTextColumn Header="Price" Width="0.15*" Binding="{Binding Path=FillPrice}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                             <DataGridTextColumn Header="Time" Width="0.15*" Binding="{Binding Path=FillDatetime}" />
