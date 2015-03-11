@@ -14,8 +14,13 @@ namespace TradeHubGui.Common.Models
     public class LimitOrderBookRecord : INotifyPropertyChanged
     {
         private int _depth;
-        private decimal _quantity;
-        private decimal _price;
+        
+        private decimal _bidPrice;
+        private decimal _askPrice;
+
+        private decimal _bidQuantity;
+        private decimal _askQuantity;
+
         private LobRecordType _recordType;
 
         /// <summary>
@@ -25,8 +30,10 @@ namespace TradeHubGui.Common.Models
         public LimitOrderBookRecord(LobRecordType recordType)
         {
             _depth = default(int);
-            _quantity = default(decimal);
-            _price = default(decimal);
+            _bidPrice = -1;
+            _askPrice = -1;
+            _bidQuantity = -1;
+            _askQuantity = -1;
 
             _recordType = recordType;
         }
@@ -47,28 +54,54 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
-        /// Number of orders on the current level
+        /// Bid price on the current level
         /// </summary>
-        public decimal Quantity
+        public decimal BidPrice
         {
-            get { return _quantity; }
+            get { return _bidPrice; }
             set
             {
-                _quantity = value;
-                OnPropertyChanged("Quantity");
+                _bidPrice = value;
+                OnPropertyChanged("BidPrice");
             }
         }
 
         /// <summary>
-        /// Price on the current level
+        /// Number of orders on the current bid level
         /// </summary>
-        public decimal Price
+        public decimal BidQuantity
         {
-            get { return _price; }
+            get { return _bidQuantity; }
             set
             {
-                _price = value;
-                OnPropertyChanged("Price");
+                _bidQuantity = value;
+                OnPropertyChanged("BidQuantity");
+            }
+        }
+
+        /// <summary>
+        /// Ask price on current level
+        /// </summary>
+        public decimal AskPrice
+        {
+            get { return _askPrice; }
+            set
+            {
+                _askPrice = value;
+                OnPropertyChanged("AskPrice");
+            }
+        }
+
+        /// <summary>
+        /// Number of orders on the current ask level
+        /// </summary>
+        public decimal AskQuantity
+        {
+            get { return _askQuantity; }
+            set
+            {
+                _askQuantity = value;
+                OnPropertyChanged("AskQuantity");
             }
         }
 

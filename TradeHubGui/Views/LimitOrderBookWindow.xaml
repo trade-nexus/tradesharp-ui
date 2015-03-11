@@ -3,6 +3,7 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                  xmlns:conv="clr-namespace:TradeHubGui.Converters"
+                 xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                  GlowBrush="Silver"
                  ShowInTaskbar="True"
                  WindowStartupLocation="CenterOwner"
@@ -12,17 +13,22 @@
 
     <mah:MetroWindow.Resources>
         <conv:LobValueToStringConverter x:Key="LobValueToString"/>
+        <CollectionViewSource Source="{Binding LimitOrderBookRecords}" x:Key="cvs">
+            <CollectionViewSource.SortDescriptions>
+                <componentModel:SortDescription PropertyName="AskPrice" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </mah:MetroWindow.Resources>
 
     <DockPanel Background="#FFEEEEEE">
 
         <DataGrid x:Name="LobDataGrid" 
-                  ItemsSource="{Binding LimitOrderBookRecords}"
+                  ItemsSource="{Binding Source={StaticResource cvs}}"
                   SelectionMode="Single" 
                   IsTextSearchEnabled="True"
                   IsSynchronizedWithCurrentItem="True"
                   CanUserAddRows="False" CanUserDeleteRows="False"
-                  CanUserResizeRows="False" CanUserSortColumns="True"
+                  CanUserResizeRows="False" CanUserSortColumns="False"
                   IsReadOnly="True"
                   SelectionUnit="FullRow"
                   AutoGenerateColumns="False"
@@ -30,13 +36,13 @@
                   SelectionChanged="DataGrid_SelectionChanged">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Bid size" Width="*" Binding="{Binding Path=BidSize, Converter={StaticResource LobValueToString}}" Foreground="{StaticResource RedBrush}" FontWeight="SemiBold"
+                <DataGridTextColumn Header="Bid size" Width="*" Binding="{Binding Path=BidQuantity, Converter={StaticResource LobValueToString}}" Foreground="{StaticResource RedBrush}" FontWeight="SemiBold"
                                     HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                 <DataGridTextColumn Header="Bid price" Width="*" Binding="{Binding Path=BidPrice, Converter={StaticResource LobValueToString}}" Foreground="{StaticResource RedBrush}" FontWeight="SemiBold"
                                     HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                 <DataGridTextColumn Header="Ask price" Width="*" Binding="{Binding Path=AskPrice, Converter={StaticResource LobValueToString}}" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold"
                                     HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                <DataGridTextColumn Header="Ask size" Width="*" Binding="{Binding Path=AskSize, Converter={StaticResource LobValueToString}}" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold"
+                <DataGridTextColumn Header="Ask size" Width="*" Binding="{Binding Path=AskQuantity, Converter={StaticResource LobValueToString}}" Foreground="{StaticResource GreenBrush}" FontWeight="SemiBold"
                                     HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
             </DataGrid.Columns>
         </DataGrid>

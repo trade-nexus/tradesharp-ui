@@ -272,7 +272,10 @@ namespace TradeHubGui.ViewModel
                 // remove that MarketScannerWindowViewModel from collection
                 MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.Provider.ProviderName == scannerWindow.Title);
                 if (scannerViewModel != null)
+                {
+                    scannerViewModel.RemoveAllSymbols();
                     ScannerWindowViewModels.Remove(scannerViewModel);
+                }
 
                 // activate MainWindow
                 MainWindow.Activate();

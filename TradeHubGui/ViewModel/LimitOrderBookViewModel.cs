@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 
 namespace TradeHubGui.ViewModel
@@ -12,38 +13,38 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
 
-        private ObservableCollection<LobRecord> _limitOrderBookRecords;
+        private ObservableCollection<LimitOrderBookRecord> _limitOrderBookRecords;
         
         #endregion
 
         #region Constructors
 
-        public LimitOrderBookViewModel(TickDetail tickDetail)
+        public LimitOrderBookViewModel(MarketDataDetail marketDataDetail)
         {
-            _limitOrderBookRecords = new ObservableCollection<LobRecord>();
+            _limitOrderBookRecords = marketDataDetail.LimitOrderBookCollection;
             
-            #region Dummy population of LOB
+            //#region Dummy population of LOB
 
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = -1, BidPrice = -1, AskPrice = 517.00m, AskSize = 1 });
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = -1, BidPrice = -1, AskPrice = 513.00m, AskSize = 3 });
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = -1, BidPrice = -1, AskPrice = 512.00m, AskSize = 13 });
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = -1, BidPrice = -1, AskPrice = 510.90m, AskSize = 20 });
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = -1, BidPrice = -1, AskPrice = 509.00m, AskSize = 23 });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Ask) { AskPrice = 517.00m, AskQuantity = 1 });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Ask) { AskPrice = 513.00m, AskQuantity = 3 });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Ask) { AskPrice = 512.00m, AskQuantity = 13 });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Ask) { AskPrice = 510.90m, AskQuantity = 20 });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Ask) { AskPrice = 509.00m, AskQuantity = 23 });
 
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = 21, BidPrice = 507.20m, AskPrice = -1, AskSize = -1 });
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = 19, BidPrice = 507.00m, AskPrice = -1, AskSize = -1 });
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = 9, BidPrice = 504.00m, AskPrice = -1, AskSize = -1 });
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = 2, BidPrice = 501.00m, AskPrice = -1, AskSize = -1 });
-            _limitOrderBookRecords.Add(new LobRecord() { BidSize = 1, BidPrice = 498.00m, AskPrice = -1, AskSize = -1 });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Bid) { BidQuantity = 21, BidPrice = 507.20m });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Bid) { BidQuantity = 19, BidPrice = 507.00m });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Bid) { BidQuantity = 9, BidPrice = 504.00m });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Bid) { BidQuantity = 2, BidPrice = 501.00m });
+            //_limitOrderBookRecords.Add(new LimitOrderBookRecord(LobRecordType.Bid) { BidQuantity = 1, BidPrice = 498.00m });
             
-            #endregion
+            //#endregion
         }
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<LobRecord> LimitOrderBookRecords
+        public ObservableCollection<LimitOrderBookRecord> LimitOrderBookRecords
         {
             get { return _limitOrderBookRecords; }
             set

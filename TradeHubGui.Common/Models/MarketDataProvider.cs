@@ -15,9 +15,9 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Contains subscribed symbol's tick information (Valid if the provider is type 'Market Data')
         /// KEY = Symbol
-        /// VALUE = <see cref="TickDetail"/>
+        /// VALUE = <see cref="MarketDataDetail"/>
         /// </summary>
-        private Dictionary<string, TickDetail> _tickDetailsMap;
+        private Dictionary<string, MarketDataDetail> _tickDetailsMap;
 
         /// <summary>
         /// Default Constructor
@@ -25,16 +25,16 @@ namespace TradeHubGui.Common.Models
         public MarketDataProvider()
         {
             // Initialize Map
-            _tickDetailsMap = new Dictionary<string, TickDetail>();
+            _tickDetailsMap = new Dictionary<string, MarketDataDetail>();
         }
 
 
         /// <summary>
         /// Contains market information for each subscribed symbol
         /// KEY = Symbol
-        /// VALUE = <see cref="TickDetail"/>
+        /// VALUE = <see cref="MarketDataDetail"/>
         /// </summary>
-        public Dictionary<string, TickDetail> TickDetailsMap
+        public Dictionary<string, MarketDataDetail> TickDetailsMap
         {
             get { return _tickDetailsMap; }
             set { _tickDetailsMap = value; }
@@ -47,7 +47,7 @@ namespace TradeHubGui.Common.Models
         /// <param name="tick">Contains market data information</param>
         public void UpdateTickDetail(string symbol, Tick tick)
         {
-            TickDetail tickDetails;
+            MarketDataDetail tickDetails;
 
             // Get TickDetails object to update tick information
             if (_tickDetailsMap.TryGetValue(tick.Security.Symbol, out tickDetails))
