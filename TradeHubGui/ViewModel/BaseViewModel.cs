@@ -57,6 +57,26 @@ namespace TradeHubGui.ViewModel
             return true;
         }
 
+        /// <summary>
+        /// Traverse through all windows of application and trying to find window by title
+        /// </summary>
+        /// <param name="title">window title</param>
+        /// <returns>window</returns>
+        public MetroWindow FindWindowByTitle(string title)
+        {
+            MetroWindow result = null;
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is MetroWindow && window.Title == title)
+                {
+                    result = (MetroWindow)window;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
         #region INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -168,7 +168,7 @@ namespace TradeHubGui.ViewModel
         private void CreateScannerWindowExecute()
         {
             // Try to find scanner window if already created for selected provider
-            MarketScannerWindow scannerWindow = FindScannerWindowByTitle(SelectedMarketDataProvider.ProviderName);
+            MarketScannerWindow scannerWindow = (MarketScannerWindow)FindWindowByTitle(SelectedMarketDataProvider.ProviderName);
 
             // if scanner is already created, just activate it, otherwise create new scanner window for slected data provider
             if (scannerWindow != null)
@@ -201,7 +201,7 @@ namespace TradeHubGui.ViewModel
         /// <param name="param">ProviderName</param>
         private void FocusScannerWindowExecute(object param)
         {
-            MarketScannerWindow scannerWindow = FindScannerWindowByTitle((string)param);
+            MarketScannerWindow scannerWindow = (MarketScannerWindow)FindWindowByTitle((string)param);
             if (scannerWindow != null)
             {
                 scannerWindow.WindowState = WindowState.Normal;
@@ -216,29 +216,9 @@ namespace TradeHubGui.ViewModel
         private void CloseScannerWindowExecute(object param)
         {
             // Close scanner window
-            MarketScannerWindow scannerWindow = FindScannerWindowByTitle((string)param);
+            MarketScannerWindow scannerWindow = (MarketScannerWindow)FindWindowByTitle((string)param);
             if (scannerWindow != null)
                 scannerWindow.Close();
-        }
-
-        /// <summary>
-        /// Traverse through all windows of application and trying to find scanner window by title
-        /// </summary>
-        /// <param name="title">scanner window title</param>
-        /// <returns></returns>
-        private MarketScannerWindow FindScannerWindowByTitle(string title)
-        {
-            MarketScannerWindow scannerWindow = null;
-            foreach (Window window in Application.Current.Windows)
-            {
-                if (window is MarketScannerWindow && window.Title == title)
-                {
-                    scannerWindow = (MarketScannerWindow)window;
-                    break;
-                }
-            }
-
-            return scannerWindow;
         }
 
         /// <summary>
@@ -277,12 +257,24 @@ namespace TradeHubGui.ViewModel
             }
             else
             {
-                // If scanner window is closing, remove that MarketScannerWindowViewModel from collection
+                // If scanner window is closing...
+                
+                // close all LOB windows related to current scanner window
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window is LimitOrderBookWindow && window.Title.Contains(scannerWindow.Title))
+                    {
+                        window.DataContext = null;
+                        window.Close();
+                    }
+                }
+
+                // remove that MarketScannerWindowViewModel from collection
                 MarketScannerWindowViewModel scannerViewModel = ScannerWindowViewModels.First<MarketScannerWindowViewModel>(x => x.Provider.ProviderName == scannerWindow.Title);
                 if (scannerViewModel != null)
                     ScannerWindowViewModels.Remove(scannerViewModel);
 
-                // if scanner window is successfully closed, activate MainWindow
+                // activate MainWindow
                 MainWindow.Activate();
             }
         }
