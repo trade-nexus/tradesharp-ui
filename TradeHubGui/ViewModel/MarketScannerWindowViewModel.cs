@@ -345,12 +345,19 @@ namespace TradeHubGui.ViewModel
         private void ShowLimitOrderBookExecute(object param)
         {
             SelectedTickDetail = (TickDetail)param;
+            string title = string.Format("LOB - {0} ({1})", SelectedTickDetail.Security.Symbol, Provider.ProviderName);
+            LimitOrderBookWindow lobWindow = (LimitOrderBookWindow)FindWindowByTitle(title);
+            if(lobWindow != null)
+            {
+                lobWindow.Activate();
+                return;
+            }
 
-            LimitOrderBookWindow lobWindow = new LimitOrderBookWindow();
-            lobWindow.Title = string.Format("LOB - {0} ({1})", SelectedTickDetail.Security.Symbol, Provider.ProviderName);
+            lobWindow = new LimitOrderBookWindow();
+            lobWindow.Title = title;
             lobWindow.DataContext = new LimitOrderBookViewModel(SelectedTickDetail);
             lobWindow.Owner = _scannerWindow;
-            lobWindow.ShowDialog();
+            lobWindow.Show();
         }
 
         /// <summary>
