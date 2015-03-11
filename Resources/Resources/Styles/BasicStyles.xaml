@@ -2786,7 +2786,7 @@
 						<TabPanel x:Name="HeaderPanel" Grid.Row="0" Margin="0"
 						          Panel.ZIndex="1" IsItemsHost="True" KeyboardNavigation.TabIndex="1" />
 						<Border x:Name="ContentPanel" Grid.Row="1" Margin="1,0,1,1"
-						        Background="WhiteSmoke"
+						        Background="#FFF8F8F8"
 						        BorderThickness="0" CornerRadius="0" KeyboardNavigation.DirectionalNavigation="Contained"
 						        KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local">
 							<ContentPresenter x:Name="PART_SelectedContentHost" Margin="0" ContentSource="SelectedContent" />
@@ -2825,7 +2825,7 @@
 
 	<Style x:Key="TabItemBase" TargetType="{x:Type TabItem}">
 		<Setter Property="FocusVisualStyle" Value="{x:Null}" />
-		<Setter Property="Background" Value="Transparent" />
+        <Setter Property="Background" Value="Transparent" />
 		<Setter Property="MinHeight" Value="20" />
 		<Setter Property="Template">
 			<Setter.Value>
@@ -2845,7 +2845,7 @@
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsSelected" Value="True">
 							<Setter Property="Panel.ZIndex" Value="100" />
-							<Setter TargetName="Border" Property="Background" Value="WhiteSmoke" />
+                            <Setter TargetName="Border" Property="Background" Value="#FFF8F8F8" />
 							<Setter TargetName="Border" Property="BorderThickness" Value="1,1,1,0" />
 							<Setter TargetName="Border" Property="Margin" Value="0,0,-1,0" />
 							<Setter TargetName="Border" Property="MinHeight" Value="20" />

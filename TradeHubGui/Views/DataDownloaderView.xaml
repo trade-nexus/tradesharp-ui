@@ -29,17 +29,44 @@
                             </DockPanel>
                         </TabItem.Header>
 
-                        <DockPanel>
-                            <DockPanel DockPanel.Dock="Top" Margin="10" HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal">
+                            <DockPanel>
+                                <StackPanel MinWidth="120" Margin="20,20,40,20" VerticalAlignment="Top">
+                                    <CheckBox Content="Write binary" IsChecked="{Binding WriteBinary}"/>
+                                    <CheckBox Content="Write CSV" IsChecked="{Binding WriteCsv}"/>
+                                </StackPanel>
 
-                                <GroupBox Header="Properties">
-                                    <StackPanel MinWidth="120">
-                                        <CheckBox Content="Write binary" IsChecked="{Binding WriteBinary}"/>
-                                        <CheckBox Content="Write CSV" IsChecked="{Binding WriteCsv}"/>
-                                    </StackPanel>
-                                </GroupBox>
+                                <TextBlock DockPanel.Dock="Top" Margin="10,25,10,0" Text="Select symbol to customize bar settings"/>
 
-                                <GroupBox Header="Bar settings">
+                                <DataGrid x:Name="OrderDetailsDataGrid" MaxWidth="500" Margin="10"
+                                      ItemsSource="{Binding Instruments}"
+                                      SelectionMode="Single" 
+                                      IsTextSearchEnabled="True"
+                                      IsSynchronizedWithCurrentItem="True"
+                                      CanUserAddRows="False" CanUserDeleteRows="False"
+                                      CanUserResizeRows="False" CanUserSortColumns="True"
+                                      IsReadOnly="True"
+                                      SelectionUnit="FullRow"
+                                      AutoGenerateColumns="False">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Instrument" Width="0.12*" Binding="{Binding Security.Symbol}" />
+                                        <DataGridTextColumn Header="Trades" Width="0.15*" Binding="{Binding Trades}" 
+                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
+                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                        <DataGridTextColumn Header="Quotes" Width="0.15*" Binding="{Binding Quotes}" 
+                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
+                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                        <DataGridTextColumn Header="Bars" Width="0.15*" Binding="{Binding Bars}" 
+                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
+                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </DockPanel>
+
+                            <StackPanel Margin="10,59,10,0" HorizontalAlignment="Left">
+
+                                <GroupBox Header="Bar settings" Margin="10">
                                     <Grid Grid.IsSharedSizeScope="True" MinWidth="220">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -63,7 +90,7 @@
                                     </Grid>
                                 </GroupBox>
 
-                                <GroupBox Header="Historic bar settings">
+                                <GroupBox Header="Historic bar settings" Margin="10">
                                     <Grid Grid.IsSharedSizeScope="True" MinWidth="220">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
@@ -84,33 +111,8 @@
                                     </Grid>
                                 </GroupBox>
 
-                            </DockPanel>
-
-                            <DataGrid x:Name="OrderDetailsDataGrid"
-                                      ItemsSource="{Binding Instruments}"
-                                      SelectionMode="Single" 
-                                      IsTextSearchEnabled="True"
-                                      IsSynchronizedWithCurrentItem="True"
-                                      CanUserAddRows="False" CanUserDeleteRows="False"
-                                      CanUserResizeRows="False" CanUserSortColumns="True"
-                                      IsReadOnly="True"
-                                      SelectionUnit="FullRow"
-                                      AutoGenerateColumns="False">
-
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="Instrument" Width="0.12*" Binding="{Binding Instrument}" />
-                                    <DataGridTextColumn Header="Trades" Width="0.15*" Binding="{Binding Trades}" 
-                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
-                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                                    <DataGridTextColumn Header="Quotes" Width="0.15*" Binding="{Binding Quotes}" 
-                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
-                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                                    <DataGridTextColumn Header="Bars" Width="0.15*" Binding="{Binding Bars}" 
-                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
-                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </DockPanel>
+                            </StackPanel>
+                        </StackPanel>
                     </TabItem>
 
                     <TabItem>
