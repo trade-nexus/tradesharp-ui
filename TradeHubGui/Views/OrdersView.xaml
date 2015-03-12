@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1250"
+             d:DesignHeight="800" d:DesignWidth="1200"
              Tag="ORDERS">
 
     <UserControl.Resources>
@@ -31,9 +31,11 @@
                 </Grid.RowDefinitions>
 
                 <DockPanel Grid.Row="0" Margin="10,10,10,0">
-                    <TextBlock DockPanel.Dock="Top" Margin="10,0,10,20" Text="EXECUTION PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0,10,22" Text="EXECUTION PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                    <ListBox Name="ExecutionProvidersListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,24,10,0" Padding="0" 
+                    <TextBlock DockPanel.Dock="Top" Margin="12,2,12,-20" Text="Select provider to display orders:"/>
+                    
+                    <ListBox Name="ExecutionProvidersListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,24,10,0" Padding="0"
                              SelectedItem="{Binding SelectedProvider}" 
                              ItemsSource="{Binding ExecutionProviders}">
                         <ListBox.Resources>
@@ -83,7 +85,7 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <DockPanel Margin="0">
-                                    <Border DockPanel.Dock="Right" Background="#AFFF" Margin="0" CornerRadius="0" MinWidth="110">
+                                    <Border DockPanel.Dock="Right" Background="#CCF5F5F5" Margin="0" CornerRadius="0" MinWidth="110">
                                         <StackPanel Orientation="Horizontal" Margin="4,2,4,4" VerticalAlignment="Center" HorizontalAlignment="Center">
                                             <TextBlock Text="{Binding ConnectionStatus, FallbackValue=Disconnected}" 
                                                     Foreground="{Binding ConnectionStatus, FallbackValue=Crimson, Converter={StaticResource ConnectionStatusToBrush}}" 
@@ -102,7 +104,7 @@
                 <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
 
                 <DockPanel Grid.Row="2" Margin="10,20,10,0">
-                    <TextBlock DockPanel.Dock="Top" Margin="10,0,10,0" Text="Position Stats" Style="{StaticResource SubHeaderTextBlockStyle}"/>
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0,10,0" Text="POSITION STATS" Style="{StaticResource SubHeaderTextBlockStyle}"/>
 
                     <DataGrid x:Name="PositonStatsDataGrid" Margin="10"
                               ItemsSource="{Binding PositionStatisticsCollection}"
@@ -148,8 +150,11 @@
                 </Grid.RowDefinitions>
 
                 <DockPanel Grid.Row="0" Margin="10,10,10,0">
-                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="{Binding SelectedProvider.ProviderName, StringFormat='ORDERS {0}', FallbackValue='ORDERS N/A'}" 
-                           Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                        <TextBlock DockPanel.Dock="Top" Margin="10,0,10,0" Text="ORDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
+                        <TextBlock Style="{StaticResource HeaderTextBlockStyle}" Foreground="Silver" FontWeight="Thin"
+                                   Text="{Binding SelectedProvider.ProviderName, FallbackValue=ProviderName}" />
+                    </StackPanel>
 
                     <DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,0"
                               ItemsSource="{Binding Orders}"
@@ -189,7 +194,7 @@
 
                 <DockPanel Grid.Row="2" Margin="10,20,10,10">
                     <StackPanel DockPanel.Dock="Top" Margin="10,0" Orientation="Horizontal">
-                        <TextBlock Text="Fill details" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
+                        <TextBlock Text="FILL DETAILS" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
                         <TextBlock Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource SubHeaderTextBlockStyle}" FontWeight="SemiBold"/>
                     </StackPanel>
 

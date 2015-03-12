@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:conv="clr-namespace:TradeHubGui.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="700" d:DesignWidth="1200"
+             d:DesignHeight="800" d:DesignWidth="1200"
              Tag="STRATEGY RUNNER">
 
     <UserControl.Resources>
@@ -36,7 +36,7 @@
                 <DockPanel Grid.Row="0" Margin="10,10,10,0">
                     <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="STRATEGIES" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                    <Button DockPanel.Dock="Top" HorizontalAlignment="Left" MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,16,10,0"
+                    <Button DockPanel.Dock="Top" HorizontalAlignment="Left" MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,19,10,0"
                         Command="{Binding LoadStrategyCommand}">
                         <StackPanel Orientation="Horizontal" Margin="4,0">
                             <Image Width="16" Height="16" Margin="0,0,4,0" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
@@ -44,7 +44,7 @@
                         </StackPanel>
                     </Button>
 
-                    <ListBox Name="StrategiesListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,5,10,0" Padding="0" 
+                    <ListBox Name="StrategiesListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,3,10,0" Padding="0" 
                              SelectedItem="{Binding SelectedStrategy}" ItemsSource="{Binding Strategies}">
                         <ListBox.Resources>
                             <ResourceDictionary>
@@ -278,7 +278,7 @@
 
                 <DockPanel Grid.Row="2" Margin="10,20,10,10">
                     <StackPanel DockPanel.Dock="Top" Margin="10,0" Orientation="Horizontal">
-                        <TextBlock Text="Orders" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
+                        <TextBlock Text="ORDERS" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
                         <TextBlock Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource SubHeaderTextBlockStyle}" FontWeight="SemiBold"/>
                     </StackPanel>
 

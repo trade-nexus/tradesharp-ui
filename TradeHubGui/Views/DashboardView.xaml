@@ -45,7 +45,7 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
-                            <Button ToolTip="Data API Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
+                            <Button ToolTip="Market Data Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
                                     Width="22" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1"
                                     Command="{Binding ShowDataApiConfigurationCommand}"/>
                             <HeaderedContentControl Header="Market Data Providers" Margin="0,1,14,0">
@@ -64,7 +64,7 @@
                             </HeaderedContentControl>
                         </Grid>
                         <Grid Grid.Row="1">
-                            <Button ToolTip="Order API Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
+                            <Button ToolTip="Order Execution Configuration" Style="{StaticResource ToolBarButtonStyle}" Content="{StaticResource imgSettings}" 
                                     Width="22" Height="22" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="1"
                                     Command="{Binding ShowOrderApiConfigurationCommand}"/>
                             <HeaderedContentControl Header="Order Execution Providers" Margin="0,1,14,0">
