@@ -124,7 +124,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             Thread.Sleep(60000);
 
             Assert.IsTrue(tickDetails.AskPrice.Equals(1.23M), "Best Ask Price");
-            Assert.IsTrue(tickDetails.LimitOrderBookCollection.Count.Equals(6), "LOB Collection count");
+            Assert.IsTrue(tickDetails.BidRecordsCollection.Count.Equals(6), "LOB Collection count");
         }
 
         [Test]

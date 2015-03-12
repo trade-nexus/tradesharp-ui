@@ -72,9 +72,14 @@ namespace TradeHubGui.Common.Models
         private Dictionary<int, LimitOrderBookRecord> _askRecordsMap;
 
         /// <summary>
-        /// Contains Limit order book entries
+        /// Contains Limit order book entries for BIDS
         /// </summary>
-        private ObservableCollection<LimitOrderBookRecord> _limitOrderBookCollection; 
+        private ObservableCollection<LimitOrderBookRecord> _bidRecordsCollection;
+
+        /// <summary>
+        /// Contains Limit order book entries for ASKS
+        /// </summary>
+        private ObservableCollection<LimitOrderBookRecord> _askRecordsCollection; 
 
         /// <summary>
         /// Argument Constructor
@@ -91,7 +96,8 @@ namespace TradeHubGui.Common.Models
             _bidRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
             _askRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
 
-            _limitOrderBookCollection = new ObservableCollection<LimitOrderBookRecord>();
+            _bidRecordsCollection = new ObservableCollection<LimitOrderBookRecord>();
+            _askRecordsCollection = new ObservableCollection<LimitOrderBookRecord>();
         }
 
         #region Properties
@@ -184,15 +190,28 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
-        /// Contains all Limit order book entries
+        /// Contains all Limit order book entries for BIDs
         /// </summary>
-        public ObservableCollection<LimitOrderBookRecord> LimitOrderBookCollection
+        public ObservableCollection<LimitOrderBookRecord> BidRecordsCollection
         {
-            get { return _limitOrderBookCollection; }
+            get { return _bidRecordsCollection; }
             set
             {
-                _limitOrderBookCollection = value;
-                OnPropertyChanged("LimitOrderBookCollection");
+                _bidRecordsCollection = value;
+                OnPropertyChanged("BidRecordsCollection");
+            }
+        }
+
+        /// <summary>
+        /// Contains all Limit order book entries for ASKs
+        /// </summary>
+        public ObservableCollection<LimitOrderBookRecord> AskRecordsCollection
+        {
+            get { return _askRecordsCollection; }
+            set
+            {
+                _askRecordsCollection = value;
+                OnPropertyChanged("AskRecordsCollection");
             }
         }
 
@@ -218,7 +237,7 @@ namespace TradeHubGui.Common.Models
                     _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
                     {
                         // Add new value to Collection
-                        LimitOrderBookCollection.Add(bidRecord);
+                        BidRecordsCollection.Add(bidRecord);
                     }));
                 }
 
@@ -252,7 +271,7 @@ namespace TradeHubGui.Common.Models
                     _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
                     {
                         // Add new value to Collection
-                        LimitOrderBookCollection.Add(askRecord);
+                        AskRecordsCollection.Add(askRecord);
                     }));
                 }
 

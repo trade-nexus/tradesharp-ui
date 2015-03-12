@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using TradeHubGui.Common.Constants;
@@ -13,7 +14,8 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
 
-        private ObservableCollection<LimitOrderBookRecord> _limitOrderBookRecords;
+        private ObservableCollection<LimitOrderBookRecord> _bidRecords;
+        private ObservableCollection<LimitOrderBookRecord> _askRecords;
         
         #endregion
 
@@ -21,7 +23,8 @@ namespace TradeHubGui.ViewModel
 
         public LimitOrderBookViewModel(MarketDataDetail marketDataDetail)
         {
-            _limitOrderBookRecords = marketDataDetail.LimitOrderBookCollection;
+            _bidRecords = marketDataDetail.BidRecordsCollection;
+            _askRecords = marketDataDetail.AskRecordsCollection;
             
             //#region Dummy population of LOB
 
@@ -44,15 +47,34 @@ namespace TradeHubGui.ViewModel
 
         #region Properties
 
-        public ObservableCollection<LimitOrderBookRecord> LimitOrderBookRecords
+        /// <summary>
+        /// Contains all BID values for LOB
+        /// </summary>
+        public ObservableCollection<LimitOrderBookRecord> BidRecords
         {
-            get { return _limitOrderBookRecords; }
+            get { return _bidRecords; }
             set
             {
-                if (_limitOrderBookRecords != value)
+                if (_bidRecords != value)
                 {
-                    _limitOrderBookRecords = value;
-                    OnPropertyChanged("LimitOrderBookRecords");
+                    _bidRecords = value;
+                    OnPropertyChanged("BidRecords");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Contains all ASK values for LOB
+        /// </summary>
+        public ObservableCollection<LimitOrderBookRecord> AskRecords
+        {
+            get { return _askRecords; }
+            set
+            {
+                if (_askRecords != value)
+                {
+                    _askRecords = value;
+                    OnPropertyChanged("AskRecords");
                 }
             }
         }
