@@ -57,63 +57,63 @@ namespace TradeHubGui.ViewModel
             _provider = provider;
             _providers = providers;
 
-            #region Temporary fill instruments (this will be removed)
-            _tickDetailsCollection = new ObservableCollection<MarketDataDetail>();
-            _tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "AAPL" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "GOOG" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "MSFT" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "HP" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "AOI" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            _tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "WAS" })
-            {
-                BidQuantity = 23,
-                BidPrice = 450.34M,
-                AskQuantity = 20,
-                AskPrice = 456.00M,
-                LastPrice = 445.34M,
-                LastQuantity = 23
-            });
-            #endregion
+            //#region Temporary fill instruments (this will be removed)
+            //_tickDetailsCollection = new ObservableCollection<MarketDataDetail>();
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "AAPL" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "GOOG" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "MSFT" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "HP" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "AOI" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "WAS" })
+            //{
+            //    BidQuantity = 23,
+            //    BidPrice = 450.34M,
+            //    AskQuantity = 20,
+            //    AskPrice = 456.00M,
+            //    LastPrice = 445.34M,
+            //    LastQuantity = 23
+            //});
+            //#endregion
         }
 
         #endregion

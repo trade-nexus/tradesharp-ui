@@ -508,16 +508,16 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="order">Accepted Order details</param>
         private void OnOrderAccepted(Order order)
         {
-            OrderDetails orderDetails = new OrderDetails();
-            orderDetails.ID = order.OrderID;
-            //orderDetails.Price = order.;
-            orderDetails.Quantity = order.OrderSize;
-            orderDetails.Side = order.OrderSide;
-            //orderDetails.Type = order.;
-            orderDetails.Status = order.OrderStatus;
+            //OrderDetails orderDetails = new OrderDetails();
+            //orderDetails.ID = order.OrderID;
+            ////orderDetails.Price = order.;
+            //orderDetails.Quantity = order.OrderSize;
+            //orderDetails.Side = order.OrderSide;
+            ////orderDetails.Type = order.;
+            //orderDetails.Status = order.OrderStatus;
 
-            // Update UI
-            AddOrderDetails(orderDetails);
+            //// Update UI
+            //AddOrderDetails(orderDetails);
 
             PersistencePublisher.PublishDataForPersistence(order);
         }

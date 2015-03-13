@@ -821,6 +821,10 @@ namespace TradeHubGui.ViewModel
 
             // Select the 1st instance from DataGrid
             SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
+
+            // Set initial parameters for creating a new instance
+            if (SelectedInstance != null)
+                SelectedStrategy.ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
         }
 
         /// <summary>
