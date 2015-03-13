@@ -6,9 +6,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Threading;
 using TradeHub.Common.Core.DomainModels;
 using TradeHubGui.Common.Constants;
+using TradeHubGui.Common.Utility;
 
 namespace TradeHubGui.Common.Models
 {
@@ -74,12 +76,12 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Contains Limit order book entries for BIDS
         /// </summary>
-        private ObservableCollection<LimitOrderBookRecord> _bidRecordsCollection;
+        private SortedObservableCollection<LimitOrderBookRecord> _bidRecordsCollection;
 
         /// <summary>
         /// Contains Limit order book entries for ASKS
         /// </summary>
-        private ObservableCollection<LimitOrderBookRecord> _askRecordsCollection; 
+        private SortedObservableCollection<LimitOrderBookRecord> _askRecordsCollection;
 
         /// <summary>
         /// Argument Constructor
@@ -96,8 +98,8 @@ namespace TradeHubGui.Common.Models
             _bidRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
             _askRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
 
-            _bidRecordsCollection = new ObservableCollection<LimitOrderBookRecord>();
-            _askRecordsCollection = new ObservableCollection<LimitOrderBookRecord>();
+            _bidRecordsCollection = new SortedObservableCollection<LimitOrderBookRecord>();
+            _askRecordsCollection = new SortedObservableCollection<LimitOrderBookRecord>();
         }
 
         #region Properties
@@ -119,7 +121,7 @@ namespace TradeHubGui.Common.Models
             get { return _bidPrice; }
             set
             {
-                _bidPrice = value; 
+                _bidPrice = value;
                 OnPropertyChanged("BidPrice");
             }
         }
@@ -132,7 +134,7 @@ namespace TradeHubGui.Common.Models
             get { return _askPrice; }
             set
             {
-                _askPrice = value; 
+                _askPrice = value;
                 OnPropertyChanged("AskPrice");
             }
         }
@@ -192,7 +194,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Contains all Limit order book entries for BIDs
         /// </summary>
-        public ObservableCollection<LimitOrderBookRecord> BidRecordsCollection
+        public SortedObservableCollection<LimitOrderBookRecord> BidRecordsCollection
         {
             get { return _bidRecordsCollection; }
             set
@@ -205,7 +207,7 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Contains all Limit order book entries for ASKs
         /// </summary>
-        public ObservableCollection<LimitOrderBookRecord> AskRecordsCollection
+        public SortedObservableCollection<LimitOrderBookRecord> AskRecordsCollection
         {
             get { return _askRecordsCollection; }
             set
@@ -234,7 +236,7 @@ namespace TradeHubGui.Common.Models
                     // Add new value to Map
                     _bidRecordsMap.Add(tick.Depth, bidRecord);
 
-                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
+                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
                     {
                         // Add new value to Collection
                         BidRecordsCollection.Add(bidRecord);
@@ -250,10 +252,15 @@ namespace TradeHubGui.Common.Models
                         BidQuantity = tick.BidSize;
                     }
 
+                    // TODO: try to optimize this
+                    BidRecordsCollection.Remove(bidRecord);
+                   
                     // Update values
                     bidRecord.Depth = tick.Depth;
                     bidRecord.BidPrice = tick.BidPrice;
                     bidRecord.BidQuantity = tick.BidSize;
+
+                    BidRecordsCollection.Add(bidRecord);
                 }));
             }
 
@@ -268,7 +275,7 @@ namespace TradeHubGui.Common.Models
                     // Add new value to Map
                     _askRecordsMap.Add(tick.Depth, askRecord);
 
-                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
+                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
                     {
                         // Add new value to Collection
                         AskRecordsCollection.Add(askRecord);
@@ -284,22 +291,28 @@ namespace TradeHubGui.Common.Models
                         AskQuantity = tick.AskSize;
                     }
 
+                    // TODO: try to optimize this
+                    AskRecordsCollection.Remove(askRecord);
+                    
                     // Update values
                     askRecord.Depth = tick.Depth;
                     askRecord.AskPrice = tick.AskPrice;
                     askRecord.AskQuantity = tick.AskSize;
+
+                    AskRecordsCollection.Add(askRecord);
                 }));
             }
 
             if (tick.HasTrade)
             {
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
+                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
                 {
                     // Update Last
                     LastPrice = tick.LastPrice;
                     LastQuantity = tick.LastSize;
                 }));
             }
+
         }
 
         #region INotifyPropertyChanged implementation
