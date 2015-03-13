@@ -11,7 +11,7 @@ namespace TradeHubGui.Common.Models
     /// <summary>
     /// Contains information about individual item in the limit order book collection
     /// </summary>
-    public class LimitOrderBookRecord : INotifyPropertyChanged
+    public class LimitOrderBookRecord : INotifyPropertyChanged, IComparable<LimitOrderBookRecord>
     {
         private int _depth;
         
@@ -128,5 +128,37 @@ namespace TradeHubGui.Common.Models
         }
 
         #endregion
+
+        public int CompareTo(LimitOrderBookRecord record)
+        {
+            //LimitOrderBookRecord record = (LimitOrderBookRecord)obj;
+
+            if (this.RecordType == LobRecordType.Ask)
+            {
+                // Sort based on AskPrice 
+                if (this.AskPrice < record.AskPrice)
+                {
+                    return 1;
+                }
+                else if (record.AskPrice < this.AskPrice)
+                    return -1;
+                else
+                    return 0;
+            }
+            else if (this.RecordType == LobRecordType.Bid)
+            {
+                // Sort based on BidPrice 
+                if (this.BidPrice < record.BidPrice)
+                {
+                    return 1;
+                }
+                else if (record.BidPrice < this.BidPrice)
+                    return -1;
+                else
+                    return 0;
+            }
+
+            return 0;
+        }
     }
 }
