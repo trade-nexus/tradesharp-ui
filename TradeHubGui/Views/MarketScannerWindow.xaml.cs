@@ -31,7 +31,7 @@ namespace TradeHubGui.Views
 
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if((sender as TextBox).Text != string.Empty && e.Key == Key.Enter)
             {
                 (this.DataContext as MarketScannerWindowViewModel).AddNewSymbolCommand.Execute(null);
             }
