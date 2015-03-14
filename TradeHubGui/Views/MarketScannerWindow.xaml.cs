@@ -28,5 +28,13 @@ namespace TradeHubGui.Views
         {
             InitializeComponent();
         }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                (this.DataContext as MarketScannerWindowViewModel).AddNewSymbolCommand.Execute(null);
+            }
+        }
     }
 }
