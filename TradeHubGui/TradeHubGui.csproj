@@ -158,6 +158,7 @@
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
+    <Compile Include="ViewModel\DataDownloaderViewModel.cs" />
     <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
     <Compile Include="ViewModel\LimitOrderBookViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />

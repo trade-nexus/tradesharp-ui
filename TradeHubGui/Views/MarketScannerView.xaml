@@ -113,7 +113,7 @@
                                     Command="{Binding DataContext.CloseScannerWindowCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" 
                                     CommandParameter="{Binding Provider.ProviderName}">
                                     <Button.ToolTip>
-                                        <ToolTip Content="{Binding Provider.ProviderName}" ContentStringFormat="{}Close Scanner Window {0}"/>
+                                        <ToolTip Content="{Binding Provider.ProviderName}" ContentStringFormat="{}Close scanner window {0}"/>
                                     </Button.ToolTip>
                                     <Image Width="10" Height="10" Margin="2" Source="{StaticResource imgClose}" UseLayoutRounding="True"/>
                                 </Button>

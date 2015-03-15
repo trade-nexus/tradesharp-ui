@@ -7,7 +7,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200"
-             Tag="DATA DOWNLOADER">
+             Tag="DATA DOWNLOADER"
+             Loaded="DataDownloaderView_Loaded">
 
     <UserControl.Resources>
         <conv:OrderStatusToBrushConverter x:Key="OrderStatusToBrush"/>
@@ -21,116 +22,112 @@
             <DockPanel Grid.Row="0" Margin="10">
                 <TextBlock DockPanel.Dock="Top" Margin="10,0,10,20" Text="MARKET DATA PROVIDERS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                <TabControl Grid.Row="1" Margin="10">
-                    <TabItem>
-                        <TabItem.Header>
-                            <DockPanel>
-                                <TextBlock Text="Blackwood" Margin="4,4,10,4" FontWeight="SemiBold" FontSize="14" Typography.Capitals="SmallCaps" Foreground="{StaticResource BaseBrush3}"/>
-                            </DockPanel>
-                        </TabItem.Header>
+                <TabControl Grid.Row="1" Margin="10" 
+                            ItemsSource="{Binding MarketDataProviders}" 
+                            SelectedItem="{Binding SelectedMarketDataProvider}">
 
-                        <StackPanel Orientation="Horizontal">
-                            <DockPanel>
-                                <StackPanel MinWidth="120" Margin="20,20,40,20" VerticalAlignment="Top">
-                                    <CheckBox Content="Write binary" IsChecked="{Binding WriteBinary}"/>
-                                    <CheckBox Content="Write CSV" IsChecked="{Binding WriteCsv}"/>
-                                </StackPanel>
+                    <TabControl.ItemContainerStyle>
+                        <Style TargetType="TabItem" BasedOn="{StaticResource {x:Type TabItem}}">
+                            <Setter Property="HeaderTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ProviderName}" Margin="4,4,10,4" FontWeight="SemiBold" FontSize="14" Typography.Capitals="SmallCaps" Foreground="{StaticResource BaseBrush3}"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <DockPanel>
+                                                <StackPanel DockPanel.Dock="Top" MinWidth="120" Margin="15,20,40,20" VerticalAlignment="Top">
+                                                    <CheckBox Content="Write binary" IsChecked="{Binding WriteBinary}" Margin="2"/>
+                                                    <CheckBox Content="Write CSV" IsChecked="{Binding WriteCsv}" Margin="2"/>
+                                                </StackPanel>
 
-                                <TextBlock DockPanel.Dock="Top" Margin="10,25,10,0" Text="Select symbol to customize bar settings:"/>
+                                                <TextBlock DockPanel.Dock="Top" Margin="16,0,10,0" Text="Select symbol to customize bar settings:"/>
 
-                                <DataGrid x:Name="OrderDetailsDataGrid" MaxWidth="500" Margin="10"
-                                      ItemsSource="{Binding Instruments}"
-                                      SelectionMode="Single" 
-                                      IsTextSearchEnabled="True"
-                                      IsSynchronizedWithCurrentItem="True"
-                                      CanUserAddRows="False" CanUserDeleteRows="False"
-                                      CanUserResizeRows="False" CanUserSortColumns="True"
-                                      IsReadOnly="True"
-                                      SelectionUnit="FullRow"
-                                      AutoGenerateColumns="False">
+                                                <DataGrid x:Name="OrderDetailsDataGrid" MaxWidth="500" Margin="16,10"
+                                                          ItemsSource="{Binding Instruments}"
+                                                          SelectionMode="Single" 
+                                                          IsTextSearchEnabled="True"
+                                                          IsSynchronizedWithCurrentItem="True"
+                                                          CanUserAddRows="False" CanUserDeleteRows="False"
+                                                          CanUserResizeRows="False" CanUserSortColumns="True"
+                                                          IsReadOnly="True"
+                                                          SelectionUnit="FullRow"
+                                                          AutoGenerateColumns="False">
 
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Instrument" Width="0.12*" Binding="{Binding Security.Symbol}" />
-                                        <DataGridTextColumn Header="Trades" Width="0.15*" Binding="{Binding Trades}" 
-                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
-                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                                        <DataGridTextColumn Header="Quotes" Width="0.15*" Binding="{Binding Quotes}" 
-                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
-                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                                        <DataGridTextColumn Header="Bars" Width="0.15*" Binding="{Binding Bars}" 
-                                                        HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
-                                                        CellStyle="{StaticResource RightAlignedCellStyle}"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </DockPanel>
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn Header="Instrument" Width="0.12*" Binding="{Binding Security.Symbol}" />
+                                                        <DataGridTextColumn Header="Trades" Width="0.15*" Binding="{Binding Trades}" 
+                                                                            HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
+                                                                            CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                                        <DataGridTextColumn Header="Quotes" Width="0.15*" Binding="{Binding Quotes}" 
+                                                                            HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
+                                                                            CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                                        <DataGridTextColumn Header="Bars" Width="0.15*" Binding="{Binding Bars}" 
+                                                                            HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" 
+                                                                            CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </DockPanel>
 
-                            <StackPanel Margin="10,59,10,0" HorizontalAlignment="Left">
+                                            <StackPanel Margin="0,115,10,0" HorizontalAlignment="Left">
 
-                                <GroupBox Header="Bar settings" Margin="10">
-                                    <Grid Grid.IsSharedSizeScope="True" MinWidth="220">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="gr1"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
+                                                <GroupBox Header="Bar settings" Margin="10">
+                                                    <Grid Grid.IsSharedSizeScope="True" MinWidth="220">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="gr1"/>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
 
-                                        <Label Content="Format"/>
-                                        <ComboBox Grid.Column="1" ItemsSource="{Binding BarFormats}" SelectedItem="{Binding SelectedBarFormat}"/>
-                                        <Label Grid.Row="1" Grid.Column="0" Content="Price type"/>
-                                        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding PriceTypes}" SelectedItem="{Binding SelectedPriceType}"/>
-                                        <Label Grid.Row="2" Grid.Column="0" Content="Size"/>
-                                        <wpfToolkitExtended:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding BarSize, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
-                                        <Label Grid.Row="3" Grid.Column="0" Content="Length"/>
-                                        <wpfToolkitExtended:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding BarLenght, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
-                                    </Grid>
-                                </GroupBox>
+                                                        <Label Content="Format"/>
+                                                        <ComboBox Grid.Column="1" ItemsSource="{Binding BarFormats}" SelectedItem="{Binding SelectedBarFormat}"/>
+                                                        <Label Grid.Row="1" Grid.Column="0" Content="Price type"/>
+                                                        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding PriceTypes}" SelectedItem="{Binding SelectedPriceType}"/>
+                                                        <Label Grid.Row="2" Grid.Column="0" Content="Size"/>
+                                                        <wpfToolkitExtended:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding BarSize, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+                                                        <Label Grid.Row="3" Grid.Column="0" Content="Length"/>
+                                                        <wpfToolkitExtended:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding BarLenght, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+                                                    </Grid>
+                                                </GroupBox>
 
-                                <GroupBox Header="Historic bar settings" Margin="10">
-                                    <Grid Grid.IsSharedSizeScope="True" MinWidth="220">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" SharedSizeGroup="gr1"/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
+                                                <GroupBox Header="Historic bar settings" Margin="10">
+                                                    <Grid Grid.IsSharedSizeScope="True" MinWidth="220">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" SharedSizeGroup="gr1"/>
+                                                            <ColumnDefinition/>
+                                                        </Grid.ColumnDefinitions>
 
-                                        <Label Content="Type"/>
-                                        <ComboBox Grid.Column="1" ItemsSource="{Binding BarTypes}" SelectedItem="{Binding SelectedBarType}"/>
-                                        <Label Grid.Row="1" Grid.Column="0" Content="Start date"/>
-                                        <wpfToolkitExtended:DateTimeUpDown Grid.Row="1" Grid.Column="1" Value="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Label Grid.Row="2" Grid.Column="0" Content="End date"/>
-                                        <wpfToolkitExtended:DateTimeUpDown Grid.Row="2" Grid.Column="1" Value="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"/>
-                                    </Grid>
-                                </GroupBox>
+                                                        <Label Content="Type"/>
+                                                        <ComboBox Grid.Column="1" ItemsSource="{Binding BarTypes}" SelectedItem="{Binding SelectedBarType}"/>
+                                                        <Label Grid.Row="1" Grid.Column="0" Content="Start date"/>
+                                                        <wpfToolkitExtended:DateTimeUpDown Grid.Row="1" Grid.Column="1" Value="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <Label Grid.Row="2" Grid.Column="0" Content="End date"/>
+                                                        <wpfToolkitExtended:DateTimeUpDown Grid.Row="2" Grid.Column="1" Value="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </Grid>
+                                                </GroupBox>
 
-                            </StackPanel>
-                        </StackPanel>
-                    </TabItem>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.ItemContainerStyle>
 
-                    <TabItem>
-                        <TabItem.Header>
-                            <DockPanel>
-                                <TextBlock Text="InteractiveBrockers" Margin="4,4,10,4" FontWeight="SemiBold" FontSize="14" Typography.Capitals="SmallCaps" Foreground="{StaticResource BaseBrush3}"/>
-                            </DockPanel>
-                        </TabItem.Header>
-
-                    </TabItem>
-
-                    <TabItem>
-                        <TabItem.Header>
-                            <DockPanel>
-                                <TextBlock Text="Simulated" Margin="4,4,10,4" FontWeight="SemiBold" FontSize="14" Typography.Capitals="SmallCaps" Foreground="{StaticResource BaseBrush3}"/>
-                            </DockPanel>
-                        </TabItem.Header>
-                    </TabItem>
                 </TabControl>
             </DockPanel>
         </Grid>
