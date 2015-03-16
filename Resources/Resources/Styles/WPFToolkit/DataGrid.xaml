@@ -23,7 +23,7 @@
     <SolidColorBrush x:Key="DataGridSelectedBorder" Color="#777"/>
 	<SolidColorBrush x:Key="DataGridSelectedForeground" Color="Black"/>
 
-    <SolidColorBrush x:Key="AlternateRowBackgroundBrush" Color="#FFF7F7F7" Opacity="0.8"/>
+    <SolidColorBrush x:Key="AlternateRowBackgroundBrush" Color="#FFF4F4F4" Opacity="0.8"/>
 
 	<!-- Header related brushes -->
 	<SolidColorBrush x:Key="HeaderBorderBrush" Color="#EEE"/>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TradeHubGui.ViewModel;
 
 namespace TradeHubGui.Views
 {
@@ -23,6 +24,17 @@ namespace TradeHubGui.Views
         public DataDownloaderView()
         {
             InitializeComponent();
+            DataContext = new DataDownloaderViewModel();
+        }
+
+        /// <summary>
+        /// On data downloader view loaded, initialize providers
+        /// </summary>
+        /// <param name="sender">DataDownloaderView</param>
+        /// <param name="e"></param>
+        void DataDownloaderView_Loaded(object sender, RoutedEventArgs e)
+        {
+            (DataContext as DataDownloaderViewModel).InitializeMarketDataProviders();
         }
     }
 }

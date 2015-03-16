@@ -159,7 +159,7 @@ namespace TradeHubGui.ViewModel
             {
                 if (_newSymbol != value)
                 {
-                    _newSymbol = value;
+                    _newSymbol = value.Trim();
                     OnPropertyChanged("NewSymbol");
                 }
             }
@@ -284,23 +284,32 @@ namespace TradeHubGui.ViewModel
 
         private void AddNewSymbolExecute()
         {
-            // Create new tick detail's object
-            MarketDataDetail tickDetail = new MarketDataDetail(new Security() { Symbol = NewSymbol.Trim() });
+            // Check if symbol already exists in TickDetailsMap
+            if (_provider.TickDetailsMap.ContainsKey(NewSymbol))
+            {
+                // Select existing TickDetail
+                SelectedTickDetail = TickDetailsCollection.First(x => x.Security.Symbol == NewSymbol);
+            }
+            else
+            {
+                // Create new tick detail's object
+                MarketDataDetail tickDetail = new MarketDataDetail(new Security() { Symbol = NewSymbol });
 
-            // Add Tick Detail object to Provider's local map
-            _provider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
+                // Add Tick Detail object to Provider's local map 
+                _provider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
 
-            // Add new tick detail to the Tick Detail's Map to show on UI
-            TickDetailsCollection.Add(tickDetail);
+                // Add new tick detail to the Tick Detail's Map to show on UI
+                TickDetailsCollection.Add(tickDetail);
 
-            // Select new tick detail in DataGrid
-            SelectedTickDetail = tickDetail;
+                // Select new tick detail in DataGrid
+                SelectedTickDetail = tickDetail;
 
-            // Create a new subscription request for requesting market data
-            var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Subscribe);
+                // Create a new subscription request for requesting market data
+                var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Subscribe);
 
-            // Raise Event to notify listeners
-            EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+                // Raise Event to notify listeners
+                EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+            }
 
             // Clear NewSymbol string
             NewSymbol = string.Empty;
@@ -311,7 +320,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private bool AddNewSymbolCanExecute()
         {
-            if (string.IsNullOrWhiteSpace(NewSymbol) || _provider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
+            if (string.IsNullOrEmpty(NewSymbol) || _provider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
                 return false;
 
             return true;
@@ -348,7 +357,7 @@ namespace TradeHubGui.ViewModel
             SelectedTickDetail = (MarketDataDetail)param;
             string title = string.Format("LOB - {0} ({1})", SelectedTickDetail.Security.Symbol, Provider.ProviderName);
             LimitOrderBookWindow lobWindow = (LimitOrderBookWindow)FindWindowByTitle(title);
-            if(lobWindow != null)
+            if (lobWindow != null)
             {
                 lobWindow.Activate();
                 return;
