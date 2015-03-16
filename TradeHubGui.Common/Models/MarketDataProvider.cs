@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace TradeHubGui.Common.Models
     /// </summary>
     public class MarketDataProvider : Provider
     {
+        #region Fields
+
         /// <summary>
         /// Contains subscribed symbol's tick information (Valid if the provider is type 'Market Data')
         /// KEY = Symbol
@@ -20,24 +23,56 @@ namespace TradeHubGui.Common.Models
         private Dictionary<string, MarketDataDetail> _marketDetailsMap;
 
         /// <summary>
+        /// Contains all Market Detail objects
+        /// </summary>
+        private ObservableCollection<MarketDataDetail> _marketDetailCollection;
+
+        #endregion
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public MarketDataProvider()
         {
             // Initialize Map
             _marketDetailsMap = new Dictionary<string, MarketDataDetail>();
+            _marketDetailCollection = new ObservableCollection<MarketDataDetail>();
         }
 
+        #region Properties
 
         /// <summary>
-        /// Contains market information for each subscribed symbol
-        /// KEY = Symbol
-        /// VALUE = <see cref="MarketDataDetail"/>
+        /// Contains all Market Detail objects
         /// </summary>
-        public Dictionary<string, MarketDataDetail> TickDetailsMap
+        public ObservableCollection<MarketDataDetail> MarketDetailCollection
         {
-            get { return _marketDetailsMap; }
-            set { _marketDetailsMap = value; }
+            get { return _marketDetailCollection; }
+            set
+            {
+                _marketDetailCollection = value;
+                OnPropertyChanged("MarketDetailCollection");
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Adds Market Detail object to Map/Collection
+        /// </summary>
+        /// <param name="marketDataDetail">Holds market data information</param>
+        public void AddMarketDetail(MarketDataDetail marketDataDetail)
+        {
+            // Check if the object already exists for the given symbol
+            if (!_marketDetailsMap.ContainsKey(marketDataDetail.Security.Symbol))
+            {
+                // Add object to MAP
+                _marketDetailsMap.Add(marketDataDetail.Security.Symbol, marketDataDetail);
+
+                // Add object to collection
+                MarketDetailCollection.Add(marketDataDetail);
+            }
         }
 
         /// <summary>
@@ -68,12 +103,27 @@ namespace TradeHubGui.Common.Models
             // Get MarketDataDetail object which is to be removed
             if (_marketDetailsMap.TryGetValue(symbol, out marketDataDetail))
             {
+                // Clear depth information
                 marketDataDetail.AskRecordsCollection.Clear();
                 marketDataDetail.BidRecordsCollection.Clear();
 
                 // remove from local map
                 _marketDetailsMap.Remove(symbol);
+
+                // Remove from collection
+                MarketDetailCollection.Remove(marketDataDetail);
             }
         }
+
+        /// <summary>
+        /// Checks if the given symbol is already loading into application from UI
+        /// </summary>
+        /// <param name="symbol">Symbol name</param>
+        public bool IsSymbolLoaded(string symbol)
+        {
+            return _marketDetailsMap.ContainsKey(symbol);
+        }
+
+        #endregion
     }
 }

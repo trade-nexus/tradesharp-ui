@@ -11,6 +11,7 @@ using TradeHub.StrategyEngine.MarketData;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Managers;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 

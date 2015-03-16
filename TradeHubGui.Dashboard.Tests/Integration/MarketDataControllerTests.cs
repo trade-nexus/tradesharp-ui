@@ -12,6 +12,7 @@ using TradeHub.StrategyEngine.MarketData;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Services;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 using TradeHubConstants = TradeHub.Common.Core.Constants;
@@ -76,13 +77,14 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             Security security = new Security(){Symbol = "ERX"};
             
             // Create a new subscription request for requesting market data
-            var subscriptionRequest = new SubscriptionRequest(security,provider,SubscriptionType.Subscribe);
+            var subscriptionRequest = new SubscriptionRequest(security, provider, MarketDataType.Tick,
+                SubscriptionType.Subscribe);
             
             // Create Tick details to hold market data information
             MarketDataDetail tickDetails = new MarketDataDetail(security);
 
             // Add TickDetails object to 
-            provider.TickDetailsMap.Add(security.Symbol, tickDetails);
+            provider.AddMarketDetail(tickDetails);
             
             EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
 
@@ -111,13 +113,13 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             Security security = new Security() { Symbol = "ERX" };
 
             // Create a new subscription request for requesting market data
-            var subscriptionRequest = new SubscriptionRequest(security, provider, SubscriptionType.Subscribe);
+            var subscriptionRequest = new SubscriptionRequest(security, provider, MarketDataType.Tick, SubscriptionType.Subscribe);
 
             // Create Tick details to hold market data information
             MarketDataDetail tickDetails = new MarketDataDetail(security);
 
             // Add TickDetails object to 
-            provider.TickDetailsMap.Add(security.Symbol, tickDetails);
+            provider.AddMarketDetail(tickDetails);
 
             EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
 
@@ -150,11 +152,11 @@ namespace TradeHubGui.Dashboard.Tests.Integration
             MarketDataDetail tickDetails = new MarketDataDetail(security);
 
             // Add TickDetails object to 
-            provider.TickDetailsMap.Add(security.Symbol, tickDetails);
+            provider.AddMarketDetail(tickDetails);
 
             {
                 // Create a new subscription request for requesting market data
-                var subscriptionRequest = new SubscriptionRequest(security, provider, SubscriptionType.Subscribe);
+                var subscriptionRequest = new SubscriptionRequest(security, provider, MarketDataType.Tick, SubscriptionType.Subscribe);
 
                 EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
             }
@@ -163,7 +165,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             {
                 // Create a new subscription request for requesting market data
-                var subscriptionRequest = new SubscriptionRequest(security, provider, SubscriptionType.Unsubscribe);
+                var subscriptionRequest = new SubscriptionRequest(security, provider, MarketDataType.Tick, SubscriptionType.Unsubscribe);
 
                 EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
             }

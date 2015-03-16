@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui", "TradeHubGui\TradeHubGui.csproj", "{A25CA0DB-EA1D-4F19-9B11-2BF0FC2AB64E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.StrategyRunner", "TradeHubGui.StrategyRunner\TradeHubGui.StrategyRunner.csproj", "{8090220C-F33F-46EA-AE6A-CDAC8C921EDD}"
@@ -16,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.Dashboard", "TradeHubGui.Dashboard\TradeHubGui.Dashboard.csproj", "{8E7E4246-3804-4D60-90C4-C0350013297D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.Dashboard.Tests", "TradeHubGui.Dashboard.Tests\TradeHubGui.Dashboard.Tests.csproj", "{1F3C57FC-622D-4AFE-ADF1-A1664C593330}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.DataDownloader", "TradeHubGui.DataDownloader\TradeHubGui.DataDownloader.csproj", "{FF91D752-E815-4994-9037-288C1FAB2994}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +51,10 @@ Global
 		{1F3C57FC-622D-4AFE-ADF1-A1664C593330}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F3C57FC-622D-4AFE-ADF1-A1664C593330}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F3C57FC-622D-4AFE-ADF1-A1664C593330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF91D752-E815-4994-9037-288C1FAB2994}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF91D752-E815-4994-9037-288C1FAB2994}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF91D752-E815-4994-9037-288C1FAB2994}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF91D752-E815-4994-9037-288C1FAB2994}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
