@@ -231,11 +231,11 @@ namespace TradeHubGui.ViewModel
         {
             if (param.Equals("MarketDataProvider"))
             {
-                //////NOTE: Test code to simulate Provider Connect
-                ////// BEGIN:
+                ////NOTE: Test code to simulate Provider Connect
+                //// BEGIN:
                 //SelectedMarketDataProvider.ConnectionStatus = ConnectionStatus.Connected;
                 //return;
-                ////// :END
+                //// :END
 
                 // Rasie event to request connection
                 EventSystem.Publish<MarketDataProvider>(SelectedMarketDataProvider);

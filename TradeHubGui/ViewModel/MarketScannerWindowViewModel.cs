@@ -13,6 +13,7 @@ using TradeHub.Common.Core.DomainModels;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Views;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 
@@ -51,69 +52,11 @@ namespace TradeHubGui.ViewModel
         public MarketScannerWindowViewModel(MetroWindow scannerWindow, MarketDataProvider provider, ObservableCollection<MarketDataProvider> providers)
         {
             _sendOrderViewModel = new SendOrderViewModel();
-            _tickDetailsCollection = new ObservableCollection<MarketDataDetail>();
+            _tickDetailsCollection = provider.MarketDetailCollection;
 
             _scannerWindow = scannerWindow;
             _provider = provider;
             _providers = providers;
-
-            //#region Temporary fill instruments (this will be removed)
-            //_tickDetailsCollection = new ObservableCollection<MarketDataDetail>();
-            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "AAPL" })
-            //{
-            //    BidQuantity = 23,
-            //    BidPrice = 450.34M,
-            //    AskQuantity = 20,
-            //    AskPrice = 456.00M,
-            //    LastPrice = 445.34M,
-            //    LastQuantity = 23
-            //});
-            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "GOOG" })
-            //{
-            //    BidQuantity = 23,
-            //    BidPrice = 450.34M,
-            //    AskQuantity = 20,
-            //    AskPrice = 456.00M,
-            //    LastPrice = 445.34M,
-            //    LastQuantity = 23
-            //});
-            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "MSFT" })
-            //{
-            //    BidQuantity = 23,
-            //    BidPrice = 450.34M,
-            //    AskQuantity = 20,
-            //    AskPrice = 456.00M,
-            //    LastPrice = 445.34M,
-            //    LastQuantity = 23
-            //});
-            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "HP" })
-            //{
-            //    BidQuantity = 23,
-            //    BidPrice = 450.34M,
-            //    AskQuantity = 20,
-            //    AskPrice = 456.00M,
-            //    LastPrice = 445.34M,
-            //    LastQuantity = 23
-            //});
-            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "AOI" })
-            //{
-            //    BidQuantity = 23,
-            //    BidPrice = 450.34M,
-            //    AskQuantity = 20,
-            //    AskPrice = 456.00M,
-            //    LastPrice = 445.34M,
-            //    LastQuantity = 23
-            //});
-            //_tickDetailsCollection.Add(new MarketDataDetail(new Security() { Symbol = "WAS" })
-            //{
-            //    BidQuantity = 23,
-            //    BidPrice = 450.34M,
-            //    AskQuantity = 20,
-            //    AskPrice = 456.00M,
-            //    LastPrice = 445.34M,
-            //    LastQuantity = 23
-            //});
-            //#endregion
         }
 
         #endregion
@@ -285,7 +228,7 @@ namespace TradeHubGui.ViewModel
         private void AddNewSymbolExecute()
         {
             // Check if symbol already exists in TickDetailsMap
-            if (_provider.TickDetailsMap.ContainsKey(NewSymbol))
+            if (_provider.IsSymbolLoaded(NewSymbol))
             {
                 // Select existing TickDetail
                 SelectedTickDetail = TickDetailsCollection.First(x => x.Security.Symbol == NewSymbol);
@@ -295,17 +238,14 @@ namespace TradeHubGui.ViewModel
                 // Create new tick detail's object
                 MarketDataDetail tickDetail = new MarketDataDetail(new Security() { Symbol = NewSymbol });
 
-                // Add Tick Detail object to Provider's local map 
-                _provider.TickDetailsMap.Add(tickDetail.Security.Symbol, tickDetail);
-
-                // Add new tick detail to the Tick Detail's Map to show on UI
-                TickDetailsCollection.Add(tickDetail);
+                // Add Tick Detail object to Provider's maps
+                _provider.AddMarketDetail(tickDetail);
 
                 // Select new tick detail in DataGrid
                 SelectedTickDetail = tickDetail;
 
                 // Create a new subscription request for requesting market data
-                var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Subscribe);
+                var subscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, MarketDataType.Tick, SubscriptionType.Subscribe);
 
                 // Raise Event to notify listeners
                 EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
@@ -341,11 +281,8 @@ namespace TradeHubGui.ViewModel
                 // Remove from Providers collection
                 _provider.RemoveMarketInformation(tickDetail.Security.Symbol);
 
-                // Remove from the UI Collection
-                TickDetailsCollection.Remove(tickDetail);
-
                 // Create a new un-subscription request for requesting market data
-                var unsubscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, SubscriptionType.Unsubscribe);
+                var unsubscriptionRequest = new SubscriptionRequest(tickDetail.Security, _provider, MarketDataType.Tick, SubscriptionType.Unsubscribe);
 
                 // Raise Event to notify listeners
                 EventSystem.Publish<SubscriptionRequest>(unsubscriptionRequest);
@@ -423,18 +360,16 @@ namespace TradeHubGui.ViewModel
 
         public void RemoveAllSymbols()
         {
-            foreach (MarketDataDetail marketDataDetail in TickDetailsCollection)
+            foreach (MarketDataDetail marketDataDetail in TickDetailsCollection.ToList())
             {
                 // Create a new un-subscription request for requesting market data
-                var unsubscriptionRequest = new SubscriptionRequest(marketDataDetail.Security, _provider, SubscriptionType.Unsubscribe);
+                var unsubscriptionRequest = new SubscriptionRequest(marketDataDetail.Security, _provider, MarketDataType.Tick, SubscriptionType.Unsubscribe);
 
                 // Raise Event to notify listeners
                 EventSystem.Publish<SubscriptionRequest>(unsubscriptionRequest);
 
-                _provider.TickDetailsMap.Remove(marketDataDetail.Security.Symbol);
+                _provider.RemoveMarketInformation(marketDataDetail.Security.Symbol);
             }
-
-            TickDetailsCollection.Clear();
         }
     }
 }
