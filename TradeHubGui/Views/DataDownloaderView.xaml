@@ -48,7 +48,7 @@
                                                 <TextBlock DockPanel.Dock="Top" Margin="16,0,10,0" Text="Select symbol to customize bar settings:"/>
 
                                                 <DataGrid x:Name="OrderDetailsDataGrid" MaxWidth="500" Margin="16,10"
-                                                          ItemsSource="{Binding Instruments}"
+                                                          ItemsSource="{Binding MarketDetailCollection}"
                                                           SelectionMode="Single" 
                                                           IsTextSearchEnabled="True"
                                                           IsSynchronizedWithCurrentItem="True"
@@ -89,13 +89,17 @@
                                                         </Grid.ColumnDefinitions>
 
                                                         <Label Content="Format"/>
-                                                        <ComboBox Grid.Column="1" ItemsSource="{Binding BarFormats}" SelectedItem="{Binding SelectedBarFormat}"/>
+                                                        <ComboBox Grid.Column="1" SelectedIndex="0"
+                                                                  ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.BarFormats}" 
+                                                                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedBarFormat}"/>
                                                         <Label Grid.Row="1" Grid.Column="0" Content="Price type"/>
-                                                        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding PriceTypes}" SelectedItem="{Binding SelectedPriceType}"/>
+                                                        <ComboBox Grid.Row="1" Grid.Column="1"  SelectedIndex="0"
+                                                                  ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.BarPriceTypes}" 
+                                                                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedBarPriceType}"/>
                                                         <Label Grid.Row="2" Grid.Column="0" Content="Size"/>
-                                                        <wpfToolkitExtended:IntegerUpDown Grid.Row="2" Grid.Column="1" Value="{Binding BarSize, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+                                                        <wpfToolkitExtended:DecimalUpDown Grid.Row="2" Grid.Column="1" Value="{Binding BarSize, UpdateSourceTrigger=PropertyChanged}" Increment="0.0001" Minimum="0.1" DefaultValue="0.0001"/>
                                                         <Label Grid.Row="3" Grid.Column="0" Content="Length"/>
-                                                        <wpfToolkitExtended:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding BarLenght, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+                                                        <wpfToolkitExtended:IntegerUpDown Grid.Row="3" Grid.Column="1" Value="{Binding BarLength, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="60" DefaultValue="60"/>
                                                     </Grid>
                                                 </GroupBox>
 
@@ -112,7 +116,9 @@
                                                         </Grid.ColumnDefinitions>
 
                                                         <Label Content="Type"/>
-                                                        <ComboBox Grid.Column="1" ItemsSource="{Binding BarTypes}" SelectedItem="{Binding SelectedBarType}"/>
+                                                        <ComboBox Grid.Column="1" SelectedIndex="0"
+                                                                  ItemsSource="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.BarTypes}" 
+                                                                  SelectedItem="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.SelectedBarType}"/>
                                                         <Label Grid.Row="1" Grid.Column="0" Content="Start date"/>
                                                         <wpfToolkitExtended:DateTimeUpDown Grid.Row="1" Grid.Column="1" Value="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" />
                                                         <Label Grid.Row="2" Grid.Column="0" Content="End date"/>

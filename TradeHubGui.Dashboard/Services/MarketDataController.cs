@@ -11,6 +11,7 @@ using TradeHub.StrategyEngine.MarketData;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Managers;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 
@@ -227,7 +228,7 @@ namespace TradeHubGui.Dashboard.Services
             // Get Provider object
             if (_providersMap.TryGetValue(tick.MarketDataProvider, out provider))
             {
-                provider.UpdateTickDetail(tick.Security.Symbol, tick);
+                provider.UpdateMarketDetail(tick.Security.Symbol, tick);
             }
         }
 

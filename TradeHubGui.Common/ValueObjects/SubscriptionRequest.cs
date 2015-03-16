@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
 using TradeHubGui.Common.Constants;
+using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 
-namespace TradeHubGui.Common.Models
+namespace TradeHubGui.Common.ValueObjects
 {
     /// <summary>
     /// Contains Market Data subscription details
@@ -17,6 +19,11 @@ namespace TradeHubGui.Common.Models
         /// Subscription category e.g. Subscribe, Un-Subscribe
         /// </summary>
         private SubscriptionType _subscriptionType;
+
+        /// <summary>
+        /// Type of Market data to subscribe
+        /// </summary>
+        private MarketDataType _marketDataType;
 
         /// <summary>
         /// Contains Symbol information
@@ -33,11 +40,13 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         /// <param name="security">Contains Symbol information</param>
         /// <param name="provider">Market Data Provider details</param>
+        /// <param name="marketDataType">Type of Market Data to subscribe</param>
         /// <param name="subscriptionType">Subscription category e.g. Subscribe, Un-Subscribe</param>
-        public SubscriptionRequest(Security security, MarketDataProvider provider, SubscriptionType subscriptionType)
+        public SubscriptionRequest(Security security, MarketDataProvider provider, MarketDataType marketDataType, SubscriptionType subscriptionType)
         {
             _security = security;
             _provider = provider;
+            _marketDataType = marketDataType;
             _subscriptionType = subscriptionType;
         }
 
@@ -66,6 +75,15 @@ namespace TradeHubGui.Common.Models
         {
             get { return _provider; }
             set { _provider = value; }
+        }
+
+        /// <summary>
+        /// Type of Market data to subscribe
+        /// </summary>
+        public MarketDataType MarketDataType
+        {
+            get { return _marketDataType; }
+            set { _marketDataType = value; }
         }
     }
 }
