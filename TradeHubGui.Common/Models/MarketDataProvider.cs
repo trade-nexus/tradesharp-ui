@@ -17,7 +17,7 @@ namespace TradeHubGui.Common.Models
         /// KEY = Symbol
         /// VALUE = <see cref="MarketDataDetail"/>
         /// </summary>
-        private Dictionary<string, MarketDataDetail> _tickDetailsMap;
+        private Dictionary<string, MarketDataDetail> _marketDetailsMap;
 
         /// <summary>
         /// Default Constructor
@@ -25,7 +25,7 @@ namespace TradeHubGui.Common.Models
         public MarketDataProvider()
         {
             // Initialize Map
-            _tickDetailsMap = new Dictionary<string, MarketDataDetail>();
+            _marketDetailsMap = new Dictionary<string, MarketDataDetail>();
         }
 
 
@@ -36,8 +36,8 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         public Dictionary<string, MarketDataDetail> TickDetailsMap
         {
-            get { return _tickDetailsMap; }
-            set { _tickDetailsMap = value; }
+            get { return _marketDetailsMap; }
+            set { _marketDetailsMap = value; }
         }
 
         /// <summary>
@@ -45,15 +45,34 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         /// <param name="symbol">Symbol Name</param>
         /// <param name="tick">Contains market data information</param>
-        public void UpdateTickDetail(string symbol, Tick tick)
+        public void UpdateMarketDetail(string symbol, Tick tick)
         {
             MarketDataDetail tickDetails;
 
             // Get TickDetails object to update tick information
-            if (_tickDetailsMap.TryGetValue(tick.Security.Symbol, out tickDetails))
+            if (_marketDetailsMap.TryGetValue(tick.Security.Symbol, out tickDetails))
             {
                 // Update collections for Depth information
                 tickDetails.Update(tick);
+            }
+        }
+
+        /// <summary>
+        /// Removes tick information for the given Symbol from local maps
+        /// </summary>
+        /// <param name="symbol">Symbol Name</param>
+        public void RemoveMarketInformation(string symbol)
+        {
+            MarketDataDetail marketDataDetail;
+
+            // Get MarketDataDetail object which is to be removed
+            if (_marketDetailsMap.TryGetValue(symbol, out marketDataDetail))
+            {
+                marketDataDetail.AskRecordsCollection.Clear();
+                marketDataDetail.BidRecordsCollection.Clear();
+
+                // remove from local map
+                _marketDetailsMap.Remove(symbol);
             }
         }
     }

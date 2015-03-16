@@ -338,6 +338,10 @@ namespace TradeHubGui.ViewModel
             {
                 var tickDetail = (MarketDataDetail)param;
 
+                // Remove from Providers collection
+                _provider.RemoveMarketInformation(tickDetail.Security.Symbol);
+
+                // Remove from the UI Collection
                 TickDetailsCollection.Remove(tickDetail);
 
                 // Create a new un-subscription request for requesting market data

@@ -227,7 +227,7 @@ namespace TradeHubGui.Dashboard.Services
             // Get Provider object
             if (_providersMap.TryGetValue(tick.MarketDataProvider, out provider))
             {
-                provider.UpdateTickDetail(tick.Security.Symbol, tick);
+                provider.UpdateMarketDetail(tick.Security.Symbol, tick);
             }
         }
 
