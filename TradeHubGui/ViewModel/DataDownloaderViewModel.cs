@@ -16,9 +16,11 @@ namespace TradeHubGui.ViewModel
 
         private List<string> _barTypes;
         private List<string> _barFormats;
-        private List<string> _barPriceTypes; 
+        private List<string> _barPriceTypes;
         private ObservableCollection<MarketDataProvider> _marketDataProviders;
         private MarketDataProvider _selectedMarketDataProvider;
+        private bool writeBinary;
+        private bool writeCsv;
 
         #endregion
 
@@ -72,6 +74,39 @@ namespace TradeHubGui.ViewModel
                 {
                     _selectedMarketDataProvider = value;
                     OnPropertyChanged("SelectedMarketDataProvider");
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Used for write binary option
+        /// </summary>
+        public bool WriteBinary
+        {
+            get { return writeBinary; }
+            set
+            {
+                if (writeBinary != value)
+                {
+                    writeBinary = value;
+                    OnPropertyChanged("WriteBinary");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Used for write csv option
+        /// </summary>
+        public bool WriteCSV
+        {
+            get { return writeCsv; }
+            set
+            {
+                if (writeCsv != value)
+                {
+                    writeCsv = value;
+                    OnPropertyChanged("WriteCSV");
                 }
             }
         }

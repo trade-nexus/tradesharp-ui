@@ -18,7 +18,7 @@
             <DockPanel DockPanel.Dock="Top">
                 <TextBlock DockPanel.Dock="Left" Margin="10,0" Text="MARKET DATA SCANNER" Style="{StaticResource HeaderTextBlockStyle}" HorizontalAlignment="Left"/>
 
-                <TextBlock Text="{Binding ScannerWindowViewModels.Count, StringFormat='running scanners: {0}', FallbackValue='running scanners: 0'}" FontSize="14"
+                <TextBlock Text="{Binding ScannerWindowViewModels.Count, StringFormat='running market scanners: {0}', FallbackValue='running market scanners: 0'}" FontSize="14"
                            HorizontalAlignment="Right" Margin="10,0,10,10" Foreground="{StaticResource BaseBrush3}" FontWeight="Thin" Typography.Capitals="SmallCaps"/>
             </DockPanel>
 
@@ -36,7 +36,23 @@
                     </StackPanel>
                 </Button>
 
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding ScannerWindowViewModels}" Margin="10,20">
+                <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,220">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding HasItems, ElementName=ScannersItemsControl}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    
+                    <Image Width="42" Height="42" Source="{StaticResource imgWarning}" Margin="20"/>
+                    <TextBlock Text="No running market scanners!" VerticalAlignment="Center" HorizontalAlignment="Center"
+                               FontWeight="Thin" FontSize="22" Foreground="Silver"/>
+                </StackPanel>
+
+                <ItemsControl Grid.Row="1" Name="ScannersItemsControl" ItemsSource="{Binding ScannerWindowViewModels}" Margin="10,20">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel/>
