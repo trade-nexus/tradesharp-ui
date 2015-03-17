@@ -8,6 +8,7 @@
 
   <object id="MarketDataController" type="TradeHubGui.Dashboard.Services.MarketDataController, TradeHubGui.Dashboard" singleton="true">
     <constructor-arg index="0" ref="MarketDataService"/>
+    <constructor-arg index="1" ref="HistoricalDataService"/>
   </object>
 
 </objects>

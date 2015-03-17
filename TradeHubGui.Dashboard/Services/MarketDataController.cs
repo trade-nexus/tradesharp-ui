@@ -7,6 +7,7 @@ using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
 using TradeHub.Common.Core.ValueObjects.AdminMessages;
+using TradeHub.StrategyEngine.HistoricalData;
 using TradeHub.StrategyEngine.MarketData;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
@@ -34,16 +35,17 @@ namespace TradeHubGui.Dashboard.Services
         /// KEY = Provider Name
         /// Value = Provider details <see cref="Provider"/>
         /// </summary>
-        private IDictionary<string, MarketDataProvider> _providersMap; 
+        private IDictionary<string, MarketDataProvider> _providersMap;
 
         /// <summary>
         /// Argument Constructor
         /// </summary>
-        /// <param name="marketDataService">Provides communication access with Market Data Server</param>
-        public MarketDataController(MarketDataService marketDataService)
+        /// <param name="marketDataService">Provides communication access with Market Data Server for live data</param>
+        /// <param name="historicalDataService">Provides communication access with Market Data Server for historical data</param>
+        public MarketDataController(MarketDataService marketDataService, HistoricalDataService historicalDataService)
         {
             // Initialize Manager
-            _marketDataManager = new MarketDataManager(marketDataService);
+            _marketDataManager = new MarketDataManager(marketDataService, historicalDataService);
 
             // Intialize local maps
             _providersMap = new Dictionary<string, MarketDataProvider>();
@@ -175,7 +177,21 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="subscriptionRequest">Contains subscription information</param>
         private void Subscribe(SubscriptionRequest subscriptionRequest)
         {
-            _marketDataManager.Subscribe(subscriptionRequest.Security, subscriptionRequest.Provider.ProviderName);
+            // Send Tick data subscription request
+            if (subscriptionRequest.MarketDataType.Equals(MarketDataType.Tick))
+            {
+                _marketDataManager.Subscribe(subscriptionRequest.Security, subscriptionRequest.Provider.ProviderName);
+            }
+            // Send Bar data subscription request
+            else if (subscriptionRequest.MarketDataType.Equals(MarketDataType.Bar))
+            {
+                _marketDataManager.SubscribeBar(subscriptionRequest.Security, subscriptionRequest.LiveBarDetail, subscriptionRequest.Provider.ProviderName);
+            }
+            // Send Historical data request
+            else if (subscriptionRequest.MarketDataType.Equals(MarketDataType.Historical))
+            {
+                _marketDataManager.SubscribeHistoricalData(subscriptionRequest.Security,subscriptionRequest.HistoricalBarDetail, subscriptionRequest.Provider.ProviderName);
+            }
         }
 
         /// <summary>

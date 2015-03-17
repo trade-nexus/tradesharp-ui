@@ -13,6 +13,8 @@ namespace TradeHubGui.Common.Models
     /// </summary>
     public class DataPersistenceInformation : INotifyPropertyChanged
     {
+        #region Properties
+
         /// <summary>
         /// Indicates if given market data Trades need to be persisted
         /// </summary>
@@ -28,6 +30,11 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         private bool _saveBars = false;
 
+        #endregion
+
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public DataPersistenceInformation()
         {
             

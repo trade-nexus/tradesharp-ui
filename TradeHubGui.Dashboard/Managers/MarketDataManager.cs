@@ -9,7 +9,9 @@ using TradeHub.Common.Core.FactoryMethods;
 using TradeHub.Common.Core.Utility;
 using TradeHub.Common.Core.ValueObjects.AdminMessages;
 using TradeHub.Common.Core.ValueObjects.MarketData;
+using TradeHub.StrategyEngine.HistoricalData;
 using TradeHub.StrategyEngine.MarketData;
+using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.Dashboard.Managers
 {
@@ -19,9 +21,14 @@ namespace TradeHubGui.Dashboard.Managers
     internal class MarketDataManager
     {
         /// <summary>
-        /// Provides communication access with Market Data Server
+        /// Provides communication access with Market Data Server live data
         /// </summary>
         private readonly MarketDataService _marketDataService;
+
+        /// <summary>
+        /// Provides communication access with Market Data Server for historical data
+        /// </summary>
+        private readonly HistoricalDataService _historicalDataService;
 
         /// <summary>
         /// Responsible for creating ID's for market data requests
@@ -36,6 +43,8 @@ namespace TradeHubGui.Dashboard.Managers
         private event Action<string> _logonArrivedEvent;
         private event Action<string> _logoutArrivedEvent;
         private event Action<Tick> _tickArrivedEvent;
+        private event Action<Bar> _barArrivedEvent;
+        private event Action<HistoricBarData> _historicalDataArrivedEvent;
         // ReSharper restore InconsistentNaming
 
         public event Action ConnectedEvent
@@ -98,16 +107,42 @@ namespace TradeHubGui.Dashboard.Managers
             remove { _tickArrivedEvent -= value; }
         }
 
+        public event Action<Bar> BarArrivedEvent
+        {
+            add
+            {
+                if (_barArrivedEvent == null)
+                {
+                    _barArrivedEvent += value;
+                }
+            }
+            remove { _barArrivedEvent -= value; }
+        }
+
+        public event Action<HistoricBarData> HistoricalDataArrivedEvent
+        {
+            add
+            {
+                if (_historicalDataArrivedEvent == null)
+                {
+                    _historicalDataArrivedEvent += value;
+                }
+            }
+            remove { _historicalDataArrivedEvent -= value; }
+        }
+
         #endregion
 
         /// <summary>
         /// Argument Constructor
         /// </summary>
-        /// <param name="marketDataService">Provides communication access with Market Data Server</param>
-        public MarketDataManager(MarketDataService marketDataService)
+        /// <param name="marketDataService">Provides communication access with Market Data Server for live data</param>
+        /// <param name="historicalDataService">Provider communication access with Market Data for historical data</param>
+        public MarketDataManager(MarketDataService marketDataService, HistoricalDataService historicalDataService)
         {
             // Save Instance
             _marketDataService = marketDataService;
+            _historicalDataService = historicalDataService;
 
             // Initialize Id Generator
             _idGenerator = new MarketDataIdGenerator();
@@ -115,6 +150,7 @@ namespace TradeHubGui.Dashboard.Managers
             SubscribeDataServiceEvents();
 
             _marketDataService.StartService();
+            _historicalDataService.StartService();
         }
 
         /// <summary>
@@ -132,6 +168,8 @@ namespace TradeHubGui.Dashboard.Managers
             _marketDataService.LogoutArrived += OnLogoutArrived;
             
             _marketDataService.TickArrived += OnTickArrived;
+            _marketDataService.BarArrived += OnBarArrived;
+            _historicalDataService.HistoricalDataArrived += OnHistoricalDataArrived;
         }
 
         /// <summary>
@@ -146,6 +184,7 @@ namespace TradeHubGui.Dashboard.Managers
             _marketDataService.LogoutArrived -= OnLogoutArrived;
 
             _marketDataService.TickArrived -= OnTickArrived;
+            _marketDataService.BarArrived -= OnBarArrived;
         }
 
         /// <summary>
@@ -172,6 +211,9 @@ namespace TradeHubGui.Dashboard.Managers
             // Unsubscribe all Symbols before sending logout.
             _marketDataService.UnsubscribeAllSecurities(providerName);
 
+            // Unsubscribe all bar data before sending logout
+            _marketDataService.UnsubscribeAllLiveBars(providerName);
+
             // Create a new logout message
             Logout logout = new Logout()
             {
@@ -179,6 +221,7 @@ namespace TradeHubGui.Dashboard.Managers
             };
 
             _marketDataService.Logout(logout);
+            _historicalDataService.Logout(logout);
         }
 
         /// <summary>
@@ -195,6 +238,36 @@ namespace TradeHubGui.Dashboard.Managers
         }
 
         /// <summary>
+        /// Sends bar subscription request to Market Data Server
+        /// </summary>
+        /// <param name="security">Contains symbol information</param>
+        /// <param name="barDetail">Contains parameter information for the bar to be subscribed</param>
+        /// <param name="providerName">Name of the provider on which to subscribe</param>
+        public void SubscribeBar(Security security,LiveBarDetail barDetail, string providerName)
+        {
+            // Create bar subscription message
+            BarDataRequest subscribe = SubscriptionMessage.LiveBarSubscription(_idGenerator.NextBarId(), security,
+                barDetail.Format, barDetail.PriceType, barDetail.BarLength, barDetail.PipSize, 0, providerName);
+
+            _marketDataService.Subscribe(subscribe);
+        }
+
+        /// <summary>
+        /// Sends Historical bar data request to Market Data Server
+        /// </summary>
+        /// <param name="security">Contains symbol information</param>
+        /// <param name="barDetail">Contains parameter information for the historical bars to be fetched</param>
+        /// <param name="providerName">Name of the provider on which to subscribe</param>
+        public void SubscribeHistoricalData(Security security, HistoricalBarDetail barDetail, string providerName)
+        {
+            // Create bar subscription message
+            HistoricDataRequest subscribe = SubscriptionMessage.HistoricDataSubscription(_idGenerator.NextBarId(), security,
+                barDetail.StartDate, barDetail.EndDate, 60, barDetail.Type, providerName);
+
+            _historicalDataService.Subscribe(subscribe);
+        }
+
+        /// <summary>
         /// Sends un-subscription request to Market Data Server
         /// </summary>
         /// <param name="security">Contains symbol information</param>
@@ -203,6 +276,21 @@ namespace TradeHubGui.Dashboard.Managers
         {
             // Create unsubscription message
             Unsubscribe unsubscribe = SubscriptionMessage.TickUnsubscription("", security, providerName);
+
+            _marketDataService.Unsubscribe(unsubscribe);
+        }
+
+        /// <summary>
+        /// Sends bar un-subscription request to Market Data Server
+        /// </summary>
+        /// <param name="security">Contains symbol information</param>
+        /// <param name="barDetail">Contains parameter information for the bar to be subscribed</param>
+        /// <param name="providerName">Name of the provider on which to subscribe</param>
+        public void UnsubscribeBar(Security security, LiveBarDetail barDetail, string providerName)
+        {
+            // Create bar un-subscription message
+            BarDataRequest unsubscribe = SubscriptionMessage.LiveBarUnsubscription(_idGenerator.NextBarId(), security,
+                barDetail.Format, barDetail.PriceType, barDetail.BarLength, barDetail.PipSize, 0, providerName);
 
             _marketDataService.Unsubscribe(unsubscribe);
         }
@@ -256,7 +344,7 @@ namespace TradeHubGui.Dashboard.Managers
         }
 
         /// <summary>
-        /// Called when new Tick information is received from Market Data Sever
+        /// Called when new Tick information is received from Market Data Server
         /// </summary>
         /// <param name="tick">Contains market details</param>
         private void OnTickArrived(Tick tick)
@@ -264,6 +352,30 @@ namespace TradeHubGui.Dashboard.Managers
             if (_tickArrivedEvent != null)
             {
                 _tickArrivedEvent(tick);
+            }
+        }
+
+        /// <summary>
+        /// Called when new Bar information is received from Market Data Server
+        /// </summary>
+        /// <param name="bar">Contains bar details</param>
+        private void OnBarArrived(Bar bar)
+        {
+            if (_barArrivedEvent != null)
+            {
+                _barArrivedEvent(bar);
+            }
+        }
+
+        /// <summary>
+        /// Called when Historical Bar data is received from Market Data Server
+        /// </summary>
+        /// <param name="historicBarData">Contains requested Historical data details</param>
+        private void OnHistoricalDataArrived(HistoricBarData historicBarData)
+        {
+            if (_historicalDataArrivedEvent != null)
+            {
+                _historicalDataArrivedEvent(historicBarData);
             }
         }
 
@@ -277,8 +389,12 @@ namespace TradeHubGui.Dashboard.Managers
             // Unsubscribe all existing securities
             _marketDataService.UnsubscribeAllSecurities();
 
+            // Unsubscribe all bars
+            _marketDataService.UnsubscribeAllLiveBars();
+
             // Stop Service
             _marketDataService.StopService();
+            _historicalDataService.StopService();
         }
     }
 }
