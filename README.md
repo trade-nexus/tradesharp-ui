@@ -26,8 +26,7 @@ https://aurorasolutions.atlassian.net
 + Download and install erlang: http://www.erlang.org/download.html
 + Restart System.
 + Download and install RabbitMQ: http://www.rabbitmq.com/download.html
-
-####Help:####
+####Help#### 
 If you run into any trouble for Rabbit MQ:
 http://www.rabbitmq.com/install-windows.html
 
