@@ -233,8 +233,8 @@ namespace TradeHubGui.ViewModel
             {
                 ////NOTE: Test code to simulate Provider Connect
                 //// BEGIN:
-                //SelectedMarketDataProvider.ConnectionStatus = ConnectionStatus.Connected;
-                //return;
+                SelectedMarketDataProvider.ConnectionStatus = ConnectionStatus.Connected;
+                return;
                 //// :END
 
                 // Rasie event to request connection
@@ -244,8 +244,8 @@ namespace TradeHubGui.ViewModel
             {
                 ////NOTE: Test code to simulate Provider Connect
                 //// BEGIN:
-                //SelectedOrderExecutionProvider.ConnectionStatus = ConnectionStatus.Connected;
-                //return;
+                SelectedOrderExecutionProvider.ConnectionStatus = ConnectionStatus.Connected;
+                return;
                 //// :END
 
                 // Rasie event to request connection
