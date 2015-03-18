@@ -11,7 +11,7 @@ namespace TradeHubGui.Common.ValueObjects
     /// <summary>
     /// Contains complete bar information
     /// </summary>
-    public class LiveBarDetail
+    public class BarParameters
     {
         /// <summary>
         /// Bar format e.g. TIME
@@ -36,7 +36,7 @@ namespace TradeHubGui.Common.ValueObjects
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public LiveBarDetail()
+        public BarParameters()
         {
             _barLength = 60;
             _pipSize = 0.0001M;

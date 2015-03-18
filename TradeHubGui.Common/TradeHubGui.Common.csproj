@@ -82,7 +82,8 @@
     <Compile Include="Models\BruteForceParameters.cs" />
     <Compile Include="Models\DataPersistenceInformation.cs" />
     <Compile Include="Models\FillDetail.cs" />
-    <Compile Include="ValueObjects\HistoricalBarDetail.cs" />
+    <Compile Include="ValueObjects\BarDetail.cs" />
+    <Compile Include="ValueObjects\HistoricalBarParameters.cs" />
     <Compile Include="Models\LimitOrderBookRecord.cs" />
     <Compile Include="Models\MarketDataProvider.cs" />
     <Compile Include="Models\OrderExecutionProvider.cs" />
@@ -98,7 +99,7 @@
     <Compile Include="Models\ServiceDetails.cs" />
     <Compile Include="Models\Strategy.cs" />
     <Compile Include="Models\StrategyInstance.cs" />
-    <Compile Include="ValueObjects\LiveBarDetail.cs" />
+    <Compile Include="ValueObjects\BarParameters.cs" />
     <Compile Include="ValueObjects\SubscriptionRequest.cs" />
     <Compile Include="Models\MarketDataDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

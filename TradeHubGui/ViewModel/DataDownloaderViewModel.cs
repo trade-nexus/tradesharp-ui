@@ -13,6 +13,7 @@ using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Services;
+using TradeHubGui.DataDownloader.Service;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 
 namespace TradeHubGui.ViewModel
@@ -46,6 +47,9 @@ namespace TradeHubGui.ViewModel
 
         private RelayCommand _submitBarSettingsCommand;
         private RelayCommand _submitHistoricBarSettingsCommand;
+        private RelayCommand _saveOptionsCommand;
+
+        private DataPersistenceController _persistenceController;
 
         #endregion
 
@@ -65,6 +69,8 @@ namespace TradeHubGui.ViewModel
             _barTypes = new List<string>();
             _barFormats = new List<string>();
             _barPriceTypes = new List<string>();
+
+            _persistenceController = new DataPersistenceController();
 
             InitializeMarketDataProviders();
 
@@ -142,6 +148,57 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Bar length which indicates duration
+        /// </summary>
+        public decimal BarLength
+        {
+            get { return _barLength; }
+            set
+            {
+                _barLength = value;
+                OnPropertyChanged("BarLength");
+            }
+        }
+
+        /// <summary>
+        /// Pip size to be used for bar creation
+        /// </summary>
+        public decimal PipSize
+        {
+            get { return _pipSize; }
+            set
+            {
+                _pipSize = value; 
+                OnPropertyChanged("PipSize");
+            }
+        }
+
+        /// <summary>
+        /// Historical Data start date
+        /// </summary>
+        public DateTime StartDate
+        {
+            get { return _startDate; }
+            set
+            {
+                _startDate = value; 
+                OnPropertyChanged("StartDate");
+            }
+        }
+
+        /// <summary>
+        /// Historical Data end date
+        /// </summary>
+        public DateTime EndDate
+        {
+            get { return _endDate; }
+            set
+            {
+                _endDate = value; 
+                OnPropertyChanged("EndDate");
+            }
+        }
         /// <summary>
         /// Contains supported Bar types
         /// </summary>
@@ -263,28 +320,15 @@ namespace TradeHubGui.ViewModel
             }
         }
 
-        public decimal BarLength
+        /// <summary>
+        /// Command used to submit information for selected Historical Bar Settings
+        /// </summary>
+        public ICommand SaveOptionsCommand
         {
-            get { return _barLength; }
-            set { _barLength = value; }
-        }
-
-        public decimal PipSize
-        {
-            get { return _pipSize; }
-            set { _pipSize = value; }
-        }
-
-        public DateTime StartDate
-        {
-            get { return _startDate; }
-            set { _startDate = value; }
-        }
-
-        public DateTime EndDate
-        {
-            get { return _endDate; }
-            set { _endDate = value; }
+            get
+            {
+                return _saveOptionsCommand ?? (_saveOptionsCommand = new RelayCommand(param => SaveOptionsExecute()));
+            }
         }
 
         #endregion
@@ -325,6 +369,15 @@ namespace TradeHubGui.ViewModel
             SubmitHistoricBarSettingsRequest();
         }
 
+        /// <summary>
+        /// Called when 'Save' button for persistence options is clicked
+        /// </summary>
+        private void SaveOptionsExecute()
+        {
+            // Save persistence options
+            _persistenceController.SavePersistInformation(_writeBinary, _writeCsv);
+        }
+
         #endregion
 
         #region Methods
@@ -334,14 +387,9 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void SubmitBarSettingsRequest()
         {
-            // Create a new Subscription request
-            SubscriptionRequest subscriptionRequest = new SubscriptionRequest(SelectedMarketDetail.Security,
-                SelectedMarketDataProvider, MarketDataType.Bar, SubscriptionType.Subscribe);
-
-            // Set Bar details
-            subscriptionRequest.SetLiveBarDetails(_barLength, _pipSize, _selectedBarFormat, _selectedBarPriceType);
-
-            EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+            // Forward request to persistence controller
+            _persistenceController.SubmitBarRequest(SelectedMarketDetail.Security, _barLength, _pipSize,
+                _selectedBarFormat, _selectedBarPriceType, SelectedMarketDataProvider);
         }
 
         /// <summary>
@@ -349,14 +397,9 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void SubmitHistoricBarSettingsRequest()
         {
-            // Create a new Subscription request
-            SubscriptionRequest subscriptionRequest = new SubscriptionRequest(SelectedMarketDetail.Security,
-                SelectedMarketDataProvider, MarketDataType.Historical, SubscriptionType.Subscribe);
-
-            // Set Bar details
-            subscriptionRequest.SetHistoricalBarDetails(_selectedBarType, _startDate, _endDate);
-
-            EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+            // Forward request to persistence controller
+            _persistenceController.SubmitHistoricDataRequest(SelectedMarketDetail.Security, _selectedBarType, _startDate,
+                _endDate, SelectedMarketDataProvider);
         }
 
         /// <summary>
