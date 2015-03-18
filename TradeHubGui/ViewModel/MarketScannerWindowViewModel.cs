@@ -307,7 +307,6 @@ namespace TradeHubGui.ViewModel
             lobWindow = new LimitOrderBookWindow();
             lobWindow.Title = title;
             lobWindow.DataContext = new LimitOrderBookViewModel(SelectedTickDetail);
-            lobWindow.Owner = _scannerWindow;
             lobWindow.Show();
         }
 

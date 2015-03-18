@@ -6,10 +6,9 @@
                  GlowBrush="Silver"
                  ShowInTaskbar="True"
                  WindowStartupLocation="CenterScreen"
-                 Background="{StaticResource BaseBackground}"
-                 Icon="{StaticResource imgMarketDataScanner}"
                  Width="760" Height="400"
                  MinWidth="200" MinHeight="200"
+                 Icon="{StaticResource imgMarketDataScanner}"
                  FocusManager.FocusedElement="{Binding ElementName=NewSymbolTextBox}">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
