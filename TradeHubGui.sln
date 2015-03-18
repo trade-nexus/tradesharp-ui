@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.Dashboard.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.DataDownloader", "TradeHubGui.DataDownloader\TradeHubGui.DataDownloader.csproj", "{FF91D752-E815-4994-9037-288C1FAB2994}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.DataDownloader.Tests", "TradeHubGui.DataDownloader.Tests\TradeHubGui.DataDownloader.Tests.csproj", "{EE7A2AB1-0E56-496F-8963-37A52521B6B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{FF91D752-E815-4994-9037-288C1FAB2994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF91D752-E815-4994-9037-288C1FAB2994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF91D752-E815-4994-9037-288C1FAB2994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE7A2AB1-0E56-496F-8963-37A52521B6B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE7A2AB1-0E56-496F-8963-37A52521B6B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE7A2AB1-0E56-496F-8963-37A52521B6B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE7A2AB1-0E56-496F-8963-37A52521B6B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -82,13 +82,13 @@ namespace TradeHubGui.Common.Models
         /// <param name="tick">Contains market data information</param>
         public void UpdateMarketDetail(string symbol, Tick tick)
         {
-            MarketDataDetail tickDetails;
+            MarketDataDetail marketDetails;
 
-            // Get TickDetails object to update tick information
-            if (_marketDetailsMap.TryGetValue(tick.Security.Symbol, out tickDetails))
+            // Get MarketDataDetail object to update tick information
+            if (_marketDetailsMap.TryGetValue(tick.Security.Symbol, out marketDetails))
             {
                 // Update collections for Depth information
-                tickDetails.Update(tick);
+                marketDetails.Update(tick);
             }
         }
 
@@ -122,6 +122,60 @@ namespace TradeHubGui.Common.Models
         public bool IsSymbolLoaded(string symbol)
         {
             return _marketDetailsMap.ContainsKey(symbol);
+        }
+
+        /// <summary>
+        /// Checks if Quotes are to be persisted for given symbol
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        public bool IsQuotePersistenceRequired(string symbol)
+        {
+            MarketDataDetail marketDetail;
+
+            // Get MarketDataDetail object
+            if (_marketDetailsMap.TryGetValue(symbol, out marketDetail))
+            {
+                return marketDetail.PersistenceInformation.SaveQuotes;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks if Trades are to be persisted for given symbol
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        public bool IsTradePersistenceRequired(string symbol)
+        {
+            MarketDataDetail marketDetail;
+
+            // Get MarketDataDetail object
+            if (_marketDetailsMap.TryGetValue(symbol, out marketDetail))
+            {
+                return marketDetail.PersistenceInformation.SaveTrades;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks if Bars are to be persisted for given symbol
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        public bool IsBarPersistenceRequired(string symbol)
+        {
+            MarketDataDetail marketDetail;
+
+            // Get MarketDataDetail object
+            if (_marketDetailsMap.TryGetValue(symbol, out marketDetail))
+            {
+                return marketDetail.PersistenceInformation.SaveBars;
+            }
+
+            return false;
         }
 
         #endregion

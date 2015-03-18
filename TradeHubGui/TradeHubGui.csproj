@@ -62,6 +62,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\helper\Common.Logging.1.2.0\lib\1.0\Common.Logging.dll</HintPath>
     </Reference>
+    <Reference Include="Disruptor, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\helper\Disruptor.1.1.0\lib\net40\Disruptor.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\Lib\helper\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -361,6 +365,10 @@
     <ProjectReference Include="..\TradeHubGui.Dashboard\TradeHubGui.Dashboard.csproj">
       <Project>{8E7E4246-3804-4D60-90C4-C0350013297D}</Project>
       <Name>TradeHubGui.Dashboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.DataDownloader\TradeHubGui.DataDownloader.csproj">
+      <Project>{ff91d752-e815-4994-9037-288c1fab2994}</Project>
+      <Name>TradeHubGui.DataDownloader</Name>
     </ProjectReference>
     <ProjectReference Include="..\TradeHubGui.StrategyRunner\TradeHubGui.StrategyRunner.csproj">
       <Project>{8090220c-f33f-46ea-ae6a-cdac8c921edd}</Project>

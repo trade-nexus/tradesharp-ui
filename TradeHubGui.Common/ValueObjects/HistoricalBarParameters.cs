@@ -11,7 +11,7 @@ namespace TradeHubGui.Common.ValueObjects
     /// <summary>
     /// Contains details for the Historical Bars
     /// </summary>
-    public class HistoricalBarDetail
+    public class HistoricalBarParameters
     {
         /// <summary>
         /// Type of Historical Bar e.g. Tick, Trade, Daily, Intra Day, etc.
@@ -31,7 +31,7 @@ namespace TradeHubGui.Common.ValueObjects
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public HistoricalBarDetail()
+        public HistoricalBarParameters()
         {
             _type = BarType.DAILY;
             _startDate = DateTime.UtcNow;

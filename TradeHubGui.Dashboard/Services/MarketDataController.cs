@@ -78,6 +78,8 @@ namespace TradeHubGui.Dashboard.Services
             _marketDataManager.LogoutArrivedEvent += OnLogoutArrived;
 
             _marketDataManager.TickArrivedEvent += OnTickArrived;
+            _marketDataManager.BarArrivedEvent += OnBarArrived;
+            _marketDataManager.HistoricalDataArrivedEvent += OnHistoricalDataArrived;
         }
 
         #region Incoming Requests
@@ -244,8 +246,41 @@ namespace TradeHubGui.Dashboard.Services
             // Get Provider object
             if (_providersMap.TryGetValue(tick.MarketDataProvider, out provider))
             {
-                provider.UpdateMarketDetail(tick.Security.Symbol, tick);
+                //provider.UpdateMarketDetail(tick.Security.Symbol, tick);
+
+                if (provider.IsQuotePersistenceRequired(tick.Security.Symbol)
+                    || provider.IsTradePersistenceRequired(tick.Security.Symbol))
+                {
+                    EventSystem.Publish<Tick>(tick);
+                }
             }
+        }
+
+        /// <summary>
+        /// Called when new Bar is received from Market Data Server
+        /// </summary>
+        /// <param name="barDetail"></param>
+        private void OnBarArrived(BarDetail barDetail)
+        {
+            MarketDataProvider provider;
+
+            // Get Provider object
+            if (_providersMap.TryGetValue(barDetail.Bar.MarketDataProvider, out provider))
+            {
+                if (provider.IsBarPersistenceRequired(barDetail.Bar.Security.Symbol))
+                {
+                    EventSystem.Publish<BarDetail>(barDetail);   
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when request historical bar data is received from Market Data Server
+        /// </summary>
+        /// <param name="historicBarData"></param>
+        private void OnHistoricalDataArrived(HistoricBarData historicBarData)
+        {
+            EventSystem.Publish<HistoricBarData>(historicBarData);
         }
 
         #endregion

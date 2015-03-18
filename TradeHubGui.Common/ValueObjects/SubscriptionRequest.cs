@@ -38,12 +38,12 @@ namespace TradeHubGui.Common.ValueObjects
         /// <summary>
         /// Contains Bar details to be used for subscription
         /// </summary>
-        private LiveBarDetail _liveBarDetail;
+        private BarParameters _liveBarDetail;
 
         /// <summary>
         /// Contains details to be used for historical bar data subscription
         /// </summary>
-        private HistoricalBarDetail _historicalBarDetail;
+        private HistoricalBarParameters _historicalBarDetail;
 
         /// <summary>
         /// Argument Constructor
@@ -101,7 +101,7 @@ namespace TradeHubGui.Common.ValueObjects
         /// <summary>
         /// Contains Bar details to be used for subscription
         /// </summary>
-        public LiveBarDetail LiveBarDetail
+        public BarParameters LiveBarDetail
         {
             get { return _liveBarDetail; }
         }
@@ -109,7 +109,7 @@ namespace TradeHubGui.Common.ValueObjects
         /// <summary>
         /// Contains details to be used for historical bar data subscription
         /// </summary>
-        public HistoricalBarDetail HistoricalBarDetail
+        public HistoricalBarParameters HistoricalBarDetail
         {
             get { return _historicalBarDetail; }
         }
@@ -128,7 +128,7 @@ namespace TradeHubGui.Common.ValueObjects
         public void SetLiveBarDetails(decimal barLength, decimal pipSize, string barFormat, string barPriceType)
         {
             // Initialize object
-            _liveBarDetail = new LiveBarDetail();
+            _liveBarDetail = new BarParameters();
 
             // Set parameters
             _liveBarDetail.BarLength = barLength;
@@ -143,7 +143,7 @@ namespace TradeHubGui.Common.ValueObjects
         public void SetHistoricalBarDetails(string barType, DateTime startDate, DateTime endDate)
         {
             // Initialize object
-            _historicalBarDetail = new HistoricalBarDetail();
+            _historicalBarDetail = new HistoricalBarParameters();
 
             // Set parameters
             _historicalBarDetail.Type = barType;

@@ -35,6 +35,13 @@ namespace TradeHubGui.Dashboard.Managers
         /// </summary>
         private IMarketDataIdGenerator _idGenerator;
 
+        /// <summary>
+        /// Contians Bar Parameters for each bar request
+        /// KEY: Bar Request ID
+        /// VALUE: Bar Parameters <see cref="BarParameters"/>
+        /// </summary>
+        private Dictionary<string, BarParameters> _barParametersMap; 
+
         #region Events
 
         // ReSharper disable InconsistentNaming
@@ -43,7 +50,7 @@ namespace TradeHubGui.Dashboard.Managers
         private event Action<string> _logonArrivedEvent;
         private event Action<string> _logoutArrivedEvent;
         private event Action<Tick> _tickArrivedEvent;
-        private event Action<Bar> _barArrivedEvent;
+        private event Action<BarDetail> _barArrivedEvent;
         private event Action<HistoricBarData> _historicalDataArrivedEvent;
         // ReSharper restore InconsistentNaming
 
@@ -107,7 +114,7 @@ namespace TradeHubGui.Dashboard.Managers
             remove { _tickArrivedEvent -= value; }
         }
 
-        public event Action<Bar> BarArrivedEvent
+        public event Action<BarDetail> BarArrivedEvent
         {
             add
             {
@@ -144,8 +151,9 @@ namespace TradeHubGui.Dashboard.Managers
             _marketDataService = marketDataService;
             _historicalDataService = historicalDataService;
 
-            // Initialize Id Generator
+            // Initialize
             _idGenerator = new MarketDataIdGenerator();
+            _barParametersMap = new Dictionary<string, BarParameters>();
 
             SubscribeDataServiceEvents();
 
@@ -243,11 +251,14 @@ namespace TradeHubGui.Dashboard.Managers
         /// <param name="security">Contains symbol information</param>
         /// <param name="barDetail">Contains parameter information for the bar to be subscribed</param>
         /// <param name="providerName">Name of the provider on which to subscribe</param>
-        public void SubscribeBar(Security security,LiveBarDetail barDetail, string providerName)
+        public void SubscribeBar(Security security, BarParameters barDetail, string providerName)
         {
             // Create bar subscription message
             BarDataRequest subscribe = SubscriptionMessage.LiveBarSubscription(_idGenerator.NextBarId(), security,
                 barDetail.Format, barDetail.PriceType, barDetail.BarLength, barDetail.PipSize, 0, providerName);
+
+            // Add information to local map
+            _barParametersMap.Add(subscribe.Id, barDetail);
 
             _marketDataService.Subscribe(subscribe);
         }
@@ -258,7 +269,7 @@ namespace TradeHubGui.Dashboard.Managers
         /// <param name="security">Contains symbol information</param>
         /// <param name="barDetail">Contains parameter information for the historical bars to be fetched</param>
         /// <param name="providerName">Name of the provider on which to subscribe</param>
-        public void SubscribeHistoricalData(Security security, HistoricalBarDetail barDetail, string providerName)
+        public void SubscribeHistoricalData(Security security, HistoricalBarParameters barDetail, string providerName)
         {
             // Create bar subscription message
             HistoricDataRequest subscribe = SubscriptionMessage.HistoricDataSubscription(_idGenerator.NextBarId(), security,
@@ -286,7 +297,7 @@ namespace TradeHubGui.Dashboard.Managers
         /// <param name="security">Contains symbol information</param>
         /// <param name="barDetail">Contains parameter information for the bar to be subscribed</param>
         /// <param name="providerName">Name of the provider on which to subscribe</param>
-        public void UnsubscribeBar(Security security, LiveBarDetail barDetail, string providerName)
+        public void UnsubscribeBar(Security security, BarParameters barDetail, string providerName)
         {
             // Create bar un-subscription message
             BarDataRequest unsubscribe = SubscriptionMessage.LiveBarUnsubscription(_idGenerator.NextBarId(), security,
@@ -363,7 +374,14 @@ namespace TradeHubGui.Dashboard.Managers
         {
             if (_barArrivedEvent != null)
             {
-                _barArrivedEvent(bar);
+                BarParameters barParameters;
+                if (_barParametersMap.TryGetValue(bar.RequestId, out barParameters))
+                {
+                    // Create new detail object
+                    BarDetail barDetail = new BarDetail(bar, barParameters);
+
+                    _barArrivedEvent(barDetail);   
+                }
             }
         }
 
