@@ -60,6 +60,11 @@ namespace TradeHubGui.Common.Models
         private decimal _lastQuantity;
 
         /// <summary>
+        /// Contains information about which type of data to be persisted
+        /// </summary>
+        private DataPersistenceInformation _persistenceInformation;
+
+        /// <summary>
         /// Contains the maping of Bid LOB-Record for each depth
         /// KEY = Depth
         /// VALUE = Limit Order Book Record for Bid <see cref="LimitOrderBookRecord"/>
@@ -95,6 +100,7 @@ namespace TradeHubGui.Common.Models
             // Save reference
             _security = security;
 
+            _persistenceInformation = new DataPersistenceInformation();
             _bidRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
             _askRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
 
@@ -215,6 +221,14 @@ namespace TradeHubGui.Common.Models
                 _askRecordsCollection = value;
                 OnPropertyChanged("AskRecordsCollection");
             }
+        }
+
+        /// <summary>
+        /// Contains information about which type of data to be persisted
+        /// </summary>
+        public DataPersistenceInformation PersistenceInformation
+        {
+            get { return _persistenceInformation; }
         }
 
         #endregion

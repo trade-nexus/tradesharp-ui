@@ -4,7 +4,14 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using NHibernate.Hql.Ast.ANTLR;
 using TradeHub.Common.Core.Constants;
+using TradeHub.Common.Core.FactoryMethods;
+using TradeHubGui.Common;
+using TradeHubGui.Common.Constants;
+using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Services;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 
@@ -14,13 +21,31 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
 
+        private bool _writeBinary;
+        private bool _writeCsv;
+
+        private string _selectedBarType;
+        private string _selectedBarFormat;
+        private string _selectedBarPriceType;
+
+        private decimal _barLength;
+        private decimal _pipSize;
+
+        private DateTime _startDate;
+        private DateTime _endDate;
+
         private List<string> _barTypes;
         private List<string> _barFormats;
         private List<string> _barPriceTypes;
-        private ObservableCollection<MarketDataProvider> _marketDataProviders;
+
         private MarketDataProvider _selectedMarketDataProvider;
-        private bool writeBinary;
-        private bool writeCsv;
+        private MarketDataDetail _selectedMarketDetail;
+
+        private ObservableCollection<MarketDataDetail> _marketDetailCollection; 
+        private ObservableCollection<MarketDataProvider> _marketDataProviders;
+
+        private RelayCommand _submitBarSettingsCommand;
+        private RelayCommand _submitHistoricBarSettingsCommand;
 
         #endregion
 
@@ -31,6 +56,12 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public DataDownloaderViewModel()
         {
+            _barLength = default(decimal);
+            _pipSize = default(decimal);
+
+            _startDate = default (DateTime);
+            _endDate = default(DateTime);
+
             _barTypes = new List<string>();
             _barFormats = new List<string>();
             _barPriceTypes = new List<string>();
@@ -73,23 +104,23 @@ namespace TradeHubGui.ViewModel
                 if (_selectedMarketDataProvider != value)
                 {
                     _selectedMarketDataProvider = value;
+                    PopulateMarketDetailCollection();
                     OnPropertyChanged("SelectedMarketDataProvider");
                 }
             }
         }
-
 
         /// <summary>
         /// Used for write binary option
         /// </summary>
         public bool WriteBinary
         {
-            get { return writeBinary; }
+            get { return _writeBinary; }
             set
             {
-                if (writeBinary != value)
+                if (_writeBinary != value)
                 {
-                    writeBinary = value;
+                    _writeBinary = value;
                     OnPropertyChanged("WriteBinary");
                 }
             }
@@ -100,12 +131,12 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public bool WriteCSV
         {
-            get { return writeCsv; }
+            get { return _writeCsv; }
             set
             {
-                if (writeCsv != value)
+                if (_writeCsv != value)
                 {
-                    writeCsv = value;
+                    _writeCsv = value;
                     OnPropertyChanged("WriteCSV");
                 }
             }
@@ -138,9 +169,195 @@ namespace TradeHubGui.ViewModel
             set { _barPriceTypes = value; }
         }
 
+        /// <summary>
+        /// Currently selected market detail object in the data grid
+        /// </summary>
+        public MarketDataDetail SelectedMarketDetail
+        {
+            get { return _selectedMarketDetail; }
+            set
+            {
+                _selectedMarketDetail = value;
+                OnPropertyChanged("SelectedMarketDetail");
+            }
+        }
+
+        /// <summary>
+        /// Displays Selected Data Provider's Market Detail's Collection
+        /// </summary>
+        public ObservableCollection<MarketDataDetail> MarketDetailCollection
+        {
+            get { return _marketDetailCollection; }
+            set
+            {
+                _marketDetailCollection = value;
+                OnPropertyChanged("MarketDetailCollection");
+            }
+        }
+
+        /// <summary>
+        /// Bar Type selected from the Combo Box
+        /// </summary>
+        public string SelectedBarType
+        {
+            get { return _selectedBarType; }
+            set
+            {
+                _selectedBarType = value; 
+                OnPropertyChanged("SelectedBarType");
+            }
+        }
+
+        /// <summary>
+        /// Bar Format selected from the Combo Box
+        /// </summary>
+        public string SelectedBarFormat
+        {
+            get { return _selectedBarFormat; }
+            set
+            {
+                _selectedBarFormat = value; 
+                OnPropertyChanged("SelectedBarFormat");
+            }
+        }
+
+        /// <summary>
+        /// Selected Bar Price Type from the Combo Box
+        /// </summary>
+        public string SelectedBarPriceType
+        {
+            get { return _selectedBarPriceType; }
+            set
+            {
+                _selectedBarPriceType = value; 
+                OnPropertyChanged("SelectedBarPriceType");
+            }
+        }
+
+        #endregion
+
+        #region Commands
+
+        /// <summary>
+        /// Command used to submit information for selected Bar Settings
+        /// </summary>
+        public ICommand SubmitBarSettingsCommand
+        {
+            get
+            {
+                return _submitBarSettingsCommand ?? (_submitBarSettingsCommand = new RelayCommand(param => SubmitBarSettingsExecute(), param => SubmitBarSettingsCanExecute()));
+            }
+        }
+
+        /// <summary>
+        /// Command used to submit information for selected Historical Bar Settings
+        /// </summary>
+        public ICommand SubmitHistoricBarSettingsCommand
+        {
+            get
+            {
+                return _submitHistoricBarSettingsCommand ??
+                       (_submitHistoricBarSettingsCommand =
+                           new RelayCommand(param => SubmitHistoricBarSettingsExecute(),
+                               param => SubmitHistoricBarSettingsCanExecute()));
+            }
+        }
+
+        public decimal BarLength
+        {
+            get { return _barLength; }
+            set { _barLength = value; }
+        }
+
+        public decimal PipSize
+        {
+            get { return _pipSize; }
+            set { _pipSize = value; }
+        }
+
+        public DateTime StartDate
+        {
+            get { return _startDate; }
+            set { _startDate = value; }
+        }
+
+        public DateTime EndDate
+        {
+            get { return _endDate; }
+            set { _endDate = value; }
+        }
+
+        #endregion
+
+        #region Commad Trigger Methods
+
+        /// <summary>
+        /// Indicates if the Bar settings command can be executed or not
+        /// </summary>
+        /// <returns></returns>
+        private bool SubmitBarSettingsCanExecute()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Called when 'Submit' button for 'Bar' settings is clicked
+        /// </summary>
+        private void SubmitBarSettingsExecute()
+        {
+            SubmitBarSettingsRequest();
+        }
+
+        /// <summary>
+        /// Indicates if the Historical Bar settings command can be executed or not
+        /// </summary>
+        /// <returns></returns>
+        private bool SubmitHistoricBarSettingsCanExecute()
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Called when 'Submit' button for 'Historical Bar' settings is clicked
+        /// </summary>
+        private void SubmitHistoricBarSettingsExecute()
+        {
+            SubmitHistoricBarSettingsRequest();
+        }
+
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Requests Bar subscription for the selected Bar settings
+        /// </summary>
+        private void SubmitBarSettingsRequest()
+        {
+            // Create a new Subscription request
+            SubscriptionRequest subscriptionRequest = new SubscriptionRequest(SelectedMarketDetail.Security,
+                SelectedMarketDataProvider, MarketDataType.Bar, SubscriptionType.Subscribe);
+
+            // Set Bar details
+            subscriptionRequest.SetLiveBarDetails(_barLength, _pipSize, _selectedBarFormat, _selectedBarPriceType);
+
+            EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+        }
+
+        /// <summary>
+        /// Requests Historical Bar subscription for the selected Bar settings
+        /// </summary>
+        private void SubmitHistoricBarSettingsRequest()
+        {
+            // Create a new Subscription request
+            SubscriptionRequest subscriptionRequest = new SubscriptionRequest(SelectedMarketDetail.Security,
+                SelectedMarketDataProvider, MarketDataType.Historical, SubscriptionType.Subscribe);
+
+            // Set Bar details
+            subscriptionRequest.SetHistoricalBarDetails(_selectedBarType, _startDate, _endDate);
+
+            EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
+        }
 
         /// <summary>
         /// Initialization of market data providers
@@ -153,7 +370,7 @@ namespace TradeHubGui.ViewModel
             foreach (var provider in ProvidersController.MarketDataProviders)
             {
                 // Add to Collection only connected market data providers
-                if (provider.ConnectionStatus == TradeHub.Common.Core.Constants.ConnectionStatus.Connected)
+                if (provider.ConnectionStatus == ConnectionStatus.Connected)
                 {
                     _marketDataProviders.Add(provider);
                 }
@@ -200,6 +417,18 @@ namespace TradeHubGui.ViewModel
             _barPriceTypes.Add(BarPriceType.BID);
             _barPriceTypes.Add(BarPriceType.LAST);
             _barPriceTypes.Add(BarPriceType.MEAN);
+        }
+
+        /// <summary>
+        /// Populates Market Data Details for the selected Market Data Provider
+        /// </summary>
+        private void PopulateMarketDetailCollection()
+        {
+            // Reset Collection
+            MarketDetailCollection = new ObservableCollection<MarketDataDetail>();
+
+            // Assign new values
+            MarketDetailCollection = SelectedMarketDataProvider.MarketDetailCollection;
         }
 
         #endregion

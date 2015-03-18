@@ -98,9 +98,9 @@
                                         <ComboBox Grid.Row="1" Grid.Column="1"  SelectedIndex="0"
                                                   ItemsSource="{Binding BarPriceTypes}" 
                                                   SelectedItem="{Binding SelectedBarPriceType}"/>
-                                        <Label Grid.Row="2" Grid.Column="0" Content="Size"/>
+                                        <Label Grid.Row="2" Grid.Column="0" Content="Pip Size"/>
                                         <wpfToolkitExtended:DecimalUpDown Grid.Row="2" Grid.Column="1" 
-                                                                          Value="{Binding BarSize, UpdateSourceTrigger=PropertyChanged, FallbackValue=0.0001}" 
+                                                                          Value="{Binding PipSize, UpdateSourceTrigger=PropertyChanged, FallbackValue=0.0001}" 
                                                                           Increment="0.0001" Minimum="0.1" DefaultValue="0.0001"/>
                                         <Label Grid.Row="3" Grid.Column="0" Content="Length"/>
                                         <wpfToolkitExtended:IntegerUpDown Grid.Row="3" Grid.Column="1" 
@@ -163,7 +163,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
-                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SaveTrades}"/>
+                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveTrades}"/>
                                                         <TextBlock TextAlignment="Right" Text="{Binding Trades}"/>
                                                     </DockPanel>
                                                 </DataTemplate>
@@ -173,7 +173,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
-                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SaveQuotes}"/>
+                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveQuotes}"/>
                                                         <TextBlock TextAlignment="Right" Text="{Binding Quotes}"/>
                                                     </DockPanel>
                                                 </DataTemplate>
@@ -183,7 +183,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
-                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SaveBars}"/>
+                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveBars}"/>
                                                         <TextBlock TextAlignment="Right" Text="{Binding Bars}"/>
                                                     </DockPanel>
                                                 </DataTemplate>
