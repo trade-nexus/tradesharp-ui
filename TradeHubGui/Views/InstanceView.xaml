@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended" 
+             xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit" 
              xmlns:templateSelectors="clr-namespace:TradeHubGui.TemplateSelectors"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"

@@ -3,7 +3,7 @@
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                  xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                  xmlns:wpfToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
-                 xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
+                 xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
                  xmlns:templateSelector="clr-namespace:TradeHubGui.TemplateSelectors"
                  xmlns:conv="clr-namespace:TradeHubGui.Converters"
                  xmlns:views="clr-namespace:TradeHubGui.Views"

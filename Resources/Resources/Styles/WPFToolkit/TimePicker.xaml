@@ -20,9 +20,9 @@
 <ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:local="clr-namespace:Xceed.Wpf.Toolkit;assembly=WPFToolkit.Extended"
-	xmlns:chrome="clr-namespace:Xceed.Wpf.Toolkit.Chromes;assembly=WPFToolkit.Extended"
-	xmlns:conv="clr-namespace:Xceed.Wpf.Toolkit.Core.Converters;assembly=WPFToolkit.Extended">
+	xmlns:local="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+	xmlns:chrome="clr-namespace:Xceed.Wpf.Toolkit.Chromes;assembly=Xceed.Wpf.Toolkit"
+	xmlns:conv="clr-namespace:Xceed.Wpf.Toolkit.Core.Converters;assembly=Xceed.Wpf.Toolkit">
 
 	<!-- =============================================================================== -->
 	<!-- ResourceDictionary for TimePicker and related controls                          -->
