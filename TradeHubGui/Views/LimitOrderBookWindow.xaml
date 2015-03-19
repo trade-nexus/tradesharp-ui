@@ -4,10 +4,15 @@
                  xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                  GlowBrush="Silver"
                  ShowInTaskbar="True"
-                 WindowStartupLocation="CenterOwner"
-                 Background="White"
+                 WindowStartupLocation="CenterScreen"
                  Width="350" Height="400"
-                 MinWidth="200" MinHeight="200">
+                 MinWidth="200" MinHeight="200"
+                 Icon="{StaticResource imgLOBWhite}">
+    <mah:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Image Height="20" Width="20" Source="{StaticResource imgLOBWhite}"/>
+        </DataTemplate>
+    </mah:MetroWindow.IconTemplate>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <StackPanel Margin="10">
