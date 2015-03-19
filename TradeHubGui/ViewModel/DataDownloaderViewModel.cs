@@ -471,7 +471,8 @@ namespace TradeHubGui.ViewModel
             MarketDetailCollection = new ObservableCollection<MarketDataDetail>();
 
             // Assign new values
-            MarketDetailCollection = SelectedMarketDataProvider.MarketDetailCollection;
+            if (SelectedMarketDataProvider != null)
+                MarketDetailCollection = SelectedMarketDataProvider.MarketDetailCollection;
         }
 
         #endregion
