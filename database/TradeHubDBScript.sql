@@ -99,7 +99,7 @@ DROP TABLE IF EXISTS `strategy`;
 CREATE TABLE `strategy` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(50) DEFAULT NULL,
-  `DateTime` datetime DEFAULT NULL,
+  `StartDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
