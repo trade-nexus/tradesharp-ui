@@ -135,7 +135,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Used for write csv option
         /// </summary>
-        public bool WriteCSV
+        public bool WriteCsv
         {
             get { return _writeCsv; }
             set
@@ -143,7 +143,7 @@ namespace TradeHubGui.ViewModel
                 if (_writeCsv != value)
                 {
                     _writeCsv = value;
-                    OnPropertyChanged("WriteCSV");
+                    OnPropertyChanged("WriteCsv");
                 }
             }
         }
@@ -341,7 +341,7 @@ namespace TradeHubGui.ViewModel
         /// <returns></returns>
         private bool SubmitBarSettingsCanExecute()
         {
-            return false;
+            return true;
         }
 
         /// <summary>
@@ -358,7 +358,7 @@ namespace TradeHubGui.ViewModel
         /// <returns></returns>
         private bool SubmitHistoricBarSettingsCanExecute()
         {
-            return false;
+            return true;
         }
 
         /// <summary>

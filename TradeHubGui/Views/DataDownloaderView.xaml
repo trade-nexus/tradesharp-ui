@@ -68,8 +68,8 @@
                         <DockPanel Margin="20,50,20,20">
                             <StackPanel DockPanel.Dock="Left">
                                 <StackPanel MinWidth="120" Margin="15,20,40,20" VerticalAlignment="Top">
-                                    <CheckBox Content="Write binary" IsChecked="{Binding WriteBinary}" Margin="2"/>
-                                    <CheckBox Content="Write CSV" IsChecked="{Binding WriteCsv}" Margin="2"/>
+                                    <CheckBox Content="Write binary" IsChecked="{Binding WriteBinary, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
+                                    <CheckBox Content="Write CSV" IsChecked="{Binding WriteCsv, UpdateSourceTrigger=PropertyChanged}" Margin="2"/>
                                 </StackPanel>
                                 <Button Content="Save" Margin="15,0,0,0" MinWidth="90" HorizontalAlignment="Left" 
                                         Command="{Binding SaveOptionsCommand}"/>
@@ -163,7 +163,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
-                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveTrades}"/>
+                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveTrades, UpdateSourceTrigger=PropertyChanged}"/>
                                                         <TextBlock TextAlignment="Right" Text="{Binding Trades}"/>
                                                     </DockPanel>
                                                 </DataTemplate>
@@ -173,7 +173,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
-                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveQuotes}"/>
+                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveQuotes, UpdateSourceTrigger=PropertyChanged}"/>
                                                         <TextBlock TextAlignment="Right" Text="{Binding Quotes}"/>
                                                     </DockPanel>
                                                 </DataTemplate>
@@ -183,7 +183,7 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
-                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveBars}"/>
+                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveBars, UpdateSourceTrigger=PropertyChanged}"/>
                                                         <TextBlock TextAlignment="Right" Text="{Binding Bars}"/>
                                                     </DockPanel>
                                                 </DataTemplate>
