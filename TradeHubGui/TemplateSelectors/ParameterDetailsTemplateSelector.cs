@@ -30,6 +30,7 @@ namespace TradeHubGui.TemplateSelectors
                 }
                 else if (pair.Value.ParameterType == typeof(uint))
                 {
+                    pair.Value.ParameterValue = Convert.ToInt64(pair.Value.ParameterValue);
                     return element.FindResource("UnsignedIntegerDataTemplate") as DataTemplate;
                 }
                 else if (pair.Value.ParameterType == typeof(float))
