@@ -45,7 +45,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="{Binding Key}"/>
-                <wpfToolkitExtended:SingleUpDown Grid.Column="1" FormatString="F2" Value="{Binding Value.ParameterValue}" Increment=".01" />
+                <wpfToolkitExtended:SingleUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment=".01" />
             </Grid>
         </DataTemplate>
 
@@ -56,7 +56,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="{Binding Key}"/>
-                <wpfToolkitExtended:DecimalUpDown Grid.Column="1" FormatString="F2" Value="{Binding Value.ParameterValue}" Increment=".01" />
+                <wpfToolkitExtended:DecimalUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment=".01" />
             </Grid>
         </DataTemplate>
 
