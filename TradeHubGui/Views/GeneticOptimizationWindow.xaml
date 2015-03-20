@@ -13,7 +13,7 @@
                  Title="Genetic Optimization"
                  Width="980"
                  Height="600"
-                 MinWidth="500" 
+                 MinWidth="700" 
                  MinHeight="500"
                  Background="{StaticResource BaseBackground}"
                  Icon="{StaticResource imgGenetic}">
@@ -79,9 +79,9 @@
 
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
+                <ColumnDefinition MinWidth="360"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="0.6*"/>
+                <ColumnDefinition Width="0.6*" MinWidth="150"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -100,7 +100,7 @@
                     </StackPanel>
                 </Button>
 
-                <StackPanel Margin="10" Orientation="Horizontal">
+                <WrapPanel Margin="10" Orientation="Horizontal">
                     <StackPanel Orientation="Vertical" Margin="10,4,20,4">
                         <TextBlock Text="Strategy" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
                         <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}"
@@ -117,7 +117,7 @@
                             <TextBlock Text="{Binding Status, FallbackValue=None}" FontSize="14" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center"/>
                         </Border>
                     </StackPanel>
-                </StackPanel>
+                </WrapPanel>
             </DockPanel>
 
             <HeaderedContentControl Grid.Row="1" Header="Parameters" Margin="10,0,10,10">
@@ -163,9 +163,9 @@
                               RowHeight="24"
                               SelectionChanged="DataGrid_SelectionChanged">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Index" Width="0.4*" Binding="{Binding Path=Index}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Index" Width="0.4*" MinWidth="40" Binding="{Binding Path=Index}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Description" Width="0.7*" Binding="{Binding Path=Description}" IsReadOnly="True"/>
-                            <DataGridTemplateColumn Header="Start value" Width="0.4*" SortMemberPath="StartValue">
+                            <DataGridTemplateColumn Header="Start value" Width="0.4*" MinWidth="80" SortMemberPath="StartValue">
                                 <DataGridTemplateColumn.CellTemplateSelector>
                                     <templateSelectors:DataGridStartValuesTemplateSelector
                                         StartValueIntegerTemplate="{StaticResource StartValueIntegerTemplate}"
@@ -173,7 +173,7 @@
                                         StartValueDecimalTemplate="{StaticResource StartValueDecimalTemplate}"/>
                                 </DataGridTemplateColumn.CellTemplateSelector>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="End value" Width="0.4*" SortMemberPath="EndValue">
+                            <DataGridTemplateColumn Header="End value" Width="0.4*" MinWidth="80" SortMemberPath="EndValue">
                                 <DataGridTemplateColumn.CellTemplateSelector>
                                     <templateSelectors:DataGridEndValuesTemplateSelector
                                         EndValueIntegerTemplate="{StaticResource EndValueIntegerTemplate}"
@@ -212,8 +212,8 @@
                           SelectionChanged="DataGrid_SelectionChanged">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Property" Width="*" Binding="{Binding Path=Description}" />
-                        <DataGridTextColumn Header="Value" Width="*" Binding="{Binding Path=OptimizedValue}" />
+                        <DataGridTextColumn Header="Property" Width="*" MinWidth="70" Binding="{Binding Path=Description}" />
+                        <DataGridTextColumn Header="Value" Width="*" MinWidth="50" Binding="{Binding Path=OptimizedValue}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </HeaderedContentControl>

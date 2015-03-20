@@ -13,7 +13,7 @@
                 Title="Brute Optimization"
                 Width="1140"
                 Height="600"
-                MinWidth="500"
+                MinWidth="700"
                 MinHeight="500"
                 Background="{StaticResource BaseBackground}"
                 Icon="{StaticResource imgBrute}">
@@ -110,9 +110,9 @@
 
         <Grid Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.8*"/>
+                <ColumnDefinition Width="0.8*" MinWidth="300"/>
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition />
+                <ColumnDefinition MinWidth="150"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -131,7 +131,7 @@
                     </StackPanel>
                 </Button>
 
-                <StackPanel Margin="10" Orientation="Horizontal">
+                <WrapPanel Margin="10" Orientation="Horizontal">
                     <StackPanel Orientation="Vertical" Margin="10,4,20,4">
                         <TextBlock Text="Strategy" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
                         <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}"
@@ -143,7 +143,7 @@
                             <TextBlock Text="{Binding BruteForceParameters.Status, FallbackValue=None}" FontSize="14" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center"/>
                         </Border>
                     </StackPanel>
-                </StackPanel>
+                </WrapPanel>
             </DockPanel>
 
             <HeaderedContentControl Grid.Row="1" Header="Parameters" Margin="10,0,10,10">
@@ -160,8 +160,8 @@
                           RowHeight="24"
                           SelectionChanged="DataGrid_SelectionChanged">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Parameter" Width="0.7*" Binding="{Binding Path=Description}" IsReadOnly="True"/>
-                        <DataGridTemplateColumn Header="Value" Width="0.6*" SortMemberPath="ParameterValue">
+                        <DataGridTextColumn Header="Parameter" Width="0.7*" MinWidth="70" Binding="{Binding Path=Description}" IsReadOnly="True"/>
+                        <DataGridTemplateColumn Header="Value" Width="0.6*" MinWidth="70" SortMemberPath="ParameterValue">
                             <DataGridTemplateColumn.CellTemplateSelector>
                                 <templateSelectors:DataGridStartValuesTemplateSelector
                                         StartValueIntegerTemplate="{StaticResource StartValueIntegerTemplate}"
@@ -170,7 +170,7 @@
                                         StartValueStringTemplate="{StaticResource StartValueStringTemplate}"/>
                             </DataGridTemplateColumn.CellTemplateSelector>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="End value" Width="0.4*" SortMemberPath="EndValue">
+                        <DataGridTemplateColumn Header="End value" Width="0.4*" MinWidth="80" SortMemberPath="EndValue">
                             <DataGridTemplateColumn.CellTemplateSelector>
                                 <templateSelectors:DataGridEndValuesTemplateSelector
                                         EndValueIntegerTemplate="{StaticResource EndValueIntegerTemplate}"
@@ -179,7 +179,7 @@
                                         EndValueStringTemplate="{StaticResource EndValueStringTemplate}"/>
                             </DataGridTemplateColumn.CellTemplateSelector>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Increment" Width="0.4*" SortMemberPath="Increment">
+                        <DataGridTemplateColumn Header="Increment" Width="0.4*" MinWidth="80" SortMemberPath="Increment">
                             <DataGridTemplateColumn.CellTemplateSelector>
                                 <templateSelectors:DataGridIncrementValuesTemplateSelector
                                         IncrementIntegerTemplate="{StaticResource IncrementIntegerTemplate}"
@@ -218,12 +218,12 @@
                           SelectionChanged="DataGrid_SelectionChanged">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Property info" Width="*" Binding="{Binding Path=Description}" />
-                        <DataGridTextColumn Header="Bought" Width="0.7*" Binding="{Binding Path=ExecutionDetails.BuyCount}" />
-                        <DataGridTextColumn Header="Sold" Width="0.7*" Binding="{Binding Path=ExecutionDetails.SellCount}" />
-                        <DataGridTextColumn Header="Avg buy price" Width="*" Binding="{Binding Path=ExecutionDetails.AvgBuyPrice}" />
-                        <DataGridTextColumn Header="Avg sell price" Width="*" Binding="{Binding Path=ExecutionDetails.AvgSellPrice}" />
-                        <DataGridTextColumn Header="Profit" Width="0.7*" Binding="{Binding Path=ExecutionDetails.Profit}" />
+                        <DataGridTextColumn Header="Property info" Width="*" MinWidth="100" Binding="{Binding Path=Description}" />
+                        <DataGridTextColumn Header="Bought" Width="0.7*" MinWidth="50" Binding="{Binding Path=ExecutionDetails.BuyCount}" />
+                        <DataGridTextColumn Header="Sold" Width="0.7*" MinWidth="50" Binding="{Binding Path=ExecutionDetails.SellCount}" />
+                        <DataGridTextColumn Header="Avg buy price" Width="*" MinWidth="100" Binding="{Binding Path=ExecutionDetails.AvgBuyPrice}" />
+                        <DataGridTextColumn Header="Avg sell price" Width="*" MinWidth="100" Binding="{Binding Path=ExecutionDetails.AvgSellPrice}" />
+                        <DataGridTextColumn Header="Profit" Width="0.7*" MinWidth="50" Binding="{Binding Path=ExecutionDetails.Profit}" />
                     </DataGrid.Columns>
                 </DataGrid>
             </HeaderedContentControl>
