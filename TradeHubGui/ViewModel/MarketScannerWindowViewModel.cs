@@ -200,17 +200,6 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Command used for unsubscribe
-        /// </summary>
-        public ICommand UnsubsribeCommand
-        {
-            get
-            {
-                return _unsubscribeCommand ?? (_unsubscribeCommand = new RelayCommand(param => UnsubsribeExecute(param)));
-            }
-        }
-
-        /// <summary>
         /// Command used for showing position stats
         /// </summary>
         public ICommand ShowPositionStatsCommand
@@ -286,6 +275,12 @@ namespace TradeHubGui.ViewModel
 
                 // Raise Event to notify listeners
                 EventSystem.Publish<SubscriptionRequest>(unsubscriptionRequest);
+
+                // Close LOB for removed tick detail
+                string title = string.Format("LOB - {0} ({1})", tickDetail.Security.Symbol, _provider.ProviderName);
+                LimitOrderBookWindow lobWindow = (LimitOrderBookWindow)FindWindowByTitle(title);
+                lobWindow.DataContext = null;
+                lobWindow.Close();
             }
         }
 
@@ -297,6 +292,8 @@ namespace TradeHubGui.ViewModel
         {
             SelectedTickDetail = (MarketDataDetail)param;
             string title = string.Format("LOB - {0} ({1})", SelectedTickDetail.Security.Symbol, Provider.ProviderName);
+            
+            // if LOB window is already shown, just activate it
             LimitOrderBookWindow lobWindow = (LimitOrderBookWindow)FindWindowByTitle(title);
             if (lobWindow != null)
             {
@@ -304,6 +301,7 @@ namespace TradeHubGui.ViewModel
                 return;
             }
 
+            // if LOB window is not already shown, create the new one and show it
             lobWindow = new LimitOrderBookWindow();
             lobWindow.Title = title;
             lobWindow.DataContext = new LimitOrderBookViewModel(SelectedTickDetail);
@@ -338,15 +336,6 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Unsubsribe from current TickDetail
-        /// </summary>
-        /// <param name="param">current TickDetail</param>
-        private void UnsubsribeExecute(object param)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// Show Position Stats for current TickDetail
         /// </summary>
         /// <param name="param">current TickDetail</param>
@@ -357,6 +346,9 @@ namespace TradeHubGui.ViewModel
 
         #endregion
 
+        /// <summary>
+        /// Remove all symbols from scanner
+        /// </summary>
         public void RemoveAllSymbols()
         {
             foreach (MarketDataDetail marketDataDetail in TickDetailsCollection.ToList())
