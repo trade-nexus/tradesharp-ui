@@ -98,8 +98,8 @@
                                           AutoGenerateColumns="False">
 
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Instrument" Width="150" MinWidth="90" Binding="{Binding Security.Symbol}"/>
-                                        <DataGridTemplateColumn Header="Trades" Width="150" MinWidth="70" SortMemberPath="Trades" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}">
+                                        <DataGridTextColumn Header="Instrument" Width="*" MinWidth="90" Binding="{Binding Security.Symbol}"/>
+                                        <DataGridTemplateColumn Header="Trades" Width="*" MinWidth="70" SortMemberPath="Trades" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
@@ -109,7 +109,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Quotes" Width="150" MinWidth="70" SortMemberPath="Quotes" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}">
+                                        <DataGridTemplateColumn Header="Quotes" Width="*" MinWidth="70" SortMemberPath="Quotes" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
@@ -119,7 +119,7 @@
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
-                                        <DataGridTemplateColumn Header="Bars" Width="150" MinWidth="70" SortMemberPath="Bars" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}">
+                                        <DataGridTemplateColumn Header="Bars" Width="*" MinWidth="70" SortMemberPath="Bars" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
