@@ -276,11 +276,14 @@ namespace TradeHubGui.ViewModel
                 // Raise Event to notify listeners
                 EventSystem.Publish<SubscriptionRequest>(unsubscriptionRequest);
 
-                // Close LOB for removed tick detail
+                // Try to find and to close LOB for removed tick detail
                 string title = string.Format("LOB - {0} ({1})", tickDetail.Security.Symbol, _provider.ProviderName);
                 LimitOrderBookWindow lobWindow = (LimitOrderBookWindow)FindWindowByTitle(title);
-                lobWindow.DataContext = null;
-                lobWindow.Close();
+                if (lobWindow != null)
+                {
+                    lobWindow.DataContext = null;
+                    lobWindow.Close();
+                }
             }
         }
 
