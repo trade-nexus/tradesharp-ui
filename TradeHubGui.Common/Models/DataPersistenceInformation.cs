@@ -13,7 +13,7 @@ namespace TradeHubGui.Common.Models
     /// </summary>
     public class DataPersistenceInformation : INotifyPropertyChanged
     {
-        #region Properties
+        #region Fields
 
         /// <summary>
         /// Indicates if given market data Trades need to be persisted

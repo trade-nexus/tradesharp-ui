@@ -123,7 +123,9 @@
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <DockPanel>
-                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveBars, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        <CheckBox DockPanel.Dock="Left" IsChecked="{Binding PersistenceInformation.SaveBars, UpdateSourceTrigger=PropertyChanged}"
+                                                                  Command="{Binding DataContext.SaveBarsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                  CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"/>
                                                         <TextBlock TextAlignment="Right" Text="{Binding Bars}"/>
                                                     </DockPanel>
                                                 </DataTemplate>
@@ -169,7 +171,7 @@
                                                                           Increment="1" Minimum="60" DefaultValue="60"/>
 
                                             <Button Grid.Row="4" Grid.Column="1" Content="Submit" Margin="0,20,0,0" HorizontalAlignment="Left" MinWidth="80"
-                                                Command="{Binding SubmitBarSettingsCommand}"/>
+                                                    Command="{Binding SubmitBarSettingsCommand}"/>
                                         </Grid>
                                     </HeaderedContentControl>
 
@@ -198,7 +200,7 @@
                                                                        Value="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"/>
 
                                             <Button Grid.Row="3" Grid.Column="1" Content="Submit" Margin="0,20,0,0" HorizontalAlignment="Left" MinWidth="80"
-                                                Command="{Binding SubmitHistoricBarSettingsCommand}"/>
+                                                    Command="{Binding SubmitHistoricBarSettingsCommand}"/>
                                         </Grid>
                                     </HeaderedContentControl>
                                 </StackPanel>
