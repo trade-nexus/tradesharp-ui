@@ -42,14 +42,18 @@ namespace TradeHubGui.ViewModel
         private MarketDataProvider _selectedMarketDataProvider;
         private MarketDataDetail _selectedMarketDetail;
 
-        private ObservableCollection<MarketDataDetail> _marketDetailCollection; 
+        private ObservableCollection<MarketDataDetail> _marketDetailCollection;
         private ObservableCollection<MarketDataProvider> _marketDataProviders;
 
         private RelayCommand _submitBarSettingsCommand;
         private RelayCommand _submitHistoricBarSettingsCommand;
         private RelayCommand _saveOptionsCommand;
+        private RelayCommand _saveBarsCommand;
 
         private DataPersistenceController _persistenceController;
+        private bool _hasOptionsChanges;
+        private bool _hasBarSettingsChanges;
+        private bool _hasHistoricBarSettingsChanges;
 
         #endregion
 
@@ -63,7 +67,7 @@ namespace TradeHubGui.ViewModel
             _barLength = default(decimal);
             _pipSize = default(decimal);
 
-            _startDate = default (DateTime);
+            _startDate = default(DateTime);
             _endDate = default(DateTime);
 
             _barTypes = new List<string>();
@@ -117,6 +121,32 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
+        /// Displays Selected Data Provider's Market Detail's Collection
+        /// </summary>
+        public ObservableCollection<MarketDataDetail> MarketDetailCollection
+        {
+            get { return _marketDetailCollection; }
+            set
+            {
+                _marketDetailCollection = value;
+                OnPropertyChanged("MarketDetailCollection");
+            }
+        }
+
+        /// <summary>
+        /// Currently selected market detail object in the data grid
+        /// </summary>
+        public MarketDataDetail SelectedMarketDetail
+        {
+            get { return _selectedMarketDetail; }
+            set
+            {
+                _selectedMarketDetail = value;
+                OnPropertyChanged("SelectedMarketDetail");
+            }
+        }
+
+        /// <summary>
         /// Used for write binary option
         /// </summary>
         public bool WriteBinary
@@ -127,6 +157,7 @@ namespace TradeHubGui.ViewModel
                 if (_writeBinary != value)
                 {
                     _writeBinary = value;
+                    _hasOptionsChanges = true;
                     OnPropertyChanged("WriteBinary");
                 }
             }
@@ -143,8 +174,51 @@ namespace TradeHubGui.ViewModel
                 if (_writeCsv != value)
                 {
                     _writeCsv = value;
+                    _hasOptionsChanges = true;
                     OnPropertyChanged("WriteCsv");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Bar Format selected from the Combo Box
+        /// </summary>
+        public string SelectedBarFormat
+        {
+            get { return _selectedBarFormat; }
+            set
+            {
+                _selectedBarFormat = value;
+                _hasBarSettingsChanges = true;
+                OnPropertyChanged("SelectedBarFormat");
+            }
+        }
+
+        /// <summary>
+        /// Selected Bar Price Type from the Combo Box
+        /// </summary>
+        public string SelectedBarPriceType
+        {
+            get { return _selectedBarPriceType; }
+            set
+            {
+                _selectedBarPriceType = value;
+                _hasBarSettingsChanges = true;
+                OnPropertyChanged("SelectedBarPriceType");
+            }
+        }
+
+        /// <summary>
+        /// Pip size to be used for bar creation
+        /// </summary>
+        public decimal PipSize
+        {
+            get { return _pipSize; }
+            set
+            {
+                _pipSize = value;
+                _hasBarSettingsChanges = true;
+                OnPropertyChanged("PipSize");
             }
         }
 
@@ -157,55 +231,9 @@ namespace TradeHubGui.ViewModel
             set
             {
                 _barLength = value;
+                _hasBarSettingsChanges = true;
                 OnPropertyChanged("BarLength");
             }
-        }
-
-        /// <summary>
-        /// Pip size to be used for bar creation
-        /// </summary>
-        public decimal PipSize
-        {
-            get { return _pipSize; }
-            set
-            {
-                _pipSize = value; 
-                OnPropertyChanged("PipSize");
-            }
-        }
-
-        /// <summary>
-        /// Historical Data start date
-        /// </summary>
-        public DateTime StartDate
-        {
-            get { return _startDate; }
-            set
-            {
-                _startDate = value; 
-                OnPropertyChanged("StartDate");
-            }
-        }
-
-        /// <summary>
-        /// Historical Data end date
-        /// </summary>
-        public DateTime EndDate
-        {
-            get { return _endDate; }
-            set
-            {
-                _endDate = value; 
-                OnPropertyChanged("EndDate");
-            }
-        }
-        /// <summary>
-        /// Contains supported Bar types
-        /// </summary>
-        public List<string> BarTypes
-        {
-            get { return _barTypes; }
-            set { _barTypes = value; }
         }
 
         /// <summary>
@@ -227,29 +255,12 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Currently selected market detail object in the data grid
+        /// Contains supported Bar types
         /// </summary>
-        public MarketDataDetail SelectedMarketDetail
+        public List<string> BarTypes
         {
-            get { return _selectedMarketDetail; }
-            set
-            {
-                _selectedMarketDetail = value;
-                OnPropertyChanged("SelectedMarketDetail");
-            }
-        }
-
-        /// <summary>
-        /// Displays Selected Data Provider's Market Detail's Collection
-        /// </summary>
-        public ObservableCollection<MarketDataDetail> MarketDetailCollection
-        {
-            get { return _marketDetailCollection; }
-            set
-            {
-                _marketDetailCollection = value;
-                OnPropertyChanged("MarketDetailCollection");
-            }
+            get { return _barTypes; }
+            set { _barTypes = value; }
         }
 
         /// <summary>
@@ -260,34 +271,37 @@ namespace TradeHubGui.ViewModel
             get { return _selectedBarType; }
             set
             {
-                _selectedBarType = value; 
+                _selectedBarType = value;
+                _hasHistoricBarSettingsChanges = true;
                 OnPropertyChanged("SelectedBarType");
             }
         }
 
         /// <summary>
-        /// Bar Format selected from the Combo Box
+        /// Historical Data start date
         /// </summary>
-        public string SelectedBarFormat
+        public DateTime StartDate
         {
-            get { return _selectedBarFormat; }
+            get { return _startDate; }
             set
             {
-                _selectedBarFormat = value; 
-                OnPropertyChanged("SelectedBarFormat");
+                _startDate = value;
+                _hasHistoricBarSettingsChanges = true;
+                OnPropertyChanged("StartDate");
             }
         }
 
         /// <summary>
-        /// Selected Bar Price Type from the Combo Box
+        /// Historical Data end date
         /// </summary>
-        public string SelectedBarPriceType
+        public DateTime EndDate
         {
-            get { return _selectedBarPriceType; }
+            get { return _endDate; }
             set
             {
-                _selectedBarPriceType = value; 
-                OnPropertyChanged("SelectedBarPriceType");
+                _endDate = value;
+                _hasHistoricBarSettingsChanges = true;
+                OnPropertyChanged("EndDate");
             }
         }
 
@@ -327,13 +341,36 @@ namespace TradeHubGui.ViewModel
         {
             get
             {
-                return _saveOptionsCommand ?? (_saveOptionsCommand = new RelayCommand(param => SaveOptionsExecute()));
+                return _saveOptionsCommand ?? (_saveOptionsCommand = new RelayCommand(param => SaveOptionsExecute(), param => SaveOptionsCanExecute()));
+            }
+        }
+
+        /// <summary>
+        /// Command used for triggering bar settings
+        /// </summary>
+        public ICommand SaveBarsCommand
+        {
+            get
+            {
+                return _saveBarsCommand ?? (_saveBarsCommand = new RelayCommand(param => SaveBarsCommandExecute(param)));
             }
         }
 
         #endregion
 
-        #region Commad Trigger Methods
+        #region Commad Execute Methods
+
+        /// <summary>
+        /// Trigger bar settings to enable submit button
+        /// </summary>
+        private void SaveBarsCommandExecute(object param)
+        {
+            if ((bool)param)
+            {
+                _hasBarSettingsChanges = true;
+                _hasHistoricBarSettingsChanges = true;
+            }
+        }
 
         /// <summary>
         /// Indicates if the Bar settings command can be executed or not
@@ -341,7 +378,11 @@ namespace TradeHubGui.ViewModel
         /// <returns></returns>
         private bool SubmitBarSettingsCanExecute()
         {
-            return true;
+            if (_selectedMarketDetail != null && _selectedMarketDetail.PersistenceInformation.SaveBars && _hasBarSettingsChanges
+                && _selectedBarFormat != null && _selectedBarPriceType != null)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -350,6 +391,7 @@ namespace TradeHubGui.ViewModel
         private void SubmitBarSettingsExecute()
         {
             SubmitBarSettingsRequest();
+            _hasBarSettingsChanges = false;
         }
 
         /// <summary>
@@ -358,7 +400,11 @@ namespace TradeHubGui.ViewModel
         /// <returns></returns>
         private bool SubmitHistoricBarSettingsCanExecute()
         {
-            return true;
+            if (_selectedMarketDetail != null && _selectedMarketDetail.PersistenceInformation.SaveBars && _hasHistoricBarSettingsChanges
+                && _selectedBarType != null)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -367,6 +413,7 @@ namespace TradeHubGui.ViewModel
         private void SubmitHistoricBarSettingsExecute()
         {
             SubmitHistoricBarSettingsRequest();
+            _hasHistoricBarSettingsChanges = false;
         }
 
         /// <summary>
@@ -376,6 +423,15 @@ namespace TradeHubGui.ViewModel
         {
             // Save persistence options
             _persistenceController.SavePersistInformation(_writeBinary, _writeCsv);
+            _hasOptionsChanges = false;
+        }
+
+        private bool SaveOptionsCanExecute()
+        {
+            if (_hasOptionsChanges)
+                return true;
+
+            return false;
         }
 
         #endregion
@@ -427,20 +483,6 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Adds available values to Bar Types list to be displayed on UI
-        /// </summary>
-        private void PopulateBarTypesList()
-        {
-            _barTypes.Add(BarType.DAILY);
-            _barTypes.Add(BarType.INTRADAY);
-            _barTypes.Add(BarType.MIDPOINT);
-            _barTypes.Add(BarType.MONTHLY);
-            _barTypes.Add(BarType.TICK);
-            _barTypes.Add(BarType.TRADE);
-            _barTypes.Add(BarType.WEEKLY);
-        }
-
-        /// <summary>
         /// Adds available values to Bar Formates list to be displayed on UI
         /// </summary>
         private void PopulateBarFormatesList()
@@ -449,6 +491,9 @@ namespace TradeHubGui.ViewModel
             _barFormats.Add(BarFormat.DISPLACEMENT);
             _barFormats.Add(BarFormat.EQUAL_ENGINEERED);
             _barFormats.Add(BarFormat.UNEQUAL_ENGINEERED);
+
+            // Initially select the first
+            SelectedBarFormat = _barFormats[0];
         }
 
         /// <summary>
@@ -460,6 +505,26 @@ namespace TradeHubGui.ViewModel
             _barPriceTypes.Add(BarPriceType.BID);
             _barPriceTypes.Add(BarPriceType.LAST);
             _barPriceTypes.Add(BarPriceType.MEAN);
+
+            // Initially select the first
+            SelectedBarPriceType = _barPriceTypes[0];
+        }
+
+        /// <summary>
+        /// Adds available values to Bar Types list to be displayed on UI
+        /// </summary>
+        private void PopulateBarTypesList()
+        {
+            _barTypes.Add(BarType.DAILY);
+            _barTypes.Add(BarType.INTRADAY);
+            _barTypes.Add(BarType.MIDPOINT);
+            _barTypes.Add(BarType.MONTHLY);
+            _barTypes.Add(BarType.TICK);
+            _barTypes.Add(BarType.TRADE);
+            _barTypes.Add(BarType.WEEKLY);
+
+            // Initially select the first
+            SelectedBarType = _barTypes[0];
         }
 
         /// <summary>

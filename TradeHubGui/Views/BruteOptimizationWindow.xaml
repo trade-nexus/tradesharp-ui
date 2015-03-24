@@ -69,7 +69,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="EndValueStringTemplate">
-            <Border Background="#8FFF"></Border>
+            <Border Background="#8FFF"/>
         </DataTemplate>
 
         <DataTemplate x:Key="IncrementIntegerTemplate">
@@ -91,7 +91,7 @@
         </DataTemplate>
         
         <DataTemplate x:Key="IncrementStringTemplate">
-            <Border Background="#8FFF"></Border>
+            <Border Background="#8FFF"/>
         </DataTemplate>
 
     </mah:MetroWindow.Resources>

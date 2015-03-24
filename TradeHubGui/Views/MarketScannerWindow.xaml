@@ -7,7 +7,7 @@
                  ShowInTaskbar="True"
                  WindowStartupLocation="CenterScreen"
                  Width="760" Height="400"
-                 MinWidth="200" MinHeight="200"
+                 MinWidth="450" MinHeight="200"
                  Icon="{StaticResource imgMarketDataScanner}"
                  FocusManager.FocusedElement="{Binding ElementName=NewSymbolTextBox}">
     <mah:MetroWindow.IconTemplate>
