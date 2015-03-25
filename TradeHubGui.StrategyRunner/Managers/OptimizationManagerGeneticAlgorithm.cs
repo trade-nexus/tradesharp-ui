@@ -135,11 +135,17 @@ namespace TradeHubGui.StrategyRunner.Managers
                         OptimizationParameterDetail optimizationParameter;
                         if (_optimizationParameters.TryGetValue(keyValuePair.Key, out optimizationParameter))
                         {
-                            // Set Optimized Parameter Value
-                            optimizationParameter.OptimizedValue = keyValuePair.Value;
+                            // Initialize new value
+                            OptimizationParameterDetail optimizationDetail = new OptimizationParameterDetail();
+                            
+                            // Set optimized value
+                            optimizationDetail.OptimizedValue = keyValuePair.Value;
+
+                            // Save general information
+                            optimizationDetail.Description = optimizationParameter.Description;
 
                             // Add to result 
-                            result.ParameterList.Add(optimizationParameter);
+                            result.ParameterList.Add(optimizationDetail);
                         }
                     }
 
@@ -674,7 +680,7 @@ namespace TradeHubGui.StrategyRunner.Managers
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, _type.FullName, "");
+                Logger.Error(exception, _type.FullName, "ProvideOptimizedParameterInfo");
                 return null;
             }
         }
