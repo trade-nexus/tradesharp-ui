@@ -1,4 +1,5 @@
-﻿using MahApps.Metro;
+﻿using System.Runtime.InteropServices;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
@@ -841,6 +842,12 @@ namespace TradeHubGui.ViewModel
 
                 // Update Observable Collection
                 Strategies.Add(strategy);
+            }
+            else
+            {
+                // Display Error message
+                WPFMessageBox.Show(MainWindow,"Selected library is not a valid TradeHub Strategy.", "Strategy Runner",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
