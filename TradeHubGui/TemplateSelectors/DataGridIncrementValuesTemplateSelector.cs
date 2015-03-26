@@ -14,6 +14,7 @@ namespace TradeHubGui.TemplateSelectors
         public DataTemplate IncrementIntegerTemplate { get; set; }
         public DataTemplate IncrementUnsignedIntegerTemplate { get; set; }
         public DataTemplate IncrementDecimalTemplate { get; set; }
+        public DataTemplate IncrementSingleTemplate { get; set; }
         public DataTemplate IncrementStringTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -33,9 +34,15 @@ namespace TradeHubGui.TemplateSelectors
                 }
                 else if (detailBruteForceParameter.ParameterType == typeof(uint))
                 {
+                    detailBruteForceParameter.Increment = Convert.ToInt32(detailBruteForceParameter.Increment);
                     return IncrementUnsignedIntegerTemplate;
                 }
-                else if (detailBruteForceParameter.ParameterType == typeof(decimal) || detailBruteForceParameter.ParameterType == typeof(float) || detailBruteForceParameter.ParameterType == typeof(double))
+                else if (detailBruteForceParameter.ParameterType == typeof(float))
+                {
+                    detailBruteForceParameter.Increment = Convert.ToSingle(detailBruteForceParameter.Increment);
+                    return IncrementSingleTemplate;
+                }
+                else if (detailBruteForceParameter.ParameterType == typeof(decimal) || detailBruteForceParameter.ParameterType == typeof(double))
                 {
                     return IncrementDecimalTemplate;
                 }

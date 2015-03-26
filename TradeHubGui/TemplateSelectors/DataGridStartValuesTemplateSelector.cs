@@ -14,6 +14,7 @@ namespace TradeHubGui.TemplateSelectors
         public DataTemplate StartValueIntegerTemplate { get; set; }
         public DataTemplate StartValueUnsignedIntegerTemplate { get; set; }
         public DataTemplate StartValueDecimalTemplate { get; set; }
+        public DataTemplate StartValueSingleTemplate { get; set; }
         public DataTemplate StartValueStringTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -29,9 +30,15 @@ namespace TradeHubGui.TemplateSelectors
                 }
                 else if (detailOptimizationParameter.ParameterType == typeof(uint))
                 {
+                    detailOptimizationParameter.StartValue = Convert.ToInt32(detailOptimizationParameter.StartValue);
                     return StartValueUnsignedIntegerTemplate;
                 }
-                else if (detailOptimizationParameter.ParameterType == typeof(decimal) || detailOptimizationParameter.ParameterType == typeof(float) || detailOptimizationParameter.ParameterType == typeof(double))
+                else if (detailOptimizationParameter.ParameterType == typeof(float))
+                {
+                    detailOptimizationParameter.StartValue = Convert.ToSingle(detailOptimizationParameter.StartValue);
+                    return StartValueSingleTemplate;
+                }
+                else if (detailOptimizationParameter.ParameterType == typeof(decimal) || detailOptimizationParameter.ParameterType == typeof(double))
                 {
                     return StartValueDecimalTemplate;
                 }
@@ -52,9 +59,15 @@ namespace TradeHubGui.TemplateSelectors
                 }
                 else if (detailBruteForceParameter.ParameterType == typeof(uint))
                 {
+                    detailBruteForceParameter.ParameterValue = Convert.ToInt32(detailBruteForceParameter.ParameterValue);
                     return StartValueUnsignedIntegerTemplate;
                 }
-                else if (detailBruteForceParameter.ParameterType == typeof(decimal) || detailBruteForceParameter.ParameterType == typeof(float) || detailBruteForceParameter.ParameterType == typeof(double))
+                else if (detailBruteForceParameter.ParameterType == typeof(float))
+                {
+                    detailBruteForceParameter.ParameterValue = Convert.ToSingle(detailBruteForceParameter.ParameterValue);
+                    return StartValueSingleTemplate;
+                }
+                else if (detailBruteForceParameter.ParameterType == typeof(decimal) || detailBruteForceParameter.ParameterType == typeof(double))
                 {
                     return StartValueDecimalTemplate;
                 }

@@ -45,6 +45,12 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="StartValueSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding StartValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.01" />
+            </Border>
+        </DataTemplate>
+
         <DataTemplate x:Key="EndValueIntegerTemplate">
             <Border Background="#8FFF">
                 <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" />
@@ -63,6 +69,12 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="EndValueSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.01" />
+            </Border>
+        </DataTemplate>
+        
     </mah:MetroWindow.Resources>
 
     <i:Interaction.Triggers>
@@ -170,7 +182,8 @@
                                     <templateSelectors:DataGridStartValuesTemplateSelector
                                         StartValueIntegerTemplate="{StaticResource StartValueIntegerTemplate}"
                                         StartValueUnsignedIntegerTemplate="{StaticResource StartValueUnsignedIntegerTemplate}"
-                                        StartValueDecimalTemplate="{StaticResource StartValueDecimalTemplate}"/>
+                                        StartValueDecimalTemplate="{StaticResource StartValueDecimalTemplate}"
+                                        StartValueSingleTemplate="{StaticResource StartValueSingleTemplate}"/>
                                 </DataGridTemplateColumn.CellTemplateSelector>
                             </DataGridTemplateColumn>
                             <DataGridTemplateColumn Header="End value" Width="0.4*" MinWidth="80" SortMemberPath="EndValue">
@@ -178,7 +191,8 @@
                                     <templateSelectors:DataGridEndValuesTemplateSelector
                                         EndValueIntegerTemplate="{StaticResource EndValueIntegerTemplate}"
                                         EndValueUnsignedIntegerTemplate="{StaticResource EndValueUnsignedIntegerTemplate}"
-                                        EndValueDecimalTemplate="{StaticResource EndValueDecimalTemplate}"/>
+                                        EndValueDecimalTemplate="{StaticResource EndValueDecimalTemplate}"
+                                        EndValueSingleTemplate="{StaticResource EndValueSingleTemplate}"/>
                                 </DataGridTemplateColumn.CellTemplateSelector>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>

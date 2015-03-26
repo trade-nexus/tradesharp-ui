@@ -44,6 +44,12 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="StartValueSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.01" />
+            </Border>
+        </DataTemplate>
+        
         <DataTemplate x:Key="StartValueStringTemplate">
             <Border Background="#8FFF">
                 <TextBox Text="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}"/>
@@ -68,6 +74,12 @@
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="EndValueSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.01" />
+            </Border>
+        </DataTemplate>
+        
         <DataTemplate x:Key="EndValueStringTemplate">
             <Border Background="#8FFF"/>
         </DataTemplate>
@@ -89,7 +101,13 @@
                 <wpfToolkitExtended:DecimalUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
             </Border>
         </DataTemplate>
-        
+
+        <DataTemplate x:Key="IncrementSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.01" />
+            </Border>
+        </DataTemplate>
+
         <DataTemplate x:Key="IncrementStringTemplate">
             <Border Background="#8FFF"/>
         </DataTemplate>
@@ -167,6 +185,7 @@
                                         StartValueIntegerTemplate="{StaticResource StartValueIntegerTemplate}"
                                         StartValueUnsignedIntegerTemplate="{StaticResource StartValueUnsignedIntegerTemplate}"
                                         StartValueDecimalTemplate="{StaticResource StartValueDecimalTemplate}"
+                                        StartValueSingleTemplate="{StaticResource StartValueSingleTemplate}"
                                         StartValueStringTemplate="{StaticResource StartValueStringTemplate}"/>
                             </DataGridTemplateColumn.CellTemplateSelector>
                         </DataGridTemplateColumn>
@@ -176,6 +195,7 @@
                                         EndValueIntegerTemplate="{StaticResource EndValueIntegerTemplate}"
                                         EndValueUnsignedIntegerTemplate="{StaticResource EndValueUnsignedIntegerTemplate}"
                                         EndValueDecimalTemplate="{StaticResource EndValueDecimalTemplate}"
+                                        EndValueSingleTemplate="{StaticResource EndValueSingleTemplate}"
                                         EndValueStringTemplate="{StaticResource EndValueStringTemplate}"/>
                             </DataGridTemplateColumn.CellTemplateSelector>
                         </DataGridTemplateColumn>
@@ -185,6 +205,7 @@
                                         IncrementIntegerTemplate="{StaticResource IncrementIntegerTemplate}"
                                         IncrementUnsignedIntegerTemplate="{StaticResource IncrementUnsignedIntegerTemplate}"
                                         IncrementDecimalTemplate="{StaticResource IncrementDecimalTemplate}"
+                                        IncrementSingleTemplate="{StaticResource IncrementSingleTemplate}"
                                         IncrementStringTemplate="{StaticResource IncrementStringTemplate}"/>
                             </DataGridTemplateColumn.CellTemplateSelector>
                         </DataGridTemplateColumn>
