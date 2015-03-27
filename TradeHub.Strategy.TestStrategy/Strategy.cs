@@ -11,7 +11,7 @@ namespace TradeHub.Strategy.TestStrategy
     [TradeHubAttributes("Strategy", typeof(Strategy))]
     public class Strategy:TradeHubStrategy
     {
-        public Strategy(uint shares):base("","","")
+        public Strategy(uint @uint,decimal @decimal,double @double,float @float,int @int,long @long,string @string):base("","","")
         {
             
         }
