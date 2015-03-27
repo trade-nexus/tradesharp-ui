@@ -71,6 +71,17 @@
             </Grid>
         </DataTemplate>
 
+        <DataTemplate x:Key="LongDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <wpfToolkitExtended:LongUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment="1" />
+            </Grid>
+        </DataTemplate>
+
         <DataTemplate x:Key="StringDataTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>

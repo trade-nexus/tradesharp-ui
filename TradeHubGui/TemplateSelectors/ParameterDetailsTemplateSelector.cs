@@ -46,6 +46,10 @@ namespace TradeHubGui.TemplateSelectors
                 {
                     return element.FindResource("DoubleDataTemplate") as DataTemplate;
                 }
+                else if (pair.Value.ParameterType == typeof(long))
+                {
+                    return element.FindResource("LongDataTemplate") as DataTemplate;
+                }
             }
 
             return base.SelectTemplate(item, container);
