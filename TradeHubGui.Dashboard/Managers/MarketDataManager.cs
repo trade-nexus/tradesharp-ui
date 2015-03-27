@@ -272,7 +272,7 @@ namespace TradeHubGui.Dashboard.Managers
         public void SubscribeHistoricalData(Security security, HistoricalBarParameters barDetail, string providerName)
         {
             // Create bar subscription message
-            HistoricDataRequest subscribe = SubscriptionMessage.HistoricDataSubscription(_idGenerator.NextBarId(), security,
+            HistoricDataRequest subscribe = SubscriptionMessage.HistoricDataSubscription(_idGenerator.NextHistoricalDataId(), security,
                 barDetail.StartDate, barDetail.EndDate, 60, barDetail.Type, providerName);
 
             _historicalDataService.Subscribe(subscribe);
