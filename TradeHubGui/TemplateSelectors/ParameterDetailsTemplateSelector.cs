@@ -17,7 +17,7 @@ namespace TradeHubGui.TemplateSelectors
         {
             KeyValuePair<string, ParameterDetail> pair = (KeyValuePair<string, ParameterDetail>)item;
             FrameworkElement element = container as FrameworkElement;
-
+            
             if (element != null && item != null)
             {
                 if(pair.Value.ParameterType == typeof(string))
@@ -41,6 +41,14 @@ namespace TradeHubGui.TemplateSelectors
                 else if (pair.Value.ParameterType == typeof(decimal))
                 {
                     return element.FindResource("DecimalDataTemplate") as DataTemplate;
+                }
+                else if (pair.Value.ParameterType == typeof(double))
+                {
+                    return element.FindResource("DoubleDataTemplate") as DataTemplate;
+                }
+                else if (pair.Value.ParameterType == typeof(long))
+                {
+                    return element.FindResource("LongDataTemplate") as DataTemplate;
                 }
             }
 

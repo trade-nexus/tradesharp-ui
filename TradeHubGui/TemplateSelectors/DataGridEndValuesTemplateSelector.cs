@@ -14,7 +14,9 @@ namespace TradeHubGui.TemplateSelectors
         public DataTemplate EndValueIntegerTemplate { get; set; }
         public DataTemplate EndValueUnsignedIntegerTemplate { get; set; }
         public DataTemplate EndValueDecimalTemplate { get; set; }
+        public DataTemplate EndValueDoubleTemplate { get; set; }
         public DataTemplate EndValueSingleTemplate { get; set; }
+        public DataTemplate EndValueLongTemplate { get; set; }
         public DataTemplate EndValueStringTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -38,9 +40,17 @@ namespace TradeHubGui.TemplateSelectors
                     detailOptimizationParameter.EndValue = Convert.ToSingle(detailOptimizationParameter.EndValue);
                     return EndValueSingleTemplate;
                 }
-                else if (detailOptimizationParameter.ParameterType == typeof(decimal) || detailOptimizationParameter.ParameterType == typeof(double))
+                else if (detailOptimizationParameter.ParameterType == typeof(decimal))
                 {
                     return EndValueDecimalTemplate;
+                }
+                else if (detailOptimizationParameter.ParameterType == typeof(double))
+                {
+                    return EndValueDoubleTemplate;
+                }
+                else if (detailOptimizationParameter.ParameterType == typeof(long))
+                {
+                    return EndValueLongTemplate;
                 }
             }
 
@@ -67,9 +77,17 @@ namespace TradeHubGui.TemplateSelectors
                     detailBruteForceParameter.EndValue = Convert.ToSingle(detailBruteForceParameter.EndValue);
                     return EndValueSingleTemplate;
                 }
-                else if (detailBruteForceParameter.ParameterType == typeof(decimal) || detailBruteForceParameter.ParameterType == typeof(double))
+                else if (detailBruteForceParameter.ParameterType == typeof(decimal))
                 {
                     return EndValueDecimalTemplate;
+                }
+                else if (detailBruteForceParameter.ParameterType == typeof(double))
+                {
+                    return EndValueDoubleTemplate;
+                }
+                else if (detailBruteForceParameter.ParameterType == typeof(long))
+                {
+                    return EndValueLongTemplate;
                 }
             }
 
