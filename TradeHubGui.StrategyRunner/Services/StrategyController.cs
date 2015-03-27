@@ -227,6 +227,20 @@ namespace TradeHubGui.StrategyRunner.Services
         }
 
         /// <summary>
+        /// Returns locally saved data from strategy instance
+        /// </summary>
+        /// <param name="instanceKey">Unique ID to identify strategy instance</param>
+        /// <returns></returns>
+        public IReadOnlyList<string> GetStrategyInstanceLocalData(string instanceKey)
+        {
+            // Get strategy executor for given instance key
+            var strategyExecutor = _strategiesCollection[instanceKey];
+
+            // Retrieve data
+            return strategyExecutor.GetLocalData();
+        }
+
+        /// <summary>
         /// On execution received from strategy executor
         /// </summary>
         /// <param name="executionRepresentation"></param>

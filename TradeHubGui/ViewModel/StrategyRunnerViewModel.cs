@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TraceSourceLogger;
+using TradeHubGui.Common.Infrastructure;
 using TradeHubGui.Common.Utility;
 using DomainModels = TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
@@ -57,6 +58,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _removeStrategyCommand;
         private RelayCommand _selectProviderCommand;
         private RelayCommand _importInstancesCommand;
+        private RelayCommand _exportInstanceDataCommand;
 
         private string _strategyPath;
         private string _csvInstancesPath;
@@ -445,7 +447,21 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command used for opening folder dialog and saving strategy instance data
+        /// </summary>
+        public ICommand ExportInstanceDataCommand
+        {
+            get
+            {
+                return _exportInstanceDataCommand ??
+                       (_exportInstanceDataCommand = new RelayCommand(param => ExportInstanceDataExecute()));
+            }
+        }
+
         #endregion
+
+        #region Command Trigger Methods
 
         /// <summary>
         /// Displays Strategy Instance Parameter's window to edit input values
@@ -457,7 +473,8 @@ namespace TradeHubGui.ViewModel
             window.Tag = string.Format("Instance {0}", SelectedInstance.InstanceKey);
             window.Owner = MainWindow;
 
-            ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+            ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key,
+                entry => (ParameterDetail) entry.Value.Clone());
 
             window.ShowDialog();
         }
@@ -494,7 +511,8 @@ namespace TradeHubGui.ViewModel
         /// <param name="param"></param>
         private void CreateInstanceExecute(object param)
         {
-            var parameters = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+            var parameters = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key,
+                entry => (ParameterDetail) entry.Value.Clone());
 
             // Create a new Strategy Instance with provided parameters
             var strategyInstance = SelectedStrategy.CreateInstance(parameters);
@@ -512,7 +530,7 @@ namespace TradeHubGui.ViewModel
             Task.Run(() => _strategyController.AddStrategyInstance(strategyInstance));
 
             // Close "Create Instance" window
-            ((Window)param).Close();
+            ((Window) param).Close();
         }
 
         /// <summary>
@@ -543,8 +561,10 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void DeleteInstanceExecute()
         {
-            if ((Forms.DialogResult)WPFMessageBox.Show(MainWindow, string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey), "Strategy Runner",
-                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
+            if ((Forms.DialogResult)
+                WPFMessageBox.Show(MainWindow,
+                    string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey), "Strategy Runner",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
             {
                 // Request Strategy Controller to remove the instance from working session
                 _strategyController.RemoveStrategyInstance(SelectedInstance.InstanceKey);
@@ -563,10 +583,11 @@ namespace TradeHubGui.ViewModel
         private void EditInstanceParametersExecute(object param)
         {
             // Update Parameter Details
-            SelectedInstance.Parameters = ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+            SelectedInstance.Parameters = ParameterDetails.ToDictionary(entry => entry.Key,
+                entry => (ParameterDetail) entry.Value.Clone());
 
             // Close "Edit Instance" window
-            ((Window)param).Close();
+            ((Window) param).Close();
         }
 
         /// <summary>
@@ -574,7 +595,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ShowGeneticOptimizationWindowExecute()
         {
-            if (TryActivateShownWindow(typeof(GeneticOptimizationWindow)))
+            if (TryActivateShownWindow(typeof (GeneticOptimizationWindow)))
             {
                 return;
             }
@@ -592,7 +613,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ShowBruteOptimizationWindowExecute()
         {
-            if (TryActivateShownWindow(typeof(BruteOptimizationWindow)))
+            if (TryActivateShownWindow(typeof (BruteOptimizationWindow)))
             {
                 return;
             }
@@ -615,12 +636,12 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void LoadStrategyExecute()
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
             openFileDialog.Title = "Load Strategy File";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Filter = "Assembly Files (.dll)|*.dll|All Files (*.*)|*.*";
-            System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
+            Forms.DialogResult result = openFileDialog.ShowDialog();
+            if (result == Forms.DialogResult.OK)
             {
                 // Save selected '.dll' path
                 StrategyPath = openFileDialog.FileName;
@@ -635,8 +656,10 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void RemoveStrategyExecute()
         {
-            if ((Forms.DialogResult)WPFMessageBox.Show(MainWindow, string.Format("Remove strategy {0}?", SelectedStrategy.Key), "Strategy Runner",
-                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
+            if ((Forms.DialogResult)
+                WPFMessageBox.Show(MainWindow, string.Format("Remove strategy {0}?", SelectedStrategy.Key),
+                    "Strategy Runner",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
             {
                 // Stop/Remove all Strategy Instances
                 foreach (string instanceKey in SelectedStrategy.StrategyInstances.Keys)
@@ -664,18 +687,42 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ImportInstancesExecute()
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
             openFileDialog.Title = "Import Instances";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
-            System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
+            Forms.DialogResult result = openFileDialog.ShowDialog();
+            if (result == Forms.DialogResult.OK)
             {
                 CsvInstancesPath = openFileDialog.FileName;
 
                 AddMultipleInstanceFromFile(CsvInstancesPath);
             }
         }
+
+        /// <summary>
+        /// Triggered when 'Export Instance Data' button is clicked
+        /// </summary>
+        private void ExportInstanceDataExecute()
+        {
+            string folderPath = string.Empty;
+
+            // Get Directory in which to save stats
+            using (System.Windows.Forms.FolderBrowserDialog form = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    folderPath = form.SelectedPath;
+                }
+            }
+
+            // Save data
+            Task.Run(() => PersistCsv.SaveData(folderPath,
+                _strategyController.GetStrategyInstanceLocalData(SelectedInstance.InstanceKey),
+                SelectedInstance.Description));
+        }
+
+        #endregion
 
         private bool TryActivateShownWindow(Type typeOfWindow)
         {

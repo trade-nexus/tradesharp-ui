@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -616,6 +617,15 @@ namespace TradeHubGui.StrategyRunner.Executors
         private void AddOrderDetails(OrderDetails orderDetails)
         {
             _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() => _strategyInstance.AddOrderDetails(orderDetails)));
+        }
+
+        /// <summary>
+        /// Returns locally saved data from strategy
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyList<string> GetLocalData()
+        {
+            return _tradeHubStrategy.GetLocalData();
         }
 
         /// <summary>
