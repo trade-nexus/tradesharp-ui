@@ -400,6 +400,24 @@ namespace TradeHubGui.Dashboard.Managers
         #endregion
 
         /// <summary>
+        /// Establishes connection with Market Data Server
+        /// </summary>
+        public void Connect()
+        {
+            _marketDataService.StartService();
+            _historicalDataService.StartService();
+        }
+
+        /// <summary>
+        /// Terminates connection with Market Data Server
+        /// </summary>
+        public void Disconnect()
+        {
+            _marketDataService.StopService();
+            _historicalDataService.StopService();
+        }
+
+        /// <summary>
         /// Stops all market data activites and closes open connections
         /// </summary>
         public void Stop()

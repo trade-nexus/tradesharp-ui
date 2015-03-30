@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using TraceSourceLogger;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.Utility;
 
 namespace TradeHubGui.Dashboard.Managers
 {
@@ -67,9 +68,9 @@ namespace TradeHubGui.Dashboard.Managers
         private void PopulateServiceDetails()
         {
             // Create Service Details
-            ServiceDetails marketServiceDetails = new ServiceDetails("MarketDataService", ServiceStatus.Disabled);
-            ServiceDetails orderServiceDetails = new ServiceDetails("OrderExecutionService", ServiceStatus.Disabled);
-            ServiceDetails positionServiceDetails = new ServiceDetails("PositionService", ServiceStatus.Disabled);
+            ServiceDetails marketServiceDetails = new ServiceDetails(GetEnumDescription.GetValue(Common.Constants.Services.MarketDataService), ServiceStatus.Disabled);
+            ServiceDetails orderServiceDetails = new ServiceDetails(GetEnumDescription.GetValue(Common.Constants.Services.OrderExecutionService), ServiceStatus.Disabled);
+            ServiceDetails positionServiceDetails = new ServiceDetails(GetEnumDescription.GetValue(Common.Constants.Services.PositionService), ServiceStatus.Disabled);
 
             // Add details to collection
             _serviceDetailsCollection.Add(marketServiceDetails);
@@ -121,7 +122,7 @@ namespace TradeHubGui.Dashboard.Managers
         /// Start given service
         /// </summary>
         /// <param name="serviceDetails"></param>
-        public void StartService(ServiceDetails serviceDetails)
+        public async void StartService(ServiceDetails serviceDetails)
         {
             var controller = new ServiceController(serviceDetails.ServiceName);
 
@@ -153,7 +154,7 @@ namespace TradeHubGui.Dashboard.Managers
         /// Stops given service
         /// </summary>
         /// <param name="serviceDetails"></param>
-        public void StopService(ServiceDetails serviceDetails)
+        public async void StopService(ServiceDetails serviceDetails)
         {
             var controller = new ServiceController(serviceDetails.ServiceName);
             try

@@ -186,14 +186,14 @@ namespace TradeHubGui.ViewModel
 
             if (serviceDetails == null) return;
 
-            //NOTE: Test code to simulate Service Start
-            // BEGIN:
-            serviceDetails.Status = ServiceStatus.Starting;
-            serviceDetails.Status = ServiceStatus.Running;
-            return;
-            // :END
+            ////NOTE: Test code to simulate Service Start
+            //// BEGIN:
+            //serviceDetails.Status = ServiceStatus.Starting;
+            //serviceDetails.Status = ServiceStatus.Running;
+            //return;
+            //// :END
 
-            Task.Run(()=>_servicesController.StartService(serviceDetails));
+            _servicesController.StartService(serviceDetails);
         }
 
         /// <summary>
@@ -215,14 +215,14 @@ namespace TradeHubGui.ViewModel
 
             if (serviceDetails == null) return;
 
-            //NOTE: Test code to simulate Service Start
-            // BEGIN:
-            serviceDetails.Status = ServiceStatus.Stopping;
-            serviceDetails.Status = ServiceStatus.Stopped;
-            return;
-            // :END
+            ////NOTE: Test code to simulate Service Start
+            //// BEGIN:
+            //serviceDetails.Status = ServiceStatus.Stopping;
+            //serviceDetails.Status = ServiceStatus.Stopped;
+            //return;
+            //// :END
 
-            Task.Run(() => _servicesController.StopService(serviceDetails));
+            _servicesController.StopService(serviceDetails);
         }
 
         /// <summary>

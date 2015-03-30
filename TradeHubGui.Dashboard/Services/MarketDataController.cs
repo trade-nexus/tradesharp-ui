@@ -12,6 +12,7 @@ using TradeHub.StrategyEngine.MarketData;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.Utility;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Managers;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
@@ -67,8 +68,11 @@ namespace TradeHubGui.Dashboard.Services
 
             // Register Event to receive subscribe/unsubscribe requests
             EventSystem.Subscribe<SubscriptionRequest>(NewSubscriptionRequest);
-        }
 
+            // Register Event to receive service notifications
+            EventSystem.Subscribe<ServiceDetails>(OnServiceStatusModification);
+        }
+        
         /// <summary>
         /// Subscribe events to receive incoming data and responses from Market Data Manager
         /// </summary>
@@ -284,6 +288,25 @@ namespace TradeHubGui.Dashboard.Services
         }
 
         #endregion
+
+        /// <summary>
+        /// Called when Service status is modified
+        /// </summary>
+        /// <param name="serviceDetails"></param>
+        private void OnServiceStatusModification(ServiceDetails serviceDetails)
+        {
+            if (serviceDetails.ServiceName.Equals(GetEnumDescription.GetValue(Common.Constants.Services.MarketDataService)))
+            {
+                if (serviceDetails.Status.Equals(ServiceStatus.Running))
+                {
+                    _marketDataManager.Connect();
+                }
+                else if (serviceDetails.Status.Equals(ServiceStatus.Stopped))
+                {
+                    _marketDataManager.Disconnect();
+                }
+            }
+        }
 
         /// <summary>
         /// Stops all market data related activities
