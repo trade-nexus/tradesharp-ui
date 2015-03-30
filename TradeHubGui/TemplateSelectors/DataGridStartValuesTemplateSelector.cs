@@ -69,12 +69,34 @@ namespace TradeHubGui.TemplateSelectors
                 }
                 else if (detailBruteForceParameter.ParameterType == typeof(uint))
                 {
-                    detailBruteForceParameter.ParameterValue = Convert.ToInt32(detailBruteForceParameter.ParameterValue);
+                    if (detailBruteForceParameter.ParameterValue != null)
+                    {
+                        int convertedValue;
+
+                        // BOX - Unbox
+                        if (Int32.TryParse(detailBruteForceParameter.ParameterValue.ToString(), out convertedValue))
+                        {
+                            // Assign converted value
+                            detailBruteForceParameter.ParameterValue = convertedValue;
+                        }
+                    }
+
                     return StartValueUnsignedIntegerTemplate;
                 }
                 else if (detailBruteForceParameter.ParameterType == typeof(float))
                 {
-                    detailBruteForceParameter.ParameterValue = Convert.ToSingle(detailBruteForceParameter.ParameterValue);
+                    if (detailBruteForceParameter.ParameterValue != null)
+                    {
+                        Single convertedValue;
+
+                        // BOX - Unbox
+                        if (Single.TryParse(detailBruteForceParameter.ParameterValue.ToString(), out convertedValue))
+                        {
+                            // Assign converted value
+                            detailBruteForceParameter.ParameterValue = convertedValue;
+                        }
+                    }
+
                     return StartValueSingleTemplate;
                 }
                 else if (detailBruteForceParameter.ParameterType == typeof(decimal))
