@@ -717,9 +717,10 @@ namespace TradeHubGui.ViewModel
             }
 
             // Save data
-            Task.Run(() => PersistCsv.SaveData(folderPath,
-                _strategyController.GetStrategyInstanceLocalData(SelectedInstance.InstanceKey),
-                SelectedInstance.Description));
+            Task.Run(
+                () => PersistCsv.SaveData(folderPath,
+                        _strategyController.GetStrategyInstanceLocalData(SelectedInstance.InstanceKey),
+                        SelectedInstance.Description));
         }
 
         #endregion

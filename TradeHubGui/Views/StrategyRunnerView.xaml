@@ -219,13 +219,14 @@
                                             </Button>
 
                                             <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete instance"
-                                                        IsEnabled="True"
-                                                        Command="{Binding DataContext.DeleteInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                                    IsEnabled="True"
+                                                    Command="{Binding DataContext.DeleteInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                 <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
                                             </Button>
 
-                                            <Button IsEnabled="True" Focusable="False" Style="{StaticResource ButtonToolBar}" ToolTip="Export local data"
-                                                    Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" >
+                                            <Button Focusable="False" Style="{StaticResource ButtonToolBar}" ToolTip="Export local data"
+                                                    IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}, ConverterParameter=Invert}"
+                                                    Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                 <Image Width="12" Height="12" Margin="2,0,0,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
                                             </Button>
                                             

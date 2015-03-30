@@ -22,17 +22,34 @@ namespace TradeHubGui.Converters
         /// <returns>bool</returns>
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value != null && value != DependencyProperty.UnsetValue)
+            if (value != null)
             {
-                StrategyStatus status = (StrategyStatus)value;
-
-                // Return true only if status is Stopped or None
-                if (status.Equals(StrategyStatus.Stopped) || status.Equals(StrategyStatus.None))
+                // If parameter is Invert, then use inverted logic for button visibility
+                if (parameter != null && ((string) parameter).Equals("Invert"))
                 {
-                    return true;
+                    StrategyStatus status = (StrategyStatus) value;
+
+                    // Return 'False' only if status is 'None' or 'Initializing' indicating it's not yet executed.
+                    if (status.Equals(StrategyStatus.None) || status.Equals(StrategyStatus.Initializing))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else if (value != DependencyProperty.UnsetValue)
+                {
+                    StrategyStatus status = (StrategyStatus) value;
+
+                    // Return true only if status is Stopped or None
+                    if (status.Equals(StrategyStatus.Stopped) || status.Equals(StrategyStatus.None))
+                    {
+                        return true;
+                    }
                 }
             }
-
             return false;
         }
 
