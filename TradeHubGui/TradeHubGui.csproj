@@ -352,6 +352,7 @@
     <Content Include="LoggerConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <SplashScreen Include="TH Splash Screen.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Resources\Resources.csproj">
