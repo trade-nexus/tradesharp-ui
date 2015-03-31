@@ -79,6 +79,7 @@ namespace TradeHubGui.Dashboard.Managers
 
             // Get Actual Service Status
             marketServiceDetails.Status = GetServiceStatus(marketServiceDetails.ServiceName);
+            orderServiceDetails.Status = GetServiceStatus(orderServiceDetails.ServiceName);
         }
 
         /// <summary>

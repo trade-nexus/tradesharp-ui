@@ -189,6 +189,26 @@ namespace TradeHubGui.Dashboard.Managers
         #region Connect/Disconnect methods
 
         /// <summary>
+        /// Establishes connection with Order Execution Server
+        /// </summary>
+        public void Connect()
+        {
+            // Initialize service to re-establish connection
+            _orderExecutionService.InitializeService();
+
+            // Start Service
+            _orderExecutionService.StartService();
+        }
+
+        /// <summary>
+        /// Terminates connection with Order Execution Server
+        /// </summary>
+        public void Disconnect()
+        {
+            _orderExecutionService.StopService();
+        }
+
+        /// <summary>
         /// Sends Connection request to Order Execution Server
         /// </summary>
         /// <param name="providerName">Order Execution Provider to connect</param>

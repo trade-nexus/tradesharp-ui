@@ -195,8 +195,33 @@ namespace TradeHubGui.Dashboard.Managers
             _marketDataService.BarArrived -= OnBarArrived;
         }
 
+        #region Connect/Disconnect
+
         /// <summary>
-        /// Sends Connection request to Market Data Server
+        /// Establishes connection with Market Data Server
+        /// </summary>
+        public void Connect()
+        {
+            // Initialize services to re-establish connection
+            _marketDataService.InitializeService();
+            _historicalDataService.InitializeService();
+
+            // Start Services
+            _marketDataService.StartService();
+            _historicalDataService.StartService();
+        }
+
+        /// <summary>
+        /// Terminates connection with Market Data Server
+        /// </summary>
+        public void Disconnect()
+        {
+            _marketDataService.StopService();
+            _historicalDataService.StopService();
+        }
+
+        /// <summary>
+        /// Sends request to Market Data Server to connect given market data provider
         /// </summary>
         /// <param name="providerName">Market Data Provider to connect</param>
         public void Connect(string providerName)
@@ -231,6 +256,10 @@ namespace TradeHubGui.Dashboard.Managers
             _marketDataService.Logout(logout);
             _historicalDataService.Logout(logout);
         }
+
+        #endregion
+
+        #region Subscribe/Unsubscribe
 
         /// <summary>
         /// Sends subscription request to Market Data Server
@@ -272,8 +301,9 @@ namespace TradeHubGui.Dashboard.Managers
         public void SubscribeHistoricalData(Security security, HistoricalBarParameters barDetail, string providerName)
         {
             // Create bar subscription message
-            HistoricDataRequest subscribe = SubscriptionMessage.HistoricDataSubscription(_idGenerator.NextHistoricalDataId(), security,
-                barDetail.StartDate, barDetail.EndDate, 60, barDetail.Type, providerName);
+            HistoricDataRequest subscribe =
+                SubscriptionMessage.HistoricDataSubscription(_idGenerator.NextHistoricalDataId(), security,
+                    barDetail.StartDate, barDetail.EndDate, 60, barDetail.Type, providerName);
 
             _historicalDataService.Subscribe(subscribe);
         }
@@ -305,6 +335,8 @@ namespace TradeHubGui.Dashboard.Managers
 
             _marketDataService.Unsubscribe(unsubscribe);
         }
+
+        #endregion
 
         #region Market Data Service Events
 
@@ -398,24 +430,6 @@ namespace TradeHubGui.Dashboard.Managers
         }
 
         #endregion
-
-        /// <summary>
-        /// Establishes connection with Market Data Server
-        /// </summary>
-        public void Connect()
-        {
-            _marketDataService.StartService();
-            _historicalDataService.StartService();
-        }
-
-        /// <summary>
-        /// Terminates connection with Market Data Server
-        /// </summary>
-        public void Disconnect()
-        {
-            _marketDataService.StopService();
-            _historicalDataService.StopService();
-        }
 
         /// <summary>
         /// Stops all market data activites and closes open connections

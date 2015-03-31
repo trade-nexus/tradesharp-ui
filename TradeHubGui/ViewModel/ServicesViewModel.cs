@@ -152,11 +152,11 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void PopulateServices()
         {
-            //NOTE: Test code to simulate Services
-            // BEGIN:
-            TestCodeToGenerateDummayServicesData();
-            return;
-            // :END
+            ////NOTE: Test code to simulate Services
+            //// BEGIN:
+            //TestCodeToGenerateDummayServicesData();
+            //return;
+            //// :END
 
             var availableServices = _servicesController.GetAvailableServices();
             foreach (var availableService in availableServices)
@@ -230,7 +230,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private async void InitializeServices()
         {
-            await Task.Run(() => _servicesController.InitializeServices());
+            //await Task.Run(() => _servicesController.InitializeServices());
         }
 
         /// <summary>
