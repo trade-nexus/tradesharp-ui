@@ -62,6 +62,7 @@ namespace TradeHubGui.ViewModel
 
         private string _strategyPath;
         private string _csvInstancesPath;
+        private string _instanceDescription;
 
         private Dictionary<string, ParameterDetail> _parameterDetails;
 
@@ -312,6 +313,19 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Brief description regarding each strategy instance
+        /// </summary>
+        public string InstanceDescription
+        {
+            get { return _instanceDescription; }
+            set
+            {
+                _instanceDescription = value;
+                OnPropertyChanged("InstanceDescription");
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -473,6 +487,10 @@ namespace TradeHubGui.ViewModel
             window.Tag = string.Format("Instance {0}", SelectedInstance.InstanceKey);
             window.Owner = MainWindow;
 
+            // Set Description field
+            InstanceDescription = SelectedInstance.Description;
+
+            // Set individual Instance parameters
             ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key,
                 entry => (ParameterDetail) entry.Value.Clone());
 
@@ -515,7 +533,7 @@ namespace TradeHubGui.ViewModel
                 entry => (ParameterDetail) entry.Value.Clone());
 
             // Create a new Strategy Instance with provided parameters
-            var strategyInstance = SelectedStrategy.CreateInstance(parameters);
+            var strategyInstance = SelectedStrategy.CreateInstance(parameters, InstanceDescription);
 
             // Select created instance in DataGrid
             SelectedInstance = strategyInstance;
@@ -582,6 +600,9 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void EditInstanceParametersExecute(object param)
         {
+            // Update Description
+            SelectedInstance.Description = InstanceDescription;
+
             // Update Parameter Details
             SelectedInstance.Parameters = ParameterDetails.ToDictionary(entry => entry.Key,
                 entry => (ParameterDetail) entry.Value.Clone());
@@ -838,7 +859,7 @@ namespace TradeHubGui.ViewModel
                 }
 
                 // Create a new Strategy Instance with provided parameters
-                var strategyInstance = SelectedStrategy.CreateInstance(instanceParameters);
+                var strategyInstance = SelectedStrategy.CreateInstance(instanceParameters, "");
 
                 // Add to local Map
                 instances.Add(strategyInstance);
@@ -877,7 +898,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Creates a new strategy object
+        /// Adds a new Strategy object to UI collection
         /// </summary>
         /// <param name="strategyPath">Path from which to load the strategy</param>
         private void AddStrategy(string strategyPath)
