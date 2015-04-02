@@ -81,6 +81,7 @@
     <Compile Include="Constants\SubscriptionType.cs" />
     <Compile Include="EventSystem.cs" />
     <Compile Include="Infrastructure\PersistCsv.cs" />
+    <Compile Include="Infrastructure\XmlFileManager.cs" />
     <Compile Include="Models\BruteForceParameters.cs" />
     <Compile Include="Models\DataPersistenceInformation.cs" />
     <Compile Include="Models\FillDetail.cs" />

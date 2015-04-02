@@ -167,6 +167,7 @@
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\DataDownloaderViewModel.cs" />
     <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
+    <Compile Include="ViewModel\HistoricalParametersViewModel.cs" />
     <Compile Include="ViewModel\LimitOrderBookViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
@@ -177,6 +178,9 @@
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoricalParametersView.xaml.cs">
+      <DependentUpon>HistoricalParametersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LimitOrderBookWindow.xaml.cs">
       <DependentUpon>LimitOrderBookWindow.xaml</DependentUpon>
@@ -229,6 +233,10 @@
     <Page Include="Views\BruteOptimizationWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HistoricalParametersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LimitOrderBookWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
