@@ -107,7 +107,7 @@
                                             <DockPanel Margin="8,4,4,6">
                                                 <TextBlock DockPanel.Dock="Left" Text="{Binding Status}" Foreground="{Binding Status, Converter={StaticResource ServiceStatusToBrush}}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps"
                                                             VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" Width="60"/>
-                                                <TextBlock Text="{Binding ServiceName}" Margin="40,0,0,0" VerticalAlignment="Center" FontSize="12" Typography.Capitals="Normal" FontWeight="Normal"/>
+                                                <TextBlock Text="{Binding ServiceDisplayName}" Margin="40,0,0,0" VerticalAlignment="Center" FontSize="12" Typography.Capitals="Normal" FontWeight="Normal"/>
                                             </DockPanel>
                                         </Border>
                                         <Border Margin="0,4" Width="2" Height="14" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top"/>

@@ -72,6 +72,16 @@ namespace TradeHubGui.Dashboard.Managers
             ServiceDetails orderServiceDetails = new ServiceDetails(GetEnumDescription.GetValue(Common.Constants.Services.OrderExecutionService), ServiceStatus.Disabled);
             ServiceDetails positionServiceDetails = new ServiceDetails(GetEnumDescription.GetValue(Common.Constants.Services.PositionService), ServiceStatus.Disabled);
 
+            // Set Display names
+            marketServiceDetails.ServiceDisplayName = marketServiceDetails.ServiceName.Replace("TradeHub", "");
+            marketServiceDetails.ServiceDisplayName = marketServiceDetails.ServiceDisplayName.Replace("Service", "");
+
+            orderServiceDetails.ServiceDisplayName = orderServiceDetails.ServiceName.Replace("TradeHub", "");
+            orderServiceDetails.ServiceDisplayName = orderServiceDetails.ServiceDisplayName.Replace("Service", "");
+
+            positionServiceDetails.ServiceDisplayName = positionServiceDetails.ServiceName.Replace("TradeHub", "");
+            positionServiceDetails.ServiceDisplayName = positionServiceDetails.ServiceDisplayName.Replace("Service", "");
+
             // Add details to collection
             _serviceDetailsCollection.Add(marketServiceDetails);
             _serviceDetailsCollection.Add(orderServiceDetails);

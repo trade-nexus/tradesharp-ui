@@ -293,7 +293,7 @@
                                       HorizontalAlignment="Left" UseLayoutRounding="True">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <GroupBox Header="{Binding ServiceName}" Padding="0,0,8,2" Margin="0,0,0,4">
+                                    <GroupBox Header="{Binding ServiceDisplayName}" Padding="0,0,8,2" Margin="0,0,0,4">
                                         <DockPanel>
                                             <CheckBox DockPanel.Dock="Right" Content="Enabled" 
                                                       IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

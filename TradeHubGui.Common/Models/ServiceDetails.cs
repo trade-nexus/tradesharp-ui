@@ -26,6 +26,11 @@ namespace TradeHubGui.Common.Models
         private string _serviceName;
 
         /// <summary>
+        /// Application Service name to be displayed on UI
+        /// </summary>
+        private string _serviceDisplayName;
+
+        /// <summary>
         /// Current Status of the Service
         /// </summary>
         private ServiceStatus _status;
@@ -73,6 +78,19 @@ namespace TradeHubGui.Common.Models
             }
         }
 
+        /// <summary>
+        /// Application Service name to be displayed on UI
+        /// </summary>
+        public string ServiceDisplayName
+        {
+            get { return _serviceDisplayName; }
+            set
+            {
+                _serviceDisplayName = value;
+                OnPropertyChanged("ServiceDisplayName");
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -84,6 +102,7 @@ namespace TradeHubGui.Common.Models
         {
             _serviceName = serviceName;
             _status = serviceStatus;
+            _serviceDisplayName = serviceName;
         }
 
         #region INotifyPropertyChanged members
