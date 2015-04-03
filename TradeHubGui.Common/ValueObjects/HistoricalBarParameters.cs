@@ -29,10 +29,16 @@ namespace TradeHubGui.Common.ValueObjects
         private DateTime _endDate;
 
         /// <summary>
+        /// Bar interval for historical data
+        /// </summary>
+        private uint _interval;
+
+        /// <summary>
         /// Default Constructor
         /// </summary>
         public HistoricalBarParameters()
         {
+            _interval = 60;
             _type = BarType.DAILY;
             _startDate = DateTime.UtcNow;
             _endDate = DateTime.UtcNow;
@@ -45,10 +51,7 @@ namespace TradeHubGui.Common.ValueObjects
         public string Type
         {
             get { return _type; }
-            set
-            {
-                _type = value;
-            }
+            set { _type = value; }
         }
 
         /// <summary>
@@ -57,10 +60,7 @@ namespace TradeHubGui.Common.ValueObjects
         public DateTime StartDate
         {
             get { return _startDate; }
-            set
-            {
-                _startDate = value; 
-            }
+            set { _startDate = value; }
         }
 
         /// <summary>
@@ -69,10 +69,16 @@ namespace TradeHubGui.Common.ValueObjects
         public DateTime EndDate
         {
             get { return _endDate; }
-            set
-            {
-                _endDate = value; 
-            }
+            set { _endDate = value; }
+        }
+
+        /// <summary>
+        /// Bar interval for historical data
+        /// </summary>
+        public uint Interval
+        {
+            get { return _interval; }
+            set { _interval = value; }
         }
     }
 }

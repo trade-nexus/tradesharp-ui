@@ -303,7 +303,7 @@ namespace TradeHubGui.Dashboard.Managers
             // Create bar subscription message
             HistoricDataRequest subscribe =
                 SubscriptionMessage.HistoricDataSubscription(_idGenerator.NextHistoricalDataId(), security,
-                    barDetail.StartDate, barDetail.EndDate, 60, barDetail.Type, providerName);
+                    barDetail.StartDate, barDetail.EndDate, barDetail.Interval, barDetail.Type, providerName);
 
             _historicalDataService.Subscribe(subscribe);
         }
