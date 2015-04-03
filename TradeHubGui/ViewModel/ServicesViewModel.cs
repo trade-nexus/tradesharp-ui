@@ -230,7 +230,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private async void InitializeServices()
         {
-            //await Task.Run(() => _servicesController.InitializeServices());
+            await Task.Run(() => _servicesController.InitializeServices());
         }
 
         /// <summary>
