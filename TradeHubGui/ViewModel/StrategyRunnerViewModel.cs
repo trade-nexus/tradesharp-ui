@@ -457,7 +457,7 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _importInstancesCommand ??
-                       (_importInstancesCommand = new RelayCommand(param => ImportInstancesExecute()));
+                       (_importInstancesCommand = new RelayCommand(param => ImportInstancesExecute(), param => ImportInstancesCanExecute()));
             }
         }
 
@@ -701,6 +701,12 @@ namespace TradeHubGui.ViewModel
                 // Remove Strategy assembly from directory
                 StrategyHelper.RemoveAssembly(fileName);
             }
+        }
+
+        private bool ImportInstancesCanExecute()
+        {
+            if (SelectedStrategy == null) return false;
+            return true;
         }
 
         /// <summary>
