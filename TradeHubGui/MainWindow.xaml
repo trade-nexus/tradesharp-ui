@@ -8,6 +8,7 @@
                  xmlns:conv="clr-namespace:TradeHubGui.Converters"
                  xmlns:views="clr-namespace:TradeHubGui.Views"
                  WindowStartupLocation="CenterScreen"
+                 WindowState="Maximized"
                  Title="TradeHUB" 
                  Height="850" Width="1280"
                  MinHeight="400" MinWidth="650"
