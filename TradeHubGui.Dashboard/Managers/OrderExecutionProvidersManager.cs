@@ -32,9 +32,11 @@ namespace TradeHubGui.Dashboard.Managers
         /// </summary>
         public OrderExecutionProvidersManager()
         {
-            _orderExecutionProvidersFolderPath =
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                "\\TradeHub\\OrderExecutionProviders\\";
+            //_orderExecutionProvidersFolderPath =
+            //    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+            //    "\\TradeHub\\OrderExecutionProviders\\";
+
+            _orderExecutionProvidersFolderPath = Path.GetFullPath(@"~\..\..\Order Execution Engine\\Config\");
 
             _orderExecutionProvidersFileName = "AvailableOEProviders.xml";
         }
