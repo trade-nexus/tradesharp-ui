@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TraceSourceLogger;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 
 namespace TradeHubGui.Dashboard.Managers
@@ -33,12 +34,13 @@ namespace TradeHubGui.Dashboard.Managers
         public MarketDataProvidersManager()
         {
             //NOTE: For running providers from AppData
-            //_marketDataProvidersFolderPath =
-            //    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-            //    "\\TradeHub\\MarketDataProviders\\";
+            _marketDataProvidersFolderPath =
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                "\\TradeHub\\MarketDataProviders\\";
 
-            //For Installer
-            _marketDataProvidersFolderPath = Path.GetFullPath(@"~\..\..\Market Data Engine\Config\");
+            ////For Installer
+            //_marketDataProvidersFolderPath = Path.GetFullPath(@"~\..\..\Market Data Engine\Config\");
+
             _marketDataProvidersFileName = "AvailableProviders.xml";
         }
 
@@ -112,10 +114,12 @@ namespace TradeHubGui.Dashboard.Managers
         /// Edits given Market data provider credentails with the new values
         /// </summary>
         /// <param name="provider">Contains provider details</param>
-        public void EditProviderCredentials(Provider provider)
+        public bool EditProviderCredentials(Provider provider)
         {
             try
             {
+                bool valueSaved = false;
+
                 // Create file path
                 string filePath = _marketDataProvidersFolderPath + provider.ProviderName + @"Params.xml";
 
@@ -135,15 +139,20 @@ namespace TradeHubGui.Dashboard.Managers
                     if (xmlNode != null)
                     {
                         xmlNode.InnerText = providerCredential.CredentialValue;
+
+                        valueSaved = true;
                     }
                 }
 
                 // Save document
                 document.Save(filePath);
+
+                return valueSaved;
             }
             catch (Exception exception)
             {
                 Logger.Error(exception, _type.FullName, "EditProviderCredentials");
+                return false;
             }
         }
     }

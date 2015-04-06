@@ -21,6 +21,8 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
 
+        private string  _infoMessage;
+
         private ObservableCollection<MarketDataProvider> _marketDataProviders;
         private ObservableCollection<OrderExecutionProvider> _orderExecutionProviders;
 
@@ -31,6 +33,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _removeProviderCommand;
         private RelayCommand _connectProviderCommand;
         private RelayCommand _disconnectProviderCommand;
+        private RelayCommand _saveParametersCommand;
 
         private ProvidersController _providersController;
 
@@ -49,6 +52,19 @@ namespace TradeHubGui.ViewModel
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Displays Info message on UI
+        /// </summary>
+        public string InfoMessage
+        {
+            get { return _infoMessage; }
+            set
+            {
+                _infoMessage = value;
+                OnPropertyChanged("InfoMessage");
+            }
+        }
 
         /// <summary>
         /// Collection of market data providers
@@ -161,6 +177,17 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Disconnect selected provider
+        /// </summary>
+        public ICommand SaveParametersCommand
+        {
+            get
+            {
+                return _saveParametersCommand ?? (_saveParametersCommand = new RelayCommand(param => SaveParametersExecute(param), param => SaveParametersCanExecute(param)));
+            }
+        }
+
         #endregion
 
         #region Trigger Methods for Commands
@@ -172,7 +199,6 @@ namespace TradeHubGui.ViewModel
         {
             // TODO: 
             // this should open dialog for adding provider, and after that add that provider to the certain providers collection
-
 
             if (param.Equals("MarketDataProvider"))
             {
@@ -318,6 +344,46 @@ namespace TradeHubGui.ViewModel
                     return true;
                 }
             }
+            return false;
+        }
+
+        /// <summary>
+        /// Called when 'Save Parameters' button is clicked
+        /// </summary>
+        /// <param name="param"></param>
+        private void SaveParametersExecute(object param)
+        {
+            if (param.Equals("MarketDataProvider"))
+            {
+                if (_providersController.EditProviderCredentials(SelectedMarketDataProvider))
+                    InfoMessage = "Parameters Saved";
+                else
+                    InfoMessage = "Parameters Not Saved";
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+                if (_providersController.EditProviderCredentials(SelectedOrderExecutionProvider))
+                    InfoMessage = "Parameters Saved";
+                else
+                    InfoMessage = "Parameters Not Saved";
+            }
+        }
+
+        private bool SaveParametersCanExecute(object param)
+        {
+            if (param.Equals("MarketDataProvider"))
+            {
+                if (SelectedMarketDataProvider.ProviderCredentials.Count>0)
+                    return true;
+                return false;
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+                if (SelectedOrderExecutionProvider.ProviderCredentials.Count > 0)
+                    return true;
+                return false;
+            }
+
             return false;
         }
 

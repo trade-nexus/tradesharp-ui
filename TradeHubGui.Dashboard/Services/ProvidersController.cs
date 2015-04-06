@@ -121,18 +121,20 @@ namespace TradeHubGui.Dashboard.Services
         /// Modifies respective provider credentails as per given details
         /// </summary>
         /// <param name="provider">Provider who's credentials are to be modified</param>
-        public void EditProviderCredentials(Provider provider)
+        public bool EditProviderCredentials(Provider provider)
         {
             // Handle Market Data Provider
             if (provider.ProviderType.Equals(ProviderType.MarketData))
             {
-                _dataProvidersManager.EditProviderCredentials(provider);
+                return _dataProvidersManager.EditProviderCredentials(provider);
             }
             // Handle Order Execution Provider
             else if (provider.ProviderType.Equals(ProviderType.OrderExecution))
             {
-                _executionProvidersManager.EditProviderCredentials(provider);
+                return _executionProvidersManager.EditProviderCredentials(provider);
             }
+
+            return false;
         }
     }
 }

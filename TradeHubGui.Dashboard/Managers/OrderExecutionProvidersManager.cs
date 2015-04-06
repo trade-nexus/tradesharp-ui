@@ -32,11 +32,11 @@ namespace TradeHubGui.Dashboard.Managers
         /// </summary>
         public OrderExecutionProvidersManager()
         {
-            //_orderExecutionProvidersFolderPath =
-            //    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-            //    "\\TradeHub\\OrderExecutionProviders\\";
+            _orderExecutionProvidersFolderPath =
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
+                "\\TradeHub\\OrderExecutionProviders\\";
 
-            _orderExecutionProvidersFolderPath = Path.GetFullPath(@"~\..\..\Order Execution Engine\\Config\");
+            //_orderExecutionProvidersFolderPath = Path.GetFullPath(@"~\..\..\Order Execution Engine\\Config\");
 
             _orderExecutionProvidersFileName = "AvailableOEProviders.xml";
         }
@@ -111,10 +111,12 @@ namespace TradeHubGui.Dashboard.Managers
         /// Edits given Order Execution provider credentails with the new values
         /// </summary>
         /// <param name="provider">Contains provider details</param>
-        public void EditProviderCredentials(Provider provider)
+        public bool EditProviderCredentials(Provider provider)
         {
             try
             {
+                bool valueSaved = false;
+
                 // Create file path
                 string filePath = _orderExecutionProvidersFolderPath + provider.ProviderName + @"OrderParams.xml";
 
@@ -134,15 +136,19 @@ namespace TradeHubGui.Dashboard.Managers
                     if (xmlNode != null)
                     {
                         xmlNode.InnerText = providerCredential.CredentialValue;
+                        valueSaved = true;
                     }
                 }
 
                 // Save document
                 document.Save(filePath);
+
+                return valueSaved;
             }
             catch (Exception exception)
             {
                 Logger.Error(exception, _type.FullName, "EditProviderCredentials");
+                return false;
             }
         }
     }

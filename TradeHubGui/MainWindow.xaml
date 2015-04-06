@@ -173,6 +173,7 @@
                             <RowDefinition Height="Auto" MinHeight="120"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -221,6 +222,35 @@
                                     Visibility="{Binding SelectedMarketDataProvider, Converter={StaticResource SelectedProviderToVisibility}}">
                             <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="MarketDataProvider"/>
                             <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="MarketDataProvider"/>
+                            <Button ToolTip="Save parameters" Margin="30,4,0,4" Padding="0" Width="24"
+                                    Command="{Binding SaveParametersCommand}" CommandParameter="MarketDataProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgCheck}" UseLayoutRounding="True"/>
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:2" BeginTime="0:0:3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Row="4">
+                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding InfoMessage, NotifyOnTargetUpdated=True}">
+                                <TextBlock.Triggers>
+                                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:0" To="1.0" />
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:2" From="1.0" To="0.0" BeginTime="0:0:4" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </TextBlock.Triggers>
+                            </TextBlock>
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -232,6 +262,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto" MinHeight="120"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
@@ -282,6 +313,35 @@
                                     Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
                             <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="OrderExecutionProvider"/>
                             <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                            <Button ToolTip="Save parameters" Margin="30,4,0,4" Padding="0" Width="24"
+                                    Command="{Binding SaveParametersCommand}" CommandParameter="OrderExecutionProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgCheck}" UseLayoutRounding="True"/>
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:2" BeginTime="0:0:3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4">
+                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding InfoMessage, NotifyOnTargetUpdated=True}">
+                                <TextBlock.Triggers>
+                                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:0" To="1.0" />
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:2" From="1.0" To="0.0" BeginTime="0:0:4" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </TextBlock.Triggers>
+                            </TextBlock>
                         </StackPanel>
                     </Grid>
                 </Grid>

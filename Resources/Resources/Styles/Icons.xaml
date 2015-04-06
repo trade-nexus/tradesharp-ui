@@ -195,6 +195,13 @@
                 </DrawingImage.Drawing>
             </DrawingImage>
 
+            <DrawingImage x:Key="imgCheck">
+                <DrawingImage.Drawing>
+                    <GeometryDrawing Brush="DimGray" 
+                        Geometry="F1 M 0,110L 47.6667,62L 102,117.333L 218.667,0L 266,48L 102,212.333L 0,110 Z "/>
+                </DrawingImage.Drawing>
+            </DrawingImage>
+
             <DrawingImage x:Key="imgEdit">
                 <DrawingImage.Drawing>
                     <GeometryDrawing Brush="DimGray"
