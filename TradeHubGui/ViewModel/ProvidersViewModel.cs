@@ -21,7 +21,8 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
 
-        private string  _infoMessage;
+        private string  _dataProviderInfoMessage;
+        private string  _executionProviderInfoMessage;
 
         private ObservableCollection<MarketDataProvider> _marketDataProviders;
         private ObservableCollection<OrderExecutionProvider> _orderExecutionProviders;
@@ -54,15 +55,28 @@ namespace TradeHubGui.ViewModel
         #region Properties
 
         /// <summary>
-        /// Displays Info message on UI
+        /// Displays Market Data Provider Info message on UI
         /// </summary>
-        public string InfoMessage
+        public string DataProviderInfoMessage
         {
-            get { return _infoMessage; }
+            get { return _dataProviderInfoMessage; }
             set
             {
-                _infoMessage = value;
-                OnPropertyChanged("InfoMessage");
+                _dataProviderInfoMessage = value;
+                OnPropertyChanged("DataProviderInfoMessage");
+            }
+        }
+
+        /// <summary>
+        /// Displays Order Execution Provider Info message on UI
+        /// </summary>
+        public string ExecutionProviderInfoMessage
+        {
+            get { return _executionProviderInfoMessage; }
+            set
+            {
+                _executionProviderInfoMessage = value;
+                OnPropertyChanged("ExecutionProviderInfoMessage");
             }
         }
 
@@ -356,16 +370,16 @@ namespace TradeHubGui.ViewModel
             if (param.Equals("MarketDataProvider"))
             {
                 if (_providersController.EditProviderCredentials(SelectedMarketDataProvider))
-                    InfoMessage = "Parameters Saved";
+                    DataProviderInfoMessage = "Parameters Saved";
                 else
-                    InfoMessage = "Parameters Not Saved";
+                    DataProviderInfoMessage = "Parameters Not Saved";
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
                 if (_providersController.EditProviderCredentials(SelectedOrderExecutionProvider))
-                    InfoMessage = "Parameters Saved";
+                    ExecutionProviderInfoMessage = "Parameters Saved";
                 else
-                    InfoMessage = "Parameters Not Saved";
+                    ExecutionProviderInfoMessage = "Parameters Not Saved";
             }
         }
 

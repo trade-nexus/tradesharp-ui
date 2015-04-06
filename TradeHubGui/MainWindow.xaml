@@ -239,7 +239,7 @@
                         </StackPanel>
                         
                         <StackPanel Grid.Row="4">
-                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding InfoMessage, NotifyOnTargetUpdated=True}">
+                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding DataProviderInfoMessage, NotifyOnTargetUpdated=True}">
                                 <TextBlock.Triggers>
                                     <EventTrigger RoutedEvent="Binding.TargetUpdated">
                                         <BeginStoryboard>
@@ -330,7 +330,7 @@
                         </StackPanel>
 
                         <StackPanel Grid.Row="4">
-                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding InfoMessage, NotifyOnTargetUpdated=True}">
+                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding ExecutionProviderInfoMessage, NotifyOnTargetUpdated=True}">
                                 <TextBlock.Triggers>
                                     <EventTrigger RoutedEvent="Binding.TargetUpdated">
                                         <BeginStoryboard>
