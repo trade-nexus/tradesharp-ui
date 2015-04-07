@@ -454,5 +454,24 @@ namespace TradeHubGui.ViewModel
             if (_orderExecutionProviders != null && _orderExecutionProviders.Count > 0)
                 SelectedOrderExecutionProvider = _orderExecutionProviders[0];
         }
+
+        /// <summary>
+        /// Adds new Market Data Provider to Market Data Engine -  Server
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="providerName"></param>
+        private void AddMarketDataProvider(string filePath, string providerName)
+        {
+            var result = _providersController.AddMarketDataProvider(filePath, providerName);
+        }
+
+        /// <summary>
+        /// Removes given Market Data Provider from Market Data Engine - Server
+        /// </summary>
+        /// <param name="providerName"></param>
+        private void RemoveMarketDataProvider(string providerName)
+        {
+            
+        }
     }
 }

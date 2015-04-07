@@ -136,5 +136,15 @@ namespace TradeHubGui.Dashboard.Services
 
             return false;
         }
+
+        /// <summary>
+        /// Adds given connector library as Market Data Provider in the Server
+        /// </summary>
+        /// <param name="connectorPath">Connector library path</param>
+        /// <param name="providerName">Name to be used for the given connector</param>
+        public Tuple<bool, string> AddMarketDataProvider(string connectorPath, string providerName)
+        {
+            return _dataProvidersManager.AddProvider(connectorPath, providerName);
+        }
     }
 }

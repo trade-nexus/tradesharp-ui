@@ -16,6 +16,51 @@ namespace TradeHubGui.Common.Infrastructure
         private static Type _type = typeof(XmlFileManager);
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="parentNodeName"></param>
+        /// <param name="childNodeName"></param>
+        /// <returns></returns>
+        public static bool AddChildNode(string filePath, string parentNodeName, string childNodeName)
+        {
+            try
+            {
+                bool valueSaved = false;
+
+                XmlDocument doc = new XmlDocument();
+                doc.Load(filePath);
+
+                XmlNode root = doc.DocumentElement;
+
+                if (root != null)
+                {
+                    // Get Parent Node
+                    XmlNode parentNode = root.SelectSingleNode("descendant::" + parentNodeName);
+                    if (parentNode != null)
+                    {
+                        //Create a new node.
+                        XmlElement resourceNodeElement = doc.CreateElement(childNodeName);
+
+                        // Add child node
+                        parentNode.AppendChild(resourceNodeElement);
+                        
+                        valueSaved = true;
+                    }
+
+                    doc.Save(filePath);
+                }
+
+                return valueSaved;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "AddChildNode");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Returns required values from the given file
         /// </summary>
         /// <param name="path">.csv File Path</param>
@@ -117,6 +162,53 @@ namespace TradeHubGui.Common.Infrastructure
             catch (Exception exception)
             {
                 Logger.Error(exception, _type.FullName, "SaveHistoricalParameters");
+            }
+        }
+
+        /// <summary>
+        /// Modifies given App.Config file to add a new Spring object 
+        /// </summary>
+        public static bool ModifyAppConfigForSpringObject(string appConfigPath, string springObject)
+        {
+            try
+            {
+                bool valueSaved = false;
+
+                XmlDocument doc = new XmlDocument();
+                doc.Load(appConfigPath);
+
+                XmlNode root = doc.DocumentElement;
+
+                if (root != null)
+                {
+                    // Get Context Node
+                    XmlNode contextNode = root.SelectSingleNode("descendant::context");
+
+                    if (contextNode != null)
+                    {
+                        // Create a new node content
+                        XmlElement resourceNodeElement = doc.CreateElement("resource");
+
+                        // Add newly created node
+                        contextNode.InsertBefore(resourceNodeElement, contextNode.FirstChild);
+
+                        // Set node attributes
+                        XmlAttribute newAttribute = doc.CreateAttribute("uri");
+                        newAttribute.Value = springObject;
+                        resourceNodeElement.Attributes.Append(newAttribute);
+
+                        valueSaved = true;
+                    }
+
+                    doc.Save(appConfigPath);
+                }
+
+                return valueSaved;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "ModifyAppConfigForSpringObject");
+                return false;
             }
         }
     }

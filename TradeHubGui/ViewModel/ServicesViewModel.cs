@@ -168,7 +168,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Called when user hits the 'Start' button
+        /// Sends request to Start the given service
         /// </summary>
         /// <param name="serviceName"></param>
         private void StartService(string serviceName)
@@ -197,7 +197,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Called when user hits the 'Stop' Button
+        /// Sends request to stop the given service
         /// </summary>
         /// <param name="serviceName"></param>
         private void StopService(string serviceName)
