@@ -883,8 +883,8 @@ namespace TradeHubGui.ViewModel
         /// <param name="instances">List of Strategy Instance objects</param>
         private void LoadMultipleInstances(IList<StrategyInstance> instances)
         {
-            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-            stopWatch.Start();
+            //System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+            //stopWatch.Start();
 
             foreach (StrategyInstance strategyInstance in instances)
             {
@@ -892,8 +892,8 @@ namespace TradeHubGui.ViewModel
                 Instances.Add(strategyInstance);
             }
 
-            stopWatch.Stop();
-            Console.WriteLine("LoadMultipleInstances method runtime ---> " + stopWatch.Elapsed);
+            //stopWatch.Stop();
+            //Console.WriteLine("LoadMultipleInstances method runtime ---> " + stopWatch.Elapsed);
 
             // Select the 1st instance from DataGrid
             SelectedInstance = Instances.Count > 0 ? Instances[0] : null;

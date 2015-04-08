@@ -11,7 +11,9 @@ using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.Utility;
 using TradeHubGui.Dashboard.Services;
+using Forms = System.Windows.Forms;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
@@ -21,8 +23,13 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
 
+        private string _newDataProviderName;
         private string  _dataProviderInfoMessage;
         private string  _executionProviderInfoMessage;
+        private string _newMarketDataProviderPath;
+
+        private bool _newProviderParametersRequired;
+        private bool _providerParametersToBeDisplayed;
 
         private ObservableCollection<MarketDataProvider> _marketDataProviders;
         private ObservableCollection<OrderExecutionProvider> _orderExecutionProviders;
@@ -35,6 +42,8 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _connectProviderCommand;
         private RelayCommand _disconnectProviderCommand;
         private RelayCommand _saveParametersCommand;
+        private RelayCommand _saveNewProviderCommand;
+        private RelayCommand _cancelCommand;
 
         private ProvidersController _providersController;
 
@@ -45,14 +54,32 @@ namespace TradeHubGui.ViewModel
         public ProvidersViewModel()
         {
             _providersController = new ProvidersController();
+            _marketDataProviders = new ObservableCollection<MarketDataProvider>();
+            _orderExecutionProviders = new ObservableCollection<OrderExecutionProvider>();
 
             InitializeMarketDataProviders();
             InitializeOrderExecutionProviders();
+
+            ProviderParametersToBeDisplayed = true;
+            NewProviderParametersRequired = false;
         }
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Name to be used for the new Market Data Provider
+        /// </summary>
+        public string NewDataProviderName
+        {
+            get { return _newDataProviderName; }
+            set
+            {
+                _newDataProviderName = value;
+                OnPropertyChanged("NewDataProviderName");
+            }
+        }
 
         /// <summary>
         /// Displays Market Data Provider Info message on UI
@@ -77,6 +104,32 @@ namespace TradeHubGui.ViewModel
             {
                 _executionProviderInfoMessage = value;
                 OnPropertyChanged("ExecutionProviderInfoMessage");
+            }
+        }
+
+        /// <summary>
+        /// Indicates if the Parameters for the Selected Provider are to be displayed or not
+        /// </summary>
+        public bool ProviderParametersToBeDisplayed
+        {
+            get { return _providerParametersToBeDisplayed; }
+            set
+            {
+                _providerParametersToBeDisplayed = value;
+                OnPropertyChanged("ProviderParametersToBeDisplayed");
+            }
+        }
+
+        /// <summary>
+        /// Indicates if Input parameters for adding new provider is required or not
+        /// </summary>
+        public bool NewProviderParametersRequired
+        {
+            get { return _newProviderParametersRequired; }
+            set
+            {
+                _newProviderParametersRequired = value;
+                OnPropertyChanged("NewProviderParametersRequired");
             }
         }
 
@@ -202,6 +255,28 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Used for 'Save' button for adding new Provider
+        /// </summary>
+        public ICommand SaveNewProviderCommand
+        {
+            get
+            {
+                return _saveNewProviderCommand ?? (_saveNewProviderCommand = new RelayCommand(param => SaveNewProviderExecute(param), param => SaveNewProviderCanExecute()));
+            }
+        }
+
+        /// <summary>
+        /// Used for 'Cancel' button when adding new Provider
+        /// </summary>
+        public ICommand CancelCommand
+        {
+            get
+            {
+                return _cancelCommand ?? (_cancelCommand = new RelayCommand(param => CancelCommandExecute(param), param => CancelCommandCanExecute()));
+            }
+        }
+
         #endregion
 
         #region Trigger Methods for Commands
@@ -211,12 +286,22 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void AddProviderExecute(object param)
         {
-            // TODO: 
-            // this should open dialog for adding provider, and after that add that provider to the certain providers collection
-
             if (param.Equals("MarketDataProvider"))
             {
+                Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
+                openFileDialog.Title = "Load Provider";
+                openFileDialog.CheckFileExists = true;
+                openFileDialog.Filter = "Assembly Files (.dll)|*.dll|All Files (*.*)|*.*";
+                Forms.DialogResult result = openFileDialog.ShowDialog();
+                if (result == Forms.DialogResult.OK)
+                {
+                    SelectedMarketDataProvider =  null;
+                    ProviderParametersToBeDisplayed = false;
+                    NewProviderParametersRequired = true;
 
+                    // Save selected '.dll' path
+                    _newMarketDataProviderPath = openFileDialog.FileName;
+                }
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
@@ -297,14 +382,14 @@ namespace TradeHubGui.ViewModel
         {
             if (param.Equals("MarketDataProvider"))
             {
-                if (SelectedMarketDataProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
+                if (SelectedMarketDataProvider != null && SelectedMarketDataProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
                 {
                     return true;
                 }
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
-                if (SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
+                if (SelectedOrderExecutionProvider != null && SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Disconnected))
                 {
                     return true;
                 }
@@ -346,14 +431,14 @@ namespace TradeHubGui.ViewModel
         {
             if (param.Equals("MarketDataProvider"))
             {
-                if (SelectedMarketDataProvider.ConnectionStatus.Equals(ConnectionStatus.Connected))
+                if (SelectedMarketDataProvider != null && SelectedMarketDataProvider.ConnectionStatus.Equals(ConnectionStatus.Connected))
                 {
                     return true;
                 }
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
-                if (SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected))
+                if (SelectedOrderExecutionProvider != null && SelectedOrderExecutionProvider.ConnectionStatus.Equals(ConnectionStatus.Connected))
                 {
                     return true;
                 }
@@ -387,18 +472,76 @@ namespace TradeHubGui.ViewModel
         {
             if (param.Equals("MarketDataProvider"))
             {
-                if (SelectedMarketDataProvider.ProviderCredentials.Count>0)
+                if (SelectedMarketDataProvider != null && SelectedMarketDataProvider.ProviderCredentials.Count>0)
                     return true;
                 return false;
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
-                if (SelectedOrderExecutionProvider.ProviderCredentials.Count > 0)
+                if (SelectedOrderExecutionProvider != null && SelectedOrderExecutionProvider.ProviderCredentials.Count > 0)
                     return true;
                 return false;
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Called when 'Save' button is clicked for adding new Provider
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        private void SaveNewProviderExecute(object param)
+        {
+            if (param.Equals("MarketDataProvider"))
+            {
+                // Add Provider
+                AddMarketDataProvider(_newMarketDataProviderPath, NewDataProviderName);
+
+                // Get updated Data Providers list
+                InitializeMarketDataProviders();
+
+                NewProviderParametersRequired = false;
+                ProviderParametersToBeDisplayed = true;
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+                // Get updated Execution Providers list
+                InitializeOrderExecutionProviders();
+            }
+        }
+
+        private bool SaveNewProviderCanExecute()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Called when 'Cancel' button is clicked for cancelling adding of new Provider
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        private void CancelCommandExecute(object param)
+        {
+            if (param.Equals("MarketDataProvider"))
+            {
+                // Select initially 1st provider in ComboBox
+                if (_marketDataProviders != null && _marketDataProviders.Count > 0)
+                    SelectedMarketDataProvider = _marketDataProviders[0];
+
+                NewProviderParametersRequired = false;
+                ProviderParametersToBeDisplayed = true;
+            }
+            else if (param.Equals("OrderExecutionProvider"))
+            {
+                if (_orderExecutionProviders != null && _orderExecutionProviders.Count > 0)
+                    SelectedOrderExecutionProvider = _orderExecutionProviders[0];
+            }
+        }
+
+        private bool CancelCommandCanExecute()
+        {
+            return true;
         }
 
         #endregion
@@ -408,7 +551,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private async void InitializeMarketDataProviders()
         {
-            _marketDataProviders = new ObservableCollection<MarketDataProvider>();
+            MarketDataProviders.Clear();
 
             // Request Controller for infomation
             var availableProviders = await Task.Run(() => _providersController.GetAvailableMarketDataProviders());
@@ -421,7 +564,7 @@ namespace TradeHubGui.ViewModel
             foreach (var provider in availableProviders)
             {
                 // Add to Collection
-                _marketDataProviders.Add(provider);
+                MarketDataProviders.Add(provider);
             }
 
             // Select initially 1st provider in ComboBox
@@ -434,7 +577,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private async void InitializeOrderExecutionProviders()
         {
-            _orderExecutionProviders = new ObservableCollection<OrderExecutionProvider>();
+            OrderExecutionProviders.Clear();
 
             // Request Controller for infomation
             var availableProviders = await Task.Run(() => _providersController.GetAvailableOrderExecutionProviders());
@@ -447,7 +590,7 @@ namespace TradeHubGui.ViewModel
             foreach (var provider in availableProviders)
             {
                 // Add to Collection
-                _orderExecutionProviders.Add(provider);
+                OrderExecutionProviders.Add(provider);
             }
 
             // Select initially 1st provider in ComboBox
@@ -462,7 +605,20 @@ namespace TradeHubGui.ViewModel
         /// <param name="providerName"></param>
         private void AddMarketDataProvider(string filePath, string providerName)
         {
+            string serviceName = GetEnumDescription.GetValue(Services.MarketDataService);
+            var service = new ServiceDetails(serviceName, ServiceStatus.Stopping);
+            
+            // Stop Market Data Service
+            EventSystem.Publish<ServiceDetails>(service);
+
             var result = _providersController.AddMarketDataProvider(filePath, providerName);
+
+            // Start Market Data Service
+            service.Status= ServiceStatus.Starting;
+            EventSystem.Publish<ServiceDetails>(service);
+
+            // Show end result on UI
+            DisplayInformationMessage(result);
         }
 
         /// <summary>
@@ -472,6 +628,17 @@ namespace TradeHubGui.ViewModel
         private void RemoveMarketDataProvider(string providerName)
         {
             
+        }
+
+        /// <summary>
+        /// Shows information messages on UI related to Market Data Providers
+        /// </summary>
+        /// <param name="information"></param>
+        private void DisplayInformationMessage(Tuple<bool, string> information)
+        {
+            // Display Error message
+            WPFMessageBox.Show(MainWindow, information.Item2, "Market Data Provider",
+                MessageBoxButton.OK, (information.Item1) ? MessageBoxImage.Information : MessageBoxImage.Error);
         }
     }
 }

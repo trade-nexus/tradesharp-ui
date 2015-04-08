@@ -178,24 +178,16 @@ namespace TradeHubGui.Dashboard.Managers
             string springFilePath = configPath + @"\" + springFileName;
 
             if (!VerifySpringConfigFileName(springFilePath))
-            {
                 return new Tuple<bool, string>(false, "Expected Spring Configuration file not found.");
-            }
 
             if (!CopyProviderLibraries(connectorPath))
-            {
                 return new Tuple<bool, string>(false, "Given files were not copied to the Server location.");
-            }
-
-            if (!AddProviderName(providerName))
-            {
-                return new Tuple<bool, string>(false, "Not able to add new Provider name to Server.");
-            }
 
             if (!ModifyServerSpringParameters(springFileName))
-            {
                 return new Tuple<bool, string>(false, "Spring configuration was not modified.");
-            }
+
+            if (!AddProviderName(providerName))
+                return new Tuple<bool, string>(false, "Not able to add new Provider name to Server.");
 
             return new Tuple<bool, string>(true, "Provider is sucessfully added to the Server.");
         }
@@ -219,7 +211,7 @@ namespace TradeHubGui.Dashboard.Managers
         {
             try
             {
-                return Directory.Exists(springFile);
+                return File.Exists(springFile);
             }
             catch (Exception exception)
             {
@@ -238,7 +230,7 @@ namespace TradeHubGui.Dashboard.Managers
             try
             {
                 // Get all files information in the given directory
-                string[] files = Directory.GetFiles(Path.GetDirectoryName(path));
+                string[] files = Directory.GetFiles(Path.GetDirectoryName(path), "*", SearchOption.AllDirectories);
 
                 // Copy individual Files
                 foreach (string file in files)
@@ -246,7 +238,16 @@ namespace TradeHubGui.Dashboard.Managers
                     File.Copy(file, _marketDataProvidersRootFolderPath + Path.GetFileName(file), false);
                 }
 
-                return false;
+                ////Now Create all of the directories
+                //foreach (string dirPath in Directory.GetDirectories(path, "*",SearchOption.AllDirectories))
+                //    Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
+
+                ////Copy all the files & Replaces any files with the same name
+                //foreach (string newPath in Directory.GetFiles(SourcePath, "*.*",
+                //    SearchOption.AllDirectories))
+                //    File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
+
+                return true;
             }
             catch (Exception exception)
             {
@@ -292,7 +293,7 @@ namespace TradeHubGui.Dashboard.Managers
             }
             catch (Exception exception)
             {
-                Logger.Error(exception, _type.FullName, "AddBrokerName");
+                Logger.Error(exception, _type.FullName, "AddProviderName");
                 return false;
             }
         }

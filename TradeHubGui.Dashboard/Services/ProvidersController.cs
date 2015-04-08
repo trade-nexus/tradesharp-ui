@@ -69,6 +69,8 @@ namespace TradeHubGui.Dashboard.Services
             if (availableProvidersInformation == null)
                 return null;
 
+            MarketDataProviders.Clear();
+
             // Populate Individual Market Data Provider details
             foreach (var keyValuePair in availableProvidersInformation)
             {
@@ -98,6 +100,8 @@ namespace TradeHubGui.Dashboard.Services
             // Safety check incase information was not populated
             if (availableProvidersInformation == null)
                 return null;
+
+            OrderExecutionProviders.Clear();
 
             // Populate Individual Order Execution Provider details
             foreach (var keyValuePair in availableProvidersInformation)

@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using TraceSourceLogger;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.Utility;
 using TradeHubGui.Dashboard.Services;
 
 namespace TradeHubGui.ViewModel
@@ -102,6 +105,9 @@ namespace TradeHubGui.ViewModel
 
             // Get Initial Services information
             PopulateServices();
+
+            // Subscribe Events
+            EventSystem.Subscribe<ServiceDetails>(ManageServiceRequest);
         }
 
         #region Command Trigger Methods
@@ -232,6 +238,41 @@ namespace TradeHubGui.ViewModel
         {
             await Task.Run(() => _servicesController.InitializeServices());
         }
+
+        #region Handle Service Request
+
+        /// <summary>
+        /// Processes incoming service related request for appropriate action
+        /// </summary>
+        /// <param name="serviceRequestInfo"></param>
+        private void ManageServiceRequest(ServiceDetails serviceRequestInfo)
+        {
+            ServiceDetails serviceDetails = null;
+
+            // Find Actual Service object
+            foreach (var service in _services)
+            {
+                if (service.ServiceName.Equals(serviceRequestInfo.ServiceName))
+                {
+                    serviceDetails = service;
+                    break;
+                }
+            }
+
+            if (serviceDetails == null) return;
+
+
+            if (serviceDetails.Status.Equals(ServiceStatus.Starting))
+            {
+                _servicesController.StartService(serviceDetails);
+            }
+            else if (serviceDetails.Status.Equals(ServiceStatus.Stopping))
+            {
+                _servicesController.StopService(serviceDetails);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Dummy services information

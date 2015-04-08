@@ -35,19 +35,13 @@ namespace TradeHubGui.Common.Infrastructure
 
                 if (root != null)
                 {
-                    // Get Parent Node
-                    XmlNode parentNode = root.SelectSingleNode("descendant::" + parentNodeName);
-                    if (parentNode != null)
-                    {
-                        //Create a new node.
-                        XmlElement resourceNodeElement = doc.CreateElement(childNodeName);
+                    //Create a new node.
+                    XmlElement resourceNodeElement = doc.CreateElement(childNodeName);
 
-                        // Add child node
-                        parentNode.AppendChild(resourceNodeElement);
-                        
-                        valueSaved = true;
-                    }
+                    // Add child node
+                    root.AppendChild(resourceNodeElement);
 
+                    valueSaved = true;
                     doc.Save(filePath);
                 }
 

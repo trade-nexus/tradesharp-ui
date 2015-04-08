@@ -148,6 +148,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\UIHelper.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBoolConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\OptimizationExecutionStatusToBrushConverter.cs" />
     <Compile Include="Converters\PositionToVisibilityConverter.cs" />
     <Compile Include="Converters\ProviderConnectionStatusToBoolConverter.cs" />
