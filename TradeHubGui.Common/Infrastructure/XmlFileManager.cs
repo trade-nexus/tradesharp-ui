@@ -54,6 +54,47 @@ namespace TradeHubGui.Common.Infrastructure
         }
 
         /// <summary>
+        /// Adds a new child node to the given XML file
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="childNodeName"></param>
+        /// <returns></returns>
+        public static bool RemoveChildNode(string filePath, string childNodeName)
+        {
+            try
+            {
+                bool valueSaved = false;
+
+                XmlDocument doc = new XmlDocument();
+                doc.Load(filePath);
+
+                XmlNode root = doc.DocumentElement;
+
+                if (root != null)
+                {
+                    // Get Context Node
+                    XmlNode childNode = root.SelectSingleNode("descendant::" + childNodeName);
+
+                    // Add child node
+                    if (childNode != null)
+                    {
+                        root.RemoveChild(childNode);
+
+                        valueSaved = true;
+                        doc.Save(filePath);
+                    }
+                }
+
+                return valueSaved;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "AddChildNode");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Returns required values from the given file
         /// </summary>
         /// <param name="path">.csv File Path</param>

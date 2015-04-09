@@ -161,5 +161,15 @@ namespace TradeHubGui.Dashboard.Services
         {
             return _executionProvidersManager.AddProvider(connectorPath, providerName);
         }
+
+        /// <summary>
+        /// Removes given Execution provider Order Execution Provider in the Server
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        public Tuple<bool, string> RemoveOrderExecutionProvider(Provider provider)
+        {
+            return _executionProvidersManager.RemoveProvider(provider);
+        }
     }
 }

@@ -381,12 +381,7 @@ namespace TradeHubGui.ViewModel
                 }
                 else if (param.Equals("OrderExecutionProvider"))
                 {
-                    // Remove SelectedOrderExecutionProvider
-                    OrderExecutionProviders.Remove(SelectedOrderExecutionProvider);
-
-                    // Select 1st provider from collection if not empty
-                    if (OrderExecutionProviders.Count > 0)
-                        SelectedOrderExecutionProvider = OrderExecutionProviders[0];
+                    RemoveOrderExecutionProvider();
                 }
             }
         }
@@ -711,6 +706,26 @@ namespace TradeHubGui.ViewModel
         private void RemoveMarketDataProvider(string providerName)
         {
             
+        }
+
+        /// <summary>
+        /// Removes given Order Execution Provider from Order Execution Engine - Server
+        /// </summary>
+        private void RemoveOrderExecutionProvider()
+        {
+            var result = _providersController.RemoveOrderExecutionProvider(SelectedOrderExecutionProvider);
+
+            if (result.Item1)
+            {
+                // Remove SelectedOrderExecutionProvider
+                OrderExecutionProviders.Remove(SelectedOrderExecutionProvider);
+
+                // Select 1st provider from collection if not empty
+                if (OrderExecutionProviders.Count > 0)
+                    SelectedOrderExecutionProvider = OrderExecutionProviders[0];
+            }
+
+            DisplayInformationMessage(result, "Order Execution Provider");
         }
 
         /// <summary>
