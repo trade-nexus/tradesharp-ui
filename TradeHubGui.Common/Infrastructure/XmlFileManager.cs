@@ -16,13 +16,12 @@ namespace TradeHubGui.Common.Infrastructure
         private static Type _type = typeof(XmlFileManager);
 
         /// <summary>
-        /// 
+        /// Adds a new child node to the given XML file
         /// </summary>
         /// <param name="filePath"></param>
-        /// <param name="parentNodeName"></param>
         /// <param name="childNodeName"></param>
         /// <returns></returns>
-        public static bool AddChildNode(string filePath, string parentNodeName, string childNodeName)
+        public static bool AddChildNode(string filePath, string childNodeName)
         {
             try
             {

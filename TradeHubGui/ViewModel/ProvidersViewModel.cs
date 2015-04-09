@@ -24,12 +24,16 @@ namespace TradeHubGui.ViewModel
         #region Fields
 
         private string _newDataProviderName;
+        private string _newExecutionProviderName;
         private string  _dataProviderInfoMessage;
         private string  _executionProviderInfoMessage;
         private string _newMarketDataProviderPath;
+        private string _newOrderExecutionProviderPath;
 
-        private bool _newProviderParametersRequired;
-        private bool _providerParametersToBeDisplayed;
+        private bool _newDataProviderParametersRequired;
+        private bool _newExecutionProviderParametersRequired;
+        private bool _dataProviderParametersToBeDisplayed;
+        private bool _executionProviderParametersToBeDisplayed;
 
         private ObservableCollection<MarketDataProvider> _marketDataProviders;
         private ObservableCollection<OrderExecutionProvider> _orderExecutionProviders;
@@ -60,8 +64,10 @@ namespace TradeHubGui.ViewModel
             InitializeMarketDataProviders();
             InitializeOrderExecutionProviders();
 
-            ProviderParametersToBeDisplayed = true;
-            NewProviderParametersRequired = false;
+            DataProviderParametersToBeDisplayed = true;
+            ExecutionProviderParametersToBeDisplayed = true;
+            NewDataProviderParametersRequired = false;
+            NewExecutionProviderParametersRequired = false;
         }
 
         #endregion
@@ -78,6 +84,19 @@ namespace TradeHubGui.ViewModel
             {
                 _newDataProviderName = value;
                 OnPropertyChanged("NewDataProviderName");
+            }
+        }
+
+        /// <summary>
+        /// Name to be used for the new Order Execution Provider
+        /// </summary>
+        public string NewExecutionProviderName
+        {
+            get { return _newExecutionProviderName; }
+            set
+            {
+                _newExecutionProviderName = value;
+                OnPropertyChanged("NewExecutionProviderName");
             }
         }
 
@@ -108,28 +127,54 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Indicates if the Parameters for the Selected Provider are to be displayed or not
+        /// Indicates if the Parameters for the Selected Data Provider are to be displayed or not
         /// </summary>
-        public bool ProviderParametersToBeDisplayed
+        public bool DataProviderParametersToBeDisplayed
         {
-            get { return _providerParametersToBeDisplayed; }
+            get { return _dataProviderParametersToBeDisplayed; }
             set
             {
-                _providerParametersToBeDisplayed = value;
-                OnPropertyChanged("ProviderParametersToBeDisplayed");
+                _dataProviderParametersToBeDisplayed = value;
+                OnPropertyChanged("DataProviderParametersToBeDisplayed");
             }
         }
 
         /// <summary>
-        /// Indicates if Input parameters for adding new provider is required or not
+        /// Indicates if the Parameters for the Selected Execution Provider are to be displayed or not
         /// </summary>
-        public bool NewProviderParametersRequired
+        public bool ExecutionProviderParametersToBeDisplayed
         {
-            get { return _newProviderParametersRequired; }
+            get { return _executionProviderParametersToBeDisplayed; }
             set
             {
-                _newProviderParametersRequired = value;
-                OnPropertyChanged("NewProviderParametersRequired");
+                _executionProviderParametersToBeDisplayed = value;
+                OnPropertyChanged("ExecutionProviderParametersToBeDisplayed");
+            }
+        }
+
+        /// <summary>
+        /// Indicates if Input parameters for adding new data provider is required or not
+        /// </summary>
+        public bool NewDataProviderParametersRequired
+        {
+            get { return _newDataProviderParametersRequired; }
+            set
+            {
+                _newDataProviderParametersRequired = value;
+                OnPropertyChanged("NewDataProviderParametersRequired");
+            }
+        }
+        
+        /// <summary>
+        /// Indicates if the Input parameters for adding new execution provider is required or not
+        /// </summary>
+        public bool NewExecutionProviderParametersRequired
+        {
+            get { return _newExecutionProviderParametersRequired; }
+            set
+            {
+                _newExecutionProviderParametersRequired = value;
+                OnPropertyChanged("NewExecutionProviderParametersRequired");
             }
         }
 
@@ -196,6 +241,7 @@ namespace TradeHubGui.ViewModel
                 }
             }
         }
+
         #endregion
 
         #region Commands
@@ -286,26 +332,31 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void AddProviderExecute(object param)
         {
-            if (param.Equals("MarketDataProvider"))
+            Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
+            openFileDialog.Title = "Load Provider";
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.Filter = "Assembly Files (.dll)|*.dll|All Files (*.*)|*.*";
+            Forms.DialogResult result = openFileDialog.ShowDialog();
+            if (result == Forms.DialogResult.OK)
             {
-                Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
-                openFileDialog.Title = "Load Provider";
-                openFileDialog.CheckFileExists = true;
-                openFileDialog.Filter = "Assembly Files (.dll)|*.dll|All Files (*.*)|*.*";
-                Forms.DialogResult result = openFileDialog.ShowDialog();
-                if (result == Forms.DialogResult.OK)
+                if (param.Equals("MarketDataProvider"))
                 {
-                    SelectedMarketDataProvider =  null;
-                    ProviderParametersToBeDisplayed = false;
-                    NewProviderParametersRequired = true;
+                    SelectedMarketDataProvider = null;
+                    DataProviderParametersToBeDisplayed = false;
+                    NewDataProviderParametersRequired = true;
 
                     // Save selected '.dll' path
                     _newMarketDataProviderPath = openFileDialog.FileName;
                 }
-            }
-            else if (param.Equals("OrderExecutionProvider"))
-            {
+                else if (param.Equals("OrderExecutionProvider"))
+                {
+                    SelectedOrderExecutionProvider = null;
+                    ExecutionProviderParametersToBeDisplayed = false;
+                    NewExecutionProviderParametersRequired = true;
 
+                    // Save selected '.dll' path
+                    _newOrderExecutionProviderPath = openFileDialog.FileName;
+                }
             }
         }
 
@@ -501,13 +552,19 @@ namespace TradeHubGui.ViewModel
                 // Get updated Data Providers list
                 InitializeMarketDataProviders();
 
-                NewProviderParametersRequired = false;
-                ProviderParametersToBeDisplayed = true;
+                NewDataProviderParametersRequired = false;
+                DataProviderParametersToBeDisplayed = true;
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
+                // Add Provider
+                AddOrderExecutionProvider(_newOrderExecutionProviderPath, NewExecutionProviderName);
+
                 // Get updated Execution Providers list
                 InitializeOrderExecutionProviders();
+
+                NewExecutionProviderParametersRequired = false;
+                ExecutionProviderParametersToBeDisplayed = true;
             }
         }
 
@@ -529,13 +586,16 @@ namespace TradeHubGui.ViewModel
                 if (_marketDataProviders != null && _marketDataProviders.Count > 0)
                     SelectedMarketDataProvider = _marketDataProviders[0];
 
-                NewProviderParametersRequired = false;
-                ProviderParametersToBeDisplayed = true;
+                NewDataProviderParametersRequired = false;
+                DataProviderParametersToBeDisplayed = true;
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
                 if (_orderExecutionProviders != null && _orderExecutionProviders.Count > 0)
                     SelectedOrderExecutionProvider = _orderExecutionProviders[0];
+
+                NewExecutionProviderParametersRequired = false;
+                ExecutionProviderParametersToBeDisplayed = true;
             }
         }
 
@@ -599,7 +659,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Adds new Market Data Provider to Market Data Engine -  Server
+        /// Adds new Market Data Provider to Market Data Engine - Server
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="providerName"></param>
@@ -618,7 +678,30 @@ namespace TradeHubGui.ViewModel
             EventSystem.Publish<ServiceDetails>(service);
 
             // Show end result on UI
-            DisplayInformationMessage(result);
+            DisplayInformationMessage(result, "Market Data Provider");
+        }
+
+        /// <summary>
+        /// Adds new Order Execution Provider to Order Execution Engine - Server
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="providerName"></param>
+        private void AddOrderExecutionProvider(string filePath, string providerName)
+        {
+            string serviceName = GetEnumDescription.GetValue(Services.OrderExecutionService);
+            var service = new ServiceDetails(serviceName, ServiceStatus.Stopping);
+
+            // Stop Order Execution Service
+            EventSystem.Publish<ServiceDetails>(service);
+
+            var result = _providersController.AddOrderExecutionProvider(filePath, providerName);
+
+            // Start Order Execution Service
+            service.Status = ServiceStatus.Starting;
+            EventSystem.Publish<ServiceDetails>(service);
+
+            // Show end result on UI
+            DisplayInformationMessage(result, "Order Execution Provider");
         }
 
         /// <summary>
@@ -634,10 +717,11 @@ namespace TradeHubGui.ViewModel
         /// Shows information messages on UI related to Market Data Providers
         /// </summary>
         /// <param name="information"></param>
-        private void DisplayInformationMessage(Tuple<bool, string> information)
+        /// <param name="messageTitle"></param>
+        private void DisplayInformationMessage(Tuple<bool, string> information, string messageTitle)
         {
             // Display Error message
-            WPFMessageBox.Show(MainWindow, information.Item2, "Market Data Provider",
+            WPFMessageBox.Show(MainWindow, information.Item2, messageTitle,
                 MessageBoxButton.OK, (information.Item1) ? MessageBoxImage.Information : MessageBoxImage.Error);
         }
     }

@@ -235,17 +235,10 @@ namespace TradeHubGui.Dashboard.Managers
                 // Copy individual Files
                 foreach (string file in files)
                 {
+                    if (File.Exists(file)) continue;
+
                     File.Copy(file, _marketDataProvidersRootFolderPath + Path.GetFileName(file), false);
                 }
-
-                ////Now Create all of the directories
-                //foreach (string dirPath in Directory.GetDirectories(path, "*",SearchOption.AllDirectories))
-                //    Directory.CreateDirectory(dirPath.Replace(SourcePath, DestinationPath));
-
-                ////Copy all the files & Replaces any files with the same name
-                //foreach (string newPath in Directory.GetFiles(SourcePath, "*.*",
-                //    SearchOption.AllDirectories))
-                //    File.Copy(newPath, newPath.Replace(SourcePath, DestinationPath), true);
 
                 return true;
             }
@@ -289,7 +282,7 @@ namespace TradeHubGui.Dashboard.Managers
             {
                 string path = _marketDataProvidersConfigFolderPath + _marketDataProvidersFileName;
 
-                return XmlFileManager.AddChildNode(path, "Providers", providerName);
+                return XmlFileManager.AddChildNode(path, providerName);
             }
             catch (Exception exception)
             {

@@ -181,7 +181,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid Visibility="{Binding ProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
                                 <ColumnDefinition />
@@ -191,7 +191,7 @@
                                       ItemsSource="{Binding MarketDataProviders}" DisplayMemberPath="ProviderName" FontWeight="Bold"/>
                         </Grid>
 
-                        <Grid Grid.Row="0" Visibility="{Binding NewProviderParametersRequired, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid Grid.Row="0" Visibility="{Binding NewDataProviderParametersRequired, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -211,7 +211,7 @@
                         </Grid>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal"
-                                    Visibility="{Binding ProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button ToolTip="Add new provider" Margin="20,0,0,0" Padding="0" Width="24"
                                     Command="{Binding AddProviderCommand}" CommandParameter="MarketDataProvider">
                                 <Image Width="13" Height="13" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
@@ -240,7 +240,7 @@
                         </Grid>
 
                         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="100,10,0,0" HorizontalAlignment="Left" 
-                                    Visibility="{Binding ProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="MarketDataProvider"/>
                             <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="MarketDataProvider"/>
                             <Button ToolTip="Save parameters" Margin="30,4,0,4" Padding="0" Width="24"
@@ -292,7 +292,7 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid>
+                        <Grid Visibility="{Binding ExecutionProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
                                 <ColumnDefinition />
@@ -302,7 +302,27 @@
                                       ItemsSource="{Binding OrderExecutionProviders}" DisplayMemberPath="ProviderName" FontWeight="Bold"/>
                         </Grid>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Grid Grid.Row="0" Visibility="{Binding NewExecutionProviderParametersRequired, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Provider Name" Margin="0,0,8,0" VerticalAlignment="Center" 
+                                       Style="{StaticResource SubHeaderTwoTextBlockStyle}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewExecutionProviderName, NotifyOnTargetUpdated=True}"/>
+
+                            <Button Grid.Row="1" Grid.Column="1" Content="Save" Margin="0,10,100,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding SaveNewProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="Cancel" Margin="0,10,0,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding CancelCommand}" CommandParameter="OrderExecutionProvider"/>
+                        </Grid>
+                        
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    Visibility="{Binding ExecutionProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button ToolTip="Add new provider" Margin="20,0,0,0" Padding="0" Width="24"
                                     Command="{Binding AddProviderCommand}" CommandParameter="OrderExecutionProvider">
                                 <Image Width="13" Height="13" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
@@ -350,7 +370,7 @@
                             </Button>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="4">
+                        <StackPanel Grid.Row="4"  Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
                             <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding ExecutionProviderInfoMessage, NotifyOnTargetUpdated=True}">
                                 <TextBlock.Triggers>
                                     <EventTrigger RoutedEvent="Binding.TargetUpdated">

@@ -150,5 +150,16 @@ namespace TradeHubGui.Dashboard.Services
         {
             return _dataProvidersManager.AddProvider(connectorPath, providerName);
         }
+
+        /// <summary>
+        /// Adds given connector library as Order Execution Provider in the Server
+        /// </summary>
+        /// <param name="connectorPath">Connector library path</param>
+        /// <param name="providerName">Name to be used for the given connector</param>
+        /// <returns></returns>
+        public Tuple<bool, string> AddOrderExecutionProvider(string connectorPath, string providerName)
+        {
+            return _executionProvidersManager.AddProvider(connectorPath, providerName);
+        }
     }
 }
