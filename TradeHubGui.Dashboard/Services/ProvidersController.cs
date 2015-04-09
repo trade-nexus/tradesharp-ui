@@ -163,7 +163,17 @@ namespace TradeHubGui.Dashboard.Services
         }
 
         /// <summary>
-        /// Removes given Execution provider Order Execution Provider in the Server
+        /// Removes given Data provider Order Execution Provider from the Server
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        public Tuple<bool, string> RemoveMarketDataProvider(Provider provider)
+        {
+            return _dataProvidersManager.RemoveProvider(provider);
+        }
+
+        /// <summary>
+        /// Removes given Execution provider Order Execution Provider from the Server
         /// </summary>
         /// <param name="provider"></param>
         /// <returns></returns>

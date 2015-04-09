@@ -372,12 +372,7 @@ namespace TradeHubGui.ViewModel
             {
                 if (param.Equals("MarketDataProvider"))
                 {
-                    // Remove SelectedMarketDataProvider
-                    MarketDataProviders.Remove(SelectedMarketDataProvider);
-
-                    // Select 1st provider from collection if not empty
-                    if (MarketDataProviders.Count > 0) 
-                        SelectedMarketDataProvider = MarketDataProviders[0];
+                    RemoveMarketDataProvider();
                 }
                 else if (param.Equals("OrderExecutionProvider"))
                 {
@@ -702,10 +697,21 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Removes given Market Data Provider from Market Data Engine - Server
         /// </summary>
-        /// <param name="providerName"></param>
-        private void RemoveMarketDataProvider(string providerName)
+        private void RemoveMarketDataProvider()
         {
-            
+            var result = _providersController.RemoveMarketDataProvider(SelectedMarketDataProvider);
+
+            if (result.Item1)
+            {
+                // Remove SelectedMarketDataProvider
+                MarketDataProviders.Remove(SelectedMarketDataProvider);
+
+                // Select 1st provider from collection if not empty
+                if (MarketDataProviders.Count > 0)
+                    SelectedMarketDataProvider = MarketDataProviders[0];
+            }
+
+            DisplayInformationMessage(result, "Market Data Provider");
         }
 
         /// <summary>

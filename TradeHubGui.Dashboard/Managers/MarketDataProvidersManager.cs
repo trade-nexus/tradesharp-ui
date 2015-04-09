@@ -197,9 +197,12 @@ namespace TradeHubGui.Dashboard.Managers
         /// </summary>
         /// <param name="provider">Contains complete provider details</param>
         /// <returns></returns>
-        public bool RemoveProvider(Provider provider)
+        public Tuple<bool, string> RemoveProvider(Provider provider)
         {
-            return false;
+            if (!RemoveProviderName(provider.ProviderName))
+                return new Tuple<bool, string>(false, "Not able to remove Provider name from Server.");
+
+            return new Tuple<bool, string>(true, "Provider is sucessfully removed from the Server.");
         }
 
         /// <summary>
@@ -283,6 +286,26 @@ namespace TradeHubGui.Dashboard.Managers
                 string path = _marketDataProvidersConfigFolderPath + _marketDataProvidersFileName;
 
                 return XmlFileManager.AddChildNode(path, providerName);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "AddProviderName");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Removes given provider name from Market Data Engine - Server
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <returns></returns>
+        private bool RemoveProviderName(string providerName)
+        {
+            try
+            {
+                string path = _marketDataProvidersConfigFolderPath + _marketDataProvidersFileName;
+
+                return XmlFileManager.RemoveChildNode(path, providerName);
             }
             catch (Exception exception)
             {
