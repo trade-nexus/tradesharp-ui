@@ -72,15 +72,6 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// <param name="strategyInfo">Information to optimized specified strategy</param>
         private void OptimizeStrategy(GeneticAlgorithmParameters strategyInfo)
         {
-            //// NOTE: Test code to simulate GA Results
-            //// BEGIN:
-            //for (int i = 0; i < strategyInfo.Rounds; i++)
-            //{
-            //    TestCodeToGenerateResults(strategyInfo);
-            //}
-            //return;
-            //// :END
-
             // Save constructor arguments
             _ctorArguments = strategyInfo.CtorArgs;
             
@@ -707,22 +698,6 @@ namespace TradeHubGui.StrategyRunner.Managers
         }
 
         /// <summary>
-        /// Raises event to display GA Optimization Stats on UI
-        /// </summary>
-        /// <param name="index"></param>
-        private void PublishParameters(int index)
-        {
-            // Get Optimized parameters info
-            Dictionary<int, double> optimizedParameters = ProvideOptimizedParameterInfo(index);
-
-            //// Create result to be displayed on UI
-            //var result = new OptimizationResultGeneticAlgo(_populationArray[index].FitnessMax, optimizedParameters);
-            
-            //// Publish event to UI
-            //EventSystem.Publish<OptimizationResultGeneticAlgo>(result);
-        }
-        
-        /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()
@@ -765,36 +740,5 @@ namespace TradeHubGui.StrategyRunner.Managers
                 _disposed = true;
             }
         }
-
-        /// <summary>
-        /// Generates Dummy result to test UI
-        /// </summary>
-        /// <param name="strategyInfo"></param>
-        private void TestCodeToGenerateResults(GeneticAlgorithmParameters strategyInfo)
-        {
-            // Create result to be displayed on UI
-            var result = new GeneticAlgorithmResult();
-
-            foreach (OptimizationParameterDetail iterator in strategyInfo.OptimzationParameters.Values.ToList())
-            {
-                iterator.OptimizedValue = 2.023;
-                // Add to result 
-                result.ParameterList.Add(iterator);
-            }
-
-            // Update Fitness
-            double risk = 100;
-
-            var tempParameterDetail = new OptimizationParameterDetail();
-            tempParameterDetail.OptimizedValue = risk;
-            tempParameterDetail.Description = "Risk";
-
-            // Add to result 
-            result.ParameterList.Add(tempParameterDetail);
-
-            // Publish event to UI
-            EventSystem.Publish<GeneticAlgorithmResult>(result);
-        }
-
     }
 }

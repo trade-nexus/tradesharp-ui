@@ -158,12 +158,6 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void PopulateServices()
         {
-            ////NOTE: Test code to simulate Services
-            //// BEGIN:
-            //TestCodeToGenerateDummayServicesData();
-            //return;
-            //// :END
-
             var availableServices = _servicesController.GetAvailableServices();
             foreach (var availableService in availableServices)
             {
@@ -191,13 +185,6 @@ namespace TradeHubGui.ViewModel
             }
 
             if (serviceDetails == null) return;
-
-            ////NOTE: Test code to simulate Service Start
-            //// BEGIN:
-            //serviceDetails.Status = ServiceStatus.Starting;
-            //serviceDetails.Status = ServiceStatus.Running;
-            //return;
-            //// :END
 
             _servicesController.StartService(serviceDetails);
         }
@@ -273,39 +260,5 @@ namespace TradeHubGui.ViewModel
         }
 
         #endregion
-
-        /// <summary>
-        /// Dummy services information
-        /// </summary>
-        private void TestCodeToGenerateDummayServicesData()
-        {
-            {
-                ServiceDetails serviceDetails = new ServiceDetails("Market Data Service", ServiceStatus.Running);
-
-                // Add to Observable collection to display on UI
-                Services.Add(serviceDetails);
-            }
-
-            {
-                ServiceDetails serviceDetails = new ServiceDetails("Order Execution Service", ServiceStatus.Running);
-
-                // Add to Observable collection to display on UI
-                Services.Add(serviceDetails);
-            }
-
-            {
-                ServiceDetails serviceDetails = new ServiceDetails("Position Service", ServiceStatus.Stopped);
-
-                // Add to Observable collection to display on UI
-                Services.Add(serviceDetails);
-            }
-
-            {
-                ServiceDetails serviceDetails = new ServiceDetails("Trade Service", ServiceStatus.Disabled);
-
-                // Add to Observable collection to display on UI
-                Services.Add(serviceDetails);
-            }
-        }
     }
 }

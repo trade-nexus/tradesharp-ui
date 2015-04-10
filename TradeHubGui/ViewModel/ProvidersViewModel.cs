@@ -397,23 +397,11 @@ namespace TradeHubGui.ViewModel
         {
             if (param.Equals("MarketDataProvider"))
             {
-                ////NOTE: Test code to simulate Provider Connect
-                //// BEGIN:
-                //SelectedMarketDataProvider.ConnectionStatus = ConnectionStatus.Connected;
-                //return;
-                //// :END
-
                 // Rasie event to request connection
                 EventSystem.Publish<MarketDataProvider>(SelectedMarketDataProvider);
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
-                ////NOTE: Test code to simulate Provider Connect
-                //// BEGIN:
-                //SelectedOrderExecutionProvider.ConnectionStatus = ConnectionStatus.Connected;
-                //return;
-                //// :END
-
                 // Rasie event to request connection
                 EventSystem.Publish<OrderExecutionProvider>(SelectedOrderExecutionProvider);
             }
@@ -446,23 +434,11 @@ namespace TradeHubGui.ViewModel
         {
             if (param.Equals("MarketDataProvider"))
             {
-                ////NOTE: Test code to simulate Provider Dis-Connect
-                //// BEGIN:
-                //SelectedMarketDataProvider.ConnectionStatus = ConnectionStatus.Disconnected;
-                //return;
-                //// :END
-
                 // Rasie event to request connection
                 EventSystem.Publish<MarketDataProvider>(SelectedMarketDataProvider);
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
-                ////NOTE: Test code to simulate Provider Dis-Connect
-                //// BEGIN:
-                //SelectedOrderExecutionProvider.ConnectionStatus = ConnectionStatus.Disconnected;
-                //return;
-                //// :END
-
                 // Rasie event to request connection
                 EventSystem.Publish<OrderExecutionProvider>(SelectedOrderExecutionProvider);
             }

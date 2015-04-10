@@ -208,13 +208,6 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             try
             {
-                ////NOTE: Test code to simulate Strategy working
-                //// BEGIN:
-                //OnStrategyStatusChanged(true);
-                //TestCodeToGenerateExecutions();
-                //return;
-                //// :END
-
                 bool parameterChanged = true;
 
                 // Check if any strategy parameter was changed
@@ -645,118 +638,6 @@ namespace TradeHubGui.StrategyRunner.Executors
             catch (Exception exception)
             {
                 _asyncClassLogger.Error(exception, _type.FullName, "Close");
-            }
-        }
-
-        /// <summary>
-        /// Generates Dummny Executions to be used for UI testing
-        /// </summary>
-        private void TestCodeToGenerateExecutions()
-        {
-            int idCounter = 1;
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.OPEN;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.SUBMITTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.EXECUTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.PARTIALLY_EXECUTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.CANCELLED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.REJECTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.SUBMITTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
             }
         }
     }
