@@ -9,7 +9,7 @@
                  xmlns:views="clr-namespace:TradeHubGui.Views"
                  WindowStartupLocation="CenterScreen"
                  WindowState="Maximized"
-                 Title="TradeHUB" 
+                 Title="TradeSharp" 
                  Height="850" Width="1280"
                  MinHeight="400" MinWidth="650"
                  NonActiveGlowBrush="Silver"
