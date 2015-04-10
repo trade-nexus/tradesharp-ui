@@ -22,7 +22,7 @@
                  Closing="OnApplicationClose">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
-            <Image Height="32" Width="32" Source="{StaticResource imgTradeHub}" Margin="4,0,0,4"/>
+            <Image Height="28" Width="28" Source="{StaticResource imgTradeHub}" Margin="4,0,0,4"/>
         </DataTemplate>
     </mah:MetroWindow.IconTemplate>
 

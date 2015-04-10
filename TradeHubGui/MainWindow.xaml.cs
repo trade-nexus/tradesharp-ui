@@ -50,7 +50,8 @@ namespace TradeHubGui
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            this.ShowMessageAsync("About", "Something will be displayed here!", MessageDialogStyle.Affirmative);
+            string aboutMessage = "TradeSharp is a C# based data feed & broker neutral Algorithmic Trading Platform that lets trading firms or individuals automate any rules based trading strategies in stocks, forex and ETFs. TradeSharp has been developed and is being maintained by Aurora Solutions.";
+            this.ShowMessageAsync("TRADESHARP", aboutMessage, MessageDialogStyle.Affirmative);
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
