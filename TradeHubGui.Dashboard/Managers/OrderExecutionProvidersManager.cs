@@ -56,7 +56,7 @@ namespace TradeHubGui.Dashboard.Managers
         public IDictionary<string, List<ProviderCredential>> GetAvailableProviders()
         {
             // File Saftey Check
-            if (!File.Exists(_orderExecutionProvidersRootFolderPath + _orderExecutionProvidersFileName)) 
+            if (!File.Exists(_orderExecutionProvidersConfigFolderPath + _orderExecutionProvidersFileName)) 
                 return null;
 
             // Will hold credential information against each availale provider
@@ -66,7 +66,7 @@ namespace TradeHubGui.Dashboard.Managers
             var availableProvidersDocument = new XmlDocument();
 
             // Read file to get available provider's names.
-            availableProvidersDocument.Load(_orderExecutionProvidersRootFolderPath + _orderExecutionProvidersFileName);
+            availableProvidersDocument.Load(_orderExecutionProvidersConfigFolderPath + _orderExecutionProvidersFileName);
 
             // Read the all Node value
             XmlNodeList providersInfo = availableProvidersDocument.SelectNodes(xpath: "Providers/*");
@@ -85,10 +85,10 @@ namespace TradeHubGui.Dashboard.Managers
                     // Holds extracted credentials from the xml file
                     var providerCredentialList = new List<ProviderCredential>();
 
-                    if (File.Exists(_orderExecutionProvidersRootFolderPath + credentialsFileName))
+                    if (File.Exists(_orderExecutionProvidersConfigFolderPath + credentialsFileName))
                     {
                         // Read configuration file
-                        availableCredentialsDoc.Load(_orderExecutionProvidersRootFolderPath + credentialsFileName);
+                        availableCredentialsDoc.Load(_orderExecutionProvidersConfigFolderPath + credentialsFileName);
 
                         // Read all the parametes defined in the configuration file
                         XmlNodeList configNodes = availableCredentialsDoc.SelectNodes(xpath: node.Name + "/*");
@@ -126,7 +126,7 @@ namespace TradeHubGui.Dashboard.Managers
                 bool valueSaved = false;
 
                 // Create file path
-                string filePath = _orderExecutionProvidersRootFolderPath + provider.ProviderName + @"OrderParams.xml";
+                string filePath = _orderExecutionProvidersConfigFolderPath + provider.ProviderName + @"OrderParams.xml";
 
                 // Create XML Document Object to read credentials file
                 XmlDocument document = new XmlDocument();
