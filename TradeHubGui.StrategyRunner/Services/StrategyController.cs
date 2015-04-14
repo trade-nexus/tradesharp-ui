@@ -270,5 +270,32 @@ namespace TradeHubGui.StrategyRunner.Services
             // Publish event to notify listeners
             EventSystem.Publish<StrategyInstanceStatus>(strategyInstanceStatus);
         }
+
+        /// <summary>
+        /// Stops all strategy runner activities 
+        /// </summary>
+        public void Close()
+        {
+            foreach (var executor in _strategiesCollection.Values)
+            {
+                // Stop strategy if its running
+                if (executor.StrategyStatus.Equals(StrategyStatus.Executing))
+                {
+                    executor.StopStrategy();
+                }
+
+                //Unsubscribe event
+                executor.StatusChanged -= OnStrategyStatusChanged;
+                executor.ExecutionReceived -= OnExecutionReceived;
+
+                //dispose any resources used
+                executor.Close();
+            }
+
+            if (Logger.IsInfoEnabled)
+            {
+                Logger.Info("All Strategy instances removed", _type.FullName, "Stop");
+            }
+        }
     }
 }

@@ -89,6 +89,8 @@ namespace TradeHubGui.ViewModel
             {
                 SelectedStrategy = Strategies[0];
             }
+
+            EventSystem.Subscribe<string>(OnApplicationClose);
         }
 
         #region Observable Collections
@@ -959,6 +961,18 @@ namespace TradeHubGui.ViewModel
 
             // Return created Strategy
             return strategy;
+        }
+
+        /// <summary>
+        /// Called when application is closing
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnApplicationClose(string message)
+        {
+            if (message.Equals("Close"))
+            {
+                _strategyController.Close();
+            }
         }
     }
 }
