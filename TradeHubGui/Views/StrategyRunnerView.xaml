@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:conv="clr-namespace:TradeHubGui.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200"
@@ -174,7 +175,14 @@
                                         <Border Padding="10,0,8,1" Margin="0,-12" Background="#0FFF" BorderThickness="9,0,0,0" 
                                                     BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}">
                                             <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
-                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center"/>
+                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center">
+                                                
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="MouseDoubleClick">
+                                                    <i:InvokeCommandAction  Command="{Binding DataContext.InstanceSummaryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                                </TextBlock>
                                         </Border>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

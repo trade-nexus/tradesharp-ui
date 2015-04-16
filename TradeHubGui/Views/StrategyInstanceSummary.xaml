@@ -1,0 +1,27 @@
+﻿<mah:MetroWindow x:Class="TradeHubGui.Views.StrategyInstanceSummary"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 Height="240" Width="480">
+    <DockPanel Background="#FFEEEEEE">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="34"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Clear current information" 
+                    Margin="3" Width="28" Height="28" HorizontalAlignment="Right">
+                <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
+            </Button>
+            
+            <RichTextBox Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3" IsReadOnly="True" IsUndoEnabled="False">
+                <FlowDocument>
+                    <Paragraph>
+                        <Run Text="{Binding InstanceDetails}"/>
+                    </Paragraph>
+                </FlowDocument>
+            </RichTextBox>
+        </Grid>
+    </DockPanel>
+</mah:MetroWindow>

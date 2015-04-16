@@ -59,6 +59,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _selectProviderCommand;
         private RelayCommand _importInstancesCommand;
         private RelayCommand _exportInstanceDataCommand;
+        private RelayCommand _instanceSummaryCommand;
 
         private string _strategyPath;
         private string _csvInstancesPath;
@@ -474,6 +475,18 @@ namespace TradeHubGui.ViewModel
                        (_exportInstanceDataCommand = new RelayCommand(param => ExportInstanceDataExecute()));
             }
         }
+        
+        /// <summary>
+        /// Command used for opening Strategy Instance summary window
+        /// </summary>
+        public ICommand InstanceSummaryCommand
+        {
+            get
+            {
+                return _instanceSummaryCommand ??
+                       (_instanceSummaryCommand = new RelayCommand(param => InstanceSummaryExecute()));
+            }
+        }
 
         #endregion
 
@@ -750,6 +763,24 @@ namespace TradeHubGui.ViewModel
                 () => PersistCsv.SaveData(folderPath,
                         _strategyController.GetStrategyInstanceLocalData(SelectedInstance.InstanceKey),
                         SelectedInstance.InstanceKey));
+        }
+
+        /// <summary>
+        /// Opens a new Instance Summary window
+        /// </summary>
+        private void InstanceSummaryExecute()
+        {
+            Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
+            openFileDialog.Title = "Import Instances";
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
+            Forms.DialogResult result = openFileDialog.ShowDialog();
+            if (result == Forms.DialogResult.OK)
+            {
+                CsvInstancesPath = openFileDialog.FileName;
+
+                AddMultipleInstanceFromFile(CsvInstancesPath);
+            }
         }
 
         #endregion
