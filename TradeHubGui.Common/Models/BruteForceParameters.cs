@@ -123,7 +123,7 @@ namespace TradeHubGui.Common.Models
             foreach (var parameterDetail in ParameterDetails)
             {
                 // Check if both End Point and Increment values are added
-                if (!(parameterDetail.ParameterValue.ToString().Equals(parameterDetail.EndValue.ToString())))
+                if (parameterDetail.ParameterValue != null && !(parameterDetail.ParameterValue.ToString().Equals(parameterDetail.EndValue.ToString())))
                 {
                     if (parameterDetail.Increment > 0)
                     {

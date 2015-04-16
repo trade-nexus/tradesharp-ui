@@ -27,7 +27,7 @@
 
         <DatePicker Grid.Row="1" Grid.Column="1" Margin="6,6,6,6" SelectedDate="{Binding SelectedStartDate, UpdateSourceTrigger=PropertyChanged}"/>
         <DatePicker Grid.Row="2" Grid.Column="1" Margin="6,6,6,6" SelectedDate="{Binding SelectedEndDate, UpdateSourceTrigger=PropertyChanged}"/>
-        <ComboBox Grid.Row="3" Grid.Column="1" Margin="6,6,6,6" SelectedIndex="0" ItemsSource="{Binding AvailableProviders}" SelectedItem="{Binding SelectedProvider}">
+        <ComboBox Grid.Row="3" Grid.Column="1" Margin="6,6,6,6" SelectedIndex="0" ItemsSource="{Binding AvailableProviders}" SelectedItem="{Binding SelectedProvider}" >
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <DockPanel Margin="0,2">

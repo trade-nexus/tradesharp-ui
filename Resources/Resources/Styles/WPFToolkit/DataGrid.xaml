@@ -490,7 +490,8 @@
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
-		<Style.Triggers>
+        <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
+        <Style.Triggers>
 			<Trigger Property="IsSelected" Value="true">
 				<Setter Property="Background" Value="{StaticResource DataGridSelectedBrush}"/>
 				<Setter Property="Foreground" Value="{StaticResource DataGridSelectedForeground}"/>

@@ -78,7 +78,7 @@
         <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}"/>
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="Background" Value="White" />
-        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="IsTabStop" Value="True" />
         <Setter Property="AllowDrop" Value="True"/>
         <Setter Property="TextAlignment" Value="Right" />
         <Setter Property="Height" Value="24" />
