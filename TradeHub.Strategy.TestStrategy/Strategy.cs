@@ -15,5 +15,15 @@ namespace TradeHub.Strategy.TestStrategy
         {
             
         }
+
+        protected override void OnRun()
+        {
+            DisplayMessage("Strategy Started @: " + DateTime.Now);
+        }
+
+        protected override void OnStop()
+        {
+            DisplayMessage("Strategy Stopped @: " + DateTime.Now);
+        }
     }
 }

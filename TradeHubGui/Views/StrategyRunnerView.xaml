@@ -168,21 +168,27 @@
                                     IsReadOnly="False"
                                     SelectionUnit="FullRow"
                                     AutoGenerateColumns="False">
+                        
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Key" Width="0.3*" MinWidth="100" SortMemberPath="InstanceKey" IsReadOnly="True">
+                            <DataGridTemplateColumn Width="32" IsReadOnly="True" CanUserResize="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Strategy Instance Summary" IsEnabled="True"
+                                                    Command="{Binding DataContext.InstanceSummaryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                                <Image Width="16" Height="16" Margin="0" Source="{StaticResource imgInformation}" UseLayoutRounding="True"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Key" Width="0.3*" MinWidth="100" SortMemberPath="InstanceKey" IsReadOnly="True" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border Padding="10,0,8,1" Margin="0,-12" Background="#0FFF" BorderThickness="9,0,0,0" 
                                                     BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}">
                                             <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
-                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center">
-                                                
-                                            <i:Interaction.Triggers>
-                                                <i:EventTrigger EventName="MouseDoubleClick">
-                                                    <i:InvokeCommandAction  Command="{Binding DataContext.InstanceSummaryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" />
-                                                </i:EventTrigger>
-                                            </i:Interaction.Triggers>
-                                                </TextBlock>
+                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center"/>
                                         </Border>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -237,7 +243,7 @@
                                                     Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                 <Image Width="12" Height="12" Margin="2,0,0,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
                                             </Button>
-                                            
+
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

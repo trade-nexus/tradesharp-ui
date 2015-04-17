@@ -179,6 +179,7 @@
     <Compile Include="ViewModel\ProvidersViewModel.cs" />
     <Compile Include="ViewModel\SendOrderViewModel.cs" />
     <Compile Include="ViewModel\ServicesViewModel.cs" />
+    <Compile Include="ViewModel\StrategyInstanceSummaryViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>

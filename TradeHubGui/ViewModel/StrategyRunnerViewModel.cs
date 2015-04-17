@@ -572,10 +572,13 @@ namespace TradeHubGui.ViewModel
         private void RunInstanceExecute()
         {
             SelectedInstance.Status = DomainModels.StrategyStatus.Initializing;
+
+            SelectedInstance.InstanceSummary.Add(SelectedInstance.InstanceKey + " Started at: " + DateTime.Now);
+
+            return;
+
             // Request Strategy Controller to start selected Strategy Instance execution
             _strategyController.RunStrategy(SelectedInstance.InstanceKey);
-
-            //SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
         }
 
         /// <summary>
@@ -583,10 +586,13 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void StopInstanceExecute()
         {
+            SelectedInstance.Status = DomainModels.StrategyStatus.Stopped;
+
+            SelectedInstance.InstanceSummary.Add(SelectedInstance.InstanceKey + " Stopped at: " + DateTime.Now);
+
+            return;
             // Request Strategy Controller to Stop execution for selected Strategy Instance
             _strategyController.StopStrategy(SelectedInstance.InstanceKey);
-
-            //SelectedInstance.Status = DomainModels.StrategyStatus.None;
         }
 
         /// <summary>
@@ -770,17 +776,24 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void InstanceSummaryExecute()
         {
-            Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
-            openFileDialog.Title = "Import Instances";
-            openFileDialog.CheckFileExists = true;
-            openFileDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
-            Forms.DialogResult result = openFileDialog.ShowDialog();
-            if (result == Forms.DialogResult.OK)
-            {
-                CsvInstancesPath = openFileDialog.FileName;
+            if (SelectedInstance == null) return;
 
-                AddMultipleInstanceFromFile(CsvInstancesPath);
+            string title = string.Format("{0} ({1})", SelectedInstance.InstanceKey, SelectedStrategy.Name);
+
+            // if Summary window is already shown, just activate it
+            StrategyInstanceSummary instanceSummaryWindow = (StrategyInstanceSummary)FindWindowByTitle(title);
+            if (instanceSummaryWindow != null)
+            {
+                instanceSummaryWindow.WindowState = WindowState.Normal;
+                instanceSummaryWindow.Activate();
+                return;
             }
+
+            // if Summary window is not already shown, create the new one and show it
+            instanceSummaryWindow = new StrategyInstanceSummary();
+            instanceSummaryWindow.DataContext = new StrategyInstanceSummaryViewModel(SelectedInstance);
+            instanceSummaryWindow.Title = title;
+            instanceSummaryWindow.Show();
         }
 
         #endregion

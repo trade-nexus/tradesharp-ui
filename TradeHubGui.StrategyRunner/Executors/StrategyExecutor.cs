@@ -326,6 +326,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             _tradeHubStrategy.CancellationArrivedEvent += OnCancellationReceived;
             _tradeHubStrategy.RejectionArrivedEvent += OnRejectionReceived;
 
+            _tradeHubStrategy.DisplayMessageEvent += StrategyMessageArrived;
         }
 
         #region Manage Back-Testing Strategy (i.e. Provider = SimulatedExchange)
@@ -610,6 +611,15 @@ namespace TradeHubGui.StrategyRunner.Executors
         private void AddOrderDetails(OrderDetails orderDetails)
         {
             _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() => _strategyInstance.AddOrderDetails(orderDetails)));
+        }
+
+        /// <summary>
+        /// Adds new 'Order Details' information in 'Execution Details' object for Strategy Instance
+        /// </summary>
+        /// <param name="message"></param>
+        private void StrategyMessageArrived(string message)
+        {
+            _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() => _strategyInstance.InstanceSummary.Add(message)));
         }
 
         /// <summary>
