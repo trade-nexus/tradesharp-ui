@@ -71,8 +71,8 @@ namespace TradeHubGui.ViewModel
             _barLength = default(decimal);
             _pipSize = default(decimal);
 
-            _startDate = default(DateTime);
-            _endDate = default(DateTime);
+            _startDate = DateTime.UtcNow;
+            _endDate = DateTime.UtcNow;
 
             _barTypes = new List<string>();
             _barFormats = new List<string>();
