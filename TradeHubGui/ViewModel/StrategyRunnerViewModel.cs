@@ -573,9 +573,9 @@ namespace TradeHubGui.ViewModel
         {
             SelectedInstance.Status = DomainModels.StrategyStatus.Initializing;
 
-            SelectedInstance.InstanceSummary.Add(SelectedInstance.InstanceKey + " Started at: " + DateTime.Now);
+            //SelectedInstance.InstanceSummary.Add(SelectedInstance.InstanceKey + " Started at: " + DateTime.Now);
 
-            return;
+            //return;
 
             // Request Strategy Controller to start selected Strategy Instance execution
             _strategyController.RunStrategy(SelectedInstance.InstanceKey);
@@ -586,11 +586,11 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void StopInstanceExecute()
         {
-            SelectedInstance.Status = DomainModels.StrategyStatus.Stopped;
+            //SelectedInstance.Status = DomainModels.StrategyStatus.Stopped;
 
-            SelectedInstance.InstanceSummary.Add(SelectedInstance.InstanceKey + " Stopped at: " + DateTime.Now);
+            //SelectedInstance.InstanceSummary.Add(SelectedInstance.InstanceKey + " Stopped at: " + DateTime.Now);
 
-            return;
+           // return;
             // Request Strategy Controller to Stop execution for selected Strategy Instance
             _strategyController.StopStrategy(SelectedInstance.InstanceKey);
         }
