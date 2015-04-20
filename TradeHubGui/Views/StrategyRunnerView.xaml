@@ -176,7 +176,7 @@
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                             <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Strategy Instance Summary" IsEnabled="True"
                                                     Command="{Binding DataContext.InstanceSummaryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
-                                                <Image Width="16" Height="16" Margin="0" Source="{StaticResource imgInformation}" UseLayoutRounding="True"/>
+                                                <Image Width="15" Height="15" Margin="0" Source="{StaticResource imgInformation}" UseLayoutRounding="True"/>
                                             </Button>
                                         </StackPanel>
                                     </DataTemplate>
