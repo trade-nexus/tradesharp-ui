@@ -318,6 +318,7 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Order ID" Width="0.22*" MinWidth="80" Binding="{Binding Path=ID}" />
+                            <DataGridTextColumn Header="Symbol" Width="0.2*" MinWidth="100" Binding="{Binding Path=Security.Symbol}" />
                             <DataGridTextColumn Header="Side" Width="0.15*" MinWidth="50" Binding="{Binding Path=Side}" />
                             <DataGridTextColumn Header="Price" Width="0.2*" MinWidth="50" Binding="{Binding Path=Price}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                             <DataGridTextColumn Header="Quantity" Width="0.22*" MinWidth="70" Binding="{Binding Path=Quantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>

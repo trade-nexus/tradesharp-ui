@@ -525,7 +525,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = order.OrderID;
-            //orderDetails.Price = order.;
+            orderDetails.Security= order.Security;
             orderDetails.Quantity = order.OrderSize;
             orderDetails.Side = order.OrderSide;
             //orderDetails.Type = order.;
@@ -546,6 +546,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = rejection.OrderId;
+            orderDetails.Security = rejection.Security;
             orderDetails.Status = OrderStatus.REJECTED;
 
             // Update UI
@@ -561,6 +562,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             // Update Stats
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = execution.Fill.OrderId;
+            orderDetails.Security = execution.Fill.Security;
             orderDetails.Price = execution.Fill.ExecutionPrice;
             orderDetails.Quantity = execution.Fill.ExecutionSize;
             orderDetails.Side = execution.Fill.ExecutionSide;
