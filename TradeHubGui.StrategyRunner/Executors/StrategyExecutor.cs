@@ -356,6 +356,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             _tradeHubStrategy.OverrideTickUnsubscriptionRequest(_marketRequestListener.UnsubscribeTickData);
 
             _tradeHubStrategy.OverrideBarSubscriptionRequest(_marketRequestListener.SubscribeLiveBars);
+            _tradeHubStrategy.OverrideBarSubscriptionRequest(_marketRequestListener.SubscribeMultipleLiveBars);
             _tradeHubStrategy.OverriderBarUnsubscriptionRequest(_marketRequestListener.UnsubcribeLiveBars);
         }
 
