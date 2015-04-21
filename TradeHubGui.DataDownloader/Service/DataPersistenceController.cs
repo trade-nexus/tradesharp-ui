@@ -238,6 +238,7 @@ namespace TradeHubGui.DataDownloader.Service
                 historicBarObject.Security = historicBarData.Security;
                 historicBarObject.DateTime = historicBarData.DateTime;
                 historicBarObject.MarketDataProvider = historicBarData.MarketDataProvider;
+                historicBarObject.BarsInformation = historicBarData.BarsInformation;
 
                 // Return updated object
                 return historicBarObject;
