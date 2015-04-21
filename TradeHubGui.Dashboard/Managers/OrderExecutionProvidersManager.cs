@@ -39,12 +39,12 @@ namespace TradeHubGui.Dashboard.Managers
         public OrderExecutionProvidersManager()
         {
             // Used to Testing
-            _orderExecutionProvidersRootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TradeHub\\OrderExecutionProviders\\";
-            _orderExecutionProvidersConfigFolderPath = _orderExecutionProvidersRootFolderPath;
+            //_orderExecutionProvidersRootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TradeHub\\OrderExecutionProviders\\";
+            //_orderExecutionProvidersConfigFolderPath = _orderExecutionProvidersRootFolderPath;
 
-            //// Used for Live Execution
-            //_orderExecutionProvidersRootFolderPath = Path.GetFullPath(@"~\..\..\Order Execution Engine\");
-            //_orderExecutionProvidersConfigFolderPath = _orderExecutionProvidersRootFolderPath + @"Config\";
+            // Used for Live Execution
+            _orderExecutionProvidersRootFolderPath = Path.GetFullPath(@"~\..\..\Order Execution Engine\");
+            _orderExecutionProvidersConfigFolderPath = _orderExecutionProvidersRootFolderPath + @"Config\";
 
             _orderExecutionProvidersFileName = "AvailableOEProviders.xml";
         }
