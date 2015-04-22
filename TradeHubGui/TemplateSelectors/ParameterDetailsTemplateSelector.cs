@@ -27,6 +27,11 @@ namespace TradeHubGui.TemplateSelectors
                     {
                         return element.FindResource("MarketDataTemplate") as DataTemplate;
                     }
+                    else if (pair.Key.Equals("orderexecutionprovider", StringComparison.InvariantCultureIgnoreCase)
+                        || pair.Key.Equals("executionprovider", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return element.FindResource("OrderExecutionTemplate") as DataTemplate;
+                    }
                     else
                     {
                         return element.FindResource("StringDataTemplate") as DataTemplate;

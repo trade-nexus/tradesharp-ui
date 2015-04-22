@@ -79,6 +79,11 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<string> _marketDataProviders;
 
         /// <summary>
+        /// Contains names for the available order execution providers
+        /// </summary>
+        private ObservableCollection<string> _orderExecutionProviders;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public StrategyRunnerViewModel()
@@ -87,6 +92,7 @@ namespace TradeHubGui.ViewModel
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
             _marketDataProviders = new ObservableCollection<string>();
+            _orderExecutionProviders = new ObservableCollection<string>();
 
             EnablePersistence = false;
 
@@ -99,8 +105,9 @@ namespace TradeHubGui.ViewModel
                 SelectedStrategy = Strategies[0];
             }
 
-            // Populate MarketDataProviders with actual list of market data providers
-            InitializeMarketDataProviders();
+            // Populate Local maps for available Provider names
+            PopulateMarketDataProviders();
+            PopulateOrderExecutionProviders();
 
             EventSystem.Subscribe<string>(OnApplicationClose);
         }
@@ -203,6 +210,19 @@ namespace TradeHubGui.ViewModel
             {
                 _marketDataProviders = value;
                 OnPropertyChanged("MarketDataProviders");
+            }
+        }
+
+        /// <summary>
+        /// Contains names for the available order execution providers
+        /// </summary>
+        public ObservableCollection<string> OrderExecutionProviders
+        {
+            get { return _orderExecutionProviders; }
+            set
+            {
+                _orderExecutionProviders = value;
+                OnPropertyChanged("OrderExecutionProviders");
             }
         }
 
@@ -998,18 +1018,34 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Initialization of market data providers
+        /// Populate market data provider names
         /// </summary>
-        private void InitializeMarketDataProviders()
+        private void PopulateMarketDataProviders()
         {
             // Clear any existing values
             MarketDataProviders.Clear();
 
-            // Populate Individual Market Data Provider details
+            // Populate Individual Market Data Provider Details
             foreach (var provider in ProvidersController.MarketDataProviders)
             {
                 // Add to Collection
                 MarketDataProviders.Add(provider.ProviderName);
+            }
+        }
+
+        /// <summary>
+        /// Populate order execution provider names
+        /// </summary>
+        private void PopulateOrderExecutionProviders()
+        {
+            // Clear any existing values
+            OrderExecutionProviders.Clear();
+
+            // Travers Individual Order Execution Provider Details
+            foreach (var provider in ProvidersController.OrderExecutionProviders)
+            {
+                // Add to Collection
+                OrderExecutionProviders.Add(provider.ProviderName);
             }
         }
 

@@ -104,6 +104,18 @@
                           ItemsSource="{Binding DataContext.MarketDataProviders, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
             </Grid>
         </DataTemplate>
+
+        <DataTemplate x:Key="OrderExecutionTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <ComboBox Grid.Column="1" SelectedItem="{Binding Value.ParameterValue}" 
+                          ItemsSource="{Binding DataContext.OrderExecutionProviders, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Grid>
+        </DataTemplate>
         
     </UserControl.Resources>
 
