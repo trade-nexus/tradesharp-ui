@@ -258,13 +258,33 @@
             <GridSplitter Grid.Column="1" Grid.RowSpan="2" ResizeDirection="Columns"/>
 
 
-            <Button Grid.Row="0" Grid.Column="2" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20,40,20,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Command="{Binding ExportBruteOptimizationCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}"/>
-                    <TextBlock Text="Export"/>
-                </StackPanel>
-            </Button>
+            <DockPanel Grid.Row="0" Grid.Column="2">
+                
+                <WrapPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Total Iterations" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.Status, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Completed" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.Status, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Remaining" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.Status, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </WrapPanel>
+                
+                <Button  MinWidth="75" IsEnabled="True" Focusable="False"
+                        Margin="20,40,20,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Command="{Binding ExportBruteOptimizationCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}" />
+                        <TextBlock Text="Export" />
+                    </StackPanel>
+                </Button>
+                
+            </DockPanel>
 
             <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Results" Margin="10,0,10,10">
                 <DataGrid x:Name="ResultDataGrid" 
