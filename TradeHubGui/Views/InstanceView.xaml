@@ -92,6 +92,19 @@
                 <TextBox Grid.Column="1" Text="{Binding Value.ParameterValue}"/>
             </Grid>
         </DataTemplate>
+        
+        <DataTemplate x:Key="MarketDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <ComboBox Grid.Column="1" SelectedItem="{Binding Value.ParameterValue}" 
+                          ItemsSource="{Binding DataContext.MarketDataProviders, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Grid>
+        </DataTemplate>
+        
     </UserControl.Resources>
 
     <ItemsControl ItemTemplateSelector="{StaticResource ParameterDetailsTemplateSelector}"

@@ -17,6 +17,7 @@ using System.Windows.Media;
 using TraceSourceLogger;
 using TradeHubGui.Common.Infrastructure;
 using TradeHubGui.Common.Utility;
+using TradeHubGui.Dashboard.Services;
 using DomainModels = TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
@@ -73,12 +74,19 @@ namespace TradeHubGui.ViewModel
         private StrategyController _strategyController;
 
         /// <summary>
+        /// Contains names for the available market data providers
+        /// </summary>
+        private ObservableCollection<string> _marketDataProviders;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public StrategyRunnerViewModel()
         {
+            // Initialize objects
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
+            _marketDataProviders = new ObservableCollection<string>();
 
             EnablePersistence = false;
 
@@ -90,6 +98,9 @@ namespace TradeHubGui.ViewModel
             {
                 SelectedStrategy = Strategies[0];
             }
+
+            // Populate MarketDataProviders with actual list of market data providers
+            InitializeMarketDataProviders();
 
             EventSystem.Subscribe<string>(OnApplicationClose);
         }
@@ -179,6 +190,19 @@ namespace TradeHubGui.ViewModel
                     _orderDetailsCollection = value;
                     OnPropertyChanged("OrderDetailsCollection");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Contains names for the available market data providers
+        /// </summary>
+        public ObservableCollection<string> MarketDataProviders
+        {
+            get { return _marketDataProviders; }
+            set
+            {
+                _marketDataProviders = value;
+                OnPropertyChanged("MarketDataProviders");
             }
         }
 
@@ -573,10 +597,6 @@ namespace TradeHubGui.ViewModel
         {
             SelectedInstance.Status = DomainModels.StrategyStatus.Initializing;
 
-            //SelectedInstance.InstanceSummary.Add(SelectedInstance.InstanceKey + " Started at: " + DateTime.Now);
-
-            //return;
-
             // Request Strategy Controller to start selected Strategy Instance execution
             _strategyController.RunStrategy(SelectedInstance.InstanceKey);
         }
@@ -586,11 +606,6 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void StopInstanceExecute()
         {
-            //SelectedInstance.Status = DomainModels.StrategyStatus.Stopped;
-
-            //SelectedInstance.InstanceSummary.Add(SelectedInstance.InstanceKey + " Stopped at: " + DateTime.Now);
-
-           // return;
             // Request Strategy Controller to Stop execution for selected Strategy Instance
             _strategyController.StopStrategy(SelectedInstance.InstanceKey);
         }
@@ -798,24 +813,6 @@ namespace TradeHubGui.ViewModel
 
         #endregion
 
-        private bool TryActivateShownWindow(Type typeOfWindow)
-        {
-            if (Application.Current != null)
-            {
-                foreach (Window window in Application.Current.Windows)
-                {
-                    if (window.GetType() == typeOfWindow)
-                    {
-                        window.WindowState = WindowState.Normal;
-                        window.Activate();
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Displays Strategy Instances created against selected Strategy
         /// </summary>
@@ -871,7 +868,6 @@ namespace TradeHubGui.ViewModel
         private async void AddMultipleInstanceFromFile(string fileName)
         {
             var instances = await Task.Run(() => CreateMultipleStrategyInstances(fileName));
-            //var instances = CreateMultipleStrategyInstances(fileName);
 
             // Update UI
             LoadMultipleInstances(instances);
@@ -929,17 +925,11 @@ namespace TradeHubGui.ViewModel
         /// <param name="instances">List of Strategy Instance objects</param>
         private void LoadMultipleInstances(IList<StrategyInstance> instances)
         {
-            //System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-            //stopWatch.Start();
-
             foreach (StrategyInstance strategyInstance in instances)
             {
                 // Display Strategy Instance on UI
                 Instances.Add(strategyInstance);
             }
-
-            //stopWatch.Stop();
-            //Console.WriteLine("LoadMultipleInstances method runtime ---> " + stopWatch.Elapsed);
 
             // Select the 1st instance from DataGrid
             SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
@@ -1005,6 +995,45 @@ namespace TradeHubGui.ViewModel
 
             // Return created Strategy
             return strategy;
+        }
+
+        /// <summary>
+        /// Initialization of market data providers
+        /// </summary>
+        private void InitializeMarketDataProviders()
+        {
+            // Clear any existing values
+            MarketDataProviders.Clear();
+
+            // Populate Individual Market Data Provider details
+            foreach (var provider in ProvidersController.MarketDataProviders)
+            {
+                // Add to Collection
+                MarketDataProviders.Add(provider.ProviderName);
+            }
+        }
+
+        /// <summary>
+        /// Used for activiting windows opened from strategy runner view
+        /// </summary>
+        /// <param name="typeOfWindow"></param>
+        /// <returns></returns>
+        private bool TryActivateShownWindow(Type typeOfWindow)
+        {
+            if (Application.Current != null)
+            {
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.GetType() == typeOfWindow)
+                    {
+                        window.WindowState = WindowState.Normal;
+                        window.Activate();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

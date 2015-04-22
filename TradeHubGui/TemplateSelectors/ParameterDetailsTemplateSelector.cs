@@ -22,7 +22,15 @@ namespace TradeHubGui.TemplateSelectors
             {
                 if(pair.Value.ParameterType == typeof(string))
                 {
-                    return element.FindResource("StringDataTemplate") as DataTemplate;
+                    if (pair.Key.Equals("marketdataprovider", StringComparison.InvariantCultureIgnoreCase) 
+                        || pair.Key.Equals("dataprovider", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return element.FindResource("MarketDataTemplate") as DataTemplate;
+                    }
+                    else
+                    {
+                        return element.FindResource("StringDataTemplate") as DataTemplate;
+                    }
                 }
                 else if (pair.Value.ParameterType == typeof(int))
                 {
