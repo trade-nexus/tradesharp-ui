@@ -6,10 +6,10 @@
     Spring Config file for Backtesting Order Executor
   </description>
 
-  <!--<object id="OrderExecutor" type="TradeHub.Common.HistoricalDataProvider.Utility.OrderExecutorGeneric, TradeHub.Common.HistoricalDataProvider" singleton="false">
-
-  </object>-->
-  <object id="OrderExecutor" type="TradeHub.Common.HistoricalDataProvider.Utility.MultiSymbolOrderExecutor, TradeHub.Common.HistoricalDataProvider" singleton="false">
+  <object id="OrderExecutor" type="TradeHub.Common.HistoricalDataProvider.Utility.OrderExecutorGeneric, TradeHub.Common.HistoricalDataProvider" singleton="false">
 
   </object>
+  <!--<object id="OrderExecutor" type="TradeHub.Common.HistoricalDataProvider.Utility.MultiSymbolOrderExecutor, TradeHub.Common.HistoricalDataProvider" singleton="false">-->
+
+  <!--</object>-->
 </objects>

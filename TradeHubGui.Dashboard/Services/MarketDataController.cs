@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
@@ -27,6 +28,11 @@ namespace TradeHubGui.Dashboard.Services
         private Type _type = typeof (MarketDataController);
 
         /// <summary>
+        /// Holds UI thread reference
+        /// </summary>
+        private Dispatcher _currentDispatcher;
+
+        /// <summary>
         /// Responsible for providing requested market data functionality
         /// </summary>
         private MarketDataManager _marketDataManager;
@@ -45,6 +51,8 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="historicalDataService">Provides communication access with Market Data Server for historical data</param>
         public MarketDataController(MarketDataService marketDataService, HistoricalDataService historicalDataService)
         {
+            this._currentDispatcher = Dispatcher.CurrentDispatcher;
+
             // Initialize Manager
             _marketDataManager = new MarketDataManager(marketDataService, historicalDataService);
 
