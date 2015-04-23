@@ -117,14 +117,14 @@
                                                 <TextBlock Text="Brute optimization" />
                                             </StackPanel>
                                         </Button>
-                                        <Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="10,0,0,0" ToolTip="Select providers" Focusable="False"
+                                        <!--<Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="10,0,0,0" ToolTip="Select providers" Focusable="False"
                                                 Command="{Binding DataContext.SelectProviderCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
                                             <Image Width="14" Height="14" Margin="2" Source="{StaticResource imgProviders}" UseLayoutRounding="True"/>
                                         </Button>
                                         <Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="0,0,4,0" ToolTip="Remove strategy" Focusable="False"
                                                 Command="{Binding DataContext.RemoveStrategyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
                                             <Image Width="10" Height="10" Margin="2" Source="{StaticResource imgClose}" UseLayoutRounding="True"/>
-                                        </Button>
+                                        </Button>-->
                                     </StackPanel>
                                 </DockPanel>
                             </DataTemplate>
