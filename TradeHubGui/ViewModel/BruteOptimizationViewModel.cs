@@ -139,7 +139,15 @@ namespace TradeHubGui.ViewModel
 
         private bool RunBruteOptimizationCanExecute()
         {
+            // Check if optimization process is running
+            if (BruteForceParameters.Status.Equals(OptimizationStatus.Working))
+            {
+                return false;
+            }
+
+            // Check if valid conditional parameters are entered
             var items = _bruteForceParameters.GetConditionalParameters();
+
             return (items.Count() > 0);
         }
 
@@ -190,6 +198,10 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ExecuteBruteForceOptimization()
         {
+            // Clear any existing details
+            BruteForceParameters.ParameterDetails.Clear();
+
+            // Notify listener to start execution
             EventSystem.Publish<BruteForceParameters>(BruteForceParameters);
         }
 

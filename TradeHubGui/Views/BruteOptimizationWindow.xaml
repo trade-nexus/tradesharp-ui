@@ -263,15 +263,15 @@
                 <WrapPanel Margin="10" Orientation="Horizontal">
                     <StackPanel Orientation="Vertical" Margin="10,4,20,4">
                         <TextBlock Text="Total Iterations" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding BruteForceParameters.Status, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.TotalIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="10,4,20,4">
                         <TextBlock Text="Completed" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding BruteForceParameters.Status, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.CompletedIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
                     </StackPanel>
                     <StackPanel Orientation="Vertical" Margin="10,4,20,4">
                         <TextBlock Text="Remaining" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
-                        <TextBlock Text="{Binding BruteForceParameters.Status, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.RemainingIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </WrapPanel>
                 

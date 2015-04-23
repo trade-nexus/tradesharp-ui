@@ -159,6 +159,9 @@ namespace TradeHubGui.StrategyRunner.Managers
                     EventSystem.Publish<OptimizationStatistics>(optimizationStatistics);
                 }
 
+                // Save total number of iterations count
+                _optimizationParameters.TotalIterations = _strategiesCollection.Count;
+
                 // Start executing each instance
                 StartStrategyExecution();
             }
@@ -171,7 +174,6 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// <summary>
         /// Strats executing individual strategy instances created for each iteration
         /// </summary>
-        //[MethodImpl(MethodImplOptions.Synchronized)]
         private void StartStrategyExecution()
         {
             try
@@ -291,7 +293,6 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// </summary>
         /// <param name="key">Unique Key to identify the Strategy</param>
         /// <param name="status">indicates whether the strategy is running or stopped</param>
-        //[MethodImpl(MethodImplOptions.Synchronized)]
         private void OnStrategyExecutorStatusChanged(string key, StrategyStatus status)
         {
             try
@@ -323,6 +324,11 @@ namespace TradeHubGui.StrategyRunner.Managers
 
                         // Close all connections
                         strategyExecutor.Close();
+
+                        // Update Iterations information
+                        _optimizationParameters.CompletedIterations += 1;
+                        _optimizationParameters.RemainingIterations = _optimizationParameters.TotalIterations -
+                                                                      _optimizationParameters.CompletedIterations;
 
                         // Execute next iteration
                         StartStrategyExecution();
