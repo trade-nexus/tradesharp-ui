@@ -15,6 +15,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
+using TradeHubGui.Dashboard.Services;
 using TradeHubGui.StrategyRunner.Managers;
 using TradeHubGui.Views;
 
@@ -63,6 +64,16 @@ namespace TradeHubGui.ViewModel
         /// Contains Parameter information to be used by the Strategy Instance to execute
         /// </summary>
         private Dictionary<string, ParameterDetail> _parameterDetails;
+        
+        /// <summary>
+        /// Contains names for the available market data providers
+        /// </summary>
+        private ObservableCollection<string> _marketDataProviders;
+
+        /// <summary>
+        /// Contains names for the available order execution providers
+        /// </summary>
+        private ObservableCollection<string> _orderExecutionProviders;
 
         private RelayCommand _runGeneticOptimization;
         private RelayCommand _exportGeneticOptimization;
@@ -110,6 +121,12 @@ namespace TradeHubGui.ViewModel
             _managerGeneticAlgorithm = new OptimizationManagerGeneticAlgorithm();
             _optimizationParameters = new ObservableCollection<OptimizationParameterDetail>();
             _optimizedParameters = new ObservableCollection<OptimizationParameterDetail>();
+            _marketDataProviders = new ObservableCollection<string>();
+            _orderExecutionProviders = new ObservableCollection<string>();
+            
+            // Populate Local maps for available Provider names
+            PopulateMarketDataProviders();
+            PopulateOrderExecutionProviders();
 
             // Make sure event is only subscribed once
             EventSystem.Unsubscribe<GeneticAlgorithmResult>(DisplayResult);
@@ -293,6 +310,32 @@ namespace TradeHubGui.ViewModel
             {
                 _status = value;
                 OnPropertyChanged("Status");
+            }
+        }
+
+        /// <summary>
+        /// Contains names for the available market data providers
+        /// </summary>
+        public ObservableCollection<string> MarketDataProviders
+        {
+            get { return _marketDataProviders; }
+            set
+            {
+                _marketDataProviders = value;
+                OnPropertyChanged("MarketDataProviders");
+            }
+        }
+
+        /// <summary>
+        /// Contains names for the available order execution providers
+        /// </summary>
+        public ObservableCollection<string> OrderExecutionProviders
+        {
+            get { return _orderExecutionProviders; }
+            set
+            {
+                _orderExecutionProviders = value;
+                OnPropertyChanged("OrderExecutionProviders");
             }
         }
 
@@ -581,6 +624,37 @@ namespace TradeHubGui.ViewModel
             }
 
             return true;
+        }
+        /// <summary>
+        /// Populate market data provider names
+        /// </summary>
+        private void PopulateMarketDataProviders()
+        {
+            // Clear any existing values
+            MarketDataProviders.Clear();
+
+            // Populate Individual Market Data Provider Details
+            foreach (var provider in ProvidersController.MarketDataProviders)
+            {
+                // Add to Collection
+                MarketDataProviders.Add(provider.ProviderName);
+            }
+        }
+
+        /// <summary>
+        /// Populate order execution provider names
+        /// </summary>
+        private void PopulateOrderExecutionProviders()
+        {
+            // Clear any existing values
+            OrderExecutionProviders.Clear();
+
+            // Travers Individual Order Execution Provider Details
+            foreach (var provider in ProvidersController.OrderExecutionProviders)
+            {
+                // Add to Collection
+                OrderExecutionProviders.Add(provider.ProviderName);
+            }
         }
     }
 }
