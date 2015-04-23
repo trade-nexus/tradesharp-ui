@@ -22,4 +22,11 @@
                 <value>True</value>
 	  </AsyncClassDebug>
 
+  <StockTraderInfo name="IsInfoEnabled" serializeAs="String">
+      <value>True</value>
+    </StockTraderInfo>
+  <StockTraderDebug name="IsInfoEnabled" serializeAs="String">
+      <value>True</value>
+    </StockTraderDebug>
+
 </LoggerSettings>
