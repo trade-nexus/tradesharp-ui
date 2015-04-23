@@ -199,7 +199,7 @@ namespace TradeHubGui.ViewModel
         private void ExecuteBruteForceOptimization()
         {
             // Clear any existing details
-            BruteForceParameters.ParameterDetails.Clear();
+            OptimizationStatisticsCollection.Clear();
 
             // Notify listener to start execution
             EventSystem.Publish<BruteForceParameters>(BruteForceParameters);
