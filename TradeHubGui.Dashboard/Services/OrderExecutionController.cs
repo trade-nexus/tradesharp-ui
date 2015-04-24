@@ -12,6 +12,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.Utility;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Managers;
 using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
@@ -254,6 +255,9 @@ namespace TradeHubGui.Dashboard.Services
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Connected;
+
+                // Raise event to update UI
+                EventSystem.Publish<UiElement>(new UiElement());
             }
         }
 
@@ -267,6 +271,9 @@ namespace TradeHubGui.Dashboard.Services
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Disconnected;
+
+                // Raise event to update UI
+                EventSystem.Publish<UiElement>(new UiElement());
             }
         }
 

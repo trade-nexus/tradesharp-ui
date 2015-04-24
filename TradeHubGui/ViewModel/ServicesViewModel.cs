@@ -4,13 +4,16 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using TraceSourceLogger;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.Utility;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Services;
 
 namespace TradeHubGui.ViewModel
@@ -18,6 +21,8 @@ namespace TradeHubGui.ViewModel
     public class ServicesViewModel : BaseViewModel
     {
         #region Fields
+
+        private Dispatcher _currentDispatcher;
 
         /// <summary>
         /// Provides TradeHub services related functionality
@@ -100,6 +105,8 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public ServicesViewModel()
         {
+            _currentDispatcher = Dispatcher.CurrentDispatcher;
+
             _services = new ObservableCollection<ServiceDetails>();
             _servicesController = new TradeHubServicesController();
 

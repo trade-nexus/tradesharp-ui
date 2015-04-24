@@ -231,6 +231,9 @@ namespace TradeHubGui.Dashboard.Services
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Connected;
+
+                // Raise event to update UI
+                EventSystem.Publish<UiElement>(new UiElement());
             }
         }
 
@@ -244,6 +247,9 @@ namespace TradeHubGui.Dashboard.Services
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Disconnected;
+
+                // Raise event to update UI
+                EventSystem.Publish<UiElement>(new UiElement());
             }
         }
 

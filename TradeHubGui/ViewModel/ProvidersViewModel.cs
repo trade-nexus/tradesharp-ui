@@ -1,4 +1,5 @@
-﻿using MessageBoxUtils;
+﻿using System.Windows.Threading;
+using MessageBoxUtils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +13,7 @@ using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.Utility;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Services;
 using Forms = System.Windows.Forms;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
@@ -68,6 +70,7 @@ namespace TradeHubGui.ViewModel
             ExecutionProviderParametersToBeDisplayed = true;
             NewDataProviderParametersRequired = false;
             NewExecutionProviderParametersRequired = false;
+
         }
 
         #endregion

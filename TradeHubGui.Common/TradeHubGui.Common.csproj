@@ -116,6 +116,7 @@
     <Compile Include="Models\GeneticAlgorithmParameters.cs" />
     <Compile Include="ValueObjects\ParameterDetail.cs" />
     <Compile Include="ValueObjects\StrategyInstanceStatus.cs" />
+    <Compile Include="ValueObjects\UiElement.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
