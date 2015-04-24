@@ -201,6 +201,11 @@ namespace TradeHubGui.ViewModel
             // Clear any existing details
             OptimizationStatisticsCollection.Clear();
 
+            // Reset Iteration Count
+            BruteForceParameters.TotalIterations = 0;
+            BruteForceParameters.CompletedIterations = 0;
+            BruteForceParameters.RemainingIterations = 0;
+
             // Notify listener to start execution
             EventSystem.Publish<BruteForceParameters>(BruteForceParameters);
         }
