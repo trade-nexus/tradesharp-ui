@@ -22,8 +22,6 @@ namespace TradeHubGui.ViewModel
     {
         #region Fields
 
-        private Dispatcher _currentDispatcher;
-
         /// <summary>
         /// Provides TradeHub services related functionality
         /// </summary>
@@ -105,8 +103,6 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public ServicesViewModel()
         {
-            _currentDispatcher = Dispatcher.CurrentDispatcher;
-
             _services = new ObservableCollection<ServiceDetails>();
             _servicesController = new TradeHubServicesController();
 
