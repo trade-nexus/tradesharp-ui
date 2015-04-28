@@ -198,6 +198,7 @@ namespace TradeHubGui.StrategyRunner.Managers
                 {
                     // Change Status to indicate on UI
                     _optimizationParameters.Status = OptimizationStatus.Completed;
+                    EventSystem.Publish<UiElement>();
                 }
                 // Execute each instance on a separate thread
                 // Parallel.ForEach(_strategiesCollection.Values,
