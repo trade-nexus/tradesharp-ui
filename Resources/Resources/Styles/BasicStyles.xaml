@@ -204,21 +204,21 @@
 
 	<LinearGradientBrush x:Key="NormalBrush" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
 		<GradientStop Offset="0.0" Color="#FFFF" />
-        <GradientStop Offset="1.0" Color="#FFFF" />
+        <GradientStop Offset="1.0" Color="#FFF4F4F4" />
 	</LinearGradientBrush>
 
 	<LinearGradientBrush x:Key="HorizontalNormalBrush" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="1,0">
 		<GradientStop Offset="0.0" Color="#FFFF" />
-        <GradientStop Offset="1.0" Color="#FFFF" />
+        <GradientStop Offset="1.0" Color="#FFF4F4F4" />
 	</LinearGradientBrush>
 
 	<LinearGradientBrush x:Key="NormalBrushInverted" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="0,1">
-		<GradientStop Offset="1.0" Color="#FFFF" />
+        <GradientStop Offset="1.0" Color="#FFF4F4F4" />
         <GradientStop Offset="0.0" Color="#FFFF" />
 	</LinearGradientBrush>
 
 	<LinearGradientBrush x:Key="HorizontalNormalBrushInverted" PresentationOptions:Freeze="True" StartPoint="0,0" EndPoint="1,0">
-		<GradientStop Offset="1.0" Color="#FFFF" />
+        <GradientStop Offset="1.0" Color="#FFF4F4F4" />
         <GradientStop Offset="0.0" Color="#FFFF" />
 	</LinearGradientBrush>
 
@@ -902,7 +902,6 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type Button}">
 					<Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-						<!--<Border x:Name="OutherBorder" Background="Transparent" BorderBrush="{StaticResource OutherBorderBrush}" BorderThickness="1" CornerRadius="0" />-->
 						<Border x:Name="Border" Margin="0"
 						        Background="{StaticResource NormalBrush}"
 						        BorderBrush="{StaticResource NormalBorderBrush}"
@@ -1008,7 +1007,6 @@
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ToggleButton}">
 					<Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-						<!--<Border x:Name="OutherBorder" Background="Transparent" BorderBrush="{StaticResource OutherBorderBrush}" BorderThickness="1" CornerRadius="0" />-->
 						<Border x:Name="Border" Margin="0"
 						        Background="{StaticResource NormalBrush}"
 						        BorderBrush="{StaticResource NormalBorderBrush}"
