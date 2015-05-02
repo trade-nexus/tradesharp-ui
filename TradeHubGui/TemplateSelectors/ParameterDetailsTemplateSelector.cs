@@ -30,20 +30,12 @@ namespace TradeHubGui.TemplateSelectors
                 }
                 else if (pair.Value.ParameterType == typeof(uint))
                 {
-                    if (!string.IsNullOrEmpty(pair.Value.ParameterValue.ToString()))
-                        pair.Value.ParameterValue = Convert.ToInt32(pair.Value.ParameterValue);
-                    else
-                        pair.Value.ParameterValue = 0;
-
+                    pair.Value.ParameterValue = Convert.ToInt32(pair.Value.ParameterValue);
                     return element.FindResource("UnsignedIntegerDataTemplate") as DataTemplate;
                 }
                 else if (pair.Value.ParameterType == typeof(float))
                 {
-                    if (!string.IsNullOrEmpty(pair.Value.ParameterValue.ToString()))
-                        pair.Value.ParameterValue = Convert.ToSingle(pair.Value.ParameterValue);
-                    else
-                        pair.Value.ParameterValue = 0f;
-
+                    pair.Value.ParameterValue = Convert.ToSingle(pair.Value.ParameterValue);
                     return element.FindResource("SingleDataTemplate") as DataTemplate;
                 }
                 else if (pair.Value.ParameterType == typeof(decimal))
