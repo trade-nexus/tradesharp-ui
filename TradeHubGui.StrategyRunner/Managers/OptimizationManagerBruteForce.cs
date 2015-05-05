@@ -71,6 +71,7 @@ namespace TradeHubGui.StrategyRunner.Managers
 
             //_asyncClassLogger = ContextRegistry.GetContext()["StrategyRunnerLogger"] as AsyncClassLogger;
             _asyncClassLogger = new AsyncClassLogger("OptimizationManagerBruteForce");
+            _asyncClassLogger.SetLoggingLevel();
 
             // Initialize
             _ctorArguments = new List<object[]>();
@@ -323,8 +324,11 @@ namespace TradeHubGui.StrategyRunner.Managers
                         // Stop Strategy
                         strategyExecutor.StopStrategy();
 
-                        // Close all connections
-                        strategyExecutor.Close();
+                        //// Close all connections
+                        //strategyExecutor.Close();
+
+                        // Dispose
+                        strategyExecutor.Dispose();
 
                         // Update Iterations information
                         _optimizationParameters.CompletedIterations += 1;
@@ -385,7 +389,10 @@ namespace TradeHubGui.StrategyRunner.Managers
                     _ctorArguments.Clear();
                     _strategiesCollection.Clear();
                 }
+
                 // Release unmanaged resources.
+                _ctorArguments = null;
+                _strategiesCollection = null;
                 _disposed = true;
             }
         }

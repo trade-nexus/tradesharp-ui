@@ -2,31 +2,31 @@
 <LoggerSettings>
   
 	  <ClassInfo name="IsInfoEnabledClassLevel" serializeAs="String">
-                <value>True</value>
+                <value>False</value>
     </ClassInfo>
 	  <ClassDebug name="IsDebugEnabledClassLevel" serializeAs="String">
-                <value>True</value>
+                <value>False</value>
 	  </ClassDebug>
 	
     <Info name="IsInfoEnabled" serializeAs="String">
-                <value>True</value>
+                <value>False</value>
     </Info>
     <Debug name="IsDebugEnabled" serializeAs="String">
-                <value>True</value>
+                <value>False</value>
     </Debug>
 
     <AsyncClassInfo name="InfoLevelforAsyncClassLevel" serializeAs="String">
-                <value>True</value>
+                <value>False</value>
     </AsyncClassInfo>
 	  <AsyncClassDebug name="DebugLevelforAsyncClassLevel" serializeAs="String">
-                <value>True</value>
+                <value>False</value>
 	  </AsyncClassDebug>
 
   <StockTraderInfo name="IsInfoEnabled" serializeAs="String">
-      <value>True</value>
+      <value>False</value>
     </StockTraderInfo>
   <StockTraderDebug name="IsInfoEnabled" serializeAs="String">
-      <value>True</value>
+      <value>False</value>
     </StockTraderDebug>
 
 </LoggerSettings>

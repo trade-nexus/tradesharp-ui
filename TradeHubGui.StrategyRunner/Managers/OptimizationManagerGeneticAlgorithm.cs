@@ -62,6 +62,8 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// </summary>
         public OptimizationManagerGeneticAlgorithm()
         {
+            _logger.SetLoggingLevel();
+
             // Subscribe Event
             EventSystem.Subscribe<GeneticAlgorithmParameters>(OptimizeStrategy);
         }

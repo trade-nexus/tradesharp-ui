@@ -87,6 +87,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             _manualReset = new ManualResetEvent(false);
             _logger = new AsyncClassLogger("StrategyExecutorGeneticAlgo");
+            _logger.SetLoggingLevel();
 
             // Save Strategy Type
             _strategyType = strategyType;

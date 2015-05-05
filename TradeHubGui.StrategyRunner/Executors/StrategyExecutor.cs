@@ -29,7 +29,7 @@ namespace TradeHubGui.StrategyRunner.Executors
     /// <summary>
     /// Responsibe for handling individual strategy instances
     /// </summary>
-    internal class StrategyExecutor
+    internal class StrategyExecutor : IDisposable
     {
         private Type _type = typeof(StrategyExecutor);
 
@@ -94,6 +94,8 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// Indicates if the Strategy Instance was requested to Stop Execution by the user
         /// </summary>
         private bool _stopInstanceRequested;
+
+        private bool _disposed = false;
 
         #region Events
 
@@ -166,6 +168,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             this._currentDispatcher = currentDispatcher;
 
             _asyncClassLogger = new AsyncClassLogger("StrategyExecutor");
+            _asyncClassLogger.SetLoggingLevel();
 
             //set logging path
             string path = DirectoryStructure.CLIENT_LOGS_LOCATION;
@@ -178,27 +181,6 @@ namespace TradeHubGui.StrategyRunner.Executors
             _strategyKey = _strategyInstance.InstanceKey;
             _strategyType = _strategyInstance.StrategyType;
             _ctorArguments = _strategyInstance.GetParameterValues();
-
-            // Initialze Utility Classes
-            //_orderExecutor = new OrderExecutor(_asyncClassLogger);
-            _orderExecutor = ContextRegistry.GetContext()["OrderExecutor"] as IOrderExecutor;
-            _marketDataListener = new MarketDataListener(_asyncClassLogger);
-            _orderRequestListener = new OrderRequestListener(_orderExecutor, _asyncClassLogger);
-
-            // Use MarketDataListener.cs as Event Handler to get data from DataHandler.cs
-            _dataHandler = new DataHandler(new IEventHandler<MarketDataObject>[] { _marketDataListener });
-
-            _marketDataListener.BarSubscriptionList = _dataHandler.BarSubscriptionList;
-            _marketDataListener.TickSubscriptionList = _dataHandler.TickSubscriptionList;
-
-            // Initialize MarketRequestListener.cs to manage incoming market data requests from strategy
-            _marketRequestListener = new MarketRequestListener(_dataHandler, _asyncClassLogger);
-
-            //Register OrderExecutor Events
-            RegisterOrderExecutorEvents();
-
-            //Register Market Data Listener Events
-            RegisterMarketDataListenerEvents();
         }
 
         /// <summary>
@@ -339,10 +321,50 @@ namespace TradeHubGui.StrategyRunner.Executors
             if (_tradeHubStrategy != null)
             {
                 if (_tradeHubStrategy.MarketDataProviderName.Equals(TradeHubConstants.MarketDataProvider.SimulatedExchange))
+                {
+                    InitializeBacktestingDataComponents();
                     OverrideStrategyDataEvents();
+                }
                 if (_tradeHubStrategy.OrderExecutionProviderName.Equals(OrderExecutionProvider.SimulatedExchange))
+                {
+                    InitializeBacktestingOrderComponents();
                     OverrideStrategyOrderRequests();
+                }
             }
+        }
+
+        /// <summary>
+        /// Initializes necessary market data components required for backtesting
+        /// </summary>
+        private void InitializeBacktestingDataComponents()
+        {
+            // Initialze Utility Classes to manage backtesting with saved market data
+            _marketDataListener = new MarketDataListener(_asyncClassLogger);
+
+            // Use MarketDataListener.cs as Event Handler to get data from DataHandler.cs
+            _dataHandler = new DataHandler(new IEventHandler<MarketDataObject>[] { _marketDataListener });
+
+            _marketDataListener.BarSubscriptionList = _dataHandler.BarSubscriptionList;
+            _marketDataListener.TickSubscriptionList = _dataHandler.TickSubscriptionList;
+
+            // Initialize MarketRequestListener.cs to manage incoming market data requests from strategy
+            _marketRequestListener = new MarketRequestListener(_dataHandler, _asyncClassLogger);
+
+            //Register Market Data Listener Events
+            RegisterMarketDataListenerEvents();
+        }
+
+        /// <summary>
+        /// Initializes necessary order execution components required for backtesting
+        /// </summary>
+        private void InitializeBacktestingOrderComponents()
+        {
+            // Initialze Utility Classes to manage backtesting order executions
+            _orderExecutor = ContextRegistry.GetContext()["OrderExecutor"] as IOrderExecutor;
+            _orderRequestListener = new OrderRequestListener(_orderExecutor, _asyncClassLogger);
+
+            //Register OrderExecutor Events
+            RegisterOrderExecutorEvents();
         }
 
         /// <summary>
@@ -578,36 +600,6 @@ namespace TradeHubGui.StrategyRunner.Executors
         }
 
         /// <summary>
-        /// Updates strategy statistics on each execution
-        /// </summary>
-        /// <param name="execution">Contains Execution Info</param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        private void UpdateStatistics(Execution execution)
-        {
-            try
-            {
-                if (_asyncClassLogger.IsDebugEnabled)
-                {
-                    _asyncClassLogger.Debug("Updating statistics on: " + execution, _type.FullName, "UpdateStatistics");
-                }
-
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = execution.Fill.OrderId;
-                orderDetails.Price = execution.Fill.ExecutionPrice;
-                orderDetails.Quantity = execution.Fill.ExecutionSize;
-                orderDetails.Side = execution.Fill.ExecutionSide;
-                orderDetails.Status = execution.Order.OrderStatus;
-
-                // Add new information to execution details
-                _strategyInstance.AddOrderDetails(orderDetails);
-            }
-            catch (Exception exception)
-            {
-                _asyncClassLogger.Error(exception, _type.FullName, "UpdateStatistics");
-            }
-        }
-
-        /// <summary>
         /// Adds new 'Order Details' information in 'Execution Details' object for Strategy Instance
         /// </summary>
         /// <param name="orderDetails"></param>
@@ -643,14 +635,44 @@ namespace TradeHubGui.StrategyRunner.Executors
             {
                 if (_tradeHubStrategy != null)
                 {
-                    _dataHandler.Shutdown();
+                    if (_dataHandler != null)
+                    {
+                        _dataHandler.Dispose();
+                    }
+
                     _tradeHubStrategy.Dispose();
-                    _tradeHubStrategy = null;
                 }
             }
             catch (Exception exception)
             {
                 _asyncClassLogger.Error(exception, _type.FullName, "Close");
+            }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    Close();
+                }
+
+                // Release unmanaged resources.
+                _marketDataListener = null;
+                _marketRequestListener = null;
+                _dataHandler = null;
+                _tradeHubStrategy = null;
+                _disposed = true;
             }
         }
     }

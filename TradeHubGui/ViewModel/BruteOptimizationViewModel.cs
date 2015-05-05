@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ using TradeHubGui.StrategyRunner.Managers;
 
 namespace TradeHubGui.ViewModel
 {
-    public class BruteOptimizationViewModel : BaseViewModel
+    public class BruteOptimizationViewModel : BaseViewModel, IDisposable
     {
         #region Fields
 
@@ -48,7 +49,8 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _closeBruteOptimizationWindow;
         
         private Strategy _selectedStrategy;
-        
+        private bool _disposed = false;
+
         #endregion
 
         #region Constructors
@@ -173,7 +175,7 @@ namespace TradeHubGui.ViewModel
 
         private void CloseBruteOptimizationWindowExecute()
         {
-            _managerBruteForce.Dispose();
+            this.Dispose();
         }
 
         #endregion
@@ -283,6 +285,39 @@ namespace TradeHubGui.ViewModel
             catch (Exception exception)
             {
                 Logger.Error(exception, _type.FullName, "ExportBruteForceResults");
+            }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            GC.Collect();
+
+            foreach (var proc in Process.GetProcessesByName("Brute Optimization"))
+            {
+                proc.Kill();
+            }
+            
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _managerBruteForce.Dispose();
+                    _optimizationStatisticsCollection.Clear();
+                }
+
+                // Release unmanaged resources.
+                _managerBruteForce = null;
+                _optimizationStatisticsCollection = null;
+                _disposed = true;
             }
         }
     }

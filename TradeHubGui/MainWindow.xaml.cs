@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TraceSourceLogger;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
@@ -46,6 +47,8 @@ namespace TradeHubGui
 
             // Subscribe Events
             EventSystem.Subscribe<UiElement>(UpdateRelayCommands);
+
+            Logger.SetLoggingLevel();
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -92,6 +95,7 @@ namespace TradeHubGui
             }
 
             Application.Current.Shutdown();
+            Process.GetCurrentProcess().Kill();
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
