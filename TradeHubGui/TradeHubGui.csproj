@@ -52,14 +52,33 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="clrzmq, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="clrzmq, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\helper\clrzmq.2.2.5\lib\clrzmq.dll</HintPath>
+      <HintPath>..\Lib\helper\clrzmq-x64.2.2.5\lib\clrzmq.dll</HintPath>
     </Reference>
-    <Reference Include="clrzmq-ext, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="clrzmq-ext, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\helper\clrzmq.2.2.5\lib\clrzmq-ext.dll</HintPath>
+      <HintPath>..\Lib\helper\clrzmq-x64.2.2.5\lib\clrzmq-ext.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e">
       <SpecificVersion>False</SpecificVersion>

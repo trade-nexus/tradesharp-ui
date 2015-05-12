@@ -656,6 +656,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+            GC.Collect();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -668,10 +669,12 @@ namespace TradeHubGui.StrategyRunner.Executors
                 }
 
                 // Release unmanaged resources.
+                _asyncClassLogger = null;
                 _marketDataListener = null;
                 _marketRequestListener = null;
                 _dataHandler = null;
                 _tradeHubStrategy = null;
+                _currentDispatcher = null;
                 _disposed = true;
             }
         }

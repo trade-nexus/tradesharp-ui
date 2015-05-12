@@ -27,7 +27,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Holds reference to UI dispatcher
         /// </summary>
-        private readonly Dispatcher _currentDispatcher;
+        private Dispatcher _currentDispatcher;
 
         /// <summary>
         /// Handles activities for Brute Force Optimization
@@ -296,12 +296,6 @@ namespace TradeHubGui.ViewModel
             Dispose(true);
             GC.SuppressFinalize(this);
             GC.Collect();
-
-            foreach (var proc in Process.GetProcessesByName("Brute Optimization"))
-            {
-                proc.Kill();
-            }
-            
         }
 
         protected virtual void Dispose(bool disposing)
@@ -312,9 +306,13 @@ namespace TradeHubGui.ViewModel
                 {
                     _managerBruteForce.Dispose();
                     _optimizationStatisticsCollection.Clear();
+
+                    // Unsubscibe events
+                    EventSystem.Unsubscribe<OptimizationStatistics>(DisplayOptimizationStatistics);
                 }
 
                 // Release unmanaged resources.
+                _currentDispatcher = null;
                 _managerBruteForce = null;
                 _optimizationStatisticsCollection = null;
                 _disposed = true;

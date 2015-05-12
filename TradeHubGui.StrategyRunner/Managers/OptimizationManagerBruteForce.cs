@@ -305,7 +305,7 @@ namespace TradeHubGui.StrategyRunner.Managers
                 }
 
                 // Get Statistics if the strategy is completed
-                if (status==StrategyStatus.Executed)
+                if (status == StrategyStatus.Executed)
                 {
                     StrategyExecutor strategyExecutor;
                     if (_strategiesCollection.TryRemove(key, out strategyExecutor))
@@ -391,8 +391,10 @@ namespace TradeHubGui.StrategyRunner.Managers
                 }
 
                 // Release unmanaged resources.
+                _asyncClassLogger = null;
                 _ctorArguments = null;
                 _strategiesCollection = null;
+                _currentDispatcher = null;
                 _disposed = true;
             }
         }

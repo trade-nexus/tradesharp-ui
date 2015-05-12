@@ -165,6 +165,12 @@ namespace TradeHubGui.ViewModel
             foreach (var availableService in availableServices)
             {
                 Services.Add(availableService);
+
+                // Test Code
+                if (availableService.Status!=ServiceStatus.Disabled)
+                {
+                    availableService.Status= ServiceStatus.Running;
+                }
             }
 
             InitializeServices();
