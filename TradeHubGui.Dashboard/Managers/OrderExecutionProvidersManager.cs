@@ -42,7 +42,7 @@ namespace TradeHubGui.Dashboard.Managers
             _orderExecutionProvidersRootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TradeHub\\OrderExecutionProviders\\";
             _orderExecutionProvidersConfigFolderPath = _orderExecutionProvidersRootFolderPath;
 
-            // Used for Live Execution
+            //// Used for Live Execution
             //_orderExecutionProvidersRootFolderPath = Path.GetFullPath(@"~\..\..\Order Execution Engine\");
             //_orderExecutionProvidersConfigFolderPath = _orderExecutionProvidersRootFolderPath + @"Config\";
 
