@@ -127,13 +127,17 @@ namespace TradeHubGui.Common.Models
         /// Creates a new Strategy Instance object
         /// </summary>
         /// <param name="parameters">Parameter list to be used by the instance for execution</param>
-        public StrategyInstance CreateInstance(Dictionary<string, ParameterDetail> parameters)
+        /// <param name="description">Instance description</param>
+        public StrategyInstance CreateInstance(Dictionary<string, ParameterDetail> parameters, string description)
         {
             // Get new Instance Key
             string instanceKey = StrategyIdGenerator.GetInstanceKey(_key);
 
             // Create new Strategy Instance Object
-            var strategyInstance = new StrategyInstance(instanceKey, parameters, _strategyType);
+            var strategyInstance = new StrategyInstance(instanceKey, parameters, _strategyType)
+            {
+                Description = description
+            };
 
             // Add to local MAP
             _strategyInstances.Add(instanceKey, strategyInstance);

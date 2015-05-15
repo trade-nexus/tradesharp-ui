@@ -251,7 +251,7 @@ namespace TradeHubGui.ViewModel
             MarketScannerWindow scannerWindow = (MarketScannerWindow)sender;
 
             if (WPFMessageBox.Show(scannerWindow, string.Format("Close scanner window {0}?", scannerWindow.Title), "Market Data Scanner",
-                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+                MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
             {
                 e.Cancel = true;
             }

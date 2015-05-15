@@ -1,4 +1,5 @@
-﻿using MahApps.Metro;
+﻿using System.Windows.Threading;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
@@ -16,8 +17,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TraceSourceLogger;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.ViewModel;
 using TradeHubGui.Views;
 
@@ -29,12 +32,23 @@ namespace TradeHubGui
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private Dispatcher _currentDispatcher;
+
         public MainWindow()
         {
             InitializeComponent();
+            
+            // Save UI thread reference
+            _currentDispatcher = Dispatcher.CurrentDispatcher;
+
             DataContext = new BaseViewModel();
             AppDomain.CurrentDomain.UnhandledException +=
                  new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
+            // Subscribe Events
+            EventSystem.Subscribe<UiElement>(UpdateRelayCommands);
+
+            Logger.SetLoggingLevel();
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -81,6 +95,7 @@ namespace TradeHubGui
             }
 
             Application.Current.Shutdown();
+            Process.GetCurrentProcess().Kill();
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -88,6 +103,15 @@ namespace TradeHubGui
             Exception ex = e.ExceptionObject as Exception;
             MessageBox.Show(ex.Message, "Uncaught Thread Exception",
                             MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        /// <summary>
+        /// Force updates the Relay Commands
+        /// </summary>
+        /// <param name="uiElement"></param>
+        private void UpdateRelayCommands(UiElement uiElement)
+        {
+            _currentDispatcher.Invoke(DispatcherPriority.Normal, (Action)(CommandManager.InvalidateRequerySuggested));
         }
     }
 }

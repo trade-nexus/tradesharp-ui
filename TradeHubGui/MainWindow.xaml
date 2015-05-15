@@ -8,7 +8,8 @@
                  xmlns:conv="clr-namespace:TradeHubGui.Converters"
                  xmlns:views="clr-namespace:TradeHubGui.Views"
                  WindowStartupLocation="CenterScreen"
-                 Title="TradeHUB" 
+                 WindowState="Maximized"
+                 Title="TradeSharp" 
                  Height="850" Width="1280"
                  MinHeight="400" MinWidth="650"
                  NonActiveGlowBrush="Silver"
@@ -38,6 +39,7 @@
         <ResourceDictionary>
             <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
             <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
             <conv:ServiceStatusToVisibilityConverter x:Key="ServiceStatusToVisibility"/>
             <conv:SelectedProviderToVisibilityConverter x:Key="SelectedProviderToVisibility"/>
             <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
@@ -172,13 +174,14 @@
                             <RowDefinition Height="Auto" MinHeight="120"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid>
+                        <Grid Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
                                 <ColumnDefinition />
@@ -188,7 +191,27 @@
                                       ItemsSource="{Binding MarketDataProviders}" DisplayMemberPath="ProviderName" FontWeight="Bold"/>
                         </Grid>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Grid Grid.Row="0" Visibility="{Binding NewDataProviderParametersRequired, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Provider Name" Margin="0,0,8,0" VerticalAlignment="Center" 
+                                       Style="{StaticResource SubHeaderTwoTextBlockStyle}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewDataProviderName, NotifyOnTargetUpdated=True}"/>
+
+                            <Button Grid.Row="1" Grid.Column="1" Content="Save" Margin="0,10,100,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding SaveNewProviderCommand}" CommandParameter="MarketDataProvider"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="Cancel" Margin="0,10,0,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding CancelCommand}" CommandParameter="MarketDataProvider"/>
+                        </Grid>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button ToolTip="Add new provider" Margin="20,0,0,0" Padding="0" Width="24"
                                     Command="{Binding AddProviderCommand}" CommandParameter="MarketDataProvider">
                                 <Image Width="13" Height="13" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
@@ -217,9 +240,38 @@
                         </Grid>
 
                         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="100,10,0,0" HorizontalAlignment="Left" 
-                                    Visibility="{Binding SelectedMarketDataProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                                    Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="MarketDataProvider"/>
                             <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="MarketDataProvider"/>
+                            <Button ToolTip="Save parameters" Margin="30,4,0,4" Padding="0" Width="24"
+                                    Command="{Binding SaveParametersCommand}" CommandParameter="MarketDataProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgCheck}" UseLayoutRounding="True"/>
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:2" BeginTime="0:0:4"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Row="4" Visibility="{Binding SelectedMarketDataProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding DataProviderInfoMessage, NotifyOnTargetUpdated=True}">
+                                <TextBlock.Triggers>
+                                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:0" To="1.0" />
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:2" From="1.0" To="0.0" BeginTime="0:0:4" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </TextBlock.Triggers>
+                            </TextBlock>
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -233,13 +285,14 @@
                             <RowDefinition Height="Auto" MinHeight="120"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid>
+                        <Grid Visibility="{Binding ExecutionProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
                                 <ColumnDefinition />
@@ -249,7 +302,27 @@
                                       ItemsSource="{Binding OrderExecutionProviders}" DisplayMemberPath="ProviderName" FontWeight="Bold"/>
                         </Grid>
 
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Grid Grid.Row="0" Visibility="{Binding NewExecutionProviderParametersRequired, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Provider Name" Margin="0,0,8,0" VerticalAlignment="Center" 
+                                       Style="{StaticResource SubHeaderTwoTextBlockStyle}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewExecutionProviderName, NotifyOnTargetUpdated=True}"/>
+
+                            <Button Grid.Row="1" Grid.Column="1" Content="Save" Margin="0,10,100,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding SaveNewProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="Cancel" Margin="0,10,0,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding CancelCommand}" CommandParameter="OrderExecutionProvider"/>
+                        </Grid>
+                        
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    Visibility="{Binding ExecutionProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Button ToolTip="Add new provider" Margin="20,0,0,0" Padding="0" Width="24"
                                     Command="{Binding AddProviderCommand}" CommandParameter="OrderExecutionProvider">
                                 <Image Width="13" Height="13" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
@@ -281,6 +354,35 @@
                                     Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
                             <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="OrderExecutionProvider"/>
                             <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                            <Button ToolTip="Save parameters" Margin="30,4,0,4" Padding="0" Width="24"
+                                    Command="{Binding SaveParametersCommand}" CommandParameter="OrderExecutionProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgCheck}" UseLayoutRounding="True"/>
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:2" BeginTime="0:0:3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4"  Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding ExecutionProviderInfoMessage, NotifyOnTargetUpdated=True}">
+                                <TextBlock.Triggers>
+                                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:0" To="1.0" />
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:2" From="1.0" To="0.0" BeginTime="0:0:4" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </TextBlock.Triggers>
+                            </TextBlock>
                         </StackPanel>
                     </Grid>
                 </Grid>
@@ -293,7 +395,7 @@
                                       HorizontalAlignment="Left" UseLayoutRounding="True">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <GroupBox Header="{Binding ServiceName}" Padding="0,0,8,2" Margin="0,0,0,4">
+                                    <GroupBox Header="{Binding ServiceDisplayName}" Padding="0,0,8,2" Margin="0,0,0,4">
                                         <DockPanel>
                                             <CheckBox DockPanel.Dock="Right" Content="Enabled" 
                                                       IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

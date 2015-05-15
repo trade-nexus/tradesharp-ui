@@ -1,0 +1,42 @@
+﻿<mah:MetroWindow x:Class="TradeHubGui.Views.StrategyInstanceSummary"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 GlowBrush="Silver"
+                 ShowInTaskbar="True"
+                 WindowStartupLocation="CenterScreen"
+                 Height="240" Width="480"
+                 MinHeight="100" MinWidth="200">
+    <DockPanel Background="#FFEEEEEE">
+
+        <Border BorderThickness="1,1,1,0" BorderBrush="CadetBlue" DockPanel.Dock="Top">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="INSTANCE SUMMARY" Margin="3" Style="{StaticResource SubHeaderTwoTextBlockStyle}" 
+                               HorizontalAlignment="Left" VerticalAlignment="Center" DockPanel.Dock="Left"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource ButtonToolBar}" ToolTip="Clear current information" Command="{Binding ClearDataCommand}"
+                            Margin="3" Width="28" Height="28" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Border BorderThickness="1,0,1,1" BorderBrush="CadetBlue">
+                <FlowDocumentScrollViewer
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Focusable="True" IsTabStop="False">
+                    <FlowDocument Background="White">
+                        <Paragraph FontFamily="Courier New" FontSize="13" FontWeight="Medium" Focusable="True">
+                            <ItemsControl ItemsSource="{Binding StrategyInstance.InstanceSummary}" Focusable="True"/>
+                        </Paragraph>
+                    </FlowDocument>
+                </FlowDocumentScrollViewer></Border>
+            </Grid>
+    </DockPanel>
+</mah:MetroWindow>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Media;
@@ -30,6 +31,11 @@ namespace TradeHubGui.Common.Models
         /// Brief Strategy Description
         /// </summary>
         private string _description;
+
+        /// <summary>
+        /// Summary of events/information as instance executes (depends on USER)
+        /// </summary>
+        private ObservableCollection<string> _instanceSummary;
 
         /// <summary>
         /// Contains Parameter details to be used by Strategy
@@ -106,6 +112,22 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
+        /// Summary of events/information as instance executes (depends on USER)
+        /// </summary>
+        public ObservableCollection<string> InstanceSummary
+        {
+            get { return _instanceSummary; }
+            set
+            {
+                if (InstanceSummary != value)
+                {
+                    _instanceSummary = value;
+                    OnPropertyChanged("InstanceSummary");
+                }
+            }
+        }
+
+        /// <summary>
         /// Contains Parameter details to be used by Strategy
         /// Key = Parameter Name
         /// Value = Parameter Type (e.g. Int32, String, Decimal, etc.) , Parameter Value if entered
@@ -175,7 +197,9 @@ namespace TradeHubGui.Common.Models
 
         public StrategyInstance()
         {
-            
+            // Initialize
+            _instanceSummary = new ObservableCollection<string>();
+            _executionDetails = new StrategyExecutionDetails();
         }
 
         /// <summary>
@@ -187,6 +211,7 @@ namespace TradeHubGui.Common.Models
         public StrategyInstance(string instanceKey, Dictionary<string, ParameterDetail> parameters, Type strategyType)
         {
             // Initialize
+            _instanceSummary = new ObservableCollection<string>();
             _executionDetails = new StrategyExecutionDetails();
 
             // Save information

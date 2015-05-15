@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
+using TraceSourceLogger;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.Utility;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Services;
 
 namespace TradeHubGui.ViewModel
@@ -102,6 +108,9 @@ namespace TradeHubGui.ViewModel
 
             // Get Initial Services information
             PopulateServices();
+
+            // Subscribe Events
+            EventSystem.Subscribe<ServiceDetails>(ManageServiceRequest);
         }
 
         #region Command Trigger Methods
@@ -152,23 +161,23 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void PopulateServices()
         {
-            //NOTE: Test code to simulate Services
-            // BEGIN:
-            TestCodeToGenerateDummayServicesData();
-            return;
-            // :END
-
             var availableServices = _servicesController.GetAvailableServices();
             foreach (var availableService in availableServices)
             {
                 Services.Add(availableService);
+
+                // Test Code
+                if (availableService.Status!=ServiceStatus.Disabled)
+                {
+                    availableService.Status= ServiceStatus.Running;
+                }
             }
 
             InitializeServices();
         }
 
         /// <summary>
-        /// Called when user hits the 'Start' button
+        /// Sends request to Start the given service
         /// </summary>
         /// <param name="serviceName"></param>
         private void StartService(string serviceName)
@@ -186,18 +195,11 @@ namespace TradeHubGui.ViewModel
 
             if (serviceDetails == null) return;
 
-            //NOTE: Test code to simulate Service Start
-            // BEGIN:
-            serviceDetails.Status = ServiceStatus.Starting;
-            serviceDetails.Status = ServiceStatus.Running;
-            return;
-            // :END
-
-            Task.Run(()=>_servicesController.StartService(serviceDetails));
+            _servicesController.StartService(serviceDetails);
         }
 
         /// <summary>
-        /// Called when user hits the 'Stop' Button
+        /// Sends request to stop the given service
         /// </summary>
         /// <param name="serviceName"></param>
         private void StopService(string serviceName)
@@ -215,14 +217,14 @@ namespace TradeHubGui.ViewModel
 
             if (serviceDetails == null) return;
 
-            //NOTE: Test code to simulate Service Start
-            // BEGIN:
-            serviceDetails.Status = ServiceStatus.Stopping;
-            serviceDetails.Status = ServiceStatus.Stopped;
-            return;
-            // :END
+            ////NOTE: Test code to simulate Service Start
+            //// BEGIN:
+            //serviceDetails.Status = ServiceStatus.Stopping;
+            //serviceDetails.Status = ServiceStatus.Stopped;
+            //return;
+            //// :END
 
-            Task.Run(() => _servicesController.StopService(serviceDetails));
+            _servicesController.StopService(serviceDetails);
         }
 
         /// <summary>
@@ -233,38 +235,39 @@ namespace TradeHubGui.ViewModel
             await Task.Run(() => _servicesController.InitializeServices());
         }
 
+        #region Handle Service Request
+
         /// <summary>
-        /// Dummy services information
+        /// Processes incoming service related request for appropriate action
         /// </summary>
-        private void TestCodeToGenerateDummayServicesData()
+        /// <param name="serviceRequestInfo"></param>
+        private void ManageServiceRequest(ServiceDetails serviceRequestInfo)
         {
-            {
-                ServiceDetails serviceDetails = new ServiceDetails("Market Data Service", ServiceStatus.Running);
+            ServiceDetails serviceDetails = null;
 
-                // Add to Observable collection to display on UI
-                Services.Add(serviceDetails);
+            // Find Actual Service object
+            foreach (var service in _services)
+            {
+                if (service.ServiceName.Equals(serviceRequestInfo.ServiceName))
+                {
+                    serviceDetails = service;
+                    break;
+                }
             }
 
-            {
-                ServiceDetails serviceDetails = new ServiceDetails("Order Execution Service", ServiceStatus.Running);
+            if (serviceDetails == null) return;
 
-                // Add to Observable collection to display on UI
-                Services.Add(serviceDetails);
+
+            if (serviceDetails.Status.Equals(ServiceStatus.Starting))
+            {
+                _servicesController.StartService(serviceDetails);
             }
-
+            else if (serviceDetails.Status.Equals(ServiceStatus.Stopping))
             {
-                ServiceDetails serviceDetails = new ServiceDetails("Position Service", ServiceStatus.Stopped);
-
-                // Add to Observable collection to display on UI
-                Services.Add(serviceDetails);
-            }
-
-            {
-                ServiceDetails serviceDetails = new ServiceDetails("Trade Service", ServiceStatus.Disabled);
-
-                // Add to Observable collection to display on UI
-                Services.Add(serviceDetails);
+                _servicesController.StopService(serviceDetails);
             }
         }
+
+        #endregion
     }
 }

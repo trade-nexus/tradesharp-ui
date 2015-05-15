@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,7 +18,7 @@ using TradeHubGui.StrategyRunner.Managers;
 
 namespace TradeHubGui.ViewModel
 {
-    public class BruteOptimizationViewModel : BaseViewModel
+    public class BruteOptimizationViewModel : BaseViewModel, IDisposable
     {
         #region Fields
 
@@ -26,7 +27,7 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Holds reference to UI dispatcher
         /// </summary>
-        private readonly Dispatcher _currentDispatcher;
+        private Dispatcher _currentDispatcher;
 
         /// <summary>
         /// Handles activities for Brute Force Optimization
@@ -48,7 +49,8 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _closeBruteOptimizationWindow;
         
         private Strategy _selectedStrategy;
-        
+        private bool _disposed = false;
+
         #endregion
 
         #region Constructors
@@ -139,7 +141,15 @@ namespace TradeHubGui.ViewModel
 
         private bool RunBruteOptimizationCanExecute()
         {
+            // Check if optimization process is running
+            if (BruteForceParameters.Status.Equals(OptimizationStatus.Working))
+            {
+                return false;
+            }
+
+            // Check if valid conditional parameters are entered
             var items = _bruteForceParameters.GetConditionalParameters();
+
             return (items.Count() > 0);
         }
 
@@ -165,7 +175,7 @@ namespace TradeHubGui.ViewModel
 
         private void CloseBruteOptimizationWindowExecute()
         {
-            _managerBruteForce.Dispose();
+            this.Dispose();
         }
 
         #endregion
@@ -190,6 +200,15 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ExecuteBruteForceOptimization()
         {
+            // Clear any existing details
+            OptimizationStatisticsCollection.Clear();
+
+            // Reset Iteration Count
+            BruteForceParameters.TotalIterations = 0;
+            BruteForceParameters.CompletedIterations = 0;
+            BruteForceParameters.RemainingIterations = 0;
+
+            // Notify listener to start execution
             EventSystem.Publish<BruteForceParameters>(BruteForceParameters);
         }
 
@@ -266,6 +285,37 @@ namespace TradeHubGui.ViewModel
             catch (Exception exception)
             {
                 Logger.Error(exception, _type.FullName, "ExportBruteForceResults");
+            }
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            GC.Collect();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    _managerBruteForce.Dispose();
+                    _optimizationStatisticsCollection.Clear();
+
+                    // Unsubscibe events
+                    EventSystem.Unsubscribe<OptimizationStatistics>(DisplayOptimizationStatistics);
+                }
+
+                // Release unmanaged resources.
+                _currentDispatcher = null;
+                _managerBruteForce = null;
+                _optimizationStatisticsCollection = null;
+                _disposed = true;
             }
         }
     }

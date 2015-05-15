@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TradeHubGui.Common;
+using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.ViewModel
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         private RelayCommand _showLogsCommand;
-
+        
         public MetroWindow MainWindow
         {
             get { return (MetroWindow)Application.Current.MainWindow; }

@@ -14,6 +14,9 @@ namespace TradeHubGui.TemplateSelectors
         public DataTemplate StartValueIntegerTemplate { get; set; }
         public DataTemplate StartValueUnsignedIntegerTemplate { get; set; }
         public DataTemplate StartValueDecimalTemplate { get; set; }
+        public DataTemplate StartValueDoubleTemplate { get; set; }
+        public DataTemplate StartValueSingleTemplate { get; set; }
+        public DataTemplate StartValueLongTemplate { get; set; }
         public DataTemplate StartValueStringTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -29,11 +32,25 @@ namespace TradeHubGui.TemplateSelectors
                 }
                 else if (detailOptimizationParameter.ParameterType == typeof(uint))
                 {
+                    detailOptimizationParameter.StartValue = Convert.ToInt32(detailOptimizationParameter.StartValue);
                     return StartValueUnsignedIntegerTemplate;
                 }
-                else if (detailOptimizationParameter.ParameterType == typeof(decimal) || detailOptimizationParameter.ParameterType == typeof(float) || detailOptimizationParameter.ParameterType == typeof(double))
+                else if (detailOptimizationParameter.ParameterType == typeof(float))
+                {
+                    detailOptimizationParameter.StartValue = Convert.ToSingle(detailOptimizationParameter.StartValue);
+                    return StartValueSingleTemplate;
+                }
+                else if (detailOptimizationParameter.ParameterType == typeof(decimal))
                 {
                     return StartValueDecimalTemplate;
+                }
+                else if (detailOptimizationParameter.ParameterType == typeof(double))
+                {
+                    return StartValueDoubleTemplate;
+                }
+                else if (detailOptimizationParameter.ParameterType == typeof(long))
+                {
+                    return StartValueLongTemplate;
                 }
             }
 
@@ -52,11 +69,47 @@ namespace TradeHubGui.TemplateSelectors
                 }
                 else if (detailBruteForceParameter.ParameterType == typeof(uint))
                 {
+                    if (detailBruteForceParameter.ParameterValue != null)
+                    {
+                        int convertedValue;
+
+                        // BOX - Unbox
+                        if (Int32.TryParse(detailBruteForceParameter.ParameterValue.ToString(), out convertedValue))
+                        {
+                            // Assign converted value
+                            detailBruteForceParameter.ParameterValue = convertedValue;
+                        }
+                    }
+
                     return StartValueUnsignedIntegerTemplate;
                 }
-                else if (detailBruteForceParameter.ParameterType == typeof(decimal) || detailBruteForceParameter.ParameterType == typeof(float) || detailBruteForceParameter.ParameterType == typeof(double))
+                else if (detailBruteForceParameter.ParameterType == typeof(float))
+                {
+                    if (detailBruteForceParameter.ParameterValue != null)
+                    {
+                        Single convertedValue;
+
+                        // BOX - Unbox
+                        if (Single.TryParse(detailBruteForceParameter.ParameterValue.ToString(), out convertedValue))
+                        {
+                            // Assign converted value
+                            detailBruteForceParameter.ParameterValue = convertedValue;
+                        }
+                    }
+
+                    return StartValueSingleTemplate;
+                }
+                else if (detailBruteForceParameter.ParameterType == typeof(decimal))
                 {
                     return StartValueDecimalTemplate;
+                }
+                else if (detailBruteForceParameter.ParameterType == typeof(double))
+                {
+                    return StartValueDoubleTemplate;
+                }
+                else if (detailBruteForceParameter.ParameterType == typeof(long))
+                {
+                    return StartValueLongTemplate;
                 }
             }
 

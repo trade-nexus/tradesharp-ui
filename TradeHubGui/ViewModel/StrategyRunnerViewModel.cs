@@ -1,4 +1,5 @@
-﻿using MahApps.Metro;
+﻿using System.Runtime.InteropServices;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
@@ -14,7 +15,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TraceSourceLogger;
+using TradeHubGui.Common.Infrastructure;
 using TradeHubGui.Common.Utility;
+using TradeHubGui.Dashboard.Services;
 using DomainModels = TradeHub.Common.Core.DomainModels;
 using TradeHub.StrategyEngine.Utlility.Services;
 using TradeHubGui.Common;
@@ -56,9 +59,12 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _removeStrategyCommand;
         private RelayCommand _selectProviderCommand;
         private RelayCommand _importInstancesCommand;
+        private RelayCommand _exportInstanceDataCommand;
+        private RelayCommand _instanceSummaryCommand;
 
         private string _strategyPath;
         private string _csvInstancesPath;
+        private string _instanceDescription;
 
         private Dictionary<string, ParameterDetail> _parameterDetails;
 
@@ -68,12 +74,25 @@ namespace TradeHubGui.ViewModel
         private StrategyController _strategyController;
 
         /// <summary>
+        /// Contains names for the available market data providers
+        /// </summary>
+        private ObservableCollection<string> _marketDataProviders;
+
+        /// <summary>
+        /// Contains names for the available order execution providers
+        /// </summary>
+        private ObservableCollection<string> _orderExecutionProviders;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         public StrategyRunnerViewModel()
         {
+            // Initialize objects
             _strategyController = new StrategyController();
             _strategies = new ObservableCollection<Strategy>();
+            _marketDataProviders = new ObservableCollection<string>();
+            _orderExecutionProviders = new ObservableCollection<string>();
 
             EnablePersistence = false;
 
@@ -85,6 +104,12 @@ namespace TradeHubGui.ViewModel
             {
                 SelectedStrategy = Strategies[0];
             }
+
+            // Populate Local maps for available Provider names
+            PopulateMarketDataProviders();
+            PopulateOrderExecutionProviders();
+
+            EventSystem.Subscribe<string>(OnApplicationClose);
         }
 
         #region Observable Collections
@@ -172,6 +197,32 @@ namespace TradeHubGui.ViewModel
                     _orderDetailsCollection = value;
                     OnPropertyChanged("OrderDetailsCollection");
                 }
+            }
+        }
+
+        /// <summary>
+        /// Contains names for the available market data providers
+        /// </summary>
+        public ObservableCollection<string> MarketDataProviders
+        {
+            get { return _marketDataProviders; }
+            set
+            {
+                _marketDataProviders = value;
+                OnPropertyChanged("MarketDataProviders");
+            }
+        }
+
+        /// <summary>
+        /// Contains names for the available order execution providers
+        /// </summary>
+        public ObservableCollection<string> OrderExecutionProviders
+        {
+            get { return _orderExecutionProviders; }
+            set
+            {
+                _orderExecutionProviders = value;
+                OnPropertyChanged("OrderExecutionProviders");
             }
         }
 
@@ -309,6 +360,19 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Brief description regarding each strategy instance
+        /// </summary>
+        public string InstanceDescription
+        {
+            get { return _instanceDescription; }
+            set
+            {
+                _instanceDescription = value;
+                OnPropertyChanged("InstanceDescription");
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -440,11 +504,37 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _importInstancesCommand ??
-                       (_importInstancesCommand = new RelayCommand(param => ImportInstancesExecute()));
+                       (_importInstancesCommand = new RelayCommand(param => ImportInstancesExecute(), param => ImportInstancesCanExecute()));
+            }
+        }
+
+        /// <summary>
+        /// Command used for opening folder dialog and saving strategy instance data
+        /// </summary>
+        public ICommand ExportInstanceDataCommand
+        {
+            get
+            {
+                return _exportInstanceDataCommand ??
+                       (_exportInstanceDataCommand = new RelayCommand(param => ExportInstanceDataExecute()));
+            }
+        }
+        
+        /// <summary>
+        /// Command used for opening Strategy Instance summary window
+        /// </summary>
+        public ICommand InstanceSummaryCommand
+        {
+            get
+            {
+                return _instanceSummaryCommand ??
+                       (_instanceSummaryCommand = new RelayCommand(param => InstanceSummaryExecute()));
             }
         }
 
         #endregion
+
+        #region Command Trigger Methods
 
         /// <summary>
         /// Displays Strategy Instance Parameter's window to edit input values
@@ -456,7 +546,12 @@ namespace TradeHubGui.ViewModel
             window.Tag = string.Format("Instance {0}", SelectedInstance.InstanceKey);
             window.Owner = MainWindow;
 
-            ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+            // Set Description field
+            InstanceDescription = SelectedInstance.Description;
+
+            // Set individual Instance parameters
+            ParameterDetails = SelectedInstance.Parameters.ToDictionary(entry => entry.Key,
+                entry => (ParameterDetail) entry.Value.Clone());
 
             window.ShowDialog();
         }
@@ -493,10 +588,11 @@ namespace TradeHubGui.ViewModel
         /// <param name="param"></param>
         private void CreateInstanceExecute(object param)
         {
-            var parameters = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+            var parameters = SelectedStrategy.ParameterDetails.ToDictionary(entry => entry.Key,
+                entry => (ParameterDetail) entry.Value.Clone());
 
             // Create a new Strategy Instance with provided parameters
-            var strategyInstance = SelectedStrategy.CreateInstance(parameters);
+            var strategyInstance = SelectedStrategy.CreateInstance(parameters, InstanceDescription);
 
             // Select created instance in DataGrid
             SelectedInstance = strategyInstance;
@@ -511,7 +607,7 @@ namespace TradeHubGui.ViewModel
             Task.Run(() => _strategyController.AddStrategyInstance(strategyInstance));
 
             // Close "Create Instance" window
-            ((Window)param).Close();
+            ((Window) param).Close();
         }
 
         /// <summary>
@@ -520,10 +616,9 @@ namespace TradeHubGui.ViewModel
         private void RunInstanceExecute()
         {
             SelectedInstance.Status = DomainModels.StrategyStatus.Initializing;
+
             // Request Strategy Controller to start selected Strategy Instance execution
             _strategyController.RunStrategy(SelectedInstance.InstanceKey);
-
-            //SelectedInstance.Status = DomainModels.StrategyStatus.Executing;
         }
 
         /// <summary>
@@ -533,8 +628,6 @@ namespace TradeHubGui.ViewModel
         {
             // Request Strategy Controller to Stop execution for selected Strategy Instance
             _strategyController.StopStrategy(SelectedInstance.InstanceKey);
-
-            //SelectedInstance.Status = DomainModels.StrategyStatus.None;
         }
 
         /// <summary>
@@ -542,8 +635,10 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void DeleteInstanceExecute()
         {
-            if ((Forms.DialogResult)WPFMessageBox.Show(MainWindow, string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey), "Strategy Runner",
-                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
+            if ((Forms.DialogResult)
+                WPFMessageBox.Show(MainWindow,
+                    string.Format("Delete strategy instance {0}?", SelectedInstance.InstanceKey), "Strategy Runner",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
             {
                 // Request Strategy Controller to remove the instance from working session
                 _strategyController.RemoveStrategyInstance(SelectedInstance.InstanceKey);
@@ -561,11 +656,15 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void EditInstanceParametersExecute(object param)
         {
+            // Update Description
+            SelectedInstance.Description = InstanceDescription;
+
             // Update Parameter Details
-            SelectedInstance.Parameters = ParameterDetails.ToDictionary(entry => entry.Key, entry => (ParameterDetail)entry.Value.Clone());
+            SelectedInstance.Parameters = ParameterDetails.ToDictionary(entry => entry.Key,
+                entry => (ParameterDetail) entry.Value.Clone());
 
             // Close "Edit Instance" window
-            ((Window)param).Close();
+            ((Window) param).Close();
         }
 
         /// <summary>
@@ -573,7 +672,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ShowGeneticOptimizationWindowExecute()
         {
-            if (TryActivateShownWindow(typeof(GeneticOptimizationWindow)))
+            if (TryActivateShownWindow(typeof (GeneticOptimizationWindow)))
             {
                 return;
             }
@@ -591,7 +690,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ShowBruteOptimizationWindowExecute()
         {
-            if (TryActivateShownWindow(typeof(BruteOptimizationWindow)))
+            if (TryActivateShownWindow(typeof (BruteOptimizationWindow)))
             {
                 return;
             }
@@ -614,12 +713,12 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void LoadStrategyExecute()
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
             openFileDialog.Title = "Load Strategy File";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Filter = "Assembly Files (.dll)|*.dll|All Files (*.*)|*.*";
-            System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
+            Forms.DialogResult result = openFileDialog.ShowDialog();
+            if (result == Forms.DialogResult.OK)
             {
                 // Save selected '.dll' path
                 StrategyPath = openFileDialog.FileName;
@@ -634,8 +733,10 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void RemoveStrategyExecute()
         {
-            if ((Forms.DialogResult)WPFMessageBox.Show(MainWindow, string.Format("Remove strategy {0}?", SelectedStrategy.Key), "Strategy Runner",
-                MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
+            if ((Forms.DialogResult)
+                WPFMessageBox.Show(MainWindow, string.Format("Remove strategy {0}?", SelectedStrategy.Key),
+                    "Strategy Runner",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.Yes) == Forms.DialogResult.Yes)
             {
                 // Stop/Remove all Strategy Instances
                 foreach (string instanceKey in SelectedStrategy.StrategyInstances.Keys)
@@ -658,17 +759,23 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        private bool ImportInstancesCanExecute()
+        {
+            if (SelectedStrategy == null) return false;
+            return true;
+        }
+
         /// <summary>
         /// Opens File Dialog to use '.csv' file for loading strategy instances
         /// </summary>
         private void ImportInstancesExecute()
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            Forms.OpenFileDialog openFileDialog = new Forms.OpenFileDialog();
             openFileDialog.Title = "Import Instances";
             openFileDialog.CheckFileExists = true;
             openFileDialog.Filter = "CSV Files (.csv)|*.csv|All Files (*.*)|*.*";
-            System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
+            Forms.DialogResult result = openFileDialog.ShowDialog();
+            if (result == Forms.DialogResult.OK)
             {
                 CsvInstancesPath = openFileDialog.FileName;
 
@@ -676,23 +783,55 @@ namespace TradeHubGui.ViewModel
             }
         }
 
-        private bool TryActivateShownWindow(Type typeOfWindow)
+        /// <summary>
+        /// Triggered when 'Export Instance Data' button is clicked
+        /// </summary>
+        private void ExportInstanceDataExecute()
         {
-            if (Application.Current != null)
+            string folderPath = string.Empty;
+
+            // Get Directory in which to save stats
+            using (System.Windows.Forms.FolderBrowserDialog form = new System.Windows.Forms.FolderBrowserDialog())
             {
-                foreach (Window window in Application.Current.Windows)
+                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    if (window.GetType() == typeOfWindow)
-                    {
-                        window.WindowState = WindowState.Normal;
-                        window.Activate();
-                        return true;
-                    }
+                    folderPath = form.SelectedPath;
                 }
             }
 
-            return false;
+            // Save data
+            Task.Run(
+                () => PersistCsv.SaveData(folderPath,
+                        _strategyController.GetStrategyInstanceLocalData(SelectedInstance.InstanceKey),
+                        SelectedInstance.InstanceKey));
         }
+
+        /// <summary>
+        /// Opens a new Instance Summary window
+        /// </summary>
+        private void InstanceSummaryExecute()
+        {
+            if (SelectedInstance == null) return;
+
+            string title = string.Format("{0} ({1})", SelectedInstance.InstanceKey, SelectedStrategy.Name);
+
+            // if Summary window is already shown, just activate it
+            StrategyInstanceSummary instanceSummaryWindow = (StrategyInstanceSummary)FindWindowByTitle(title);
+            if (instanceSummaryWindow != null)
+            {
+                instanceSummaryWindow.WindowState = WindowState.Normal;
+                instanceSummaryWindow.Activate();
+                return;
+            }
+
+            // if Summary window is not already shown, create the new one and show it
+            instanceSummaryWindow = new StrategyInstanceSummary();
+            instanceSummaryWindow.DataContext = new StrategyInstanceSummaryViewModel(SelectedInstance);
+            instanceSummaryWindow.Title = title;
+            instanceSummaryWindow.Show();
+        }
+
+        #endregion
 
         /// <summary>
         /// Displays Strategy Instances created against selected Strategy
@@ -749,7 +888,6 @@ namespace TradeHubGui.ViewModel
         private async void AddMultipleInstanceFromFile(string fileName)
         {
             var instances = await Task.Run(() => CreateMultipleStrategyInstances(fileName));
-            //var instances = CreateMultipleStrategyInstances(fileName);
 
             // Update UI
             LoadMultipleInstances(instances);
@@ -789,7 +927,7 @@ namespace TradeHubGui.ViewModel
                 }
 
                 // Create a new Strategy Instance with provided parameters
-                var strategyInstance = SelectedStrategy.CreateInstance(instanceParameters);
+                var strategyInstance = SelectedStrategy.CreateInstance(instanceParameters, "");
 
                 // Add to local Map
                 instances.Add(strategyInstance);
@@ -807,17 +945,11 @@ namespace TradeHubGui.ViewModel
         /// <param name="instances">List of Strategy Instance objects</param>
         private void LoadMultipleInstances(IList<StrategyInstance> instances)
         {
-            System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-            stopWatch.Start();
-
             foreach (StrategyInstance strategyInstance in instances)
             {
                 // Display Strategy Instance on UI
                 Instances.Add(strategyInstance);
             }
-
-            stopWatch.Stop();
-            Console.WriteLine("LoadMultipleInstances method runtime ---> " + stopWatch.Elapsed);
 
             // Select the 1st instance from DataGrid
             SelectedInstance = Instances.Count > 0 ? Instances[0] : null;
@@ -828,7 +960,7 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
-        /// Creates a new strategy object
+        /// Adds a new Strategy object to UI collection
         /// </summary>
         /// <param name="strategyPath">Path from which to load the strategy</param>
         private void AddStrategy(string strategyPath)
@@ -841,6 +973,12 @@ namespace TradeHubGui.ViewModel
 
                 // Update Observable Collection
                 Strategies.Add(strategy);
+            }
+            else
+            {
+                // Display Error message
+                WPFMessageBox.Show(MainWindow,"Selected library is not a valid TradeHub Strategy.", "Strategy Runner",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -877,6 +1015,73 @@ namespace TradeHubGui.ViewModel
 
             // Return created Strategy
             return strategy;
+        }
+
+        /// <summary>
+        /// Populate market data provider names
+        /// </summary>
+        private void PopulateMarketDataProviders()
+        {
+            // Clear any existing values
+            MarketDataProviders.Clear();
+
+            // Populate Individual Market Data Provider Details
+            foreach (var provider in ProvidersController.MarketDataProviders)
+            {
+                // Add to Collection
+                MarketDataProviders.Add(provider.ProviderName);
+            }
+        }
+
+        /// <summary>
+        /// Populate order execution provider names
+        /// </summary>
+        private void PopulateOrderExecutionProviders()
+        {
+            // Clear any existing values
+            OrderExecutionProviders.Clear();
+
+            // Travers Individual Order Execution Provider Details
+            foreach (var provider in ProvidersController.OrderExecutionProviders)
+            {
+                // Add to Collection
+                OrderExecutionProviders.Add(provider.ProviderName);
+            }
+        }
+
+        /// <summary>
+        /// Used for activiting windows opened from strategy runner view
+        /// </summary>
+        /// <param name="typeOfWindow"></param>
+        /// <returns></returns>
+        private bool TryActivateShownWindow(Type typeOfWindow)
+        {
+            if (Application.Current != null)
+            {
+                foreach (Window window in Application.Current.Windows)
+                {
+                    if (window.GetType() == typeOfWindow)
+                    {
+                        window.WindowState = WindowState.Normal;
+                        window.Activate();
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Called when application is closing
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnApplicationClose(string message)
+        {
+            if (message.Equals("Close"))
+            {
+                _strategyController.Close();
+            }
         }
     }
 }

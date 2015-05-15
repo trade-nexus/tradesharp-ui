@@ -71,6 +71,7 @@ namespace TradeHubGui.StrategyRunner.Managers
 
             //_asyncClassLogger = ContextRegistry.GetContext()["StrategyRunnerLogger"] as AsyncClassLogger;
             _asyncClassLogger = new AsyncClassLogger("OptimizationManagerBruteForce");
+            _asyncClassLogger.SetLoggingLevel();
 
             // Initialize
             _ctorArguments = new List<object[]>();
@@ -159,6 +160,9 @@ namespace TradeHubGui.StrategyRunner.Managers
                     EventSystem.Publish<OptimizationStatistics>(optimizationStatistics);
                 }
 
+                // Save total number of iterations count
+                _optimizationParameters.TotalIterations = _strategiesCollection.Count;
+
                 // Start executing each instance
                 StartStrategyExecution();
             }
@@ -171,7 +175,6 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// <summary>
         /// Strats executing individual strategy instances created for each iteration
         /// </summary>
-        //[MethodImpl(MethodImplOptions.Synchronized)]
         private void StartStrategyExecution()
         {
             try
@@ -196,6 +199,7 @@ namespace TradeHubGui.StrategyRunner.Managers
                 {
                     // Change Status to indicate on UI
                     _optimizationParameters.Status = OptimizationStatus.Completed;
+                    EventSystem.Publish<UiElement>();
                 }
                 // Execute each instance on a separate thread
                 // Parallel.ForEach(_strategiesCollection.Values,
@@ -291,7 +295,6 @@ namespace TradeHubGui.StrategyRunner.Managers
         /// </summary>
         /// <param name="key">Unique Key to identify the Strategy</param>
         /// <param name="status">indicates whether the strategy is running or stopped</param>
-        //[MethodImpl(MethodImplOptions.Synchronized)]
         private void OnStrategyExecutorStatusChanged(string key, StrategyStatus status)
         {
             try
@@ -302,7 +305,7 @@ namespace TradeHubGui.StrategyRunner.Managers
                 }
 
                 // Get Statistics if the strategy is completed
-                if (status==StrategyStatus.Executed)
+                if (status == StrategyStatus.Executed)
                 {
                     StrategyExecutor strategyExecutor;
                     if (_strategiesCollection.TryRemove(key, out strategyExecutor))
@@ -321,8 +324,16 @@ namespace TradeHubGui.StrategyRunner.Managers
                         // Stop Strategy
                         strategyExecutor.StopStrategy();
 
-                        // Close all connections
-                        strategyExecutor.Close();
+                        //// Close all connections
+                        //strategyExecutor.Close();
+
+                        // Dispose
+                        strategyExecutor.Dispose();
+
+                        // Update Iterations information
+                        _optimizationParameters.CompletedIterations += 1;
+                        _optimizationParameters.RemainingIterations = _optimizationParameters.TotalIterations -
+                                                                      _optimizationParameters.CompletedIterations;
 
                         // Execute next iteration
                         StartStrategyExecution();
@@ -378,7 +389,12 @@ namespace TradeHubGui.StrategyRunner.Managers
                     _ctorArguments.Clear();
                     _strategiesCollection.Clear();
                 }
+
                 // Release unmanaged resources.
+                _asyncClassLogger = null;
+                _ctorArguments = null;
+                _strategiesCollection = null;
+                _currentDispatcher = null;
                 _disposed = true;
             }
         }

@@ -11,6 +11,8 @@ using TradeHub.StrategyEngine.OrderExecution;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.Utility;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Managers;
 using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
 
@@ -62,6 +64,9 @@ namespace TradeHubGui.Dashboard.Services
             // Register Event to receive connect/disconnect requests
             EventSystem.Subscribe<OrderExecutionProvider>(NewConnectionRequest);
             EventSystem.Subscribe<OrderRequest>(NewOrderRequest);
+
+            // Register Event to receive Service notifications
+            EventSystem.Subscribe<ServiceDetails>(OnServiceStatusModification);
         }
 
         /// <summary>
@@ -250,6 +255,9 @@ namespace TradeHubGui.Dashboard.Services
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Connected;
+
+                // Raise event to update UI
+                EventSystem.Publish<UiElement>(new UiElement());
             }
         }
 
@@ -263,6 +271,9 @@ namespace TradeHubGui.Dashboard.Services
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Disconnected;
+
+                // Raise event to update UI
+                EventSystem.Publish<UiElement>(new UiElement());
             }
         }
 
@@ -370,6 +381,25 @@ namespace TradeHubGui.Dashboard.Services
         }
 
         #endregion
+        
+        /// <summary>
+        /// Called when Service status is modified
+        /// </summary>
+        /// <param name="serviceDetails"></param>
+        private void OnServiceStatusModification(ServiceDetails serviceDetails)
+        {
+            if (serviceDetails.ServiceName.Equals(GetEnumDescription.GetValue(Common.Constants.Services.OrderExecutionService)))
+            {
+                if (serviceDetails.Status.Equals(ServiceStatus.Running))
+                {
+                    _orderExecutionManager.Connect();
+                }
+                else if (serviceDetails.Status.Equals(ServiceStatus.Stopped))
+                {
+                    _orderExecutionManager.Disconnect();
+                }
+            }
+        }
 
         /// <summary>
         /// Stops all order execution related activities

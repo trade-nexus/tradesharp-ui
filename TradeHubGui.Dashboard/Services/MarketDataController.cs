@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
@@ -12,6 +13,7 @@ using TradeHub.StrategyEngine.MarketData;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.Utility;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Managers;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
@@ -24,6 +26,11 @@ namespace TradeHubGui.Dashboard.Services
     public class MarketDataController
     {
         private Type _type = typeof (MarketDataController);
+
+        /// <summary>
+        /// Holds UI thread reference
+        /// </summary>
+        private Dispatcher _currentDispatcher;
 
         /// <summary>
         /// Responsible for providing requested market data functionality
@@ -44,6 +51,8 @@ namespace TradeHubGui.Dashboard.Services
         /// <param name="historicalDataService">Provides communication access with Market Data Server for historical data</param>
         public MarketDataController(MarketDataService marketDataService, HistoricalDataService historicalDataService)
         {
+            this._currentDispatcher = Dispatcher.CurrentDispatcher;
+
             // Initialize Manager
             _marketDataManager = new MarketDataManager(marketDataService, historicalDataService);
 
@@ -67,8 +76,11 @@ namespace TradeHubGui.Dashboard.Services
 
             // Register Event to receive subscribe/unsubscribe requests
             EventSystem.Subscribe<SubscriptionRequest>(NewSubscriptionRequest);
-        }
 
+            // Register Event to receive service notifications
+            EventSystem.Subscribe<ServiceDetails>(OnServiceStatusModification);
+        }
+        
         /// <summary>
         /// Subscribe events to receive incoming data and responses from Market Data Manager
         /// </summary>
@@ -219,6 +231,9 @@ namespace TradeHubGui.Dashboard.Services
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Connected;
+
+                // Raise event to update UI
+                EventSystem.Publish<UiElement>(new UiElement());
             }
         }
 
@@ -232,6 +247,9 @@ namespace TradeHubGui.Dashboard.Services
             if (_providersMap.TryGetValue(providerName, out provider))
             {
                 provider.ConnectionStatus = ConnectionStatus.Disconnected;
+
+                // Raise event to update UI
+                EventSystem.Publish<UiElement>(new UiElement());
             }
         }
 
@@ -284,6 +302,25 @@ namespace TradeHubGui.Dashboard.Services
         }
 
         #endregion
+
+        /// <summary>
+        /// Called when Service status is modified
+        /// </summary>
+        /// <param name="serviceDetails"></param>
+        private void OnServiceStatusModification(ServiceDetails serviceDetails)
+        {
+            if (serviceDetails.ServiceName.Equals(GetEnumDescription.GetValue(Common.Constants.Services.MarketDataService)))
+            {
+                if (serviceDetails.Status.Equals(ServiceStatus.Running))
+                {
+                    _marketDataManager.Connect();
+                }
+                else if (serviceDetails.Status.Equals(ServiceStatus.Stopped))
+                {
+                    _marketDataManager.Disconnect();
+                }
+            }
+        }
 
         /// <summary>
         /// Stops all market data related activities

@@ -321,7 +321,13 @@
 		<Setter Property="Foreground" Value="{StaticResource BaseBrush0}" />
 	</Style>
 
-	<Style x:Key="ContentBorderStyle" TargetType="Border">
+    <Style x:Key="SubHeaderTwoTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
+        <Setter Property="Foreground" Value="{StaticResource BaseBrush0}" />
+    </Style>
+
+    <Style x:Key="ContentBorderStyle" TargetType="Border">
 		<Setter Property="Background" Value="White"/>
 		<Setter Property="CornerRadius" Value="0"/>
 		<Setter Property="Effect">

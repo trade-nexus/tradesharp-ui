@@ -23,7 +23,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="{Binding Key}"/>
-                <wpfToolkitExtended:IntegerUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment="1" />
+                <wpfToolkitExtended:IntegerUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment="1"/>
             </Grid>
         </DataTemplate>
 
@@ -34,7 +34,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="{Binding Key}"/>
-                <wpfToolkitExtended:IntegerUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment="1" Minimum="0"/>
             </Grid>
         </DataTemplate>
 
@@ -45,7 +45,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="{Binding Key}"/>
-                <wpfToolkitExtended:SingleUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment=".01" />
+                <wpfToolkitExtended:SingleUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment=".01"/>
             </Grid>
         </DataTemplate>
 
@@ -56,7 +56,29 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="{Binding Key}"/>
-                <wpfToolkitExtended:DecimalUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment=".01" />
+                <wpfToolkitExtended:DecimalUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment=".01"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DoubleDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <wpfToolkitExtended:DoubleUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment=".01"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LongDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <wpfToolkitExtended:LongUpDown Grid.Column="1" Value="{Binding Value.ParameterValue}" Increment="1" IsTabStop="True"/>
             </Grid>
         </DataTemplate>
 
@@ -70,6 +92,31 @@
                 <TextBox Grid.Column="1" Text="{Binding Value.ParameterValue}"/>
             </Grid>
         </DataTemplate>
+        
+        <DataTemplate x:Key="MarketDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <ComboBox Grid.Column="1" SelectedItem="{Binding Value.ParameterValue}" 
+                          ItemsSource="{Binding DataContext.MarketDataProviders, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="OrderExecutionTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" Content="{Binding Key}"/>
+                <ComboBox Grid.Column="1" SelectedItem="{Binding Value.ParameterValue}" 
+                          ItemsSource="{Binding DataContext.OrderExecutionProviders, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+            </Grid>
+        </DataTemplate>
+        
     </UserControl.Resources>
 
     <ItemsControl ItemTemplateSelector="{StaticResource ParameterDetailsTemplateSelector}"

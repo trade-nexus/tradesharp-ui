@@ -69,6 +69,8 @@ namespace TradeHubGui.Dashboard.Services
             if (availableProvidersInformation == null)
                 return null;
 
+            MarketDataProviders.Clear();
+
             // Populate Individual Market Data Provider details
             foreach (var keyValuePair in availableProvidersInformation)
             {
@@ -99,6 +101,8 @@ namespace TradeHubGui.Dashboard.Services
             if (availableProvidersInformation == null)
                 return null;
 
+            OrderExecutionProviders.Clear();
+
             // Populate Individual Order Execution Provider details
             foreach (var keyValuePair in availableProvidersInformation)
             {
@@ -121,18 +125,61 @@ namespace TradeHubGui.Dashboard.Services
         /// Modifies respective provider credentails as per given details
         /// </summary>
         /// <param name="provider">Provider who's credentials are to be modified</param>
-        public void EditProviderCredentials(Provider provider)
+        public bool EditProviderCredentials(Provider provider)
         {
             // Handle Market Data Provider
             if (provider.ProviderType.Equals(ProviderType.MarketData))
             {
-                _dataProvidersManager.EditProviderCredentials(provider);
+                return _dataProvidersManager.EditProviderCredentials(provider);
             }
             // Handle Order Execution Provider
             else if (provider.ProviderType.Equals(ProviderType.OrderExecution))
             {
-                _executionProvidersManager.EditProviderCredentials(provider);
+                return _executionProvidersManager.EditProviderCredentials(provider);
             }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Adds given connector library as Market Data Provider in the Server
+        /// </summary>
+        /// <param name="connectorPath">Connector library path</param>
+        /// <param name="providerName">Name to be used for the given connector</param>
+        public Tuple<bool, string> AddMarketDataProvider(string connectorPath, string providerName)
+        {
+            return _dataProvidersManager.AddProvider(connectorPath, providerName);
+        }
+
+        /// <summary>
+        /// Adds given connector library as Order Execution Provider in the Server
+        /// </summary>
+        /// <param name="connectorPath">Connector library path</param>
+        /// <param name="providerName">Name to be used for the given connector</param>
+        /// <returns></returns>
+        public Tuple<bool, string> AddOrderExecutionProvider(string connectorPath, string providerName)
+        {
+            return _executionProvidersManager.AddProvider(connectorPath, providerName);
+        }
+
+        /// <summary>
+        /// Removes given Data provider Order Execution Provider from the Server
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        public Tuple<bool, string> RemoveMarketDataProvider(Provider provider)
+        {
+            return _dataProvidersManager.RemoveProvider(provider);
+        }
+
+        /// <summary>
+        /// Removes given Execution provider Order Execution Provider from the Server
+        /// </summary>
+        /// <param name="provider"></param>
+        /// <returns></returns>
+        public Tuple<bool, string> RemoveOrderExecutionProvider(Provider provider)
+        {
+            return _executionProvidersManager.RemoveProvider(provider);
         }
     }
 }

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:conv="clr-namespace:TradeHubGui.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200"
@@ -116,14 +117,14 @@
                                                 <TextBlock Text="Brute optimization" />
                                             </StackPanel>
                                         </Button>
-                                        <Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="10,0,0,0" ToolTip="Select providers" Focusable="False"
+                                        <!--<Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="10,0,0,0" ToolTip="Select providers" Focusable="False"
                                                 Command="{Binding DataContext.SelectProviderCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
                                             <Image Width="14" Height="14" Margin="2" Source="{StaticResource imgProviders}" UseLayoutRounding="True"/>
                                         </Button>
                                         <Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="0,0,4,0" ToolTip="Remove strategy" Focusable="False"
                                                 Command="{Binding DataContext.RemoveStrategyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
                                             <Image Width="10" Height="10" Margin="2" Source="{StaticResource imgClose}" UseLayoutRounding="True"/>
-                                        </Button>
+                                        </Button>-->
                                     </StackPanel>
                                 </DockPanel>
                             </DataTemplate>
@@ -167,8 +168,21 @@
                                     IsReadOnly="False"
                                     SelectionUnit="FullRow"
                                     AutoGenerateColumns="False">
+                        
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="Key" Width="0.3*" MinWidth="100" SortMemberPath="InstanceKey" IsReadOnly="True">
+                            <DataGridTemplateColumn Width="32" IsReadOnly="True" CanUserResize="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                            <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Strategy Instance Summary" IsEnabled="True"
+                                                    Command="{Binding DataContext.InstanceSummaryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                                <Image Width="15" Height="15" Margin="0" Source="{StaticResource imgInformation}" UseLayoutRounding="True"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Key" Width="0.3*" MinWidth="100" SortMemberPath="InstanceKey" IsReadOnly="True" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border Padding="10,0,8,1" Margin="0,-12" Background="#0FFF" BorderThickness="9,0,0,0" 
@@ -180,7 +194,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Description" Width="0.5*" MinWidth="50" Binding="{Binding Path=Description}" IsReadOnly="False"/>
-                            <DataGridTemplateColumn Header="Status" Width="0.2*" MinWidth="100" IsReadOnly="True">
+                            <DataGridTemplateColumn Header="Status" Width="0.1*" MinWidth="60" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource StatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -189,7 +203,7 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn Header="Actions" Width="122" IsReadOnly="True">
+                            <DataGridTemplateColumn Header="Actions" Width="152" IsReadOnly="True">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
@@ -219,10 +233,17 @@
                                             </Button>
 
                                             <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete instance"
-                                                        IsEnabled="True"
-                                                        Command="{Binding DataContext.DeleteInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                                    IsEnabled="True"
+                                                    Command="{Binding DataContext.DeleteInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                 <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
                                             </Button>
+
+                                            <Button Focusable="False" Style="{StaticResource ButtonToolBar}" ToolTip="Export local data"
+                                                    IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}, ConverterParameter=Invert}"
+                                                    Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                                <Image Width="12" Height="12" Margin="2,0,0,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
+                                            </Button>
+
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -277,10 +298,10 @@
                 <GridSplitter Grid.Row="1" ResizeDirection="Rows" />
 
                 <DockPanel Grid.Row="2" Margin="10,20,10,10">
-                    <StackPanel DockPanel.Dock="Top" Margin="10,0" Orientation="Horizontal">
+                    <DockPanel DockPanel.Dock="Top" Margin="10,0" >
                         <TextBlock Text="ORDERS" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
                         <TextBlock Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource SubHeaderTextBlockStyle}" FontWeight="SemiBold"/>
-                    </StackPanel>
+                    </DockPanel>
 
                     <DataGrid x:Name="OrdersDataGrid" Margin="10"
                               ItemsSource="{Binding OrderDetailsCollection}"
@@ -297,6 +318,7 @@
 
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Order ID" Width="0.22*" MinWidth="80" Binding="{Binding Path=ID}" />
+                            <DataGridTextColumn Header="Symbol" Width="0.2*" MinWidth="100" Binding="{Binding Path=Security.Symbol}" />
                             <DataGridTextColumn Header="Side" Width="0.15*" MinWidth="50" Binding="{Binding Path=Side}" />
                             <DataGridTextColumn Header="Price" Width="0.2*" MinWidth="50" Binding="{Binding Path=Price}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
                             <DataGridTextColumn Header="Quantity" Width="0.22*" MinWidth="70" Binding="{Binding Path=Quantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>

@@ -140,13 +140,14 @@ namespace TradeHubGui.Common.ValueObjects
         /// <summary>
         /// Sets information for Historical bar data subscription
         /// </summary>
-        public void SetHistoricalBarDetails(string barType, DateTime startDate, DateTime endDate)
+        public void SetHistoricalBarDetails(string barType, uint interval, DateTime startDate, DateTime endDate)
         {
             // Initialize object
             _historicalBarDetail = new HistoricalBarParameters();
 
             // Set parameters
             _historicalBarDetail.Type = barType;
+            _historicalBarDetail.Interval = interval;
             _historicalBarDetail.StartDate = startDate;
             _historicalBarDetail.EndDate = endDate;
         }

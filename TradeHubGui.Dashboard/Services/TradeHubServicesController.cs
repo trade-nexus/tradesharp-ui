@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TraceSourceLogger;
+using TradeHubGui.Common;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Managers;
@@ -51,11 +53,21 @@ namespace TradeHubGui.Dashboard.Services
         /// Starts given service
         /// </summary>
         /// <param name="serviceDetails">Contains service information</param>
-        public void StartService(ServiceDetails serviceDetails)
+        public async void StartService(ServiceDetails serviceDetails)
         {
             if (serviceDetails.Status.Equals(ServiceStatus.Stopped))
             {
-                _servicesManager.StartService(serviceDetails);
+                await Task.Run(() =>
+                {
+                    _servicesManager.StartService(serviceDetails);
+
+                });
+            }
+
+            // Notify listeners if the service is running
+            if (serviceDetails.Status == ServiceStatus.Running)
+            {
+                EventSystem.Publish<ServiceDetails>(serviceDetails);
             }
         }
 
@@ -63,11 +75,21 @@ namespace TradeHubGui.Dashboard.Services
         /// Stop given service
         /// </summary>
         /// <param name="serviceDetails">Contains service information</param>
-        public void StopService(ServiceDetails serviceDetails)
+        public async void StopService(ServiceDetails serviceDetails)
         {
             if (serviceDetails.Status.Equals(ServiceStatus.Running))
             {
-                _servicesManager.StopService(serviceDetails);
+                await Task.Run(() =>
+                {
+                    _servicesManager.StopService(serviceDetails);
+
+                });
+            }
+
+            // Notify listeners if the service is running
+            if (serviceDetails.Status == ServiceStatus.Stopped)
+            {
+                EventSystem.Publish<ServiceDetails>(serviceDetails);
             }
         }
     }

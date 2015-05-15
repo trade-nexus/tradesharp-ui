@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using TradeHubGui.Common.Infrastructure;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Dashboard.Services;
 
@@ -136,5 +137,13 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
         }
 
+        [Test]
+        [Category("Integration")]
+        public void ModifyApplicationConfigFile()
+        {
+            bool result = XmlFileManager.ModifyAppConfigForSpringObject("SampleConfigFile.config", @"~/Config/Sample");
+
+            Assert.IsTrue(result);
+        }
     }
 }

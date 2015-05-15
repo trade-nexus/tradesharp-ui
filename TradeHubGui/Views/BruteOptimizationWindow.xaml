@@ -34,13 +34,31 @@
 
         <DataTemplate x:Key="StartValueUnsignedIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0"/>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="StartValueDecimalTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:DecimalUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StartValueDoubleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DoubleUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="StartValueSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.01"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="StartValueLongTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:LongUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
             </Border>
         </DataTemplate>
 
@@ -52,22 +70,40 @@
 
         <DataTemplate x:Key="EndValueIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="EndValueUnsignedIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0"/>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="EndValueDecimalTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:DecimalUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="EndValueDoubleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DoubleUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EndValueSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.01"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EndValueLongTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:LongUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
+        
         <DataTemplate x:Key="EndValueStringTemplate">
             <Border Background="#8FFF"/>
         </DataTemplate>
@@ -80,16 +116,34 @@
 
         <DataTemplate x:Key="IncrementUnsignedIntegerTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0" />
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0"/>
             </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="IncrementDecimalTemplate">
             <Border Background="#8FFF">
-                <wpfToolkitExtended:DecimalUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" />
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IncrementDoubleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DoubleUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
             </Border>
         </DataTemplate>
         
+        <DataTemplate x:Key="IncrementSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.01"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IncrementLongTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:LongUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
+
         <DataTemplate x:Key="IncrementStringTemplate">
             <Border Background="#8FFF"/>
         </DataTemplate>
@@ -167,6 +221,9 @@
                                         StartValueIntegerTemplate="{StaticResource StartValueIntegerTemplate}"
                                         StartValueUnsignedIntegerTemplate="{StaticResource StartValueUnsignedIntegerTemplate}"
                                         StartValueDecimalTemplate="{StaticResource StartValueDecimalTemplate}"
+                                        StartValueDoubleTemplate="{StaticResource StartValueDoubleTemplate}"
+                                        StartValueSingleTemplate="{StaticResource StartValueSingleTemplate}"
+                                        StartValueLongTemplate="{StaticResource StartValueLongTemplate}"
                                         StartValueStringTemplate="{StaticResource StartValueStringTemplate}"/>
                             </DataGridTemplateColumn.CellTemplateSelector>
                         </DataGridTemplateColumn>
@@ -176,6 +233,9 @@
                                         EndValueIntegerTemplate="{StaticResource EndValueIntegerTemplate}"
                                         EndValueUnsignedIntegerTemplate="{StaticResource EndValueUnsignedIntegerTemplate}"
                                         EndValueDecimalTemplate="{StaticResource EndValueDecimalTemplate}"
+                                        EndValueDoubleTemplate="{StaticResource EndValueDoubleTemplate}"
+                                        EndValueSingleTemplate="{StaticResource EndValueSingleTemplate}"
+                                        EndValueLongTemplate="{StaticResource EndValueLongTemplate}"
                                         EndValueStringTemplate="{StaticResource EndValueStringTemplate}"/>
                             </DataGridTemplateColumn.CellTemplateSelector>
                         </DataGridTemplateColumn>
@@ -185,6 +245,9 @@
                                         IncrementIntegerTemplate="{StaticResource IncrementIntegerTemplate}"
                                         IncrementUnsignedIntegerTemplate="{StaticResource IncrementUnsignedIntegerTemplate}"
                                         IncrementDecimalTemplate="{StaticResource IncrementDecimalTemplate}"
+                                        IncrementDoubleTemplate="{StaticResource IncrementDoubleTemplate}"
+                                        IncrementSingleTemplate="{StaticResource IncrementSingleTemplate}"
+                                        IncrementLongTemplate="{StaticResource IncrementLongTemplate}"
                                         IncrementStringTemplate="{StaticResource IncrementStringTemplate}"/>
                             </DataGridTemplateColumn.CellTemplateSelector>
                         </DataGridTemplateColumn>
@@ -195,13 +258,33 @@
             <GridSplitter Grid.Column="1" Grid.RowSpan="2" ResizeDirection="Columns"/>
 
 
-            <Button Grid.Row="0" Grid.Column="2" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20,40,20,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Command="{Binding ExportBruteOptimizationCommand}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}"/>
-                    <TextBlock Text="Export"/>
-                </StackPanel>
-            </Button>
+            <DockPanel Grid.Row="0" Grid.Column="2">
+                
+                <WrapPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Total Iterations" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.TotalIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Completed" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.CompletedIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Remaining" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.RemainingIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </WrapPanel>
+                
+                <Button  MinWidth="75" IsEnabled="True" Focusable="False"
+                        Margin="20,40,20,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Command="{Binding ExportBruteOptimizationCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}" />
+                        <TextBlock Text="Export" />
+                    </StackPanel>
+                </Button>
+                
+            </DockPanel>
 
             <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Results" Margin="10,0,10,10">
                 <DataGrid x:Name="ResultDataGrid" 

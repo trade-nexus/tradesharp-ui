@@ -65,7 +65,8 @@
 
                 <StackPanel Grid.Column="2" Margin="10,0,0,0">
                     <Label Content="Trigger price"/>
-                    <wpfToolkitExtended:DecimalUpDown Value="{Binding OrderModel.TriggerPrice, FallbackValue=0}" Minimum="0" Increment="0.01" FontWeight="Bold" Height="26"/>
+                    <wpfToolkitExtended:DecimalUpDown Value="{Binding OrderModel.TriggerPrice, FallbackValue=0}" Minimum="0" Increment="0.01" FontWeight="Bold" Height="26" 
+                                                      TabIndex="0"/>
                 </StackPanel>
             </Grid>
         </StackPanel>
@@ -81,23 +82,26 @@
 
             <StackPanel Grid.Column="0" Margin="10">
                 <Label Content="Price"/>
-                <wpfToolkitExtended:DecimalUpDown Height="28" Value="{Binding OrderModel.BuyPrice, FallbackValue=0}" Minimum="0" Increment="0.01"
+                <wpfToolkitExtended:DecimalUpDown Height="28" Value="{Binding OrderModel.BuyPrice, FallbackValue=0}" Minimum="0" Increment="0.01" 
+                                                  TabIndex="1"
                                                   FontWeight="SemiBold" FontSize="16" Foreground="{StaticResource RedBrush}"/>
                 <Button Content="Buy" Height="{Binding}" FontSize="22" Padding="8" FontWeight="Bold" Foreground="{StaticResource RedBrush}"
-                        Command="{Binding SendBuyOrderCommand}"/>
+                        Command="{Binding SendBuyOrderCommand}" TabIndex="4"/>
             </StackPanel>
 
             <StackPanel Grid.Column="1" Margin="10">
                 <Label Content="Size"/>
-                <wpfToolkitExtended:IntegerUpDown Height="28" VerticalAlignment="Center" Value="{Binding OrderModel.Size, FallbackValue=0}" Minimum="0" FontWeight="Bold" />
+                <wpfToolkitExtended:IntegerUpDown Height="28" VerticalAlignment="Center" Value="{Binding OrderModel.Size, FallbackValue=0}" Minimum="0" FontWeight="Bold" 
+                                                  TabIndex="2"/>
             </StackPanel>
 
             <StackPanel Grid.Column="2" Margin="10">
                 <Label Content="Price"/>
-                <wpfToolkitExtended:DecimalUpDown Height="28" Value="{Binding OrderModel.SellPrice, FallbackValue=0}" Minimum="0" Increment="0.01"
+                <wpfToolkitExtended:DecimalUpDown Height="28" Value="{Binding OrderModel.SellPrice, FallbackValue=0}" Minimum="0" Increment="0.01" 
+                                                  TabIndex="3"
                                                   FontWeight="SemiBold" FontSize="16" Foreground="{StaticResource BaseBrush3}"/>
                 <Button Content="Sell" Height="{Binding}" FontSize="22" Padding="8" FontWeight="Bold" Foreground="{StaticResource BaseBrush3}"
-                        Command="{Binding SendSellOrderCommand}"/>
+                        Command="{Binding SendSellOrderCommand}" TabIndex="5"/>
             </StackPanel>
         </Grid>
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -28,7 +29,7 @@ namespace TradeHubGui.StrategyRunner.Executors
     /// <summary>
     /// Responsibe for handling individual strategy instances
     /// </summary>
-    internal class StrategyExecutor
+    internal class StrategyExecutor : IDisposable
     {
         private Type _type = typeof(StrategyExecutor);
 
@@ -93,6 +94,8 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// Indicates if the Strategy Instance was requested to Stop Execution by the user
         /// </summary>
         private bool _stopInstanceRequested;
+
+        private bool _disposed = false;
 
         #region Events
 
@@ -165,6 +168,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             this._currentDispatcher = currentDispatcher;
 
             _asyncClassLogger = new AsyncClassLogger("StrategyExecutor");
+            _asyncClassLogger.SetLoggingLevel();
 
             //set logging path
             string path = DirectoryStructure.CLIENT_LOGS_LOCATION;
@@ -177,27 +181,6 @@ namespace TradeHubGui.StrategyRunner.Executors
             _strategyKey = _strategyInstance.InstanceKey;
             _strategyType = _strategyInstance.StrategyType;
             _ctorArguments = _strategyInstance.GetParameterValues();
-
-            // Initialze Utility Classes
-            //_orderExecutor = new OrderExecutor(_asyncClassLogger);
-            _orderExecutor = ContextRegistry.GetContext()["OrderExecutor"] as IOrderExecutor;
-            _marketDataListener = new MarketDataListener(_asyncClassLogger);
-            _orderRequestListener = new OrderRequestListener(_orderExecutor, _asyncClassLogger);
-
-            // Use MarketDataListener.cs as Event Handler to get data from DataHandler.cs
-            _dataHandler = new DataHandler(new IEventHandler<MarketDataObject>[] { _marketDataListener });
-
-            _marketDataListener.BarSubscriptionList = _dataHandler.BarSubscriptionList;
-            _marketDataListener.TickSubscriptionList = _dataHandler.TickSubscriptionList;
-
-            // Initialize MarketRequestListener.cs to manage incoming market data requests from strategy
-            _marketRequestListener = new MarketRequestListener(_dataHandler, _asyncClassLogger);
-
-            //Register OrderExecutor Events
-            RegisterOrderExecutorEvents();
-
-            //Register Market Data Listener Events
-            RegisterMarketDataListenerEvents();
         }
 
         /// <summary>
@@ -207,13 +190,6 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             try
             {
-                ////NOTE: Test code to simulate Strategy working
-                //// BEGIN:
-                //OnStrategyStatusChanged(true);
-                //TestCodeToGenerateExecutions();
-                //return;
-                //// :END
-
                 bool parameterChanged = true;
 
                 // Check if any strategy parameter was changed
@@ -332,6 +308,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             _tradeHubStrategy.CancellationArrivedEvent += OnCancellationReceived;
             _tradeHubStrategy.RejectionArrivedEvent += OnRejectionReceived;
 
+            _tradeHubStrategy.DisplayMessageEvent += StrategyMessageArrived;
         }
 
         #region Manage Back-Testing Strategy (i.e. Provider = SimulatedExchange)
@@ -344,10 +321,50 @@ namespace TradeHubGui.StrategyRunner.Executors
             if (_tradeHubStrategy != null)
             {
                 if (_tradeHubStrategy.MarketDataProviderName.Equals(TradeHubConstants.MarketDataProvider.SimulatedExchange))
+                {
+                    InitializeBacktestingDataComponents();
                     OverrideStrategyDataEvents();
+                }
                 if (_tradeHubStrategy.OrderExecutionProviderName.Equals(OrderExecutionProvider.SimulatedExchange))
+                {
+                    InitializeBacktestingOrderComponents();
                     OverrideStrategyOrderRequests();
+                }
             }
+        }
+
+        /// <summary>
+        /// Initializes necessary market data components required for backtesting
+        /// </summary>
+        private void InitializeBacktestingDataComponents()
+        {
+            // Initialze Utility Classes to manage backtesting with saved market data
+            _marketDataListener = new MarketDataListener(_asyncClassLogger);
+
+            // Use MarketDataListener.cs as Event Handler to get data from DataHandler.cs
+            _dataHandler = new DataHandler(new IEventHandler<MarketDataObject>[] { _marketDataListener });
+
+            _marketDataListener.BarSubscriptionList = _dataHandler.BarSubscriptionList;
+            _marketDataListener.TickSubscriptionList = _dataHandler.TickSubscriptionList;
+
+            // Initialize MarketRequestListener.cs to manage incoming market data requests from strategy
+            _marketRequestListener = new MarketRequestListener(_dataHandler, _asyncClassLogger);
+
+            //Register Market Data Listener Events
+            RegisterMarketDataListenerEvents();
+        }
+
+        /// <summary>
+        /// Initializes necessary order execution components required for backtesting
+        /// </summary>
+        private void InitializeBacktestingOrderComponents()
+        {
+            // Initialze Utility Classes to manage backtesting order executions
+            _orderExecutor = ContextRegistry.GetContext()["OrderExecutor"] as IOrderExecutor;
+            _orderRequestListener = new OrderRequestListener(_orderExecutor, _asyncClassLogger);
+
+            //Register OrderExecutor Events
+            RegisterOrderExecutorEvents();
         }
 
         /// <summary>
@@ -361,6 +378,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             _tradeHubStrategy.OverrideTickUnsubscriptionRequest(_marketRequestListener.UnsubscribeTickData);
 
             _tradeHubStrategy.OverrideBarSubscriptionRequest(_marketRequestListener.SubscribeLiveBars);
+            _tradeHubStrategy.OverrideBarSubscriptionRequest(_marketRequestListener.SubscribeMultipleLiveBars);
             _tradeHubStrategy.OverriderBarUnsubscriptionRequest(_marketRequestListener.UnsubcribeLiveBars);
         }
 
@@ -465,6 +483,8 @@ namespace TradeHubGui.StrategyRunner.Executors
 
         #endregion
 
+        #region Strategy Events
+
         /// <summary>
         /// Called when Custom Strategy Running status changes
         /// </summary>
@@ -473,7 +493,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             if (status)
             {
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
                 {
                     _strategyInstance.Status = StrategyStatus.Executing;
                 }));
@@ -482,7 +502,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             {
                 if (_stopInstanceRequested)
                 {
-                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
                     {
                         _strategyInstance.Status = StrategyStatus.Stopped;
                     }));
@@ -496,7 +516,7 @@ namespace TradeHubGui.StrategyRunner.Executors
                 }
             }
 
-            if (_statusChanged!=null)
+            if (_statusChanged != null)
             {
                 _statusChanged(_strategyKey, _strategyInstance.Status);
             }
@@ -530,7 +550,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = order.OrderID;
-            //orderDetails.Price = order.;
+            orderDetails.Security = order.Security;
             orderDetails.Quantity = order.OrderSize;
             orderDetails.Side = order.OrderSide;
             //orderDetails.Type = order.;
@@ -551,6 +571,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = rejection.OrderId;
+            orderDetails.Security = rejection.Security;
             orderDetails.Status = OrderStatus.REJECTED;
 
             // Update UI
@@ -566,6 +587,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             // Update Stats
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = execution.Fill.OrderId;
+            orderDetails.Security = execution.Fill.Security;
             orderDetails.Price = execution.Fill.ExecutionPrice;
             orderDetails.Quantity = execution.Fill.ExecutionSize;
             orderDetails.Side = execution.Fill.ExecutionSide;
@@ -579,35 +601,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             PersistencePublisher.PublishDataForPersistence(execution.Order);
         }
 
-        /// <summary>
-        /// Updates strategy statistics on each execution
-        /// </summary>
-        /// <param name="execution">Contains Execution Info</param>
-        [MethodImpl(MethodImplOptions.Synchronized)]
-        private void UpdateStatistics(Execution execution)
-        {
-            try
-            {
-                if (_asyncClassLogger.IsDebugEnabled)
-                {
-                    _asyncClassLogger.Debug("Updating statistics on: " + execution, _type.FullName, "UpdateStatistics");
-                }
-
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = execution.Fill.OrderId;
-                orderDetails.Price = execution.Fill.ExecutionPrice;
-                orderDetails.Quantity = execution.Fill.ExecutionSize;
-                orderDetails.Side = execution.Fill.ExecutionSide;
-                orderDetails.Status = execution.Order.OrderStatus;
-
-                // Add new information to execution details
-                _strategyInstance.AddOrderDetails(orderDetails);
-            }
-            catch (Exception exception)
-            {
-                _asyncClassLogger.Error(exception, _type.FullName, "UpdateStatistics");
-            }
-        }
+        #endregion
 
         /// <summary>
         /// Adds new 'Order Details' information in 'Execution Details' object for Strategy Instance
@@ -619,6 +613,24 @@ namespace TradeHubGui.StrategyRunner.Executors
         }
 
         /// <summary>
+        /// Adds new 'Order Details' information in 'Execution Details' object for Strategy Instance
+        /// </summary>
+        /// <param name="message"></param>
+        private void StrategyMessageArrived(string message)
+        {
+            _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() => _strategyInstance.InstanceSummary.Add(message)));
+        }
+
+        /// <summary>
+        /// Returns locally saved data from strategy
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyList<string> GetLocalData()
+        {
+            return _tradeHubStrategy.GetLocalData();
+        }
+
+        /// <summary>
         /// Disposes strategy objects
         /// </summary>
         public void Close()
@@ -627,9 +639,12 @@ namespace TradeHubGui.StrategyRunner.Executors
             {
                 if (_tradeHubStrategy != null)
                 {
-                    _dataHandler.Shutdown();
+                    if (_dataHandler != null)
+                    {
+                        _dataHandler.Dispose();
+                    }
+
                     _tradeHubStrategy.Dispose();
-                    _tradeHubStrategy = null;
                 }
             }
             catch (Exception exception)
@@ -639,114 +654,32 @@ namespace TradeHubGui.StrategyRunner.Executors
         }
 
         /// <summary>
-        /// Generates Dummny Executions to be used for UI testing
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        private void TestCodeToGenerateExecutions()
+        public void Dispose()
         {
-            int idCounter = 1;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+            GC.Collect();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
             {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.OPEN;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                if (disposing)
                 {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
+                    Close();
+                }
 
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.SUBMITTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.EXECUTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.PARTIALLY_EXECUTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.CANCELLED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.REJECTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
-            }
-
-            {
-                OrderDetails orderDetails = new OrderDetails();
-                orderDetails.ID = idCounter++.ToString();
-                orderDetails.Price = 100;
-                orderDetails.Quantity = 20;
-                orderDetails.Side = OrderSide.BUY;
-                orderDetails.Status = OrderStatus.SUBMITTED;
-
-                // Add new information to execution details
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
-                {
-                    _strategyInstance.AddOrderDetails(orderDetails);
-                }));
+                // Release unmanaged resources.
+                _asyncClassLogger = null;
+                _marketDataListener = null;
+                _marketRequestListener = null;
+                _dataHandler = null;
+                _tradeHubStrategy = null;
+                _currentDispatcher = null;
+                _disposed = true;
             }
         }
     }

@@ -29,6 +29,8 @@ namespace TradeHubGui.ViewModel
         private string _selectedBarFormat;
         private string _selectedBarPriceType;
 
+        private uint _historicBarInterval;
+
         private decimal _barLength;
         private decimal _pipSize;
 
@@ -64,11 +66,13 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public DataDownloaderViewModel()
         {
+            _historicBarInterval = 60;
+
             _barLength = default(decimal);
             _pipSize = default(decimal);
 
-            _startDate = default(DateTime);
-            _endDate = default(DateTime);
+            _startDate = DateTime.UtcNow;
+            _endDate = DateTime.UtcNow;
 
             _barTypes = new List<string>();
             _barFormats = new List<string>();
@@ -205,6 +209,20 @@ namespace TradeHubGui.ViewModel
                 _selectedBarPriceType = value;
                 _hasBarSettingsChanges = true;
                 OnPropertyChanged("SelectedBarPriceType");
+            }
+        }
+
+        /// <summary>
+        /// Bar interval to be used for Historical bar data request
+        /// </summary>
+        public uint HistoricBarInterval
+        {
+            get { return _historicBarInterval; }
+            set
+            {
+                _historicBarInterval = value;
+                _hasHistoricBarSettingsChanges = true;
+                OnPropertyChanged("HistoricBarInterval");
             }
         }
 
@@ -454,8 +472,9 @@ namespace TradeHubGui.ViewModel
         private void SubmitHistoricBarSettingsRequest()
         {
             // Forward request to persistence controller
-            _persistenceController.SubmitHistoricDataRequest(SelectedMarketDetail.Security, _selectedBarType, _startDate,
-                _endDate, SelectedMarketDataProvider);
+            _persistenceController.SubmitHistoricDataRequest(
+                SelectedMarketDetail.Security, _selectedBarType, _startDate,
+                _endDate, _historicBarInterval, SelectedMarketDataProvider);
         }
 
         /// <summary>

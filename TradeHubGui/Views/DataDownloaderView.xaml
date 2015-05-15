@@ -139,7 +139,7 @@
 
                             <ScrollViewer Grid.Column="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,43,20,0">
                                 <StackPanel HorizontalAlignment="Left">
-                                    <HeaderedContentControl Header="Bar settings" Margin="10,10,10,20" Background="White">
+                                    <HeaderedContentControl Header="Bar settings" Margin="10,0,10,0" Background="White" Height="220">
                                         <Grid Grid.IsSharedSizeScope="True" MinWidth="220" Margin="0,10,0,0">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
@@ -175,9 +175,10 @@
                                         </Grid>
                                     </HeaderedContentControl>
 
-                                    <HeaderedContentControl Header="Historic bar settings" Margin="10" Background="White">
+                                    <HeaderedContentControl Header="Historic bar settings" Margin="10,0,10,10" Background="White">
                                         <Grid Grid.IsSharedSizeScope="True" MinWidth="220" Margin="0,10,0,0">
                                             <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
                                                 <RowDefinition Height="Auto"/>
@@ -188,18 +189,25 @@
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
 
-                                            <Label Content="Type"/>
-                                            <ComboBox Grid.Column="1" SelectedIndex="0"
+                                            <Label Grid.Row="0" Grid.Column="0" Content="Type"/>
+                                            <ComboBox Grid.Row="0" Grid.Column="1" SelectedIndex="0"
                                                   ItemsSource="{Binding BarTypes}" 
                                                   SelectedItem="{Binding SelectedBarType}"/>
-                                            <Label Grid.Row="1" Grid.Column="0" Content="Start date"/>
-                                            <wpfToolkitExtended:DateTimeUpDown Grid.Row="1" Grid.Column="1" 
-                                                                       Value="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Label Grid.Row="2" Grid.Column="0" Content="End date"/>
+
+                                            <Label Grid.Row="1" Grid.Column="0" Content="Length"/>
+                                            <wpfToolkitExtended:IntegerUpDown Grid.Row="1" Grid.Column="1"
+                                                                          Value="{Binding HistoricBarInterval, UpdateSourceTrigger=PropertyChanged, FallbackValue=1}" 
+                                                                          Increment="1" Minimum="1" DefaultValue="60"/>
+                                            
+                                            <Label Grid.Row="2" Grid.Column="0" Content="Start date"/>
                                             <wpfToolkitExtended:DateTimeUpDown Grid.Row="2" Grid.Column="1" 
+                                                                       Value="{Binding StartDate, UpdateSourceTrigger=PropertyChanged}" />
+                                            
+                                            <Label Grid.Row="3" Grid.Column="0" Content="End date"/>
+                                            <wpfToolkitExtended:DateTimeUpDown Grid.Row="3" Grid.Column="1" 
                                                                        Value="{Binding EndDate, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                            <Button Grid.Row="3" Grid.Column="1" Content="Submit" Margin="0,20,0,0" HorizontalAlignment="Left" MinWidth="80"
+                                            <Button Grid.Row="4" Grid.Column="1" Content="Submit" Margin="0,20,0,0" HorizontalAlignment="Left" MinWidth="80"
                                                     Command="{Binding SubmitHistoricBarSettingsCommand}"/>
                                         </Grid>
                                     </HeaderedContentControl>

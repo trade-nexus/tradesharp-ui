@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -49,14 +49,36 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="clrzmq, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="clrzmq, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\helper\clrzmq.2.2.5\lib\clrzmq.dll</HintPath>
+      <HintPath>..\Lib\helper\clrzmq-x64.2.2.5\lib\clrzmq.dll</HintPath>
     </Reference>
-    <Reference Include="clrzmq-ext, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+    <Reference Include="clrzmq-ext, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\helper\clrzmq.2.2.5\lib\clrzmq-ext.dll</HintPath>
+      <HintPath>..\Lib\helper\clrzmq-x64.2.2.5\lib\clrzmq-ext.dll</HintPath>
     </Reference>
     <Reference Include="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e">
       <SpecificVersion>False</SpecificVersion>
@@ -145,6 +167,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\UIHelper.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBoolConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\OptimizationExecutionStatusToBrushConverter.cs" />
     <Compile Include="Converters\PositionToVisibilityConverter.cs" />
     <Compile Include="Converters\ProviderConnectionStatusToBoolConverter.cs" />
@@ -167,6 +190,7 @@
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\DataDownloaderViewModel.cs" />
     <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
+    <Compile Include="ViewModel\HistoricalParametersViewModel.cs" />
     <Compile Include="ViewModel\LimitOrderBookViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
@@ -174,9 +198,13 @@
     <Compile Include="ViewModel\ProvidersViewModel.cs" />
     <Compile Include="ViewModel\SendOrderViewModel.cs" />
     <Compile Include="ViewModel\ServicesViewModel.cs" />
+    <Compile Include="ViewModel\StrategyInstanceSummaryViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoricalParametersView.xaml.cs">
+      <DependentUpon>HistoricalParametersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LimitOrderBookWindow.xaml.cs">
       <DependentUpon>LimitOrderBookWindow.xaml</DependentUpon>
@@ -223,12 +251,19 @@
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StrategyInstanceSummary.xaml.cs">
+      <DependentUpon>StrategyInstanceSummary.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StrategyRunnerView.xaml.cs">
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\BruteOptimizationWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HistoricalParametersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LimitOrderBookWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -294,6 +329,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\StrategyInstanceSummary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StrategyRunnerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -317,6 +356,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -352,6 +394,7 @@
     <Content Include="LoggerConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <SplashScreen Include="TS Splash Screen.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Resources\Resources.csproj">

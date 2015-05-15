@@ -14,6 +14,21 @@ namespace TradeHubGui.Common.Models
     public class BruteForceParameters : INotifyPropertyChanged
     {
         /// <summary>
+        /// Total number of possible iterations for given parameters
+        /// </summary>
+        private int _totalIterations = 0;
+
+        /// <summary>
+        /// Number of completed iterations
+        /// </summary>
+        private int _completedIterations = 0;
+
+        /// <summary>
+        /// Number of remaining iterations
+        /// </summary>
+        private int _remainingIterations = 0;
+
+        /// <summary>
         /// Indicates brute force working status
         /// </summary>
         private OptimizationStatus _status;
@@ -72,6 +87,45 @@ namespace TradeHubGui.Common.Models
             }
         }
 
+        /// <summary>
+        /// Total number of possible iterations for given parameters
+        /// </summary>
+        public int TotalIterations
+        {
+            get { return _totalIterations; }
+            set
+            {
+                _totalIterations = value;
+                OnPropertyChanged("TotalIterations");
+            }
+        }
+
+        /// <summary>
+        /// Number of completed iterations
+        /// </summary>
+        public int CompletedIterations
+        {
+            get { return _completedIterations; }
+            set
+            {
+                _completedIterations = value;
+                OnPropertyChanged("CompletedIterations");
+            }
+        }
+
+        /// <summary>
+        /// Number of remaining iterations
+        /// </summary>
+        public int RemainingIterations
+        {
+            get { return _remainingIterations; }
+            set
+            {
+                _remainingIterations = value;
+                OnPropertyChanged("RemainingIterations");
+            }
+        }
+
         #endregion
 
         /// <summary>
@@ -123,7 +177,7 @@ namespace TradeHubGui.Common.Models
             foreach (var parameterDetail in ParameterDetails)
             {
                 // Check if both End Point and Increment values are added
-                if (!(parameterDetail.ParameterValue.ToString().Equals(parameterDetail.EndValue.ToString())))
+                if (parameterDetail.ParameterValue != null && !(parameterDetail.ParameterValue.ToString().Equals(parameterDetail.EndValue.ToString())))
                 {
                     if (parameterDetail.Increment > 0)
                     {

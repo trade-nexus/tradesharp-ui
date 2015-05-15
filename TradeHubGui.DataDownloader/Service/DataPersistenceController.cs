@@ -149,15 +149,16 @@ namespace TradeHubGui.DataDownloader.Service
         /// <param name="barType"></param>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
+        /// <param name="interval"></param>
         /// <param name="dataProvider"></param>
-        public void SubmitHistoricDataRequest(Security security, string barType, DateTime startDate, DateTime endDate, MarketDataProvider dataProvider)
+        public void SubmitHistoricDataRequest(Security security, string barType, DateTime startDate, DateTime endDate, uint interval, MarketDataProvider dataProvider)
         {
             // Create a new Subscription request
             SubscriptionRequest subscriptionRequest = new SubscriptionRequest(security,
                 dataProvider, MarketDataType.Historical, SubscriptionType.Subscribe);
 
             // Set Bar details
-            subscriptionRequest.SetHistoricalBarDetails(barType, startDate, endDate);
+            subscriptionRequest.SetHistoricalBarDetails(barType, interval, startDate, endDate);
 
             EventSystem.Publish<SubscriptionRequest>(subscriptionRequest);
         }
@@ -237,6 +238,7 @@ namespace TradeHubGui.DataDownloader.Service
                 historicBarObject.Security = historicBarData.Security;
                 historicBarObject.DateTime = historicBarData.DateTime;
                 historicBarObject.MarketDataProvider = historicBarData.MarketDataProvider;
+                historicBarObject.BarsInformation = historicBarData.BarsInformation;
 
                 // Return updated object
                 return historicBarObject;

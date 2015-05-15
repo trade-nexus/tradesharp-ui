@@ -227,6 +227,20 @@ namespace TradeHubGui.StrategyRunner.Services
         }
 
         /// <summary>
+        /// Returns locally saved data from strategy instance
+        /// </summary>
+        /// <param name="instanceKey">Unique ID to identify strategy instance</param>
+        /// <returns></returns>
+        public IReadOnlyList<string> GetStrategyInstanceLocalData(string instanceKey)
+        {
+            // Get strategy executor for given instance key
+            var strategyExecutor = _strategiesCollection[instanceKey];
+
+            // Retrieve data
+            return strategyExecutor.GetLocalData();
+        }
+
+        /// <summary>
         /// On execution received from strategy executor
         /// </summary>
         /// <param name="executionRepresentation"></param>
@@ -255,6 +269,33 @@ namespace TradeHubGui.StrategyRunner.Services
 
             // Publish event to notify listeners
             EventSystem.Publish<StrategyInstanceStatus>(strategyInstanceStatus);
+        }
+
+        /// <summary>
+        /// Stops all strategy runner activities 
+        /// </summary>
+        public void Close()
+        {
+            foreach (var executor in _strategiesCollection.Values)
+            {
+                // Stop strategy if its running
+                if (executor.StrategyStatus.Equals(StrategyStatus.Executing))
+                {
+                    executor.StopStrategy();
+                }
+
+                //Unsubscribe event
+                executor.StatusChanged -= OnStrategyStatusChanged;
+                executor.ExecutionReceived -= OnExecutionReceived;
+
+                //dispose any resources used
+                executor.Close();
+            }
+
+            if (Logger.IsInfoEnabled)
+            {
+                Logger.Info("All Strategy instances removed", _type.FullName, "Stop");
+            }
         }
     }
 }

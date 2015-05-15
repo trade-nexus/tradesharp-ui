@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TraceSourceLogger;
+using TradeHubGui.Common.Constants;
+using TradeHubGui.Common.Infrastructure;
 using TradeHubGui.Common.Models;
 
 namespace TradeHubGui.Dashboard.Managers
@@ -20,7 +22,12 @@ namespace TradeHubGui.Dashboard.Managers
         /// <summary>
         /// Directory path at which Market Data Provider's files are located
         /// </summary>
-        private readonly string _marketDataProvidersFolderPath;
+        private readonly string _marketDataProvidersRootFolderPath;
+
+        /// <summary>
+        /// Directory path at which Market Data Provider's Config files are located
+        /// </summary>
+        private readonly string _marketDataProvidersConfigFolderPath;
 
         /// <summary>
         /// File name which holds the name of all available market data providers
@@ -32,9 +39,13 @@ namespace TradeHubGui.Dashboard.Managers
         /// </summary>
         public MarketDataProvidersManager()
         {
-            _marketDataProvidersFolderPath =
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) +
-                "\\TradeHub\\MarketDataProviders\\";
+            //NOTE: For running providers from AppData
+            _marketDataProvidersRootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TradeHub\\MarketDataProviders\\";
+            _marketDataProvidersConfigFolderPath = _marketDataProvidersRootFolderPath;
+
+            ////For Installer
+            //_marketDataProvidersRootFolderPath = Path.GetFullPath(@"~\..\..\Market Data Engine\");
+            //_marketDataProvidersConfigFolderPath = _marketDataProvidersRootFolderPath + @"Config\";
 
             _marketDataProvidersFileName = "AvailableProviders.xml";
         }
@@ -46,7 +57,7 @@ namespace TradeHubGui.Dashboard.Managers
         public IDictionary<string, List<ProviderCredential>> GetAvailableProviders()
         {
             // File Saftey Check
-            if (!File.Exists(_marketDataProvidersFolderPath + _marketDataProvidersFileName)) 
+            if (!File.Exists(_marketDataProvidersConfigFolderPath + _marketDataProvidersFileName)) 
                 return null;
 
             // Will hold credential information against each availale provider
@@ -56,7 +67,7 @@ namespace TradeHubGui.Dashboard.Managers
             var availableProvidersDocument = new XmlDocument();
 
             // Read file to get available provider's names.
-            availableProvidersDocument.Load(_marketDataProvidersFolderPath + _marketDataProvidersFileName);
+            availableProvidersDocument.Load(_marketDataProvidersConfigFolderPath + _marketDataProvidersFileName);
 
             // Read the all Node value
             XmlNodeList providersInfo = availableProvidersDocument.SelectNodes(xpath: "Providers/*");
@@ -75,10 +86,10 @@ namespace TradeHubGui.Dashboard.Managers
                     // Holds extracted credentials from the xml file
                     var providerCredentialList = new List<ProviderCredential>();
 
-                    if (File.Exists(_marketDataProvidersFolderPath + credentialsFileName))
+                    if (File.Exists(_marketDataProvidersConfigFolderPath + credentialsFileName))
                     {
                         // Read configuration file
-                        availableCredentialsDoc.Load(_marketDataProvidersFolderPath + credentialsFileName);
+                        availableCredentialsDoc.Load(_marketDataProvidersConfigFolderPath + credentialsFileName);
 
                         // Read all the parametes defined in the configuration file
                         XmlNodeList configNodes = availableCredentialsDoc.SelectNodes(xpath: node.Name + "/*");
@@ -109,12 +120,14 @@ namespace TradeHubGui.Dashboard.Managers
         /// Edits given Market data provider credentails with the new values
         /// </summary>
         /// <param name="provider">Contains provider details</param>
-        public void EditProviderCredentials(Provider provider)
+        public bool EditProviderCredentials(Provider provider)
         {
             try
             {
+                bool valueSaved = false;
+
                 // Create file path
-                string filePath = _marketDataProvidersFolderPath + provider.ProviderName + @"Params.xml";
+                string filePath = _marketDataProvidersConfigFolderPath + provider.ProviderName + @"Params.xml";
 
                 // Create XML Document Object to read credentials file
                 XmlDocument document = new XmlDocument();
@@ -132,15 +145,172 @@ namespace TradeHubGui.Dashboard.Managers
                     if (xmlNode != null)
                     {
                         xmlNode.InnerText = providerCredential.CredentialValue;
+
+                        valueSaved = true;
                     }
                 }
 
                 // Save document
                 document.Save(filePath);
+
+                return valueSaved;
             }
             catch (Exception exception)
             {
                 Logger.Error(exception, _type.FullName, "EditProviderCredentials");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Adds given provider to Market Data Engine - Server
+        /// </summary>
+        /// <param name="connectorPath">Complete path for connectors library</param>
+        /// <param name="providerName">Name to be used for the given connector</param>
+        public Tuple<bool, string> AddProvider(string connectorPath, string providerName)
+        {
+            // Get root directory path
+            string rootDirectory = Path.GetDirectoryName(connectorPath);
+            // Get Config folder path
+            string configPath = rootDirectory + @"\Config";
+            // Get Spring file path
+            string springFileName = providerName + "SpringConfig.xml";
+            string springFilePath = configPath + @"\" + springFileName;
+
+            if (!VerifySpringConfigFileName(springFilePath))
+                return new Tuple<bool, string>(false, "Expected Spring Configuration file not found.");
+
+            if (!CopyProviderLibraries(connectorPath))
+                return new Tuple<bool, string>(false, "Given files were not copied to the Server location.");
+
+            if (!ModifyServerSpringParameters(springFileName))
+                return new Tuple<bool, string>(false, "Spring configuration was not modified.");
+
+            if (!AddProviderName(providerName))
+                return new Tuple<bool, string>(false, "Not able to add new Provider name to Server.");
+
+            return new Tuple<bool, string>(true, "Provider is sucessfully added to the Server.");
+        }
+
+        /// <summary>
+        /// Removes given provider from the Market Data Engine - Server
+        /// </summary>
+        /// <param name="provider">Contains complete provider details</param>
+        /// <returns></returns>
+        public Tuple<bool, string> RemoveProvider(Provider provider)
+        {
+            if (!RemoveProviderName(provider.ProviderName))
+                return new Tuple<bool, string>(false, "Not able to remove Provider name from Server.");
+
+            return new Tuple<bool, string>(true, "Provider is sucessfully removed from the Server.");
+        }
+
+        /// <summary>
+        /// Verifies if the valid spring config file name is provided for the given connector
+        /// </summary>
+        /// <param name="springFile">Complete path for Spring configuration file</param>
+        /// <returns></returns>
+        private bool VerifySpringConfigFileName(string springFile)
+        {
+            try
+            {
+                return File.Exists(springFile);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "VerifySpringConfigFileName");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Copies given provider and its dependencies to Market Data Engine - Server
+        /// </summary>
+        /// <param name="path">Directory path for Provider</param>
+        /// <returns></returns>
+        private bool CopyProviderLibraries(string path)
+        {
+            try
+            {
+                // Get all files information in the given directory
+                string[] files = Directory.GetFiles(Path.GetDirectoryName(path), "*", SearchOption.AllDirectories);
+
+                // Copy individual Files
+                foreach (string file in files)
+                {
+                    if (File.Exists(file)) continue;
+
+                    File.Copy(file, _marketDataProvidersRootFolderPath + Path.GetFileName(file), false);
+                }
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "CopyProviderLibraries");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Modifies Server Spring parameters by adding given providers spring object in the spring config
+        /// </summary>
+        /// <param name="springFileName"></param>
+        /// <returns></returns>
+        private bool ModifyServerSpringParameters(string springFileName)
+        {
+            try
+            {
+                string appConfigName = "TradeHub.MarketDataEngine.Server.Console.exe.config";
+                string appConfigPath = _marketDataProvidersRootFolderPath + appConfigName;
+
+                // Modify configuration file
+                return XmlFileManager.ModifyAppConfigForSpringObject(appConfigPath, @"~/Config/" + springFileName);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "ModifyServerSpringParameters");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Adds given provider name to Market Data Engine - Server
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <returns></returns>
+        private bool AddProviderName(string providerName)
+        {
+            try
+            {
+                string path = _marketDataProvidersConfigFolderPath + _marketDataProvidersFileName;
+
+                return XmlFileManager.AddChildNode(path, providerName);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "AddProviderName");
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Removes given provider name from Market Data Engine - Server
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <returns></returns>
+        private bool RemoveProviderName(string providerName)
+        {
+            try
+            {
+                string path = _marketDataProvidersConfigFolderPath + _marketDataProvidersFileName;
+
+                return XmlFileManager.RemoveChildNode(path, providerName);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error(exception, _type.FullName, "AddProviderName");
+                return false;
             }
         }
     }

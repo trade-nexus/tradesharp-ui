@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TradeHubGui.Common</RootNamespace>
     <AssemblyName>TradeHubGui.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,6 +29,23 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.Prism.Composition">
@@ -76,12 +94,16 @@
     <Compile Include="Constants\OrderRequestType.cs" />
     <Compile Include="Constants\OrderType.cs" />
     <Compile Include="Constants\ProviderType.cs" />
+    <Compile Include="Constants\Services.cs" />
     <Compile Include="Constants\ServiceStatus.cs" />
     <Compile Include="Constants\SubscriptionType.cs" />
     <Compile Include="EventSystem.cs" />
+    <Compile Include="Infrastructure\PersistCsv.cs" />
+    <Compile Include="Infrastructure\XmlFileManager.cs" />
     <Compile Include="Models\BruteForceParameters.cs" />
     <Compile Include="Models\DataPersistenceInformation.cs" />
     <Compile Include="Models\FillDetail.cs" />
+    <Compile Include="Utility\GetEnumDescriptions.cs" />
     <Compile Include="ValueObjects\BarDetail.cs" />
     <Compile Include="ValueObjects\HistoricalBarParameters.cs" />
     <Compile Include="Models\LimitOrderBookRecord.cs" />
@@ -111,6 +133,7 @@
     <Compile Include="Models\GeneticAlgorithmParameters.cs" />
     <Compile Include="ValueObjects\ParameterDetail.cs" />
     <Compile Include="ValueObjects\StrategyInstanceStatus.cs" />
+    <Compile Include="ValueObjects\UiElement.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
