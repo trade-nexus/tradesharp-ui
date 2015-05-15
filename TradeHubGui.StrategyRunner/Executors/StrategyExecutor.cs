@@ -483,6 +483,8 @@ namespace TradeHubGui.StrategyRunner.Executors
 
         #endregion
 
+        #region Strategy Events
+
         /// <summary>
         /// Called when Custom Strategy Running status changes
         /// </summary>
@@ -491,7 +493,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             if (status)
             {
-                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
                 {
                     _strategyInstance.Status = StrategyStatus.Executing;
                 }));
@@ -500,7 +502,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             {
                 if (_stopInstanceRequested)
                 {
-                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() =>
+                    _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
                     {
                         _strategyInstance.Status = StrategyStatus.Stopped;
                     }));
@@ -514,7 +516,7 @@ namespace TradeHubGui.StrategyRunner.Executors
                 }
             }
 
-            if (_statusChanged!=null)
+            if (_statusChanged != null)
             {
                 _statusChanged(_strategyKey, _strategyInstance.Status);
             }
@@ -548,7 +550,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             OrderDetails orderDetails = new OrderDetails();
             orderDetails.ID = order.OrderID;
-            orderDetails.Security= order.Security;
+            orderDetails.Security = order.Security;
             orderDetails.Quantity = order.OrderSize;
             orderDetails.Side = order.OrderSide;
             //orderDetails.Type = order.;
@@ -598,6 +600,8 @@ namespace TradeHubGui.StrategyRunner.Executors
             PersistencePublisher.PublishDataForPersistence(execution.Fill);
             PersistencePublisher.PublishDataForPersistence(execution.Order);
         }
+
+        #endregion
 
         /// <summary>
         /// Adds new 'Order Details' information in 'Execution Details' object for Strategy Instance
