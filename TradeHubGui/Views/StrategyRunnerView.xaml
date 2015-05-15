@@ -17,7 +17,7 @@
         <conv:InstanceExecutionStatusToVisibilityConverter x:Key="ExecutionStatusToVisibility"/>
         <conv:OrderStatusToBrushConverter x:Key="OrderStatusToBrush"/>
     </UserControl.Resources>
-
+    
     <Grid x:Name="ContentGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.4*" MinWidth="300"/>
@@ -173,7 +173,7 @@
                             <DataGridTemplateColumn Width="32" IsReadOnly="True" CanUserResize="False">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
                                             <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Strategy Instance Summary" IsEnabled="True"
                                                     Command="{Binding DataContext.InstanceSummaryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                 <Image Width="15" Height="15" Margin="0" Source="{StaticResource imgInformation}" UseLayoutRounding="True"/>
@@ -185,10 +185,10 @@
                             <DataGridTemplateColumn Header="Key" Width="0.3*" MinWidth="100" SortMemberPath="InstanceKey" IsReadOnly="True" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Border Padding="10,0,8,1" Margin="0,-12" Background="#0FFF" BorderThickness="9,0,0,0" 
+                                        <Border Padding="10,0,8,1" Margin="0,-12" Background="#0FFF" BorderThickness="9,0,0,0"
                                                     BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}">
                                             <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
-                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center"/>
+                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center" />
                                         </Border>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
@@ -226,29 +226,69 @@
                                                 </Button>
                                             </Grid>
 
-                                            <Button Name="ButtonEditInstance" Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Edit instance" 
-                                                        IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}}"
-                                                        Command="{Binding DataContext.ShowEditInstanceWindowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
-                                                <Image Width="13" Height="13" Margin="3,2,1,2" Source="{StaticResource imgEdit}" UseLayoutRounding="True"/>
-                                            </Button>
-
                                             <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete instance"
                                                     IsEnabled="True"
                                                     Command="{Binding DataContext.DeleteInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
                                                 <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
                                             </Button>
 
-                                            <Button Focusable="False" Style="{StaticResource ButtonToolBar}" ToolTip="Export local data"
-                                                    IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}, ConverterParameter=Invert}"
-                                                    Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
-                                                <Image Width="12" Height="12" Margin="2,0,0,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
-                                            </Button>
-
+                                            <!--<Button VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                    Focusable="False" ToolTip="Right click for options"
+                                                    Tag="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}">
+                                                <Image Width="12" Height="12" Margin="2,0,0,0" Source="{StaticResource imgOptions}" UseLayoutRounding="True"/>
+                                                <Button.ContextMenu>
+                                                    <ContextMenu Focusable="False" Background="Transparent">
+                                                        <MenuItem Header="Export" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                  FlowDirection="LeftToRight" ToolTip="Export local data"
+                                                                  IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}, ConverterParameter=Invert}"
+                                                                  Command="{Binding Path=PlacementTarget.Tag.DataContext.ExportInstanceDataCommand,
+                                                                            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContextMenu}}">
+                                                            <MenuItem.Icon>
+                                                                <Image Width="12" Height="12" Margin="2,0,0,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
+                                                            </MenuItem.Icon>
+                                                        </MenuItem>
+                                                    </ContextMenu>
+                                                </Button.ContextMenu>
+                                            </Button>-->
+                                            
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
+
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <DockPanel HorizontalAlignment="Right">
+
+                                    <Button Name="ButtonEditInstance" Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Edit instance" 
+                                            Margin="0,0,2,0" IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}}" DockPanel.Dock="Right"
+                                            Command="{Binding DataContext.ShowEditInstanceWindowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="13" Height="13" Margin="3,2,1,2" Source="{StaticResource imgEdit}" UseLayoutRounding="True"/>
+                                            <TextBlock Text="Edit" Margin="0,0,4,0"/>
+                                        </StackPanel>
+                                    </Button>
+                                    
+                                    <Button Focusable="False" Style="{StaticResource ButtonToolBar}" ToolTip="Export local data" DockPanel.Dock="Right"
+                                            Margin="0,0,6,0" IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}, ConverterParameter=Invert}"
+                                            Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="12" Height="12" Margin="2,0,4,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
+                                            <TextBlock Text="Export" Margin="0,0,4,0"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Focusable="False" Style="{StaticResource ButtonToolBar}" ToolTip="Select notification options" DockPanel.Dock="Right"
+                                            Margin="0,0,6,0" IsEnabled="True"
+                                            Command="{Binding DataContext.NotificationOptionsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="12" Height="12" Margin="2,0,4,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
+                                            <TextBlock Text="Notify" Margin="0,0,4,0"/>
+                                        </StackPanel>
+                                    </Button>
+                                </DockPanel>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
                     </DataGrid>
                 </DockPanel>
             </Grid>

@@ -212,6 +212,9 @@
     <Compile Include="Views\MarketScannerWindow.xaml.cs">
       <DependentUpon>MarketScannerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\NotificationSettingsView.xaml.cs">
+      <DependentUpon>NotificationSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SendOrderWindow.xaml.cs">
       <DependentUpon>SendOrderWindow.xaml</DependentUpon>
     </Compile>
@@ -254,6 +257,9 @@
     <Compile Include="Views\StrategyInstanceSummary.xaml.cs">
       <DependentUpon>StrategyInstanceSummary.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StrategyNotificaitonParameterWindow.xaml.cs">
+      <DependentUpon>StrategyNotificaitonParameterWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StrategyRunnerView.xaml.cs">
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
     </Compile>
@@ -272,6 +278,10 @@
     <Page Include="Views\MarketScannerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NotificationSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SendOrderWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -330,6 +340,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StrategyInstanceSummary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StrategyNotificaitonParameterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

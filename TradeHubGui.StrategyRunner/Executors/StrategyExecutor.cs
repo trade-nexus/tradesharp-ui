@@ -97,6 +97,30 @@ namespace TradeHubGui.StrategyRunner.Executors
 
         private bool _disposed = false;
 
+        #region Notification Fields
+
+        /// <summary>
+        /// Indicates if notification for new order is to be sent
+        /// </summary>
+        private bool _newOrderNotification = false;
+
+        /// <summary>
+        /// Indicates if notification on order acceptance is to be sent
+        /// </summary>
+        private bool _acceptedOrderNotification = false;
+
+        /// <summary>
+        /// Indicates if notification on order execution is to be sent
+        /// </summary>
+        private bool _executionNotification = false;
+
+        /// <summary>
+        /// Indicates if the notification on order rejection is to be sent
+        /// </summary>
+        private bool _rejectionNotification = false;
+
+        #endregion
+
         #region Events
 
         // ReSharper disable InconsistentNaming
@@ -238,6 +262,12 @@ namespace TradeHubGui.StrategyRunner.Executors
 
                     // Set Strategy Name
                     _tradeHubStrategy.StrategyName = StrategyHelper.GetCustomClassSummary(_strategyType);
+
+                    // Set notificaitons preference
+                    _tradeHubStrategy.SetNewOrderNotification(_newOrderNotification);
+                    _tradeHubStrategy.SetAcceptedOrderNotification(_acceptedOrderNotification);
+                    _tradeHubStrategy.SetExecutionNotification(_executionNotification);
+                    _tradeHubStrategy.SetRejectionNotification(_rejectionNotification);
 
                     // Register Events
                     RegisterTradeHubStrategyEvent();
@@ -629,6 +659,74 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             return _tradeHubStrategy.GetLocalData();
         }
+
+        #region Notifications
+
+        /// <summary>
+        /// Sets property to indicate that notification is to be sent on new order request
+        /// </summary>
+        /// <param name="sendNotification"></param>
+        public void SetNewOrderNotification(bool sendNotification)
+        {
+            // Update local value
+            _newOrderNotification = sendNotification;
+
+            // Update strategy value
+            if (_tradeHubStrategy != null)
+            {
+                _tradeHubStrategy.SetNewOrderNotification(sendNotification);
+            }
+        }
+
+        /// <summary>
+        /// Sets property to indicate that notification is to be sent on order acceptance
+        /// </summary>
+        /// <param name="sendNotification"></param>
+        public void SetAcceptedOrderNotification(bool sendNotification)
+        {
+            // Update local value
+            _acceptedOrderNotification = sendNotification;
+
+            // Update strategy value
+            if (_tradeHubStrategy != null)
+            {
+                _tradeHubStrategy.SetAcceptedOrderNotification(sendNotification);
+            }
+        }
+
+        /// <summary>
+        /// Sets property to indicate that notification is to be sent on order execution
+        /// </summary>
+        /// <param name="sendNotification"></param>
+        public void SetExecutionNotification(bool sendNotification)
+        {
+            // Update local value
+            _executionNotification = sendNotification;
+
+            // Update strategy value
+            if (_tradeHubStrategy != null)
+            {
+                _tradeHubStrategy.SetExecutionNotification(sendNotification);
+            }
+        }
+
+        /// <summary>
+        /// Sets property to indicate that notification is to be sent on order rejection
+        /// </summary>
+        /// <param name="sendNotification"></param>
+        public void SetRejectionNotification(bool sendNotification)
+        {
+            // Update local value
+            _rejectionNotification = sendNotification;
+
+            // Update strategy value
+            if (_tradeHubStrategy != null)
+            {
+                _tradeHubStrategy.SetRejectionNotification(sendNotification);
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// Disposes strategy objects

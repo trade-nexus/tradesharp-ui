@@ -61,6 +61,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _importInstancesCommand;
         private RelayCommand _exportInstanceDataCommand;
         private RelayCommand _instanceSummaryCommand;
+        private RelayCommand _notificationOptionsCommand;
 
         private string _strategyPath;
         private string _csvInstancesPath;
@@ -531,6 +532,18 @@ namespace TradeHubGui.ViewModel
                        (_instanceSummaryCommand = new RelayCommand(param => InstanceSummaryExecute()));
             }
         }
+        
+        /// <summary>
+        /// Command used for opening Notificaiton options window
+        /// </summary>
+        public ICommand NotificationOptionsCommand
+        {
+            get
+            {
+                return _notificationOptionsCommand ??
+                       (_notificationOptionsCommand = new RelayCommand(param => NotificationOptionsExecute()));
+            }
+        }
 
         #endregion
 
@@ -783,6 +796,12 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        private bool ExportInstanceDataCanExecute()
+        {
+            if (SelectedStrategy == null) return false;
+            return true;
+        }
+
         /// <summary>
         /// Triggered when 'Export Instance Data' button is clicked
         /// </summary>
@@ -793,7 +812,7 @@ namespace TradeHubGui.ViewModel
             // Get Directory in which to save stats
             using (System.Windows.Forms.FolderBrowserDialog form = new System.Windows.Forms.FolderBrowserDialog())
             {
-                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (form.ShowDialog() == System.Windows.Forms.DialogResult.Yes)
                 {
                     folderPath = form.SelectedPath;
                 }
@@ -829,6 +848,18 @@ namespace TradeHubGui.ViewModel
             instanceSummaryWindow.DataContext = new StrategyInstanceSummaryViewModel(SelectedInstance);
             instanceSummaryWindow.Title = title;
             instanceSummaryWindow.Show();
+        }
+
+        /// <summary>
+        /// Displays window to select Notificaiton options for the selected instance
+        /// </summary>
+        private void NotificationOptionsExecute()
+        {
+            StrategyNotificaitonParameterWindow window = new StrategyNotificaitonParameterWindow();
+            window.DataContext = this;
+            window.Owner = MainWindow;
+
+            window.ShowDialog();
         }
 
         #endregion
