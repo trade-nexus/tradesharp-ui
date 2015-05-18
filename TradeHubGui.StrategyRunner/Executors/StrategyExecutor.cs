@@ -180,6 +180,38 @@ namespace TradeHubGui.StrategyRunner.Executors
             }
         }
 
+        /// <summary>
+        /// Indicates if notification for new order is to be sent
+        /// </summary>
+        public bool NewOrderNotification
+        {
+            get { return _newOrderNotification; }
+        }
+
+        /// <summary>
+        /// Indicates if notification on order acceptance is to be sent
+        /// </summary>
+        public bool AcceptedOrderNotification
+        {
+            get { return _acceptedOrderNotification; }
+        }
+
+        /// <summary>
+        /// Indicates if notification on order execution is to be sent
+        /// </summary>
+        public bool ExecutionNotification
+        {
+            get { return _executionNotification; }
+        }
+
+        /// <summary>
+        /// Indicates if the notification on order rejection is to be sent
+        /// </summary>
+        public bool RejectionNotification
+        {
+            get { return _rejectionNotification; }
+        }
+
         #endregion
 
         /// <summary>

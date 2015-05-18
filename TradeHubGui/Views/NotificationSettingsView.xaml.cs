@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TradeHubGui.ViewModel;
 
 namespace TradeHubGui.Views
 {
@@ -23,6 +24,19 @@ namespace TradeHubGui.Views
         public NotificationSettingsView()
         {
             InitializeComponent();
+            DataContext = new NotificationSettingsViewModel();
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            (passwordBox.DataContext as NotificationSettingsViewModel).SenderPassword = passwordBox.Password;
+        }
+
+        private void PasswordBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            PasswordBox passwordBox = sender as PasswordBox;
+            passwordBox.Password = (passwordBox.DataContext as NotificationSettingsViewModel).SenderPassword;
         }
     }
 }

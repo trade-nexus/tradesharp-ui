@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="250" d:DesignWidth="290">
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1.5*"/>
@@ -42,12 +43,12 @@
                     <TextBlock Text="Username" Margin="6,6,6,6" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"
                                HorizontalAlignment="Right" />
                     <TextBox Width="150" Margin="6,6,6,6" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
-                             HorizontalAlignment="Left" />
+                             HorizontalAlignment="Left" Text="{Binding SenderUsername}"/>
 
                     <TextBlock Text="Password" Margin="6,6,6,6" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"
                                HorizontalAlignment="Right" />
-                    <TextBox Width="150" Margin="6,6,6,6" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
-                             HorizontalAlignment="Left" />
+                    <PasswordBox Width="150" Margin="6,6,6,6" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                             HorizontalAlignment="Left" PasswordChanged="PasswordBox_PasswordChanged" Loaded="PasswordBox_Loaded"/>
                 </Grid>
             </DockPanel>
         </HeaderedContentControl>
@@ -68,7 +69,8 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Username" Margin="6,6,6,6" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                    <TextBox Width="150" Margin="6,6,6,6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <TextBox Width="150" Margin="6,6,6,6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"
+                             Text="{Binding ReceiverUsername}"/>
                 </Grid>
             </DockPanel>
         </HeaderedContentControl>

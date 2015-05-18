@@ -28,22 +28,22 @@
         
         <TextBlock Grid.Row="1" Grid.Column="0" Text="New" Margin="8,0,0,0" VerticalAlignment="Center"/>
         <CheckBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
-                  IsChecked="{Binding SendNewOrderNotification, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding NewOrderNotification, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="0" Text="Accepted" Margin="8,0,0,0" VerticalAlignment="Center"/>
         <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
-                  IsChecked="{Binding SendOrderAcceptedNotification, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding AcceptedOrderNotification, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Row="3" Grid.Column="0" Text="Execution" Margin="8,0,0,0" VerticalAlignment="Center"/>
         <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
-                  IsChecked="{Binding SendExecutionNotification, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding ExecutionNotification, UpdateSourceTrigger=PropertyChanged}"/>
 
         <TextBlock Grid.Row="4" Grid.Column="0" Text="Rejection" Margin="8,0,0,0" VerticalAlignment="Center"/>
         <CheckBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
-                  IsChecked="{Binding SendRejectionNotification, UpdateSourceTrigger=PropertyChanged}"/>
+                  IsChecked="{Binding RejectionNotification, UpdateSourceTrigger=PropertyChanged}"/>
 
         <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Margin="0" Orientation="Vertical" HorizontalAlignment="Right">
-            <Button Command="{Binding SaveNotificationParametersCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}"
+            <Button Command="{Binding SaveNotificationOptionsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}"
                     DockPanel.Dock="Top" Content="Save" MinWidth="70" IsDefault="True" Margin="3"/>
         </StackPanel>
 

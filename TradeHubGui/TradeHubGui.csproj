@@ -145,6 +145,10 @@
     <Reference Include="TradeHub.Infrastructure.Nhibernate">
       <HintPath>..\Lib\tradehub\TradeHub.Infrastructure.Nhibernate.dll</HintPath>
     </Reference>
+    <Reference Include="TradeHub.NotificationEngine.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.NotificationEngine.Common.dll</HintPath>
+    </Reference>
     <Reference Include="TradeHub.StrategyEngine.Utlility">
       <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.Utlility.dll</HintPath>
     </Reference>
@@ -194,6 +198,7 @@
     <Compile Include="ViewModel\LimitOrderBookViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
+    <Compile Include="ViewModel\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModel\OrdersViewModel.cs" />
     <Compile Include="ViewModel\ProvidersViewModel.cs" />
     <Compile Include="ViewModel\SendOrderViewModel.cs" />

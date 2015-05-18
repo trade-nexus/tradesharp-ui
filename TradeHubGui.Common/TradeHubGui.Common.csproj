@@ -89,6 +89,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\DirectoryPath.cs" />
     <Compile Include="Constants\LobRecordType.cs" />
     <Compile Include="Constants\OptimizationStatus.cs" />
     <Compile Include="Constants\OrderRequestType.cs" />
