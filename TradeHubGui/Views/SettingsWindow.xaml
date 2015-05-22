@@ -26,7 +26,7 @@
                             <Grid.Effect>
                                 <DropShadowEffect Opacity="0.2" ShadowDepth="0.0"/>
                             </Grid.Effect>
-                            <Border x:Name="border" Grid.Column="0"/>
+                            <Border x:Name="border" Grid.Column="0" Margin="-2,0,0,0"/>
                             <Border x:Name="contentBorder" Grid.Column="0">
                                 <ContentPresenter VerticalAlignment="Center" />
                             </Border>
@@ -83,13 +83,13 @@
         <Border Grid.Row="1" Grid.Column="0" Background="#FFD1D1D1" Width="85" HorizontalAlignment="Left"/>
 
         <ListBox Grid.Row="1" Grid.Column="0" x:Name="NavigationListBox" SelectedIndex="0" BorderThickness="0" 
-                 Background="Transparent" Margin="-4,-1,-1,-1" Foreground="White"
+                 Background="Transparent" Margin="-2,-1,-1,-1" Foreground="White"
                  ItemContainerStyle="{DynamicResource NavigationListBoxItemStyle}">
             <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[0]}"
-                         Content="Historical Data" Margin="2,0,0,0">
+                         Content="Historical Data" Margin="3,0,0,0">
             </ListBoxItem>
             <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[1]}"
-                         Content="Notifications" Margin="2,0,0,0">
+                         Content="Notifications" Margin="3,0,0,0">
             </ListBoxItem>
         </ListBox>
 

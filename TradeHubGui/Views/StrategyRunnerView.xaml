@@ -259,35 +259,47 @@
 
                         <DataGrid.RowDetailsTemplate>
                             <DataTemplate>
-                                <DockPanel HorizontalAlignment="Right">
+                                <Border BorderThickness="0.5,0,1,0.5" BorderBrush="CornflowerBlue">
+                                    <DockPanel HorizontalAlignment="Right" Margin="1">
 
-                                    <Button Name="ButtonEditInstance" Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Edit instance" 
-                                            Margin="0,0,2,0" IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}}" DockPanel.Dock="Right"
-                                            Command="{Binding DataContext.ShowEditInstanceWindowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="13" Height="13" Margin="3,2,1,2" Source="{StaticResource imgEdit}" UseLayoutRounding="True"/>
-                                            <TextBlock Text="Edit" Margin="0,0,4,0"/>
-                                        </StackPanel>
-                                    </Button>
-                                    
-                                    <Button Focusable="False" Style="{StaticResource ButtonToolBar}" ToolTip="Export local data" DockPanel.Dock="Right"
-                                            Margin="0,0,6,0" IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}, ConverterParameter=Invert}"
-                                            Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="12" Height="12" Margin="2,0,4,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
-                                            <TextBlock Text="Export" Margin="0,0,4,0"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Focusable="False" Style="{StaticResource ButtonToolBar}" ToolTip="Select notification options" DockPanel.Dock="Right"
-                                            Margin="0,0,6,0" IsEnabled="True"
-                                            Command="{Binding DataContext.NotificationOptionsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="12" Height="12" Margin="2,0,4,0" Source="{StaticResource imgExport}" UseLayoutRounding="True"/>
-                                            <TextBlock Text="Notify" Margin="0,0,4,0"/>
-                                        </StackPanel>
-                                    </Button>
-                                </DockPanel>
-                            </DataTemplate>
+                                        <Button Name="ButtonEditInstance" Style="{StaticResource ButtonToolBar}"
+                                                Focusable="False" ToolTip="Edit instance"
+                                                Margin="0,0,2,0"
+                                                IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}}"
+                                                DockPanel.Dock="Right"
+                                                Command="{Binding DataContext.ShowEditInstanceWindowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="13" Height="13" Margin="3,2,1,2"
+                                                       Source="{StaticResource imgEdit}" UseLayoutRounding="True" />
+                                                <TextBlock Text="Edit" Margin="0,0,4,0" />
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Focusable="False" Style="{StaticResource ButtonToolBar}"
+                                                ToolTip="Select notification options" DockPanel.Dock="Right"
+                                                Margin="0,0,6,0" IsEnabled="True"
+                                                Command="{Binding DataContext.NotificationOptionsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="12" Height="12" Margin="2,0,4,0"
+                                                       Source="{StaticResource imgExport}" UseLayoutRounding="True" />
+                                                <TextBlock Text="Notify" Margin="0,0,4,0" />
+                                            </StackPanel>
+                                        </Button>
+                                        
+                                        <Button Focusable="False" Style="{StaticResource ButtonToolBar}"
+                                                ToolTip="Export local data" DockPanel.Dock="Right"
+                                                Margin="0,0,6,0"
+                                                IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}, ConverterParameter=Invert}"
+                                                Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="12" Height="12" Margin="2,0,4,0"
+                                                       Source="{StaticResource imgExport}" UseLayoutRounding="True" />
+                                                <TextBlock Text="Export" Margin="0,0,4,0" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DockPanel>
+                                    </Border>
+                                </DataTemplate>
                         </DataGrid.RowDetailsTemplate>
                     </DataGrid>
                 </DockPanel>

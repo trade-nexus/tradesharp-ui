@@ -7,13 +7,12 @@
                 ShowInTaskbar="False"
                 WindowStartupLocation="CenterOwner"
                 Title="Notify"
-                Width="150"
-                SizeToContent="Height" ResizeMode="NoResize"
-                MinWidth="100" MinHeight="200" WindowStyle="ToolWindow">
+                Width="250" Height="300"
+                ResizeMode="NoResize" WindowStyle="ToolWindow">
     <Grid Margin="4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -22,30 +21,36 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2" Text="Order Notificaitons" Margin="4,0,0,0" VerticalAlignment="Center" Style="{StaticResource SubHeaderTwoTextBlockStyle}"/>
+        <Border Grid.RowSpan="6" Grid.ColumnSpan="2" BorderBrush="CadetBlue" BorderThickness="0,0,0,1"></Border>
         
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="New" Margin="8,0,0,0" VerticalAlignment="Center"/>
-        <CheckBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
+        <TextBlock Grid.ColumnSpan="2" Text="Order Notificaitons" Margin="4,0,0,0" VerticalAlignment="Center" Style="{StaticResource SubHeaderTwoTextBlockStyle}"/>
+
+        <CheckBox Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,8,0"
                   IsChecked="{Binding NewOrderNotification, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="Sending a NEW order" Margin="8,0,0,0" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="Accepted" Margin="8,0,0,0" VerticalAlignment="Center"/>
-        <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
+        <CheckBox Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,8,0"
                   IsChecked="{Binding AcceptedOrderNotification, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="Order is ACCEPTED" Margin="8,0,0,0" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="Execution" Margin="8,0,0,0" VerticalAlignment="Center"/>
-        <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
+        <CheckBox Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,8,0"
                   IsChecked="{Binding ExecutionNotification, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="Order is EXECUTED" Margin="8,0,0,0" VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="Rejection" Margin="8,0,0,0" VerticalAlignment="Center"/>
-        <CheckBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,8,0"
+        <CheckBox Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,8,0"
                   IsChecked="{Binding RejectionNotification, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Grid.Row="4" Grid.Column="1" Text="Order is REJECTED" Margin="8,0,0,0" VerticalAlignment="Center"/>
 
         <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Margin="0" Orientation="Vertical" HorizontalAlignment="Right">
             <Button Command="{Binding SaveNotificationOptionsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}"
                     DockPanel.Dock="Top" Content="Save" MinWidth="70" IsDefault="True" Margin="3"/>
         </StackPanel>
+
+        <TextBlock  Grid.Row="6" Grid.ColumnSpan="2" Text="NOTE: Sending too many notifications will increase latency in application operations" Margin="0,18,0,0" VerticalAlignment="Top" 
+                   TextWrapping="Wrap" Foreground="Brown"/>
 
     </Grid>
 </mah:MetroWindow>

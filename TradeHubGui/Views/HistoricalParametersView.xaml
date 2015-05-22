@@ -25,8 +25,10 @@
         <Label Content="End Date" Margin="6,6,6,6" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
         <Label Content="Provider" Margin="6,6,6,6" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
 
-        <DatePicker Grid.Row="1" Grid.Column="1" Margin="6,6,6,6" SelectedDate="{Binding SelectedStartDate, UpdateSourceTrigger=PropertyChanged}"/>
-        <DatePicker Grid.Row="2" Grid.Column="1" Margin="6,6,6,6" SelectedDate="{Binding SelectedEndDate, UpdateSourceTrigger=PropertyChanged}"/>
+        <DatePicker Grid.Row="1" Grid.Column="1" Margin="6,6,6,6" VerticalAlignment="Center"
+                    SelectedDate="{Binding SelectedStartDate, UpdateSourceTrigger=PropertyChanged}"/>
+        <DatePicker Grid.Row="2" Grid.Column="1" Margin="6,6,6,6" VerticalAlignment="Center"
+                    SelectedDate="{Binding SelectedEndDate, UpdateSourceTrigger=PropertyChanged}"/>
         <ComboBox Grid.Row="3" Grid.Column="1" Margin="6,6,6,6" SelectedIndex="0" ItemsSource="{Binding AvailableProviders}" SelectedItem="{Binding SelectedProvider}" >
             <ComboBox.ItemTemplate>
                 <DataTemplate>
