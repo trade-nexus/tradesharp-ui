@@ -63,6 +63,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _instanceSummaryCommand;
         private RelayCommand _notificationOptionsCommand;
         private RelayCommand _saveNotificationOptionsCommand;
+        private RelayCommand _exportExecutionsCommand;
 
         private string _strategyPath;
         private string _csvInstancesPath;
@@ -629,6 +630,18 @@ namespace TradeHubGui.ViewModel
                        (_saveNotificationOptionsCommand = new RelayCommand(param => SaveNotificationOptionsExecute(param)));
             }
         }
+        
+        /// <summary>
+        /// Command used for 'Export' button for strategy instance executions
+        /// </summary>
+        public ICommand ExportExecutionsCommand
+        {
+            get
+            {
+                return _exportExecutionsCommand ??
+                       (_exportExecutionsCommand = new RelayCommand(param => ExportExecutionsExecute()));
+            }
+        }
 
         #endregion
 
@@ -897,7 +910,8 @@ namespace TradeHubGui.ViewModel
             // Get Directory in which to save stats
             using (System.Windows.Forms.FolderBrowserDialog form = new System.Windows.Forms.FolderBrowserDialog())
             {
-                if (form.ShowDialog() == System.Windows.Forms.DialogResult.Yes)
+                var dialogResult = form.ShowDialog();
+                if (dialogResult == System.Windows.Forms.DialogResult.Yes || dialogResult == Forms.DialogResult.OK)
                 {
                     folderPath = form.SelectedPath;
                 }
@@ -969,6 +983,33 @@ namespace TradeHubGui.ViewModel
 
             // Close "Edit Instance" window
             ((Window)param).Close();
+        }
+        
+        /// <summary>
+        /// Triggered when 'Export' button on strategy instance order executions is clicked
+        /// </summary>
+        private void ExportExecutionsExecute()
+        {
+            if (SelectedInstance != null && SelectedInstance.ExecutionDetails.OrderDetailsList.Count <= 0)
+                return;
+
+            string folderPath = string.Empty;
+
+            // Get Directory in which to save stats
+            using (System.Windows.Forms.FolderBrowserDialog form = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                var dialogResult = form.ShowDialog();
+                if (dialogResult == System.Windows.Forms.DialogResult.Yes || dialogResult==Forms.DialogResult.OK)
+                {
+                    folderPath = form.SelectedPath;
+                }
+            }
+
+            // Save data
+            Task.Run(
+                () =>
+                    PersistCsv.SaveData(folderPath, SelectedInstance.ExecutionDetails.OrderDetailsList,
+                        SelectedInstance.InstanceKey));
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
 using TradeHub.Common.Core.DomainModels.OrderDomain;
@@ -211,5 +212,48 @@ namespace TradeHubGui.Common.Models
             }
         }
         #endregion
+
+        /// <summary>
+        /// Provides basic execution info
+        /// </summary>
+        public string BasicExecutionInfo()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            stringBuilder.Append("Execution Info :: ");
+            stringBuilder.Append(" Symbol: ");
+            stringBuilder.Append(_security.Symbol);
+            stringBuilder.Append(" | ");
+            stringBuilder.Append(" OrderID: ");
+            stringBuilder.Append(_id);
+            stringBuilder.Append(" | ");
+            stringBuilder.Append(" Side: ");
+            stringBuilder.Append(_side);
+            stringBuilder.Append(" | ");
+            stringBuilder.Append(" Size ");
+            stringBuilder.Append(_quantity);
+
+            stringBuilder.Append(" | ");
+            stringBuilder.Append(" Price: ");
+            stringBuilder.Append(_price);
+            stringBuilder.Append(" | ");
+            stringBuilder.Append(" Time: ");
+            stringBuilder.Append(_time);
+
+            if (_fillDetails.Count > 0)
+            {
+                foreach (var fillDetail in _fillDetails)
+                {
+                    stringBuilder.Append(" | ");
+                    stringBuilder.Append(" Execution Price: ");
+                    stringBuilder.Append(fillDetail.FillPrice);
+                    stringBuilder.Append(" | ");
+                    stringBuilder.Append(" Time: ");
+                    stringBuilder.Append(fillDetail.FillDatetime);
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
 	}
 }
