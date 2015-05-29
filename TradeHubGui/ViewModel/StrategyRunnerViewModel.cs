@@ -61,11 +61,33 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _importInstancesCommand;
         private RelayCommand _exportInstanceDataCommand;
         private RelayCommand _instanceSummaryCommand;
+        private RelayCommand _notificationOptionsCommand;
+        private RelayCommand _saveNotificationOptionsCommand;
 
         private string _strategyPath;
         private string _csvInstancesPath;
         private string _instanceDescription;
 
+        /// <summary>
+        /// Indicates if notification for new order is to be sent
+        /// </summary>
+        private bool _newOrderNotification = false;
+
+        /// <summary>
+        /// Indicates if notification on order acceptance is to be sent
+        /// </summary>
+        private bool _acceptedOrderNotification = false;
+
+        /// <summary>
+        /// Indicates if notification on order execution is to be sent
+        /// </summary>
+        private bool _executionNotification = false;
+
+        /// <summary>
+        /// Indicates if the notification on order rejection is to be sent
+        /// </summary>
+        private bool _rejectionNotification = false;
+        
         private Dictionary<string, ParameterDetail> _parameterDetails;
 
         /// <summary>
@@ -373,6 +395,58 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Indicates if notification for new order is to be sent
+        /// </summary>
+        public bool NewOrderNotification
+        {
+            get { return _newOrderNotification; }
+            set
+            {
+                _newOrderNotification = value;
+                OnPropertyChanged("NewOrderNotification");
+            }
+        }
+
+        /// <summary>
+        /// Indicates if notification on order acceptance is to be sent
+        /// </summary>
+        public bool AcceptedOrderNotification
+        {
+            get { return _acceptedOrderNotification; }
+            set
+            {
+                _acceptedOrderNotification = value;
+                OnPropertyChanged("AcceptedOrderNotification");
+            }
+        }
+
+        /// <summary>
+        /// Indicates if notification on order execution is to be sent
+        /// </summary>
+        public bool ExecutionNotification
+        {
+            get { return _executionNotification; }
+            set
+            {
+                _executionNotification = value;
+                OnPropertyChanged("ExecutionNotification");
+            }
+        }
+
+        /// <summary>
+        /// Indicates if the notification on order rejection is to be sent
+        /// </summary>
+        public bool RejectionNotification
+        {
+            get { return _rejectionNotification; }
+            set
+            {
+                _rejectionNotification = value;
+                OnPropertyChanged("RejectionNotification");
+            }
+        }
+
         #endregion
 
         #region Commands
@@ -529,6 +603,30 @@ namespace TradeHubGui.ViewModel
             {
                 return _instanceSummaryCommand ??
                        (_instanceSummaryCommand = new RelayCommand(param => InstanceSummaryExecute()));
+            }
+        }
+        
+        /// <summary>
+        /// Command used for opening Notificaiton options window
+        /// </summary>
+        public ICommand NotificationOptionsCommand
+        {
+            get
+            {
+                return _notificationOptionsCommand ??
+                       (_notificationOptionsCommand = new RelayCommand(param => NotificationOptionsExecute()));
+            }
+        }
+
+        /// <summary>
+        /// Command used for 'Save' button on Notificaiton options window
+        /// </summary>
+        public ICommand SaveNotificationOptionsCommand
+        {
+            get
+            {
+                return _saveNotificationOptionsCommand ??
+                       (_saveNotificationOptionsCommand = new RelayCommand(param => SaveNotificationOptionsExecute(param)));
             }
         }
 
@@ -783,6 +881,12 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        private bool ExportInstanceDataCanExecute()
+        {
+            if (SelectedStrategy == null) return false;
+            return true;
+        }
+
         /// <summary>
         /// Triggered when 'Export Instance Data' button is clicked
         /// </summary>
@@ -793,7 +897,7 @@ namespace TradeHubGui.ViewModel
             // Get Directory in which to save stats
             using (System.Windows.Forms.FolderBrowserDialog form = new System.Windows.Forms.FolderBrowserDialog())
             {
-                if (form.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                if (form.ShowDialog() == System.Windows.Forms.DialogResult.Yes)
                 {
                     folderPath = form.SelectedPath;
                 }
@@ -829,6 +933,42 @@ namespace TradeHubGui.ViewModel
             instanceSummaryWindow.DataContext = new StrategyInstanceSummaryViewModel(SelectedInstance);
             instanceSummaryWindow.Title = title;
             instanceSummaryWindow.Show();
+        }
+
+        /// <summary>
+        /// Displays window to select Notificaiton options for the selected instance
+        /// </summary>
+        private void NotificationOptionsExecute()
+        {
+            // Get current notification values for selected instance
+            var notificationOptions = _strategyController.GetNotificationProperties(SelectedInstance.InstanceKey);
+
+            if (notificationOptions != null)
+            {
+                NewOrderNotification = notificationOptions.Item1;
+                AcceptedOrderNotification = notificationOptions.Item2;
+                ExecutionNotification = notificationOptions.Item3;
+                RejectionNotification = notificationOptions.Item4;
+            }
+
+            StrategyNotificaitonParameterWindow window = new StrategyNotificaitonParameterWindow();
+            window.DataContext = this;
+            window.Owner = MainWindow;
+
+            window.ShowDialog();
+        }
+
+        /// <summary>
+        /// Triggered when 'Save' button on Notification Options Window is clicked
+        /// </summary>
+        private void SaveNotificationOptionsExecute(object param)
+        {
+            // Save New Order notification options
+            _strategyController.UpdateNotificationProperties(SelectedInstance.InstanceKey, _newOrderNotification,
+                _acceptedOrderNotification, _executionNotification, _rejectionNotification);
+
+            // Close "Edit Instance" window
+            ((Window)param).Close();
         }
 
         #endregion

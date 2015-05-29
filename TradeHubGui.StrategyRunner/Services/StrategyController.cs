@@ -241,6 +241,44 @@ namespace TradeHubGui.StrategyRunner.Services
         }
 
         /// <summary>
+        /// Updates the Notification parameters for the given strategy instance key
+        /// </summary>
+        /// <param name="instanceKey">Unique ID to identify strategy instance</param>
+        /// <param name="newOrder">Indicates if new order notification is required</param>
+        /// <param name="acceptedOrder">Indicates if accepted order notification is required</param>
+        /// <param name="execution">Indicates if execution notification is required</param>
+        /// <param name="rejection">Indicates if order rejection notification is required</param>
+        public void UpdateNotificationProperties(string instanceKey, bool newOrder, bool acceptedOrder, bool execution, bool rejection)
+        {
+            // Get Strategy Executor object for given Instance Key
+            if (_strategiesCollection.ContainsKey(instanceKey))
+            {
+                // Set individual notification properties
+                _strategiesCollection[instanceKey].SetNewOrderNotification(newOrder);
+                _strategiesCollection[instanceKey].SetAcceptedOrderNotification(acceptedOrder);
+                _strategiesCollection[instanceKey].SetExecutionNotification(execution);
+                _strategiesCollection[instanceKey].SetRejectionNotification(rejection);
+            }
+        }
+
+        public Tuple<bool, bool, bool, bool> GetNotificationProperties(string instanceKey)
+        {
+            // Get Strategy Executor object for given Instance Key
+            if (_strategiesCollection.ContainsKey(instanceKey))
+            {
+                // Get individual notification properties
+                return new Tuple<bool, bool, bool, bool>(
+                    _strategiesCollection[instanceKey].NewOrderNotification,
+                    _strategiesCollection[instanceKey].AcceptedOrderNotification,
+                    _strategiesCollection[instanceKey].ExecutionNotification,
+                    _strategiesCollection[instanceKey].RejectionNotification
+                    );
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// On execution received from strategy executor
         /// </summary>
         /// <param name="executionRepresentation"></param>
