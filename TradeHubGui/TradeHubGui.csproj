@@ -145,6 +145,13 @@
     <Reference Include="TradeHub.Infrastructure.Nhibernate">
       <HintPath>..\Lib\tradehub\TradeHub.Infrastructure.Nhibernate.dll</HintPath>
     </Reference>
+    <Reference Include="TradeHub.NotificationEngine.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.NotificationEngine.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.Notification">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.Notification.dll</HintPath>
+    </Reference>
     <Reference Include="TradeHub.StrategyEngine.Utlility">
       <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.Utlility.dll</HintPath>
     </Reference>
@@ -194,6 +201,7 @@
     <Compile Include="ViewModel\LimitOrderBookViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
+    <Compile Include="ViewModel\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModel\OrdersViewModel.cs" />
     <Compile Include="ViewModel\ProvidersViewModel.cs" />
     <Compile Include="ViewModel\SendOrderViewModel.cs" />
@@ -211,6 +219,9 @@
     </Compile>
     <Compile Include="Views\MarketScannerWindow.xaml.cs">
       <DependentUpon>MarketScannerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NotificationSettingsView.xaml.cs">
+      <DependentUpon>NotificationSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SendOrderWindow.xaml.cs">
       <DependentUpon>SendOrderWindow.xaml</DependentUpon>
@@ -254,6 +265,9 @@
     <Compile Include="Views\StrategyInstanceSummary.xaml.cs">
       <DependentUpon>StrategyInstanceSummary.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StrategyNotificaitonParameterWindow.xaml.cs">
+      <DependentUpon>StrategyNotificaitonParameterWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StrategyRunnerView.xaml.cs">
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
     </Compile>
@@ -272,6 +286,10 @@
     <Page Include="Views\MarketScannerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NotificationSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SendOrderWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -330,6 +348,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StrategyInstanceSummary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StrategyNotificaitonParameterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
