@@ -122,7 +122,7 @@ namespace TradeHubGui.ViewModel
 
             _hasSettingsChanged = false;
 
-            ReadParameters();
+            //ReadParameters();
         }
 
         #region Command Trigger Methods

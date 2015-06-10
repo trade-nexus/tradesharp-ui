@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TraceSourceLogger;
+using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
@@ -36,6 +37,9 @@ namespace TradeHubGui
 
         public MainWindow()
         {
+            Logger.SetLoggingLevel();
+            Logger.LogDirectory(DirectoryStructure.CLIENT_LOGS_LOCATION);
+
             InitializeComponent();
             
             // Save UI thread reference
@@ -47,8 +51,6 @@ namespace TradeHubGui
 
             // Subscribe Events
             EventSystem.Subscribe<UiElement>(UpdateRelayCommands);
-
-            Logger.SetLoggingLevel();
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

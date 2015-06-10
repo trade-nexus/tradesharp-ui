@@ -224,7 +224,6 @@ namespace TradeHubGui.StrategyRunner.Executors
             this._currentDispatcher = currentDispatcher;
 
             _asyncClassLogger = new AsyncClassLogger("StrategyExecutor");
-            _asyncClassLogger.SetLoggingLevel();
 
             //set logging path
             string path = DirectoryStructure.CLIENT_LOGS_LOCATION;
