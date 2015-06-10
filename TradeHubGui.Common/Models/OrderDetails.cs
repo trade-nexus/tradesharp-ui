@@ -220,23 +220,16 @@ namespace TradeHubGui.Common.Models
         {
             StringBuilder stringBuilder = new StringBuilder();
             
-            stringBuilder.Append(" Symbol: ");
             stringBuilder.Append(_security.Symbol);
             stringBuilder.Append(",");
-            stringBuilder.Append(" OrderID: ");
             stringBuilder.Append(_id);
             stringBuilder.Append(",");
-            stringBuilder.Append(" Side: ");
             stringBuilder.Append(_side);
             stringBuilder.Append(",");
-            stringBuilder.Append(" Size: ");
             stringBuilder.Append(_quantity);
-
             stringBuilder.Append(",");
-            stringBuilder.Append(" Price: ");
             stringBuilder.Append(_price);
             stringBuilder.Append(",");
-            stringBuilder.Append(" Time: ");
             stringBuilder.Append(_time);
 
             if (_fillDetails.Count > 0)
@@ -244,10 +237,8 @@ namespace TradeHubGui.Common.Models
                 foreach (var fillDetail in _fillDetails)
                 {
                     stringBuilder.Append(",");
-                    stringBuilder.Append(" Execution Price: ");
                     stringBuilder.Append(fillDetail.FillPrice);
                     stringBuilder.Append(",");
-                    stringBuilder.Append(" Time: ");
                     stringBuilder.Append(fillDetail.FillDatetime);
                 }
             }

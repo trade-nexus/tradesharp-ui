@@ -42,6 +42,7 @@ namespace TradeHubGui.Common.Infrastructure
             if (!File.Exists(path))
             {
                 StreamWriter outputFile = new StreamWriter(path);
+                outputFile.WriteLine("Symbol,OrderId,Side,Quantity,Price,Time");
                 foreach (var execution in dataList)
                 {
                     outputFile.WriteLine(execution.BasicExecutionInfo());
