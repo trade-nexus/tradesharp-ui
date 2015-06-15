@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AForge;
 using AForge.Genetic;
 using TraceSourceLogger;
+using TradeHub.Common.Core.Constants;
 using TradeHub.Optimization.Genetic;
 using TradeHub.Optimization.Genetic.FitnessFunction;
 using TradeHub.Optimization.Genetic.FitnessFunctionImplementation;
@@ -63,6 +64,7 @@ namespace TradeHubGui.StrategyRunner.Managers
         public OptimizationManagerGeneticAlgorithm()
         {
             _logger.SetLoggingLevel();
+            _logger.LogDirectory(DirectoryStructure.CLIENT_LOGS_LOCATION);
 
             // Subscribe Event
             EventSystem.Subscribe<GeneticAlgorithmParameters>(OptimizeStrategy);

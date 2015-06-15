@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using TraceSourceLogger;
+using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
 using TradeHub.Common.Core.Utility;
 using TradeHub.StrategyEngine.Utlility.Services;
@@ -69,9 +70,9 @@ namespace TradeHubGui.StrategyRunner.Managers
         {
             _currentDispatcher = Dispatcher.CurrentDispatcher;
 
-            //_asyncClassLogger = ContextRegistry.GetContext()["StrategyRunnerLogger"] as AsyncClassLogger;
             _asyncClassLogger = new AsyncClassLogger("OptimizationManagerBruteForce");
             _asyncClassLogger.SetLoggingLevel();
+            _asyncClassLogger.LogDirectory(DirectoryStructure.CLIENT_LOGS_LOCATION);
 
             // Initialize
             _ctorArguments = new List<object[]>();
