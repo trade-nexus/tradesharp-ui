@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using TraceSourceLogger;
+using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Infrastructure;
 using TradeHubGui.Common.Models;
 
@@ -38,12 +39,7 @@ namespace TradeHubGui.Dashboard.Managers
         /// </summary>
         public OrderExecutionProvidersManager()
         {
-            // Used to Testing
-            _orderExecutionProvidersRootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TradeHub\\OrderExecutionProviders\\";
-            _orderExecutionProvidersConfigFolderPath = _orderExecutionProvidersRootFolderPath;
-
-            // Used for Live Execution
-            _orderExecutionProvidersRootFolderPath = Path.GetFullPath(@"~\..\..\Order Execution Engine\");
+            _orderExecutionProvidersRootFolderPath = DirectoryPath.ORDER_ENGINE_PATH;
             _orderExecutionProvidersConfigFolderPath = _orderExecutionProvidersRootFolderPath + @"Config\";
 
             _orderExecutionProvidersFileName = "AvailableOEProviders.xml";

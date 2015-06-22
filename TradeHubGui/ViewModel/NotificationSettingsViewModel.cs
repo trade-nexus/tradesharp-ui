@@ -117,8 +117,8 @@ namespace TradeHubGui.ViewModel
         public NotificationSettingsViewModel()
         {
             // Set File paths
-            _emailSenderFilePath = @DirectoryPath.ROOT_DIRECTORY_PATH + "Notification Engine\\Config\\EmailSenderInformation.xml";
-            _emailReceiverFilePath = @DirectoryPath.ROOT_DIRECTORY_PATH + "Notification Engine\\Config\\EmailReceiverInformation.xml";
+            _emailSenderFilePath = DirectoryPath.NOTIFICATION_ENGINE_PATH + @"Config\EmailSenderInformation.xml";
+            _emailReceiverFilePath = DirectoryPath.NOTIFICATION_ENGINE_PATH + @"Config\EmailReceiverInformation.xml";
 
             _hasSettingsChanged = false;
 

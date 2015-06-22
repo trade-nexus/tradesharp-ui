@@ -39,12 +39,7 @@ namespace TradeHubGui.Dashboard.Managers
         /// </summary>
         public MarketDataProvidersManager()
         {
-            //NOTE: For running providers from AppData
-            _marketDataProvidersRootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TradeHub\\MarketDataProviders\\";
-            _marketDataProvidersConfigFolderPath = _marketDataProvidersRootFolderPath;
-
-            //For Installer
-            _marketDataProvidersRootFolderPath = Path.GetFullPath(@"~\..\..\Market Data Engine\");
+            _marketDataProvidersRootFolderPath = DirectoryPath.MARKETDATA_ENGINE_PATH;
             _marketDataProvidersConfigFolderPath = _marketDataProvidersRootFolderPath + @"Config\";
 
             _marketDataProvidersFileName = "AvailableProviders.xml";
