@@ -173,7 +173,7 @@ namespace TradeHubGui.ViewModel
                 }
             }
 
-            InitializeServices();
+            //InitializeServices();
         }
 
         /// <summary>
