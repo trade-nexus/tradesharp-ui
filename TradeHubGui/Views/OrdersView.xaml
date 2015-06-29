@@ -10,6 +10,7 @@
 
     <UserControl.Resources>
         <conv:OrderStatusToBrushConverter x:Key="OrderStatusToBrush"/>
+        <conv:OrderStatusToVisibilityConverter x:Key="OrderStatusToVisibility"/>
         <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
         <conv:PositionToVisibilityConverter x:Key="PositionToVisibility"/>
     </UserControl.Resources>
@@ -187,6 +188,34 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
+
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <Border>
+                                    <DataGrid Margin="0,2,0,10" BorderThickness="1,1,1,1" BorderBrush="CornflowerBlue" HorizontalAlignment="Right"
+                                                ItemsSource="{Binding FillDetails}"
+                                                SelectionMode="Single" 
+                                                IsTextSearchEnabled="True"
+                                                IsSynchronizedWithCurrentItem="True"
+                                                CanUserAddRows="False" CanUserDeleteRows="False"
+                                                CanUserResizeRows="False" CanUserSortColumns="True"
+                                                IsReadOnly="True"
+                                                SelectionUnit="FullRow"
+                                                AutoGenerateColumns="False"
+                                                RowHeight="22"
+                                                SelectionChanged="DataGrid_SelectionChanged">
+
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="Type" Width="0.1*" MinWidth="90" Binding="{Binding Path=FillType}" />
+                                            <DataGridTextColumn Header="Fill ID" Width="0.2*" MinWidth="130" Binding="{Binding Path=FillId}" />
+                                            <DataGridTextColumn Header="Quantity" Width="0.1*" MinWidth="90" Binding="{Binding Path=FillQuantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                            <DataGridTextColumn Header="Price" Width="0.1*" MinWidth="90" Binding="{Binding Path=FillPrice}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                                            <DataGridTextColumn Header="Time" Width="0.5*" MinWidth="160" Binding="{Binding Path=FillDatetime}" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Border>
+                            </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
                     </DataGrid>
                 </DockPanel>
 

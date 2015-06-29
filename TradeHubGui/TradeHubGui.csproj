@@ -31,7 +31,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -176,6 +176,7 @@
     <Compile Include="Common\DataGridRowDoubleClickHandler.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\UIHelper.cs" />
+    <Compile Include="Converters\OrderStatusToVisibilityConverter.cs" />
     <Compile Include="Converters\InstanceExecutionStatusToBoolConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\OptimizationExecutionStatusToBrushConverter.cs" />
