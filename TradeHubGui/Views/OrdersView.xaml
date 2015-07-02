@@ -189,7 +189,7 @@
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
 
-                        <DataGrid.RowDetailsTemplate>
+                        <!--<DataGrid.RowDetailsTemplate>
                             <DataTemplate>
                                 <Border>
                                     <DataGrid Margin="0,2,0,10" BorderThickness="1,1,1,1" BorderBrush="CornflowerBlue" HorizontalAlignment="Right"
@@ -215,7 +215,7 @@
                                     </DataGrid>
                                 </Border>
                             </DataTemplate>
-                        </DataGrid.RowDetailsTemplate>
+                        </DataGrid.RowDetailsTemplate>-->
                     </DataGrid>
                 </DockPanel>
 
