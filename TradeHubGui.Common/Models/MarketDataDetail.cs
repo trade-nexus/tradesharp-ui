@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using TradeHub.Common.Core.DomainModels;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Utility;
+using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.Common.Models
 {
@@ -65,6 +66,11 @@ namespace TradeHubGui.Common.Models
         private DataPersistenceInformation _persistenceInformation;
 
         /// <summary>
+        /// Responsible for creating Price Alerts based on specified conditions
+        /// </summary>
+        private PriceAlertGenerator _priceAlertGenerator;
+
+        /// <summary>
         /// Contains the maping of Bid LOB-Record for each depth
         /// KEY = Depth
         /// VALUE = Limit Order Book Record for Bid <see cref="LimitOrderBookRecord"/>
@@ -100,7 +106,10 @@ namespace TradeHubGui.Common.Models
             // Save reference
             _security = security;
 
+            // Initialize parameters
+            _priceAlertGenerator = new PriceAlertGenerator();
             _persistenceInformation = new DataPersistenceInformation();
+
             _bidRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
             _askRecordsMap = new Dictionary<int, LimitOrderBookRecord>();
 
@@ -327,6 +336,30 @@ namespace TradeHubGui.Common.Models
                 }));
             }
 
+        }
+
+        /// <summary>
+        /// Adds new alert conditions for BIDS
+        /// </summary>
+        public void AddBidAlertConditions(List<PriceAlertCondition> alertConditions)
+        {
+            _priceAlertGenerator.AddBidAlertConditions(alertConditions);
+        }
+
+        /// <summary>
+        /// Adds new alert conditions for ASKS
+        /// </summary>
+        public void AddAskAlertConditions(List<PriceAlertCondition> alertConditions)
+        {
+            _priceAlertGenerator.AddBidAlertConditions(alertConditions);
+        }
+
+        /// <summary>
+        /// Adds new alert conditions for TRADES
+        /// </summary>
+        public void AddTradeAlertConditions(List<PriceAlertCondition> alertConditions)
+        {
+            _priceAlertGenerator.AddBidAlertConditions(alertConditions);
         }
 
         #region INotifyPropertyChanged implementation
