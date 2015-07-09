@@ -37,6 +37,7 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<OrderExecutionProvider> _executionProviders;
 
         private RelayCommand _closePositionCommand;
+        private RelayCommand _cancelOrderCommand;
         
         #endregion
 
@@ -206,6 +207,19 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Used for 'Cancel' button for cancelling an existing order
+        /// </summary>
+        public ICommand CancelOrderCommand
+        {
+            get
+            {
+                return _cancelOrderCommand ??
+                       (_cancelOrderCommand =
+                           new RelayCommand(param => CancelOrderExecute()));
+            }
+        }
+
         #endregion
 
         #region Command Trigger Methods
@@ -216,6 +230,14 @@ namespace TradeHubGui.ViewModel
         private void ClosePositionExecute()
         {
             ClosePosition();
+        }
+
+        /// <summary>
+        /// Called when 'Cancel' button is clicked
+        /// </summary>
+        private void CancelOrderExecute()
+        {
+            CancelOrder();
         }
 
         #endregion
@@ -287,7 +309,7 @@ namespace TradeHubGui.ViewModel
             int orderQuantity = Math.Abs(SelectedPosition.Position);
 
             // Create a new Object which will be used across the application
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(SelectedProvider.ProviderName);
 
             orderDetails.Price = 0;
             orderDetails.StopPrice = 0;
@@ -295,7 +317,6 @@ namespace TradeHubGui.ViewModel
             orderDetails.Side = orderSide;
             orderDetails.Type = OrderType.Market;
             orderDetails.Security = SelectedPosition.Security;
-            orderDetails.Provider = SelectedProvider.ProviderName;
 
             // Add to selected provider collection for future reference and updates
             SelectedProvider.AddOrder(orderDetails);
@@ -306,6 +327,25 @@ namespace TradeHubGui.ViewModel
             // Raise event to notify listener
             EventSystem.Publish<OrderRequest>(orderRequest);
         }
+
+        /// <summary>
+        /// Sends order cancellation request for the selected symbol
+        /// </summary>
+        private void CancelOrder()
+        {
+            // Create a new Object which will be used to make a cancellation request
+            OrderDetails orderDetails = new OrderDetails(SelectedOrderDetail.Provider);
+
+            // Use existing orders ID to identity the order during cancellation
+            orderDetails.ID = SelectedOrderDetail.ID;
+
+            // Create cancel order request
+            OrderRequest orderRequest = new OrderRequest(orderDetails, OrderRequestType.Cancel);
+
+            // Raise event to notify listener
+            EventSystem.Publish<OrderRequest>(orderRequest);
+        }
+
         #endregion
 
         #region Events

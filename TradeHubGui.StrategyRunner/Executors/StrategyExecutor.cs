@@ -609,7 +609,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="order">Contains cancelled order information</param>
         private void OnCancellationReceived(Order order)
         {
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(order.OrderExecutionProvider);
             orderDetails.ID = order.OrderID;
             orderDetails.Security = order.Security;
             orderDetails.Quantity = order.OrderSize;
@@ -630,7 +630,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="rejection">Contains rejection details</param>
         private void OnRejectionReceived(Rejection rejection)
         {
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(rejection.OrderExecutionProvider);
             orderDetails.ID = rejection.OrderId;
             orderDetails.Security = rejection.Security;
             orderDetails.Status = OrderStatus.REJECTED;
@@ -646,7 +646,7 @@ namespace TradeHubGui.StrategyRunner.Executors
         private void OnNewExecutionReceived(Execution execution)
         {
             // Update Stats
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(execution.OrderExecutionProvider);
             orderDetails.ID = execution.Fill.OrderId;
             orderDetails.Security = execution.Fill.Security;
             orderDetails.Price = execution.Fill.ExecutionPrice;

@@ -71,7 +71,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
 
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(TradeHubConstants.OrderExecutionProvider.Simulated);
             orderDetails.ID = "01";
             orderDetails.Type = OrderType.Market;
             orderDetails.Quantity = 10;
@@ -110,7 +110,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
 
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(TradeHubConstants.OrderExecutionProvider.Simulated);
             orderDetails.ID = "01";
             orderDetails.Type = OrderType.Limit;
             orderDetails.Price = 44.56M;
@@ -150,7 +150,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
 
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(TradeHubConstants.OrderExecutionProvider.Simulated);
             orderDetails.ID = "01";
             orderDetails.Type = OrderType.Market;
             orderDetails.Quantity = 10;
@@ -192,7 +192,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
 
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(TradeHubConstants.OrderExecutionProvider.Simulated);
             orderDetails.ID = "01";
             orderDetails.Type = OrderType.Limit;
             orderDetails.Price = 44.76M;
@@ -233,7 +233,7 @@ namespace TradeHubGui.Dashboard.Tests.Integration
 
             Assert.IsTrue(provider.ConnectionStatus.Equals(ConnectionStatus.Connected));
 
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(TradeHubConstants.OrderExecutionProvider.Simulated);
             orderDetails.ID = "01";
             orderDetails.Type = OrderType.Limit;
             orderDetails.Quantity = 10;

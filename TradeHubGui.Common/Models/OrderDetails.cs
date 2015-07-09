@@ -31,11 +31,15 @@ namespace TradeHubGui.Common.Models
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public OrderDetails()
+        public OrderDetails(string providerName)
         {
+            // Save reference
+            _provider = providerName;
+
+            // Initialze fields
+            _time = DateTime.UtcNow;
             _status = OrderStatus.OPEN;
             _fillDetails = new ObservableCollection<FillDetail>();
-            _time = DateTime.UtcNow;
         }
 
         #region Properties

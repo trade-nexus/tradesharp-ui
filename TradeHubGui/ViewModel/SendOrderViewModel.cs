@@ -281,7 +281,7 @@ namespace TradeHubGui.ViewModel
         private void SendOrder(string orderSide, decimal orderPrice)
         {
             // Create a new Object which will be used across the application
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(SelectedOrderExecutionProvider.ProviderName);
 
             orderDetails.Price = SelectedOrderType.Equals(OrderType.Market) ? 0 : orderPrice;
             orderDetails.StopPrice = OrderModel.TriggerPrice;
@@ -289,7 +289,6 @@ namespace TradeHubGui.ViewModel
             orderDetails.Side = orderSide;
             orderDetails.Type = SelectedOrderType;
             orderDetails.Security = OrderModel.Security;
-            orderDetails.Provider = SelectedOrderExecutionProvider.ProviderName;
 
             // Add to selected provider collection for future reference and updates
             SelectedOrderExecutionProvider.AddOrder(orderDetails);
@@ -313,7 +312,7 @@ namespace TradeHubGui.ViewModel
             int orderQuantity = Math.Abs(PositionStatistics.Position);
 
             // Create a new Object which will be used across the application
-            OrderDetails orderDetails = new OrderDetails();
+            OrderDetails orderDetails = new OrderDetails(SelectedOrderExecutionProvider.ProviderName);
 
             orderDetails.Price = 0 ;
             orderDetails.StopPrice = 0;
@@ -321,7 +320,6 @@ namespace TradeHubGui.ViewModel
             orderDetails.Side = orderSide;
             orderDetails.Type = OrderType.Market;
             orderDetails.Security = OrderModel.Security;
-            orderDetails.Provider = SelectedOrderExecutionProvider.ProviderName;
 
             // Add to selected provider collection for future reference and updates
             SelectedOrderExecutionProvider.AddOrder(orderDetails);

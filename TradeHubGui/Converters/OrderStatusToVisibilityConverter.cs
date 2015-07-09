@@ -27,8 +27,8 @@ namespace TradeHubGui.Converters
             {
                 string status = (string)value;
 
-                // If status is Executed/Partially Executed return visible.
-                if (status.Equals(OrderStatus.EXECUTED) || status.Equals(OrderStatus.PARTIALLY_EXECUTED))
+                // If status is OPEN/SUBMITTED return visible.
+                if (status.Equals(OrderStatus.OPEN) || status.Equals(OrderStatus.SUBMITTED))
                 {
                     return System.Windows.Visibility.Visible;
                 }
