@@ -336,6 +336,7 @@ namespace TradeHubGui.Common.Models
                 }));
             }
 
+            _priceAlertGenerator.EvaluateConditions(tick);
         }
 
         /// <summary>
@@ -351,7 +352,7 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         public void AddAskAlertConditions(List<PriceAlertCondition> alertConditions)
         {
-            _priceAlertGenerator.AddBidAlertConditions(alertConditions);
+            _priceAlertGenerator.AddAskAlertConditions(alertConditions);
         }
 
         /// <summary>
@@ -359,7 +360,34 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         public void AddTradeAlertConditions(List<PriceAlertCondition> alertConditions)
         {
-            _priceAlertGenerator.AddBidAlertConditions(alertConditions);
+            _priceAlertGenerator.AddTradeAlertConditions(alertConditions);
+        }
+
+        /// <summary>
+        /// Returns existing BID conditions
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyList<PriceAlertCondition> GetBidAlertConditions()
+        {
+            return _priceAlertGenerator.BidPriceConditions;
+        }
+
+        /// <summary>
+        /// Returns existing ASK conditions
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyList<PriceAlertCondition> GetAskAlertConditions()
+        {
+            return _priceAlertGenerator.AskPriceConditions;
+        }
+
+        /// <summary>
+        /// Returns existing TRADE conditions
+        /// </summary>
+        /// <returns></returns>
+        public IReadOnlyList<PriceAlertCondition> GetTradeAlertConditions()
+        {
+            return _priceAlertGenerator.TradePriceConditions;
         }
 
         #region INotifyPropertyChanged implementation

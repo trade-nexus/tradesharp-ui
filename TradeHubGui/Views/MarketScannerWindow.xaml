@@ -6,7 +6,7 @@
                  GlowBrush="Silver"
                  ShowInTaskbar="True"
                  WindowStartupLocation="CenterScreen"
-                 Width="760" Height="400"
+                 Width="780" Height="400"
                  MinWidth="450" MinHeight="200"
                  Icon="{StaticResource imgMarketDataScanner}"
                  FocusManager.FocusedElement="{Binding ElementName=NewSymbolTextBox}">
@@ -128,6 +128,11 @@
                                         Command="{Binding DataContext.SendOrderCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                         CommandParameter="{Binding}">
                                         <Image Width="16" Height="16" Margin="1" Source="{StaticResource imgOrder}" UseLayoutRounding="True"/>
+                                    </Button>
+                                    <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Price Alert Coditions"
+                                        Command="{Binding DataContext.AlertSettingsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}">
+                                        <Image Width="16" Height="16" Margin="1" Source="{StaticResource imgAlert}" UseLayoutRounding="True"/>
                                     </Button>
                                 </StackPanel>
                             </Border>

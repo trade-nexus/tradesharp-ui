@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using NHibernate.Util;
 using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels;
 using TradeHubGui.Common;
@@ -43,6 +44,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _showChartCommand;
         private RelayCommand _sendOrderCommand;
         private RelayCommand _unsubscribeCommand;
+        private RelayCommand _alertSettingsCommand;
         private RelayCommand _showPositionStatsCommand;
 
         #endregion
@@ -210,6 +212,17 @@ namespace TradeHubGui.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command used for setting price alert conditions
+        /// </summary>
+        public ICommand AlertSettingsCommand
+        {
+            get
+            {
+                return _alertSettingsCommand ?? (_alertSettingsCommand = new RelayCommand(param => ShowAlertSettingsExecute(param)));
+            }
+        }
+
         #endregion
 
         #region Trigger Methods for Commands
@@ -345,6 +358,62 @@ namespace TradeHubGui.ViewModel
         private void ShowPositionStatsExecute(object param)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Displays Price Alert Conditions window
+        /// </summary>
+        /// <param name="param"></param>
+        private void ShowAlertSettingsExecute(object param)
+        {
+            PriceAlertSettings priceAlertSettingsWindow = new PriceAlertSettings();
+            var viewModel = new PriceAlertSettingsViewModel();
+
+            // Set existing conditions
+            viewModel.PopulateExistingBidCondition(SelectedTickDetail.GetBidAlertConditions().FirstOrDefault());
+            viewModel.PopulateExistingAskCondition(SelectedTickDetail.GetAskAlertConditions().FirstOrDefault());
+            viewModel.PopulateExistingTradeCondition(SelectedTickDetail.GetTradeAlertConditions().FirstOrDefault());
+
+            priceAlertSettingsWindow.DataContext = viewModel;
+
+            priceAlertSettingsWindow.Owner = _scannerWindow;
+            priceAlertSettingsWindow.ShowDialog();
+
+            // Save new BID Condition
+            if (viewModel.BidAlertCondition != null)
+                SelectedTickDetail.AddBidAlertConditions(new List<PriceAlertCondition>
+                {
+                    new PriceAlertCondition(viewModel.BidAlertCondition.ConditionOperator,
+                        viewModel.BidAlertCondition.ConditionPrice)
+                });
+            else
+            {
+                SelectedTickDetail.AddBidAlertConditions(new List<PriceAlertCondition>());
+            }
+
+            // Save new ASK Condition
+            if (viewModel.AskAlertCondition != null)
+                SelectedTickDetail.AddAskAlertConditions(new List<PriceAlertCondition>
+                {
+                    new PriceAlertCondition(viewModel.AskAlertCondition.ConditionOperator,
+                        viewModel.AskAlertCondition.ConditionPrice)
+                });
+            else
+            {
+                SelectedTickDetail.AddAskAlertConditions(new List<PriceAlertCondition>());
+            }
+
+            // Save new TRADE Condition
+            if (viewModel.TradeAlertCondition != null)
+                SelectedTickDetail.AddTradeAlertConditions(new List<PriceAlertCondition>
+                {
+                    new PriceAlertCondition(viewModel.TradeAlertCondition.ConditionOperator,
+                        viewModel.TradeAlertCondition.ConditionPrice)
+                });
+            else
+            {
+                SelectedTickDetail.AddTradeAlertConditions(new List<PriceAlertCondition>());
+            }
         }
 
         #endregion

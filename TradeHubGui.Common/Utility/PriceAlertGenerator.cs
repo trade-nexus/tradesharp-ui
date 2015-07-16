@@ -38,28 +38,25 @@ namespace TradeHubGui.Common.Utility
         /// <summary>
         /// Indicates if alert for BID price is required
         /// </summary>
-        public List<PriceAlertCondition> BidPriceConditions
+        public IReadOnlyList<PriceAlertCondition> BidPriceConditions
         {
-            get { return _bidPriceConditions; }
-            set { _bidPriceConditions = value; }
+            get { return _bidPriceConditions.AsReadOnly(); }
         }
 
         /// <summary>
         /// Indicates if alert for ASK price is required
         /// </summary>
-        public List<PriceAlertCondition> AskPriceConditions
+        public IReadOnlyList<PriceAlertCondition> AskPriceConditions
         {
-            get { return _askPriceConditions; }
-            set { _askPriceConditions = value; }
+            get { return _askPriceConditions.AsReadOnly(); }
         }
 
         /// <summary>
         /// Indicates if alert for TRADE price is required
         /// </summary>
-        public List<PriceAlertCondition> TradePriceConditions
+        public IReadOnlyList<PriceAlertCondition> TradePriceConditions
         {
-            get { return _tradePriceConditions; }
-            set { _tradePriceConditions = value; }
+            get { return _tradePriceConditions.AsReadOnly(); }
         }
 
         #endregion
@@ -155,8 +152,9 @@ namespace TradeHubGui.Common.Utility
                 {
                     // Create new Alert message
                     string title = "BID Alert";
-                    string conditionString = EnumDescription.GetEnumDescription(condition.ConditionOperator);
-                    string summary = "Current BID Price: " + price + " is " + conditionString + condition.ConditionPrice;
+                    string conditionString = EnumUtility.GetEnumDescription(condition.ConditionOperator);
+                    string summary = @"Current BID Price: '" + price + "' is " +
+                                     "" + conditionString.ToUpper() + " '" + condition.ConditionPrice + "'";
 
                     AlertMessage alertMessage = new AlertMessage(title, summary);
                     
@@ -179,8 +177,9 @@ namespace TradeHubGui.Common.Utility
                 {
                     // Create new Alert message
                     string title = "ASK Alert";
-                    string conditionString = EnumDescription.GetEnumDescription(condition.ConditionOperator);
-                    string summary = "Current ASK Price: " + price + " is " + conditionString + condition.ConditionPrice;
+                    string conditionString = EnumUtility.GetEnumDescription(condition.ConditionOperator);
+                    string summary = @"Current ASK Price: '" + price + "' is " +
+                                     "" + conditionString.ToUpper() + " '" + condition.ConditionPrice + "'";
 
                     AlertMessage alertMessage = new AlertMessage(title, summary);
 
@@ -203,8 +202,9 @@ namespace TradeHubGui.Common.Utility
                 {
                     // Create new Alert message
                     string title = "TRADE Alert";
-                    string conditionString = EnumDescription.GetEnumDescription(condition.ConditionOperator);
-                    string summary = "Current TRADE Price: " + price + " is " + conditionString + condition.ConditionPrice;
+                    string conditionString = EnumUtility.GetEnumDescription(condition.ConditionOperator);
+                    string summary = @"Current TRADE Price: '" + price + "' is " +
+                                     "" + conditionString.ToUpper() + " '" + condition.ConditionPrice + "'";
 
                     AlertMessage alertMessage = new AlertMessage(title, summary);
 

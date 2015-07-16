@@ -206,7 +206,12 @@
     <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
     <Compile Include="ViewModel\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModel\AlertWindowViewModel.cs" />
+    <Compile Include="Views\AlertWindow.xaml.cs">
+      <DependentUpon>AlertWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\OrdersViewModel.cs" />
+    <Compile Include="ViewModel\PriceAlertSettingsViewModel.cs" />
     <Compile Include="ViewModel\ProvidersViewModel.cs" />
     <Compile Include="ViewModel\SendOrderViewModel.cs" />
     <Compile Include="ViewModel\ServicesViewModel.cs" />
@@ -226,6 +231,9 @@
     </Compile>
     <Compile Include="Views\NotificationSettingsView.xaml.cs">
       <DependentUpon>NotificationSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PriceAlertSettings.xaml.cs">
+      <DependentUpon>PriceAlertSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SendOrderWindow.xaml.cs">
       <DependentUpon>SendOrderWindow.xaml</DependentUpon>
@@ -275,6 +283,10 @@
     <Compile Include="Views\StrategyRunnerView.xaml.cs">
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AlertWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BruteOptimizationWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -292,6 +304,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NotificationSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PriceAlertSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

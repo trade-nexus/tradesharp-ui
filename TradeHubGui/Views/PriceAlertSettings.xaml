@@ -1,0 +1,101 @@
+﻿<mah:MetroWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+                 xmlns:views="clr-namespace:TradeHubGui.Views" 
+                 x:Class="TradeHubGui.Views.PriceAlertSettings"
+                 GlowBrush="Silver" ShowInTaskbar="False"
+                 WindowStartupLocation="CenterOwner"
+                 Title="Price Alert Conditions"
+                 Width="350" Height="380">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{Binding OrderModel.Security.Symbol, FallbackValue=N/A}" TextAlignment="Center" MinWidth="72"
+                       Style="{StaticResource HeaderTextBlockStyle}" FontWeight="Thin" FontSize="36"  VerticalAlignment="Center"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="0.9*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Grid.ColumnSpan="3" Background="{StaticResource GrayBrush}" Opacity="0.15"/>
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,0,0" Foreground="{StaticResource GreenBrush}" FontWeight="Bold">Bid Alert Conditions</Label>
+            <CheckBox Grid.Row="0" Grid.Column="2" Margin="0,0,10,0" IsChecked="{Binding IsBidConditionEnabled}"
+                      HorizontalAlignment="Right" VerticalAlignment="Center"/>
+
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource GreenBrush}"
+                   IsEnabled="{Binding IsBidConditionEnabled}">Price is</Label>
+            <ComboBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding IsBidConditionEnabled}" ItemsSource="{Binding AvailableConditions}" SelectedItem="{Binding SelectedBidCondition}"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" MinWidth="50" Foreground="{StaticResource GreenBrush}"/>
+            <wpfToolkitExtended:DecimalUpDown Grid.Row="1" Grid.Column="3" Height="25" Width="100" IsEnabled="{Binding IsBidConditionEnabled}"
+                                              VerticalAlignment="Center" Foreground="{StaticResource GreenBrush}"
+                                              Value="{Binding BidConditionPrice, FallbackValue=0}" Minimum="0" FontWeight="Bold"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="0.9*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Grid.ColumnSpan="3" Background="{StaticResource GrayBrush}" Opacity="0.15"/>
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,0,0" Foreground="{StaticResource RedBrush}" FontWeight="Bold">Ask Alert Conditions</Label>
+            <CheckBox Grid.Row="0" Grid.Column="2" Margin="0,0,10,0" IsChecked="{Binding IsAskConditionEnabled}"
+                      HorizontalAlignment="Right" VerticalAlignment="Center"></CheckBox>
+
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource RedBrush}"
+                   IsEnabled="{Binding IsAskConditionEnabled}">Price is</Label>
+            <ComboBox Grid.Row="1" Grid.Column="1" IsEnabled="{Binding IsAskConditionEnabled}" ItemsSource="{Binding AvailableConditions}" SelectedItem="{Binding SelectedAskCondition}"
+                      HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" MinWidth="50" Foreground="{StaticResource RedBrush}"/>
+            <wpfToolkitExtended:DecimalUpDown Grid.Row="1" Grid.Column="3" Height="25" VerticalAlignment="Center" Width="100" 
+                                              Foreground="{StaticResource RedBrush}" IsEnabled="{Binding IsAskConditionEnabled}"
+                                              Value="{Binding AskConditionPrice, FallbackValue=0}" Minimum="0" FontWeight="Bold"/>
+        </Grid>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="0.9*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Grid.ColumnSpan="3" Background="{StaticResource GrayBrush}" Opacity="0.15"/>
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,0,0" Foreground="{StaticResource BaseBrush3}" FontWeight="Bold">Trade Alert Conditions</Label>
+            <CheckBox Grid.Row="0" Grid.Column="2" Margin="0,0,10,0" IsChecked="{Binding IsTradeConditionEnabled}"
+                      HorizontalAlignment="Right" VerticalAlignment="Center"></CheckBox>
+
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource BaseBrush3}"
+                   IsEnabled="{Binding IsTradeConditionEnabled}">Price is</Label>
+            <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" MinWidth="50" SelectedItem="{Binding SelectedTradeCondition}"
+                      Foreground="{StaticResource BaseBrush3}" IsEnabled="{Binding IsTradeConditionEnabled}" ItemsSource="{Binding AvailableConditions}"/>
+            <wpfToolkitExtended:DecimalUpDown Grid.Row="1" Grid.Column="3" Height="25" VerticalAlignment="Center" Width="100" 
+                                              Foreground="{StaticResource BaseBrush3}" IsEnabled="{Binding IsTradeConditionEnabled}"
+                                              Value="{Binding TradeConditionPrice, FallbackValue=0}" Minimum="0" FontWeight="Bold"/>
+        </Grid>
+
+        <Button Grid.Row="4" Content="Save" Margin="6,6,6,6" HorizontalAlignment="Right" Height="25" VerticalAlignment="Center" Width="100"
+                Command="{Binding SaveSettingsCommand}"/>
+    </Grid>
+</mah:MetroWindow>

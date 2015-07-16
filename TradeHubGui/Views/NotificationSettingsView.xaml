@@ -75,6 +75,6 @@
             </DockPanel>
         </HeaderedContentControl>
 
-        <Button Grid.Row="3" Grid.Column="1" Content="Save" Margin="6,6,6,6" HorizontalAlignment="Right" MinWidth="80" Command="{Binding SaveParametersCommand}"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="Save" Margin="6,6,6,6" HorizontalAlignment="Right" MinWidth="80" Command="{Binding SaveSettingsCommand}"/>
     </Grid>
 </UserControl>

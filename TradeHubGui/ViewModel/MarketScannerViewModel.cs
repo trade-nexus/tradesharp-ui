@@ -9,9 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
+using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Services;
 using TradeHubGui.Views;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
@@ -30,12 +32,17 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _createScannerWindowCommand;
         private RelayCommand _closeScannerWindowCommand;
         private RelayCommand _focusScannerWindowCommand;
+        private Dispatcher _currentDispatcher;
+
         #endregion
 
         #region Constructor
         public MarketScannerViewModel()
         {
+            _currentDispatcher=Dispatcher.CurrentDispatcher;
             _scannerWindowViewModels = new ObservableCollection<MarketScannerWindowViewModel>();
+            
+            EventSystem.Subscribe<AlertMessage>(DisplayAlertMessage);
         }
         #endregion
 
@@ -138,6 +145,7 @@ namespace TradeHubGui.ViewModel
         #endregion
 
         #region Methods
+
         private void ShowNewScannerWindowExecute()
         {
             _newMarketScannerWindow = new NewMarketScannerWindow();
@@ -239,6 +247,21 @@ namespace TradeHubGui.ViewModel
             if (_marketDataProviders != null && _marketDataProviders.Count > 0)
                 SelectedMarketDataProvider = _marketDataProviders[0];
         }
+
+        /// <summary>
+        /// Uses the incoming alert details to dispaly message
+        /// </summary>
+        private void DisplayAlertMessage(AlertMessage alertMessage)
+        {
+            _currentDispatcher.Invoke(DispatcherPriority.Background, (Action) (() =>
+            {
+                AlertWindow notificationWindow = new AlertWindow();
+                notificationWindow.DataContext = new AlertWindowViewModel(alertMessage);
+
+                notificationWindow.Show();
+            }));
+        }
+
         #endregion
 
         #region Events
@@ -281,6 +304,7 @@ namespace TradeHubGui.ViewModel
                 MainWindow.Activate();
             }
         }
+
         #endregion
     }
 }
