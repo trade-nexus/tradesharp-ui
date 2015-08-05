@@ -234,6 +234,8 @@ namespace TradeHubGui.Common.Models
             stringBuilder.Append(",");
             stringBuilder.Append(_price);
             stringBuilder.Append(",");
+            stringBuilder.Append(_status);
+            stringBuilder.Append(",");
             stringBuilder.Append(_time);
 
             if (_fillDetails.Count > 0)

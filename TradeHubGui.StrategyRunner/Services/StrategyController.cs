@@ -72,12 +72,12 @@ namespace TradeHubGui.StrategyRunner.Services
         /// </summary>
         public StrategyController()
         {
-            IPersistRepository<object> persistRepository = ContextRegistry.GetContext()["PersistRepository"] as IPersistRepository<object>;
+            //IPersistRepository<object> persistRepository = ContextRegistry.GetContext()["PersistRepository"] as IPersistRepository<object>;
 
             // Save UI thread reference
             _currentDispatcher = Dispatcher.CurrentDispatcher;
 
-            PersistencePublisher.InitializeDisruptor(persistRepository);
+            //PersistencePublisher.InitializeDisruptor(persistRepository);
         }
 
         /// <summary>

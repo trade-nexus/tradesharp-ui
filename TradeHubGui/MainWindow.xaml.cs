@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -95,6 +96,8 @@ namespace TradeHubGui
                     window.Close();
                 }
             }
+
+            Thread.Sleep(1000);
 
             Application.Current.Shutdown();
             Process.GetCurrentProcess().Kill();

@@ -110,6 +110,7 @@ namespace TradeHubGui.ViewModel
             PopulateServices();
 
             // Subscribe Events
+            EventSystem.Subscribe<string>(OnApplicationClose);
             EventSystem.Subscribe<ServiceDetails>(ManageServiceRequest);
         }
 
@@ -169,7 +170,7 @@ namespace TradeHubGui.ViewModel
                 // Test Code
                 if (availableService.Status!=ServiceStatus.Disabled)
                 {
-                    availableService.Status= ServiceStatus.Running;
+                    availableService.Status= ServiceStatus.Stopped;
                 }
             }
 
@@ -233,6 +234,24 @@ namespace TradeHubGui.ViewModel
         private async void InitializeServices()
         {
             await Task.Run(() => _servicesController.InitializeServices());
+        }
+
+        /// <summary>
+        /// Called when application is closing
+        /// </summary>
+        /// <param name="message"></param>
+        private void OnApplicationClose(string message)
+        {
+            if (message.Equals("Close"))
+            {
+                foreach (var service in _services)
+                {
+                    if (service.Status.Equals(ServiceStatus.Running))
+                    {
+                        _servicesController.StopService(service);
+                    }
+                }
+            }
         }
 
         #region Handle Service Request
