@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -15,6 +16,7 @@ using TradeHubGui.Common.Models;
 using TradeHubGui.Common.Utility;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.Dashboard.Services;
+using TradeHubGui.IqFeedExtenstion;
 using Forms = System.Windows.Forms;
 using MarketDataProvider = TradeHubGui.Common.Models.MarketDataProvider;
 using OrderExecutionProvider = TradeHubGui.Common.Models.OrderExecutionProvider;
@@ -51,6 +53,7 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _saveNewProviderCommand;
         private RelayCommand _cancelCommand;
 
+        private IqFeedConnector _iqFeedConnector;
         private ProvidersController _providersController;
 
         #endregion
@@ -59,7 +62,9 @@ namespace TradeHubGui.ViewModel
         
         public ProvidersViewModel()
         {
+            _iqFeedConnector = new IqFeedConnector();
             _providersController = new ProvidersController();
+
             _marketDataProviders = new ObservableCollection<MarketDataProvider>();
             _orderExecutionProviders = new ObservableCollection<OrderExecutionProvider>();
 
@@ -400,8 +405,11 @@ namespace TradeHubGui.ViewModel
         {
             if (param.Equals("MarketDataProvider"))
             {
-                // Rasie event to request connection
-                EventSystem.Publish<MarketDataProvider>(SelectedMarketDataProvider);
+                if (ConnectIqFeedCustomExtension())
+                {
+                    // Rasie event to request connection
+                    EventSystem.Publish<MarketDataProvider>(SelectedMarketDataProvider);
+                }
             }
             else if (param.Equals("OrderExecutionProvider"))
             {
@@ -711,6 +719,57 @@ namespace TradeHubGui.ViewModel
             }
 
             DisplayInformationMessage(result, "Order Execution Provider");
+        }
+
+        /// <summary>
+        /// Responsible for handling custom code for IQ Feed connector
+        /// </summary>
+        /// <returns></returns>
+        private bool ConnectIqFeedCustomExtension()
+        {
+            if (SelectedMarketDataProvider.ProviderName.Equals("IqFeed"))
+            {
+                string loginId = null;
+                string password = null;
+                string productId = null;
+                string productVersion = null;
+
+                foreach (var credentials in SelectedMarketDataProvider.ProviderCredentials)
+                {
+                    if (credentials.CredentialName.Equals("LoginID"))
+                    {
+                        loginId = credentials.CredentialValue;
+                    }
+                    else if (credentials.CredentialName.Equals("Password"))
+                    {
+                        password = credentials.CredentialValue;
+                    }
+                    else if (credentials.CredentialName.Equals("ProductID"))
+                    {
+                        productId = credentials.CredentialValue;
+                    }
+                    else if (credentials.CredentialName.Equals("ProductVersion"))
+                    {
+                        productVersion = credentials.CredentialValue;
+                    }
+                }
+
+                // All parameters need to have values
+                if (loginId != null && password != null && productId != null && productVersion != null)
+                {
+                    // Send request to open connection form
+                    if (_iqFeedConnector.OpenConnectionForm(loginId, password, productId, productVersion))
+                    {
+                        Thread.Sleep(4000);
+
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            
+            return true;
         }
 
         /// <summary>
