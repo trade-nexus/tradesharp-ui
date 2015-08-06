@@ -157,8 +157,8 @@ namespace TradeHubGui.Dashboard.Managers
 
             SubscribeDataServiceEvents();
 
-            _marketDataService.StartService();
-            _historicalDataService.StartService();
+            //_marketDataService.StartService();
+            //_historicalDataService.StartService();
         }
 
         /// <summary>
