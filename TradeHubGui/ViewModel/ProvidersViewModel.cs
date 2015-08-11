@@ -760,7 +760,7 @@ namespace TradeHubGui.ViewModel
                     // Send request to open connection form
                     if (_iqFeedConnector.OpenConnectionForm(loginId, password, productId, productVersion))
                     {
-                        Thread.Sleep(4000);
+                        Thread.Sleep(7000);
 
                         return true;
                     }
