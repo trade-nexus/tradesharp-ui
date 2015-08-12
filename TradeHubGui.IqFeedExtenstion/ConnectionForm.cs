@@ -128,8 +128,8 @@ namespace TradeHubGui.IqFeedExtenstion
                 }
 
                 arguments += "-savelogininfo ";
+                arguments += "-autoconnect";
 
-                // arguments += "-autoconnect";
                 arguments = arguments.TrimEnd(' ');
 
                 // Will launch IQConnect.exe
