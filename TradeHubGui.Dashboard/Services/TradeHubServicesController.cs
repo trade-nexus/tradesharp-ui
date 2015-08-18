@@ -47,6 +47,16 @@ namespace TradeHubGui.Dashboard.Services
         public void InitializeServices()
         {
             _servicesManager.InitializeServices();
+
+
+            // TEST CODE
+            foreach (var service in GetAvailableServices())
+            {
+                if (service.Status.Equals(ServiceStatus.Running))
+                {
+                    EventSystem.Publish<ServiceDetails>(service);
+                }
+            }
         }
 
         /// <summary>

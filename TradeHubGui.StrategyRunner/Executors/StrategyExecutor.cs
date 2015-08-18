@@ -614,7 +614,7 @@ namespace TradeHubGui.StrategyRunner.Executors
             orderDetails.Security = order.Security;
             orderDetails.Quantity = order.OrderSize;
             orderDetails.Side = order.OrderSide;
-            //orderDetails.Type = order.;
+            orderDetails.Time = order.OrderDateTime;
             orderDetails.Status = order.OrderStatus;
 
             // Update UI

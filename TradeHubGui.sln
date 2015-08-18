@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.DataDownloader.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.Strategy.TestStrategy", "TradeHub.Strategy.TestStrategy\TradeHub.Strategy.TestStrategy.csproj", "{0A9D33B7-C880-4E8F-8932-F351893A5EFC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHubGui.IqFeedExtenstion", "TradeHubGui.IqFeedExtenstion\TradeHubGui.IqFeedExtenstion.csproj", "{2CCDE7FC-7660-40BD-9D37-35BC13438948}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +112,12 @@ Global
 		{0A9D33B7-C880-4E8F-8932-F351893A5EFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0A9D33B7-C880-4E8F-8932-F351893A5EFC}.Release|x64.ActiveCfg = Release|x64
 		{0A9D33B7-C880-4E8F-8932-F351893A5EFC}.Release|x64.Build.0 = Release|x64
+		{2CCDE7FC-7660-40BD-9D37-35BC13438948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CCDE7FC-7660-40BD-9D37-35BC13438948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CCDE7FC-7660-40BD-9D37-35BC13438948}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2CCDE7FC-7660-40BD-9D37-35BC13438948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CCDE7FC-7660-40BD-9D37-35BC13438948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CCDE7FC-7660-40BD-9D37-35BC13438948}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

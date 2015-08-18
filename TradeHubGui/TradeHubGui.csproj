@@ -41,7 +41,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -455,6 +455,10 @@
     <ProjectReference Include="..\TradeHubGui.DataDownloader\TradeHubGui.DataDownloader.csproj">
       <Project>{ff91d752-e815-4994-9037-288c1fab2994}</Project>
       <Name>TradeHubGui.DataDownloader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.IqFeedExtenstion\TradeHubGui.IqFeedExtenstion.csproj">
+      <Project>{2ccde7fc-7660-40bd-9d37-35bc13438948}</Project>
+      <Name>TradeHubGui.IqFeedExtenstion</Name>
     </ProjectReference>
     <ProjectReference Include="..\TradeHubGui.StrategyRunner\TradeHubGui.StrategyRunner.csproj">
       <Project>{8090220c-f33f-46ea-ae6a-cdac8c921edd}</Project>
