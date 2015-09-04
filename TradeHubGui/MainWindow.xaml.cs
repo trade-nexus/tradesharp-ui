@@ -4,6 +4,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -18,9 +19,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MessageBoxUtils;
 using TraceSourceLogger;
 using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
+using TradeHubGui.Common.ApplicationSecurity;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.ViewModel;
@@ -41,17 +44,25 @@ namespace TradeHubGui
             Logger.SetLoggingLevel();
             Logger.LogDirectory(DirectoryStructure.CLIENT_LOGS_LOCATION);
 
+            TradeSharpLicenseManager.GetLicense();
+
             InitializeComponent();
-            
+
             // Save UI thread reference
             _currentDispatcher = Dispatcher.CurrentDispatcher;
 
             DataContext = new BaseViewModel();
             AppDomain.CurrentDomain.UnhandledException +=
-                 new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+                new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
             // Subscribe Events
             EventSystem.Subscribe<UiElement>(UpdateRelayCommands);
+
+            if (!TradeSharpLicenseManager.GetLicense().IsActive)
+            {
+                WPFMessageBox.Show("The application license has expired.\n\nPlease contact TradeSharp support at: tradesharp@aurorasolutions.io", "TRADESHARP",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
@@ -67,8 +78,18 @@ namespace TradeHubGui
 
         private void AboutButton_Click(object sender, RoutedEventArgs e)
         {
-            string aboutMessage = "TradeSharp is a C# based data feed & broker neutral Algorithmic Trading Platform that lets trading firms or individuals automate any rules based trading strategies in stocks, forex and ETFs. TradeSharp has been developed and is being maintained by Aurora Solutions.";
-            this.ShowMessageAsync("TRADESHARP", aboutMessage, MessageDialogStyle.Affirmative);
+            StringBuilder aboutMessage = new StringBuilder();
+            aboutMessage.AppendLine("TradeSharp is a C# based data feed & broker neutral Algorithmic Trading Platform that lets trading firms or individuals automate any rules based trading strategies in stocks, forex and ETFs. TradeSharp has been developed and is being maintained by Aurora Solutions.");
+            aboutMessage.AppendLine("\n\n");
+            aboutMessage.AppendLine("This product is licensed to: " + TradeSharpLicenseManager.GetLicense().ClientDetails);
+            aboutMessage.AppendLine("The licensed will expire on: " + TradeSharpLicenseManager.GetLicense().ExpirationDate.Date.ToString("D"));
+            aboutMessage.AppendLine("\n");
+            aboutMessage.Append("For queries contact: tradesharp@aurorasolutions.io");
+
+            var metroDialog = new MetroDialogSettings();
+            metroDialog.ColorScheme=MetroDialogColorScheme.Theme;
+
+            this.ShowMessageAsync("TRADESHARP", aboutMessage.ToString(), MessageDialogStyle.Affirmative, metroDialog);
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

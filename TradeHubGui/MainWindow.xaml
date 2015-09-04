@@ -165,7 +165,7 @@
     </mah:MetroWindow.Resources>
 
     <mah:MetroWindow.Flyouts>
-        <mah:FlyoutsControl x:Name="FlayoutOrderAPIConfiguration">
+        <mah:FlyoutsControl x:Name="FlayoutOrderAPIConfiguration" IsEnabled="{Binding IsWorking}">
             <mah:Flyout Header="Market Data Configuration" Position="Right" Theme="Adapt" IsModal="True">
                 <Grid Margin="20" Width="400">
                     <Grid Grid.IsSharedSizeScope="True">
@@ -459,7 +459,7 @@
         </mah:FlyoutsControl>
     </mah:MetroWindow.Flyouts>
 
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" IsEnabled="{Binding IsWorking}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>

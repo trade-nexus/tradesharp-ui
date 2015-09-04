@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TradeHubGui.Common;
+using TradeHubGui.Common.ApplicationSecurity;
 using TradeHubGui.Common.ValueObjects;
 
 namespace TradeHubGui.ViewModel
@@ -15,7 +16,12 @@ namespace TradeHubGui.ViewModel
     public class BaseViewModel : INotifyPropertyChanged
     {
         private RelayCommand _showLogsCommand;
-        
+
+        public bool IsWorking
+        {
+            get { return TradeSharpLicenseManager.GetLicense().IsActive; }
+        }
+
         public MetroWindow MainWindow
         {
             get { return (MetroWindow)Application.Current.MainWindow; }

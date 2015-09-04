@@ -91,6 +91,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationSecurity\BinaryFileReader.cs" />
     <Compile Include="Constants\ConditionOperator.cs" />
     <Compile Include="Constants\DirectoryPath.cs" />
     <Compile Include="Constants\LobRecordType.cs" />
@@ -107,6 +108,12 @@
     <Compile Include="Models\BruteForceParameters.cs" />
     <Compile Include="Models\DataPersistenceInformation.cs" />
     <Compile Include="Models\FillDetail.cs" />
+    <Compile Include="ApplicationSecurity\Decryptor.cs" />
+    <Compile Include="ApplicationSecurity\LicenseKeyAnalyzer.cs" />
+    <Compile Include="ApplicationSecurity\LicenseState.cs" />
+    <Compile Include="ApplicationSecurity\LicenseType.cs" />
+    <Compile Include="ApplicationSecurity\TradeSharpLicense.cs" />
+    <Compile Include="ApplicationSecurity\TradeSharpLicenseManager.cs" />
     <Compile Include="Utility\GetEnumDescriptions.cs" />
     <Compile Include="Utility\PriceAlertGenerator.cs" />
     <Compile Include="ValueObjects\AlertMessage.cs" />

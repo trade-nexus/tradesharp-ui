@@ -196,6 +196,7 @@
     <Compile Include="TemplateSelectors\DataGridIncrementValuesTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\DataGridStartValuesTemplateSelector.cs" />
     <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
+    <Compile Include="ViewModel\AddLicenseViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
@@ -207,6 +208,9 @@
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
     <Compile Include="ViewModel\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModel\AlertWindowViewModel.cs" />
+    <Compile Include="Views\AddLicenseView.xaml.cs">
+      <DependentUpon>AddLicenseView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AlertWindow.xaml.cs">
       <DependentUpon>AlertWindow.xaml</DependentUpon>
     </Compile>
@@ -283,6 +287,10 @@
     <Compile Include="Views\StrategyRunnerView.xaml.cs">
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AddLicenseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AlertWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

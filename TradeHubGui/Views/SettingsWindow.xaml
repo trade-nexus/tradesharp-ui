@@ -4,13 +4,13 @@
                     xmlns:views="clr-namespace:TradeHubGui.Views" 
                     x:Class="TradeHubGui.Views.SettingsWindow"
                     GlowBrush="Silver"
-                    Title="Settings" Height="300" Width="400"
-                    >
+                    Title="Settings" Height="300" Width="500">
 
     <mah:MetroWindow.Resources>
         <x:Array x:Key="Contents" Type="UserControl">
             <views:HistoricalParametersView/>
             <views:NotificationSettingsView/>
+            <views:AddLicenseView/>
         </x:Array>
         
         <Style x:Key="NavigationListBoxItemStyle" TargetType="{x:Type ListBoxItem}" >
@@ -90,6 +90,9 @@
             </ListBoxItem>
             <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[1]}"
                          Content="Notifications" Margin="3,0,0,0">
+            </ListBoxItem>
+            <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[2]}"
+                         Content="License Details" Margin="3,0,0,0">
             </ListBoxItem>
         </ListBox>
 

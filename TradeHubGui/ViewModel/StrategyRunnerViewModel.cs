@@ -26,6 +26,7 @@ using TradeHubGui.Common.ValueObjects;
 using TradeHubGui.StrategyRunner.Services;
 using TradeHubGui.Views;
 using MessageBoxUtils;
+using TradeHubGui.Common.ApplicationSecurity;
 using Forms = System.Windows.Forms;
 
 namespace TradeHubGui.ViewModel
@@ -552,7 +553,7 @@ namespace TradeHubGui.ViewModel
         {
             get
             {
-                return _loadStrategyCommand ?? (_loadStrategyCommand = new RelayCommand(param => LoadStrategyExecute()));
+                return _loadStrategyCommand ?? (_loadStrategyCommand = new RelayCommand(param => LoadStrategyExecute(), param => LoadStrategyCanExecute()));
             }
         }
 
@@ -591,7 +592,7 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _exportInstanceDataCommand ??
-                       (_exportInstanceDataCommand = new RelayCommand(param => ExportInstanceDataExecute()));
+                       (_exportInstanceDataCommand = new RelayCommand(param => ExportInstanceDataExecute(), param => ExportInstanceDataCanExecute()));
             }
         }
         
@@ -639,7 +640,7 @@ namespace TradeHubGui.ViewModel
             get
             {
                 return _exportExecutionsCommand ??
-                       (_exportExecutionsCommand = new RelayCommand(param => ExportExecutionsExecute()));
+                       (_exportExecutionsCommand = new RelayCommand(param => ExportExecutionsExecute(), param => ExportExecutionsCanExecute()));
             }
         }
 
@@ -819,6 +820,15 @@ namespace TradeHubGui.ViewModel
             window.ShowDialog();
         }
 
+        private bool LoadStrategyCanExecute()
+        {
+            if (!TradeSharpLicenseManager.GetLicense().IsDemo)
+            {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Loads a New Strategy into the Application
         /// </summary>
@@ -872,7 +882,7 @@ namespace TradeHubGui.ViewModel
 
         private bool ImportInstancesCanExecute()
         {
-            if (SelectedStrategy == null) return false;
+            if (SelectedStrategy == null || TradeSharpLicenseManager.GetLicense().IsDemo) return false;
             return true;
         }
 
@@ -896,7 +906,7 @@ namespace TradeHubGui.ViewModel
 
         private bool ExportInstanceDataCanExecute()
         {
-            if (SelectedStrategy == null) return false;
+            if (SelectedStrategy == null || TradeSharpLicenseManager.GetLicense().IsDemo) return false;
             return true;
         }
 
@@ -984,7 +994,13 @@ namespace TradeHubGui.ViewModel
             // Close "Edit Instance" window
             ((Window)param).Close();
         }
-        
+
+        private bool ExportExecutionsCanExecute()
+        {
+            if (TradeSharpLicenseManager.GetLicense().IsDemo) return false;
+            return true;
+        }
+
         /// <summary>
         /// Triggered when 'Export' button on strategy instance order executions is clicked
         /// </summary>

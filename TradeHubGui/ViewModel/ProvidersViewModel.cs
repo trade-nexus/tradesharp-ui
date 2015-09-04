@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Input;
 using TradeHub.Common.Core.Constants;
 using TradeHubGui.Common;
+using TradeHubGui.Common.ApplicationSecurity;
 using TradeHubGui.Common.Constants;
 using TradeHubGui.Common.Models;
 using TradeHubGui.Common.Utility;
@@ -261,7 +262,7 @@ namespace TradeHubGui.ViewModel
         {
             get
             {
-                return _addProviderCommand ?? (_addProviderCommand = new RelayCommand(param => AddProviderExecute(param)));
+                return _addProviderCommand ?? (_addProviderCommand = new RelayCommand(param => AddProviderExecute(param), param => AddProviderCanExecute()));
             }
         }
 
@@ -366,6 +367,15 @@ namespace TradeHubGui.ViewModel
                     _newOrderExecutionProviderPath = openFileDialog.FileName;
                 }
             }
+        }
+
+        private bool AddProviderCanExecute()
+        {
+            if (TradeSharpLicenseManager.GetLicense().IsDemo)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
