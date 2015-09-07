@@ -59,6 +59,11 @@ namespace TradeHubGui.Common.Models
         /// </summary>
         private StrategyExecutionDetails _executionDetails;
 
+        /// <summary>
+        /// Indicates if the instance is selected by user
+        /// </summary>
+        private bool _isSelected;
+
         #endregion
 
         #region Properties
@@ -189,6 +194,22 @@ namespace TradeHubGui.Common.Models
                 {
                     _executionDetails = value;
                     OnPropertyChanged("ExecutionDetails");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Indicates if the instance is selected by user
+        /// </summary>
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged("IsSelected");
                 }
             }
         }

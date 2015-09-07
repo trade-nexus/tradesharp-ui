@@ -55,14 +55,14 @@ namespace TradeHubGui
             AppDomain.CurrentDomain.UnhandledException +=
                 new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 
-            // Subscribe Events
-            EventSystem.Subscribe<UiElement>(UpdateRelayCommands);
-
             if (!TradeSharpLicenseManager.GetLicense().IsActive)
             {
                 WPFMessageBox.Show("The application license has expired.\n\nPlease contact TradeSharp support at: tradesharp@aurorasolutions.io", "TRADESHARP",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            // Subscribe Events
+            EventSystem.Subscribe<UiElement>(UpdateRelayCommands);
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)

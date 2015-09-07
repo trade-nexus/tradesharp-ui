@@ -10,9 +10,10 @@ namespace TradeHubGui.Common.ApplicationSecurity
         private ICryptoTransform DecryptorTransform;
         private UTF8Encoding UTFEncoder;
 
-        private byte[] Key = {};
+        private byte[] Key = {123, 207, 119, 111, 24, 26, 85, 45, 114, 184, 117, 162, 37, 112, 222, 209,
+                              241, 124, 175, 134, 173, 53, 16, 29, 124, 26, 17, 218, 11, 236, 153, 209};
 
-        private byte[] Vector = {};
+        private byte[] Vector = { 146, 64, 191, 111, 213, 113, 103, 119, 231, 121, 221, 112, 179, 32, 114, 156 };
 
         public Decryptor()
         {
