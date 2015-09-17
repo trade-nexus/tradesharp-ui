@@ -114,6 +114,7 @@
     <Compile Include="ApplicationSecurity\LicenseType.cs" />
     <Compile Include="ApplicationSecurity\TradeSharpLicense.cs" />
     <Compile Include="ApplicationSecurity\TradeSharpLicenseManager.cs" />
+    <Compile Include="Models\StrategyStatistics.cs" />
     <Compile Include="Utility\GetEnumDescriptions.cs" />
     <Compile Include="Utility\PriceAlertGenerator.cs" />
     <Compile Include="ValueObjects\AlertMessage.cs" />

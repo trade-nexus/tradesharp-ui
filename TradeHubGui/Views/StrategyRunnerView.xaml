@@ -104,6 +104,13 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
                                                 Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVis}}">
                                         <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,0,2,0" Foreground="White"
+                                                Command="{Binding DataContext.StrategySummaryCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                            <StackPanel Orientation="Horizontal" Margin="4,0">
+                                                <Image Width="13" Height="13" Margin="0,0,4,0" Source="{StaticResource imgInformationWhite}" UseLayoutRounding="True"/>
+                                                <TextBlock Text="Statistics" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,0,2,0" Foreground="White"
                                                 Command="{Binding DataContext.ShowGeneticOptimizationWindowCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
                                             <StackPanel Orientation="Horizontal" Margin="4,0">
                                                 <Image Width="13" Height="13" Margin="0,0,4,0" Source="{StaticResource imgGenetic}" UseLayoutRounding="True"/>
@@ -157,19 +164,27 @@
                                   Margin="10,4,10,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     </DockPanel>
                     <DockPanel DockPanel.Dock="Bottom" Margin="10,0,0,0">
-                        <Button Focusable="False" Width="120" Margin="0,0,4,0" Height="22" DockPanel.Dock="Right"
+                        <Button Focusable="False" Width="105" Margin="0,0,4,0" Height="22" DockPanel.Dock="Right"
                                 Command="{Binding StopMultipleInstanceCommand}" Visibility="{Binding}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}" />
                                 <TextBlock Text="Stop Selected" />
                             </StackPanel>
                         </Button>
-                        <Button Focusable="False" Width="120" Margin="0,0,4,0" Height="22" DockPanel.Dock="Right"
+                        <Button Focusable="False" Width="105" Margin="0,0,4,0" Height="22" DockPanel.Dock="Right"
                                 Command="{Binding RunMultipleInstanceCommand}"
                                 Visibility="{Binding}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}" />
                                 <TextBlock Text="Start Selected" />
+                            </StackPanel>
+                        </Button>
+                        <Button Focusable="False" Width="68" Height="22" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                ToolTip="Export all strategy instances local data" Margin="0,0,4,0" 
+                                Command="{Binding ExportAllInstanceDataCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="12" Height="12" Margin="0,0,4,0" Source="{StaticResource imgExport}" UseLayoutRounding="True" />
+                                <TextBlock Text="Export" Margin="0,0,4,0" />
                             </StackPanel>
                         </Button>
                         <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete selected instances"
@@ -179,9 +194,17 @@
                                     UseLayoutRounding="True" />
                         </Button>
 
-                        <CheckBox DockPanel.Dock="Left" HorizontalAlignment="Left" Content="Select All Instances"
+                        <!--<CheckBox DockPanel.Dock="Left" HorizontalAlignment="Left" Content="Select All Instances"
                                   IsChecked="{Binding SelectAllInstances, UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="4,0,0,0" VerticalAlignment="Center"/>
+                                  Margin="0,0,0,0" VerticalAlignment="Center"/>-->
+                        <Button Focusable="False" Width="120" Height="22"
+                                Margin="0,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left"
+                                Command="{Binding SelectAllInstancesCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <!--<Image Width="12" Height="12" Margin="0,0,4,0" Source="{StaticResource imgExport}" UseLayoutRounding="True" />-->
+                                <TextBlock Text="Select All Instances" Margin="0,0,0,0" />
+                            </StackPanel>
+                        </Button>
                     </DockPanel>
 
                     <DataGrid x:Name="StrategyInstancesDataGrid" Margin="10"
@@ -373,10 +396,11 @@
                             </StackPanel>
                         </Button>
                         <Button MinWidth="75" IsEnabled="True" Focusable="False" Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                                Command="{Binding ExportAllExecutionsCommand}" DockPanel.Dock="Right">
+                                Command="{Binding ExportAllExecutionsCommand}" DockPanel.Dock="Right"
+                                ToolTip="Export executions of all selected instances">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}" />
-                                <TextBlock Text="Export all Instances" />
+                                <TextBlock Text="Export all Executions" />
                             </StackPanel>
                         </Button>
                     </DockPanel>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using TradeHubGui.Common.Utility;
 using TradeHubGui.Common.ValueObjects;
 
@@ -41,6 +42,11 @@ namespace TradeHubGui.Common.Models
         /// Contains all strategy instances for the current strategy
         /// </summary>
         private IDictionary<string, StrategyInstance> _strategyInstances;
+
+        /// <summary>
+        /// Contains strategy statistics for all the instances
+        /// </summary>
+        private ObservableCollection<StrategyStatistics> _strategyStatistics; 
 
         #region Properties
 
@@ -100,6 +106,15 @@ namespace TradeHubGui.Common.Models
             set { _fileName = value; }
         }
 
+        /// <summary>
+        /// Contains strategy statistics for all the instances
+        /// </summary>
+        public ObservableCollection<StrategyStatistics> Statistics
+        {
+            get { return _strategyStatistics; }
+            set { _strategyStatistics = value; }
+        }
+
         #endregion
 
         /// <summary>
@@ -120,7 +135,11 @@ namespace TradeHubGui.Common.Models
 
             // Initialize fields
             _parameterDetails = new Dictionary<string, ParameterDetail>();
-            _strategyInstances= new Dictionary<string, StrategyInstance>();
+            _strategyInstances = new Dictionary<string, StrategyInstance>();
+            _strategyStatistics = new ObservableCollection<StrategyStatistics>();
+
+            // Subscribe Domain Events
+            EventSystem.Subscribe<StrategyStatistics>(UpdateStrategyStatistics);
         }
 
         /// <summary>
@@ -147,6 +166,19 @@ namespace TradeHubGui.Common.Models
         }
 
         /// <summary>
+        /// Update strategy statistics collection
+        /// </summary>
+        /// <param name="strategyStatistics"></param>
+        private void UpdateStrategyStatistics(StrategyStatistics strategyStatistics)
+        {
+            if (strategyStatistics.InstanceId.Split('-')[0].Contains(Key))
+            {
+                Statistics.Insert(0, strategyStatistics);
+            }
+        }
+
+
+        /// <summary>
         /// Removes existing Strategy Instance from the local Map
         /// </summary>
         /// <param name="instanceKey">Unique key of Strategy Instance object to be removed</param>
@@ -154,6 +186,14 @@ namespace TradeHubGui.Common.Models
         {
             // Add to local MAP
             _strategyInstances.Remove(instanceKey);
+        }
+
+        /// <summary>
+        /// Clears strategy statistics collection
+        /// </summary>
+        public void ClearStatistics()
+        {
+            Statistics.Clear();
         }
     }
 }

@@ -41,7 +41,6 @@ namespace TradeHubGui.ViewModel
         private ObservableCollection<OrderDetails> _orderDetailsCollection;
 
         private bool _enablePersistence;
-        private bool _selectAllInstances;
         private bool _executionDetailsForAllInstances;
 
         private Strategy _selectedStrategy;
@@ -65,11 +64,14 @@ namespace TradeHubGui.ViewModel
         private RelayCommand _selectProviderCommand;
         private RelayCommand _importInstancesCommand;
         private RelayCommand _exportInstanceDataCommand;
+        private RelayCommand _exportAllInstanceDataCommand;
         private RelayCommand _instanceSummaryCommand;
+        private RelayCommand _strategySummaryCommand;
         private RelayCommand _notificationOptionsCommand;
         private RelayCommand _saveNotificationOptionsCommand;
         private RelayCommand _exportExecutionsCommand;
         private RelayCommand _exportAllExecutionsCommand;
+        private RelayCommand _selectAllInstancesCommand;
 
         private string _strategyPath;
         private string _csvInstancesPath;
@@ -342,30 +344,6 @@ namespace TradeHubGui.ViewModel
                 }
 
                 OnPropertyChanged("EnablePersistence");
-            }
-        }
-
-        /// <summary>
-        /// Used to all the instances of the selected Strategy
-        /// </summary>
-        public bool SelectAllInstances
-        {
-            get { return _selectAllInstances; }
-            set
-            {
-                _selectAllInstances = value;
-
-                if (SelectedStrategy != null)
-                {
-                    if (SelectedStrategy.StrategyInstances.Count > 0)
-                    {
-                        foreach (var strategyInstance in SelectedStrategy.StrategyInstances.Values)
-                        {
-                            strategyInstance.IsSelected = _selectAllInstances;
-                        }
-                    }
-                }
-                OnPropertyChanged("SelectAllInstances");
             }
         }
 
@@ -691,6 +669,20 @@ namespace TradeHubGui.ViewModel
         }
 
         /// <summary>
+        /// Command used for opening folder dialog and saving strategy's all instances data
+        /// </summary>
+        public ICommand ExportAllInstanceDataCommand
+        {
+            get
+            {
+                return _exportAllInstanceDataCommand ??
+                       (_exportAllInstanceDataCommand =
+                           new RelayCommand(param => ExportAllInstanceDataExecute(),
+                               param => ExportAllInstanceDataCanExecute()));
+            }
+        }
+
+        /// <summary>
         /// Command used for opening Strategy Instance summary window
         /// </summary>
         public ICommand InstanceSummaryCommand
@@ -699,6 +691,18 @@ namespace TradeHubGui.ViewModel
             {
                 return _instanceSummaryCommand ??
                        (_instanceSummaryCommand = new RelayCommand(param => InstanceSummaryExecute()));
+            }
+        }
+
+        /// <summary>
+        /// Command used for opening Strategy Summary window
+        /// </summary>
+        public ICommand StrategySummaryCommand
+        {
+            get
+            {
+                return _strategySummaryCommand ??
+                       (_strategySummaryCommand = new RelayCommand(param => StrategySummaryExecute()));
             }
         }
 
@@ -750,6 +754,19 @@ namespace TradeHubGui.ViewModel
                 return _exportAllExecutionsCommand ??
                        (_exportAllExecutionsCommand =
                            new RelayCommand(param => ExportAllExecutionsExecute(), param => ExportAllExecutionsCanExecute()));
+            }
+        }
+
+        /// <summary>
+        /// Command used for 'Select All instances' button
+        /// </summary>
+        public ICommand SelectAllInstancesCommand
+        {
+            get
+            {
+                return _selectAllInstancesCommand ??
+                       (_selectAllInstancesCommand =
+                           new RelayCommand(param => SelectAllInstancesExecute(), param => SelectAllInstancesCanExecute()));
             }
         }
 
@@ -1121,6 +1138,72 @@ namespace TradeHubGui.ViewModel
                     SelectedInstance.InstanceKey));
         }
 
+        private bool ExportAllInstanceDataCanExecute()
+        {
+            if (!IsMultipleSelected || TradeSharpLicenseManager.GetLicense().IsDemo) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Triggered when 'Export all Instances Data' button is clicked
+        /// </summary>
+        private void ExportAllInstanceDataExecute()
+        {
+            string folderPath = string.Empty;
+
+            // Get Directory in which to save stats
+            using (System.Windows.Forms.FolderBrowserDialog form = new System.Windows.Forms.FolderBrowserDialog())
+            {
+                var dialogResult = form.ShowDialog();
+                if (dialogResult == System.Windows.Forms.DialogResult.Yes || dialogResult == Forms.DialogResult.OK)
+                {
+                    folderPath = form.SelectedPath;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+
+            // Save data
+            Task.Run(() =>
+                    Parallel.ForEach(SelectedStrategy.StrategyInstances, strategyInstance =>
+                    {
+                        if (strategyInstance.Value != null && strategyInstance.Value.IsSelected && !strategyInstance.Value.Status.Equals(DomainModels.StrategyStatus.None))
+                        {
+                            PersistCsv.SaveData(folderPath,
+                                _strategyController.GetStrategyInstanceLocalData(strategyInstance.Value.InstanceKey),
+                                strategyInstance.Value.InstanceKey);
+                        }
+                    }));
+        }
+
+        /// <summary>
+        /// Opens a new Strategy Summary window
+        /// </summary>
+        private void StrategySummaryExecute()
+        {
+            if (SelectedStrategy == null) return;
+
+            string title = string.Format("{0}", SelectedStrategy.Name);
+
+            // if Summary window is already shown, just activate it
+            StrategySummary strategySummaryWindow = (StrategySummary)FindWindowByTitle(title);
+            if (strategySummaryWindow != null)
+            {
+                strategySummaryWindow.WindowState = WindowState.Normal;
+                strategySummaryWindow.Activate();
+                return;
+            }
+
+            // if Summary window is not already shown, create the new one and show it
+            strategySummaryWindow = new StrategySummary();
+            strategySummaryWindow.DataContext = new StrategySummaryViewModel(SelectedStrategy);
+            strategySummaryWindow.Title = title;
+            strategySummaryWindow.Show();
+        }
+
         /// <summary>
         /// Opens a new Instance Summary window
         /// </summary>
@@ -1259,6 +1342,27 @@ namespace TradeHubGui.ViewModel
             if (TradeSharpLicenseManager.GetLicense().IsDemo) 
                 return false;
             return IsMultipleSelected;
+        }
+
+        /// <summary>
+        /// Triggered when 'Select all Instances' button is clicked
+        /// </summary>
+        private void SelectAllInstancesExecute()
+        {
+            foreach (var strategyInstance in SelectedStrategy.StrategyInstances.Values)
+            {
+                strategyInstance.IsSelected = true;
+            }
+        }
+
+        private bool SelectAllInstancesCanExecute()
+        {
+            if (SelectedStrategy != null)
+            {
+                return SelectedStrategy.StrategyInstances.Count > 0;
+            }
+
+            return false;
         }
 
         #endregion

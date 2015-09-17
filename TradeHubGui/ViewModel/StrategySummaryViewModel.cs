@@ -9,9 +9,9 @@ using TradeHubGui.Common.Models;
 
 namespace TradeHubGui.ViewModel
 {
-    public class StrategyInstanceSummaryViewModel : BaseViewModel
+    public class StrategySummaryViewModel : BaseViewModel
     {
-        private StrategyInstance _strategyInstance;
+        private Strategy _strategy;
         private RelayCommand _clearDataCommand;
 
         #region Properties
@@ -19,14 +19,9 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Conatins instance details
         /// </summary>
-        public StrategyInstance StrategyInstance
+        public Strategy Strategy
         {
-            get { return _strategyInstance; }
-            set
-            {
-                _strategyInstance = value;
-                OnPropertyChanged("StrategyInstance");
-            }
+            get { return _strategy; }
         }
 
         #endregion
@@ -34,10 +29,10 @@ namespace TradeHubGui.ViewModel
         /// <summary>
         /// Argument Constructor
         /// </summary>
-        /// <param name="strategyInstance">Contains instance details</param>
-        public StrategyInstanceSummaryViewModel(StrategyInstance strategyInstance)
+        /// <param name="strategy">Contains instance details</param>
+        public StrategySummaryViewModel(Strategy strategy)
         {
-            _strategyInstance = strategyInstance;
+            _strategy = strategy;
         }
 
         #region Commands
@@ -62,7 +57,7 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         private void ClearDataExecute()
         {
-            StrategyInstance.InstanceSummary.Clear();
+            Strategy.ClearStatistics();
         }
 
         #endregion

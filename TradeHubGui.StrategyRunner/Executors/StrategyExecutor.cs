@@ -18,6 +18,7 @@ using TradeHub.Common.HistoricalDataProvider.ValueObjects;
 using TradeHub.Common.Persistence;
 using TradeHub.StrategyEngine.TradeHub;
 using TradeHub.StrategyEngine.Utlility.Services;
+using TradeHubGui.Common;
 using TradeHubGui.Common.Models;
 using TradeHubGui.StrategyRunner.Representations;
 using OrderExecutionProvider = TradeHub.Common.Core.Constants.OrderExecutionProvider;
@@ -679,7 +680,11 @@ namespace TradeHubGui.StrategyRunner.Executors
         /// <param name="message"></param>
         private void StrategyMessageArrived(string message)
         {
-            _currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() => _strategyInstance.InstanceSummary.Add(message)));
+            //_currentDispatcher.Invoke(DispatcherPriority.Background, (Action)(() => _strategyInstance.InstanceSummary.Add(message)));
+
+            StrategyStatistics statistics = new StrategyStatistics(_strategyKey, DateTime.Now, message);
+            _currentDispatcher.Invoke(DispatcherPriority.Background,
+                (Action) (() => EventSystem.Publish<StrategyStatistics>(statistics)));
         }
 
         /// <summary>

@@ -208,6 +208,7 @@
     <Compile Include="ViewModel\MarketScannerViewModel.cs" />
     <Compile Include="ViewModel\NotificationSettingsViewModel.cs" />
     <Compile Include="ViewModel\AlertWindowViewModel.cs" />
+    <Compile Include="ViewModel\StrategySummaryViewModel.cs" />
     <Compile Include="Views\AddLicenseView.xaml.cs">
       <DependentUpon>AddLicenseView.xaml</DependentUpon>
     </Compile>
@@ -286,6 +287,9 @@
     </Compile>
     <Compile Include="Views\StrategyRunnerView.xaml.cs">
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StrategySummary.xaml.cs">
+      <DependentUpon>StrategySummary.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\AddLicenseView.xaml">
       <SubType>Designer</SubType>
@@ -384,6 +388,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StrategyRunnerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StrategySummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
