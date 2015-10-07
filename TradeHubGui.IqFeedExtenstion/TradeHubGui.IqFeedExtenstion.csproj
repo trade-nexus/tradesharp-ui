@@ -37,14 +37,21 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TraceSourceLogger">
-      <HintPath>..\Lib\helper\TraceSourceLogger.2.1.1.1\lib\net40\TraceSourceLogger.dll</HintPath>
+    <Reference Include="TraceSourceLogger, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TraceSourceLogger.2.2.0.1\lib\net45\x86\TraceSourceLogger.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionForm.cs" />
     <Compile Include="IqFeedConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LoggerConfig.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

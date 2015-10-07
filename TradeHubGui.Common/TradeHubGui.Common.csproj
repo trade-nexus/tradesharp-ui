@@ -79,8 +79,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TraceSourceLogger">
-      <HintPath>..\Lib\helper\TraceSourceLogger.2.1.1.1\lib\net40\TraceSourceLogger.dll</HintPath>
+    <Reference Include="TraceSourceLogger, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TraceSourceLogger.2.2.0.1\lib\net45\x86\TraceSourceLogger.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="TradeHub.Common.Core">
       <HintPath>..\Lib\tradehub\TradeHub.Common.Core.dll</HintPath>
@@ -164,6 +165,7 @@
     <Content Include="Config\NotificationEngineServerMqInfo.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="LoggerConfig.xml" />
     <Content Include="SpringConfig\HistoricalDataServiceSpringConfig.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
