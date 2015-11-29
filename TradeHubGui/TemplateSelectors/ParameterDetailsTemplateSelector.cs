@@ -23,12 +23,14 @@ namespace TradeHubGui.TemplateSelectors
                 if(pair.Value.ParameterType == typeof(string))
                 {
                     if (pair.Key.Equals("marketdataprovider", StringComparison.InvariantCultureIgnoreCase) 
-                        || pair.Key.Equals("dataprovider", StringComparison.InvariantCultureIgnoreCase))
+                        || pair.Key.Equals("dataprovider", StringComparison.InvariantCultureIgnoreCase)
+                        || pair.Key.ToLowerInvariant().Contains("dataprovider"))
                     {
                         return element.FindResource("MarketDataTemplate") as DataTemplate;
                     }
                     else if (pair.Key.Equals("orderexecutionprovider", StringComparison.InvariantCultureIgnoreCase)
-                        || pair.Key.Equals("executionprovider", StringComparison.InvariantCultureIgnoreCase))
+                        || pair.Key.Equals("executionprovider", StringComparison.InvariantCultureIgnoreCase)
+                        || pair.Key.ToLowerInvariant().Contains("executionprovider"))
                     {
                         return element.FindResource("OrderExecutionTemplate") as DataTemplate;
                     }

@@ -382,12 +382,12 @@ namespace TradeHubGui.StrategyRunner.Executors
         {
             if (_tradeHubStrategy != null)
             {
-                if (_tradeHubStrategy.MarketDataProviderName.Equals(TradeHubConstants.MarketDataProvider.SimulatedExchange))
+                if (_tradeHubStrategy.MarketDataProviderNames != null && _tradeHubStrategy.MarketDataProviderNames[0].Equals(TradeHubConstants.MarketDataProvider.SimulatedExchange))
                 {
                     InitializeBacktestingDataComponents();
                     OverrideStrategyDataEvents();
                 }
-                if (_tradeHubStrategy.OrderExecutionProviderName.Equals(OrderExecutionProvider.SimulatedExchange))
+                if (_tradeHubStrategy.OrderExecutionProviderNames != null && _tradeHubStrategy.OrderExecutionProviderNames[0].Equals(OrderExecutionProvider.SimulatedExchange))
                 {
                     InitializeBacktestingOrderComponents();
                     OverrideStrategyOrderRequests();

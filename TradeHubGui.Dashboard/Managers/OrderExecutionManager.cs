@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradeHub.Common.Core.Constants;
 using TradeHub.Common.Core.DomainModels.OrderDomain;
 using TradeHub.Common.Core.FactoryMethods;
 using TradeHub.Common.Core.ValueObjects.AdminMessages;
@@ -271,6 +272,8 @@ namespace TradeHubGui.Dashboard.Managers
             // Create Limit Order object to be sent to 'Order Execution Service'
             LimitOrder limitOrder = OrderMessage.GenerateLimitOrder(orderDetails.ID, orderDetails.Security, orderDetails.Side,
                 orderDetails.Quantity, orderDetails.Price, orderDetails.Provider);
+
+            limitOrder.OrderTif = OrderTif.GTC;
 
             // Send Reques to Server
             _orderExecutionService.SendOrder(limitOrder);
