@@ -37,11 +37,11 @@ namespace TradeHubGui.ViewModel
         /// </summary>
         public DashboardViewModel()
         {
-            _providersViewModel = new ProvidersViewModel();
-            _servicesViewModel = new ServicesViewModel();
-
             _marketDataController = ContextRegistry.GetContext()["MarketDataController"] as MarketDataController;
             _orderExecutionController = ContextRegistry.GetContext()["OrderExecutionController"] as OrderExecutionController;
+
+            _providersViewModel = new ProvidersViewModel();
+            _servicesViewModel = new ServicesViewModel();
 
             EventSystem.Subscribe<string>(OnApplicationClose);
         }

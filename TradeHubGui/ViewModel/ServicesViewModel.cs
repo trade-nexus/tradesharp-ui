@@ -172,8 +172,16 @@ namespace TradeHubGui.ViewModel
                 {
                     availableService.Status= ServiceStatus.Stopped;
                 }
+
+                //NOTE: Test code to simulate Service Start
+                // BEGIN:
+                //availableService.Status = ServiceStatus.Starting;
+                //availableService.Status = ServiceStatus.Running;
+                //EventSystem.Publish<ServiceDetails>(availableService);
+                // :END
             }
 
+            ////NOTE: To be disbaled for testing
             InitializeServices();
         }
 

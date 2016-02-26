@@ -12,6 +12,7 @@ namespace TradeHubGui.Common.Constants
         // ReSharper disable InconsistentNaming
 
         public static string ROOT_DIRECTORY_PATH = Path.GetFullPath(@"~\..\..\");
+        //// NOTE: For running application locally
         //public static string ROOT_DIRECTORY_PATH = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\TradeHub\\";
         
         public static string ORDER_ENGINE_PATH = ROOT_DIRECTORY_PATH + @"Order Execution Engine\";

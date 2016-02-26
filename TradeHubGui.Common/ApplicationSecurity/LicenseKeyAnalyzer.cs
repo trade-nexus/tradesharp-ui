@@ -46,7 +46,7 @@ namespace TradeHubGui.Common.ApplicationSecurity
         /// <returns></returns>
         private LicenseType FindLicenseType(string licenseType)
         {
-            switch (licenseType.Trim())
+            switch (licenseType.Trim().ToLower())
             {
                 case "monthly":
                     return LicenseType.Monthly;
