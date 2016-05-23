@@ -177,8 +177,9 @@ namespace TradeHubGui.ViewModel
                 // BEGIN:
                 //availableService.Status = ServiceStatus.Starting;
                 //availableService.Status = ServiceStatus.Running;
-                //EventSystem.Publish<ServiceDetails>(availableService);
                 // :END
+
+                EventSystem.Publish<ServiceDetails>(availableService);
             }
 
             ////NOTE: To be disbaled for testing
