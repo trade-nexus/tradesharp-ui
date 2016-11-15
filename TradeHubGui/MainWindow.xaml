@@ -1,182 +1,540 @@
 ﻿<mah:MetroWindow x:Class="TradeHubGui.MainWindow"
-				 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-				 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-				 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-				 xmlns:wpfToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
-				 xmlns:views="clr-namespace:TradeHubGui.Views"
-				 WindowStartupLocation="CenterScreen"
-				 Title="TradeHUB" 
-				 Height="850" Width="1280"
-				 NonActiveGlowBrush="Silver"
-				 ShowIconOnTitleBar="True"
-				 ShowTitleBar="True"
-				 Background="{StaticResource BaseBackground}"
-				 GlowBrush="DarkGray"
-				 FontFamily="{StaticResource DefaultFont}"
-				 FontSize="{StaticResource NormalFontSize}"
-				 Icon="{StaticResource imgHub}">
-	<mah:MetroWindow.IconTemplate>
-		<DataTemplate>
-			<Image Height="20" Width="20" Source="{StaticResource imgHub}"/>
-		</DataTemplate>
-	</mah:MetroWindow.IconTemplate>
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:wpfToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+                 xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+                 xmlns:templateSelector="clr-namespace:TradeHubGui.TemplateSelectors"
+                 xmlns:conv="clr-namespace:TradeHubGui.Converters"
+                 xmlns:views="clr-namespace:TradeHubGui.Views"
+                 WindowStartupLocation="CenterScreen"
+                 WindowState="Maximized"
+                 Title="TradeSharp" 
+                 Height="850" Width="1280"
+                 MinHeight="400" MinWidth="650"
+                 NonActiveGlowBrush="Silver"
+                 ShowIconOnTitleBar="True"
+                 ShowTitleBar="True"
+                 Background="{StaticResource BaseBackground}"
+                 GlowBrush="{StaticResource BaseBrush0}"
+                 FontFamily="{StaticResource DefaultFont}"
+                 FontSize="{StaticResource NormalFontSize}"
+                 Icon="{StaticResource imgTradeHub}" 
+                 Closing="OnApplicationClose">
+    <mah:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Image Height="28" Width="28" Source="{StaticResource imgTradeHub}" Margin="4,0,0,4"/>
+        </DataTemplate>
+    </mah:MetroWindow.IconTemplate>
 
-	<mah:MetroWindow.RightWindowCommands>
-		<mah:WindowCommands>
-			<Button ToolTip="TradeHUB Global Settings"
-                    Content="Settings" 
-					Click="SettingsButton_Click"/>
-			<Button ToolTip="Help Topics"
-                    Content="Help" />
-			<Button ToolTip="About Software"
-                    Content="About" 
-					Click="AboutButton_Click"/>
-		</mah:WindowCommands>
-	</mah:MetroWindow.RightWindowCommands>
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button ToolTip="TradeHUB Global Settings" Content="Settings" Click="SettingsButton_Click"/>
+            <Button ToolTip="Help Topics" Content="Help" />
+            <Button ToolTip="About Software" Content="About" Click="AboutButton_Click"/>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
 
-	<mah:MetroWindow.Resources>
-		<ResourceDictionary>
-			<x:Array x:Key="Contents" Type="UserControl">
-				<views:DashboardView/>
-				<views:StrategyRunnerView/>
-				<views:OrdersView/>
-				<views:DataDownloaderView/>
-			</x:Array>
+    <mah:MetroWindow.Resources>
+        <ResourceDictionary>
+            <conv:ProviderConnectionStatusToBrushConverter x:Key="ConnectionStatusToBrush"/>
+            <conv:ServiceStatusToBrushConverter x:Key="ServiceStatusToBrush"/>
+            <conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <conv:ServiceStatusToVisibilityConverter x:Key="ServiceStatusToVisibility"/>
+            <conv:SelectedProviderToVisibilityConverter x:Key="SelectedProviderToVisibility"/>
+            <templateSelector:CredentialsTemplateSelector x:Key="CredentialsTemplateSelector"/>
 
-			<Style x:Key="NavigationListBoxItemStyle" TargetType="{x:Type ListBoxItem}" >
-				<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-				<Setter Property="Template">
-					<Setter.Value>
-						<ControlTemplate TargetType="{x:Type ListBoxItem}">
-							<Grid Background="Transparent">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="*"/>
-									<ColumnDefinition Width="Auto"/>
-								</Grid.ColumnDefinitions>
-								<Grid.Effect>
-									<DropShadowEffect Opacity="0.2" ShadowDepth="0.0"/>
-								</Grid.Effect>
-								<Border x:Name="border" Grid.Column="0"/>
-								<Border x:Name="contentBorder" Grid.Column="0">
-									<ContentPresenter VerticalAlignment="Center" />
-								</Border>
-								<Path x:Name="path" Grid.Column="1" Data="M0.5,0.5 L34.5,17.583333 0.5,34.5 z" HorizontalAlignment="Left" Height="{Binding Height, ElementName=border}" Stretch="Fill" Width="15"  />
-							</Grid>
-							<ControlTemplate.Triggers>
-								<MultiTrigger>
-									<MultiTrigger.Conditions>
-										<Condition Property="IsMouseOver" Value="True"/>
-									</MultiTrigger.Conditions>
-									<Setter Property="Background" TargetName="border" Value="{DynamicResource HoverBrush}"/>
-									<Setter Property="Fill" TargetName="path" Value="{DynamicResource HoverBrush}"/>
-									<Setter Property="Opacity" TargetName="border" Value="0.5"/>
-									<Setter Property="Opacity" TargetName="path" Value="0.5"/>
-								</MultiTrigger>
-								<MultiTrigger>
-									<MultiTrigger.Conditions>
-										<Condition Property="Selector.IsSelectionActive" Value="False"/>
-										<Condition Property="IsSelected" Value="True"/>
-									</MultiTrigger.Conditions>
-									<Setter Property="Background" TargetName="border" Value="{DynamicResource BaseBrush0}"/>
-									<Setter Property="Fill" TargetName="path" Value="{DynamicResource BaseBrush0}"/>
-									<Setter Property="Opacity" TargetName="border" Value="1"/>
-									<Setter Property="Opacity" TargetName="path" Value="1"/>
-								</MultiTrigger>
-								<MultiTrigger>
-									<MultiTrigger.Conditions>
-										<Condition Property="Selector.IsSelectionActive" Value="True"/>
-										<Condition Property="IsSelected" Value="True"/>
-									</MultiTrigger.Conditions>
-									<Setter Property="Background" TargetName="border" Value="{DynamicResource BaseBrush0}"/>
-									<Setter Property="Fill" TargetName="path" Value="{DynamicResource BaseBrush0}"/>
-									<Setter Property="Opacity" TargetName="border" Value="1"/>
-									<Setter Property="Opacity" TargetName="path" Value="1"/>
-								</MultiTrigger>
-								<Trigger Property="IsEnabled" Value="False"/>
-							</ControlTemplate.Triggers>
-						</ControlTemplate>
-					</Setter.Value>
-				</Setter>
-			</Style>
-		</ResourceDictionary>
-	</mah:MetroWindow.Resources>
+            <x:Array x:Key="Contents" Type="UserControl">
+                <views:DashboardView/>
+                <views:StrategyRunnerView/>
+                <views:OrdersView/>
+                <views:DataDownloaderView/>
+            </x:Array>
+
+            <Style x:Key="NavigationListBoxItemStyle" TargetType="{x:Type ListBoxItem}" >
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <Grid Background="Transparent">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.Effect>
+                                    <DropShadowEffect Opacity="0.2" ShadowDepth="0.0"/>
+                                </Grid.Effect>
+                                <Border x:Name="border" Grid.Column="0"/>
+                                <Border x:Name="contentBorder" Grid.Column="0">
+                                    <ContentPresenter VerticalAlignment="Center" />
+                                </Border>
+                                <Path x:Name="path" Grid.Column="1" Data="M0.5,0.5 L34.5,17.583333 0.5,34.5 z" HorizontalAlignment="Left" Height="{Binding Height, ElementName=border}" Stretch="Fill" Width="15"  />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="IsMouseOver" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource HoverBrush}"/>
+                                    <Setter Property="Fill" TargetName="path" Value="{DynamicResource HoverBrush}"/>
+                                    <Setter Property="Opacity" TargetName="border" Value="0.5"/>
+                                    <Setter Property="Opacity" TargetName="path" Value="0.5"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                        <Condition Property="IsSelected" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource BaseBrush0}"/>
+                                    <Setter Property="Fill" TargetName="path" Value="{DynamicResource BaseBrush0}"/>
+                                    <Setter Property="Opacity" TargetName="border" Value="1"/>
+                                    <Setter Property="Opacity" TargetName="path" Value="1"/>
+                                </MultiTrigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                        <Condition Property="IsSelected" Value="True"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource BaseBrush0}"/>
+                                    <Setter Property="Fill" TargetName="path" Value="{DynamicResource BaseBrush0}"/>
+                                    <Setter Property="Opacity" TargetName="border" Value="1"/>
+                                    <Setter Property="Opacity" TargetName="path" Value="1"/>
+                                </MultiTrigger>
+                                <Trigger Property="IsEnabled" Value="False"/>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <DataTemplate x:Key="UsernameDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredentialName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Column="1" Text="{Binding CredentialValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="PasswordDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredentialName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <PasswordBox Grid.Column="1" PasswordChanged="PasswordBox_PasswordChanged" Loaded="PasswordBox_Loaded" />
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="IpAddressDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredentialName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Column="1" Text="{Binding CredentialValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="PortDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredentialName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Column="1" Text="{Binding CredentialValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </DataTemplate>
+
+            <DataTemplate x:Key="GenericDataTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" Content="{Binding CredentialName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Column="1" Text="{Binding CredentialValue, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </mah:MetroWindow.Resources>
+
+    <mah:MetroWindow.Flyouts>
+        <mah:FlyoutsControl x:Name="FlayoutOrderAPIConfiguration" IsEnabled="{Binding IsWorking}">
+            <mah:Flyout Header="Market Data Configuration" Position="Right" Theme="Adapt" IsModal="True">
+                <Grid Margin="20" Width="400">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" MinHeight="120"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Provider"/>
+                            <ComboBox Grid.Column="1" Name="MarketDataProvidersComboBox" SelectedItem="{Binding SelectedMarketDataProvider}"
+                                      ItemsSource="{Binding MarketDataProviders}" DisplayMemberPath="ProviderName" FontWeight="Bold"/>
+                        </Grid>
+
+                        <Grid Grid.Row="0" Visibility="{Binding NewDataProviderParametersRequired, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Provider Name" Margin="0,0,8,0" VerticalAlignment="Center" 
+                                       Style="{StaticResource SubHeaderTwoTextBlockStyle}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewDataProviderName, NotifyOnTargetUpdated=True}"/>
+
+                            <Button Grid.Row="1" Grid.Column="1" Content="Save" Margin="0,10,100,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding SaveNewProviderCommand}" CommandParameter="MarketDataProvider"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="Cancel" Margin="0,10,0,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding CancelCommand}" CommandParameter="MarketDataProvider"/>
+                        </Grid>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button ToolTip="Add new provider" Margin="20,0,0,0" Padding="0" Width="24"
+                                    Command="{Binding AddProviderCommand}" CommandParameter="MarketDataProvider">
+                                <Image Width="13" Height="13" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
+                            </Button>
+                            <Button ToolTip="Remove provider" Margin="2,0,0,0" Padding="0" Width="24"
+                                    Command="{Binding RemoveProviderCommand}" CommandParameter="MarketDataProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgRemove}" UseLayoutRounding="True"/>
+                            </Button>
+                        </StackPanel>
+
+                        <ItemsControl Grid.Row="1" Margin="0,20,0,0"
+                                      ItemsSource="{Binding SelectedItem.ProviderCredentials, ElementName=MarketDataProvidersComboBox}"
+                                      ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}" />
+
+                        <Grid Grid.Row="2" Margin="0,20,0,0" Visibility="{Binding SelectedMarketDataProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Connection status"/>
+                            <Border Grid.Column="1" Padding="10,1,10,3" CornerRadius="3" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    Background="{Binding SelectedItem.ConnectionStatus, ElementName=MarketDataProvidersComboBox, Converter={StaticResource ConnectionStatusToBrush}}" >
+                                <TextBlock Text="{Binding SelectedItem.ConnectionStatus, ElementName=MarketDataProvidersComboBox}" 
+                                           Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                            </Border>
+                        </Grid>
+
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="100,10,0,0" HorizontalAlignment="Left" 
+                                    Visibility="{Binding DataProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="MarketDataProvider"/>
+                            <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="MarketDataProvider"/>
+                            <Button ToolTip="Save parameters" Margin="30,4,0,4" Padding="0" Width="24"
+                                    Command="{Binding SaveParametersCommand}" CommandParameter="MarketDataProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgCheck}" UseLayoutRounding="True"/>
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:2" BeginTime="0:0:4"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </StackPanel>
+                        
+                        <StackPanel Grid.Row="4" Visibility="{Binding SelectedMarketDataProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding DataProviderInfoMessage, NotifyOnTargetUpdated=True}">
+                                <TextBlock.Triggers>
+                                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:0" To="1.0" />
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:2" From="1.0" To="0.0" BeginTime="0:0:4" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </TextBlock.Triggers>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </mah:Flyout>
+
+            <mah:Flyout Header="Order Execution Configuration" Position="Right" Theme="Adapt" IsModal="True">
+                <Grid Margin="20" Width="400">
+                    <Grid Grid.IsSharedSizeScope="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" MinHeight="120"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Visibility="{Binding ExecutionProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Provider"/>
+                            <ComboBox Grid.Column="1" Name="OrderExecutionProvidersComboBox" SelectedItem="{Binding SelectedOrderExecutionProvider}"
+                                      ItemsSource="{Binding OrderExecutionProviders}" DisplayMemberPath="ProviderName" FontWeight="Bold"/>
+                        </Grid>
+
+                        <Grid Grid.Row="0" Visibility="{Binding NewExecutionProviderParametersRequired, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Provider Name" Margin="0,0,8,0" VerticalAlignment="Center" 
+                                       Style="{StaticResource SubHeaderTwoTextBlockStyle}"/>
+                            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding NewExecutionProviderName, NotifyOnTargetUpdated=True}"/>
+
+                            <Button Grid.Row="1" Grid.Column="1" Content="Save" Margin="0,10,100,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding SaveNewProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                            <Button Grid.Row="1" Grid.Column="1" Content="Cancel" Margin="0,10,0,0" Width="80" HorizontalAlignment="Right"
+                                    Command="{Binding CancelCommand}" CommandParameter="OrderExecutionProvider"/>
+                        </Grid>
+                        
+                        <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                    Visibility="{Binding ExecutionProviderParametersToBeDisplayed, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Button ToolTip="Add new provider" Margin="20,0,0,0" Padding="0" Width="24"
+                                    Command="{Binding AddProviderCommand}" CommandParameter="OrderExecutionProvider">
+                                <Image Width="13" Height="13" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
+                            </Button>
+                            <Button ToolTip="Remove provider" Margin="2,0,0,0" Padding="0" Width="24"
+                                    Command="{Binding RemoveProviderCommand}" CommandParameter="OrderExecutionProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgRemove}" UseLayoutRounding="True"/>
+                            </Button>
+                        </StackPanel>
+
+                        <ItemsControl Grid.Row="1" Margin="0,20,0,0"
+                                      ItemsSource="{Binding SelectedItem.ProviderCredentials, ElementName=OrderExecutionProvidersComboBox}"
+                                      ItemTemplateSelector="{StaticResource CredentialsTemplateSelector}" />
+
+                        <Grid Grid.Row="2" Margin="0,20,0,0" Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="lblGroup"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Connection status"/>
+                            <Border Grid.Column="1" Padding="10,1,10,3" CornerRadius="3" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    Background="{Binding SelectedItem.ConnectionStatus, ElementName=OrderExecutionProvidersComboBox, Converter={StaticResource ConnectionStatusToBrush}}" >
+                                <TextBlock Text="{Binding SelectedItem.ConnectionStatus, ElementName=OrderExecutionProvidersComboBox}" 
+                                           Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                            </Border>
+                        </Grid>
+
+                        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="100,10,0,0" HorizontalAlignment="Left" 
+                                    Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <Button Content="Connect" Margin="4" MinWidth="80" Command="{Binding ConnectProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                            <Button Content="Disconnect" Margin="4" MinWidth="80" Command="{Binding DisconnectProviderCommand}" CommandParameter="OrderExecutionProvider"/>
+                            <Button ToolTip="Save parameters" Margin="30,4,0,4" Padding="0" Width="24"
+                                    Command="{Binding SaveParametersCommand}" CommandParameter="OrderExecutionProvider">
+                                <Image Width="11" Height="11" Source="{StaticResource imgCheck}" UseLayoutRounding="True"/>
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="PreviewMouseLeftButtonDown">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="1.0" To="0.0" Duration="0:0:0"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:2" BeginTime="0:0:3"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4"  Visibility="{Binding SelectedOrderExecutionProvider, Converter={StaticResource SelectedProviderToVisibility}}">
+                            <TextBlock Margin="150,0,0,0" Style="{StaticResource SubHeaderTextBlockStyle}" Text="{Binding ExecutionProviderInfoMessage, NotifyOnTargetUpdated=True}">
+                                <TextBlock.Triggers>
+                                    <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:0" To="1.0" />
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="0:0:2" From="1.0" To="0.0" BeginTime="0:0:4" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </TextBlock.Triggers>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+            </mah:Flyout>
+
+            <mah:Flyout Header="Services Configuration" Position="Right" Theme="Adapt" IsModal="True">
+                <Grid Margin="20" Width="400" Grid.IsSharedSizeScope="True">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,20,0,0">
+                        <ItemsControl Margin="10,0" Width="380" ItemsSource="{Binding Services}"
+                                      HorizontalAlignment="Left" UseLayoutRounding="True">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <GroupBox Header="{Binding ServiceDisplayName}" Padding="0,0,8,2" Margin="0,0,0,4">
+                                        <DockPanel>
+                                            <CheckBox DockPanel.Dock="Right" Content="Enabled" 
+                                                      IsChecked="{Binding Enabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                      Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.EnableDisableCommand}"
+                                                      Margin="10,0,10,0" VerticalAlignment="Center"/>
+                                            <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False" 
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StopServiceCommand}"
+                                                    CommandParameter="{Binding ServiceName}"
+                                                    Visibility="{Binding Status, Converter={StaticResource ServiceStatusToVisibility}, ConverterParameter=Invert}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
+                                                    <TextBlock Text="Stop"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Button DockPanel.Dock="Right" MinWidth="60" Focusable="False" 
+                                                    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type mah:Flyout}}, Path=DataContext.StartServiceCommand}"
+                                                    CommandParameter="{Binding ServiceName}"
+                                                    Visibility="{Binding Status, Converter={StaticResource ServiceStatusToVisibility}}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                                                    <TextBlock Text="Start"/>
+                                                </StackPanel>
+                                            </Button>
+                                            <Border VerticalAlignment="Center" Padding="10,1,8,2" Background="Transparent" HorizontalAlignment="Left">
+                                                <TextBlock Text="{Binding Status}" Foreground="{Binding Status, Converter={StaticResource ServiceStatusToBrush}}" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" FontSize="14" Margin="0,0,0,0"/>
+                                            </Border>
+                                        </DockPanel>
+                                    </GroupBox>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </mah:Flyout>
+
+            <mah:Flyout Header="" Position="Bottom" Theme="Adapt" IsModal="False" Background="#DFEEEEEE">
+                <Grid Height="150">
+                    <DockPanel Margin="-20,0,0,0">
+                        <Border DockPanel.Dock="Top" Background="{StaticResource BaseBrush0}" Height="20">
+                            <TextBlock Margin="7,0" Text="LOG" Foreground="White" VerticalAlignment="Center"/>
+                        </Border>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
+                            <ItemsControl Margin="2" ItemsSource="{Binding Logs}">
+                                <ItemsControl.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="0"/>
+                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                        <Setter Property="FontSize" Value="11"/>
+                                    </Style>
+                                </ItemsControl.Resources>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </DockPanel>
+                </Grid>
+            </mah:Flyout>
+        </mah:FlyoutsControl>
+    </mah:MetroWindow.Flyouts>
+
+    <Grid x:Name="LayoutRoot" IsEnabled="{Binding IsWorking}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition  Width="Auto"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Background="#FFD1D1D1" Width="55" HorizontalAlignment="Left"/>
+        <ListBox Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" x:Name="NavigationListBox" SelectedIndex="0" BorderThickness="0" Background="Transparent" Margin="-4,-1,-1,-1" 
+                 ItemContainerStyle="{DynamicResource NavigationListBoxItemStyle}">
+            <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[0]}">
+                <Border Background="Transparent" ToolTip="Dashboard">
+                    <Image Width="32" Height="32" Source="{StaticResource imgDashboard}" Margin="14,10,10,10"/>
+                </Border>
+            </ListBoxItem>
+            <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[1]}">
+                <Border Background="Transparent" ToolTip="Strategy Runner">
+                    <Image Width="36" Height="32" Source="{StaticResource imgStrategyRunner}" Margin="10,10,10,10"/>
+                </Border>
+            </ListBoxItem>
+            <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[2]}">
+                <Border Background="Transparent" ToolTip="Orders">
+                    <Image Width="32" Height="32" Source="{StaticResource imgActiveOrders}" Margin="10,10,10,10"/>
+                </Border>
+            </ListBoxItem>
+            <ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[3]}">
+                <Border Background="Transparent" ToolTip="Data Downloader">
+                    <Image Width="32" Height="32" Source="{StaticResource imgDataDownloader}" Margin="14,10,10,10"/>
+                </Border>
+            </ListBoxItem>
+        </ListBox>
 
 
-	<Grid x:Name="LayoutRoot" >
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition  Width="Auto"/>
-			<ColumnDefinition />
-		</Grid.ColumnDefinitions>
+        <Grid Grid.Row="0" Grid.ColumnSpan="2" Height="50" Margin="0,0,0,2">
+            <Border Background="{StaticResource BaseBrush0}" >
+                <Border.Effect>
+                    <DropShadowEffect Direction="270" ShadowDepth="2" Opacity="0.2" BlurRadius="3"/>
+                </Border.Effect>
+            </Border>
+            
+            <Grid Background="Transparent" Margin="0,0,20,0" Opacity="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Name="TitleBorder" Grid.Column="0" Margin="0,0,-1,0" Background="{StaticResource BaseBrush3}"/>
+                <Path Grid.Column="1" Data="M0.5,0.5 L34.5,17.583333 0.5,34.5 z" Fill="{Binding Background, ElementName=TitleBorder}"
+                                HorizontalAlignment="Left" Height="{Binding Height, ElementName=border}" Stretch="Fill" Width="15"  />
+            </Grid>
+            
+            <!--<TextBlock Text="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox, FallbackValue='DASHBOARD'}" 
+                        Foreground="White" FontSize="34" VerticalAlignment="Top" Margin="90,0,0,0" />-->
 
-		<Border Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Background="#FFD1D1D1" Width="55" HorizontalAlignment="Left"/>
-		<ListBox Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" x:Name="NavigationListBox" SelectedIndex="0" BorderThickness="0" Background="Transparent" Margin="-4,-1,-1,-1" 
-				 ItemContainerStyle="{DynamicResource NavigationListBoxItemStyle}">
-			<ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[0]}">
-				<Border Background="Transparent" ToolTip="Dashboard">
-					<StackPanel Orientation="Horizontal">
-						<Image Width="32" Height="32" Source="{StaticResource imgDashboard}" Margin="14,10,10,10"/>
-						<!--<TextBlock Text="Dashboard" Foreground="White" VerticalAlignment="Center" Margin="4,0"/>-->
-					</StackPanel>
-				</Border>
-			</ListBoxItem>
-			<ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[1]}">
-				<Border Background="Transparent" ToolTip="Strategy Runner">
-					<StackPanel Orientation="Horizontal">
-						<Image Width="32" Height="32" Source="{StaticResource imgStrategyRunner}" Margin="14,10,10,10"/>
-						<!--<TextBlock Text="Strategy Runner" Foreground="White" VerticalAlignment="Center" Margin="4,0"/>-->
-					</StackPanel>
-				</Border>
-			</ListBoxItem>
-			<ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[2]}">
-				<Border Background="Transparent" ToolTip="Orders">
-					<StackPanel Orientation="Horizontal">
-						<Image Width="32" Height="32" Source="{StaticResource imgActiveOrders}" Margin="14,10,10,10"/>
-						<!--<TextBlock Text="Active Orders" Foreground="White" VerticalAlignment="Center" Margin="4,0"/>-->
-					</StackPanel>
-				</Border>
-			</ListBoxItem>
-			<ListBoxItem Style="{StaticResource NavigationListBoxItemStyle}" Tag="{Binding Source={StaticResource Contents}, Path=[3]}">
-				<Border Background="Transparent" ToolTip="Data Downloader">
-					<StackPanel Orientation="Horizontal">
-						<Image Width="32" Height="32" Source="{StaticResource imgDataDownloader}" Margin="14,10,10,10"/>
-						<!--<TextBlock Text="Data Downloader" Foreground="White" VerticalAlignment="Center" Margin="4,0"/>-->
-					</StackPanel>
-				</Border>
-			</ListBoxItem>
-		</ListBox>
+            <mah:TransitioningContentControl VerticalAlignment="Top" Margin="90,0,0,0" Foreground="White" FontSize="34" FontWeight="Normal"
+                                            Transition="Right" RestartTransitionOnContentChange="True" TextOptions.TextHintingMode="Animated" TextOptions.TextFormattingMode="Ideal"
+                                            Content="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox, FallbackValue='DASHBOARD'}"/>
+        </Grid>
 
-		<Border Grid.Row="0" Grid.ColumnSpan="2" Height="50" Background="{StaticResource BaseBrush0}">
-			<!--<Controls:TransitioningContentControl VerticalAlignment="Top" Margin="90,0,0,0"
-												  Transition="Right" Content="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox}"
-												  Foreground="White" FontSize="34" />-->
-			<TextBlock Text="{Binding SelectedItem.Tag.Tag, ElementName=NavigationListBox}" 
-					   Foreground="White" FontSize="34" VerticalAlignment="Top" Margin="90,0,0,0" />
-		</Border>
+        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding SelectedItem.Tag, ElementName=NavigationListBox}"/>
 
-		<mah:TransitioningContentControl Grid.Row="1" Grid.Column="1" 
-											  Transition="Default" RestartTransitionOnContentChange="True" 
-											  Content="{Binding SelectedItem.Tag, ElementName=NavigationListBox}"/>
+        <Button Grid.RowSpan="3" Grid.ColumnSpan="2" Style="{StaticResource ButtonToolBar}" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                ToolTip="Show logs" Width="46" Height="46" Margin="4,4,4,40"
+                Command="{Binding ShowLogsCommand}">
+            <Image Width="32" Height="32" Source="{StaticResource imgLog}" Margin="4" UseLayoutRounding="True">
+                <Image.Effect>
+                    <DropShadowEffect Opacity="0.3" ShadowDepth="0.1"/>
+                </Image.Effect>
+            </Image>
+        </Button>
 
-		<Border Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource BaseBrush0}" Height="20">
-			<!--<DockPanel Margin="2,2,20,2" VerticalAlignment="Center">
-				<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,2" MinWidth="60">
-					<Ellipse Width="8" Height="8" Margin="8,0" Fill="Crimson"/>
-					<TextBlock Text="PE" HorizontalAlignment="Center"/>
-				</StackPanel>
-				<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,2" MinWidth="60">
-					<Ellipse Width="8" Height="8" Margin="8,0" Fill="LimeGreen"/>
-					<TextBlock Text="OEE" HorizontalAlignment="Center"/>
-				</StackPanel>
-				<StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,2" MinWidth="60">
-					<Ellipse Width="8" Height="8" Margin="8,0" Fill="LimeGreen"/>
-					<TextBlock Text="MDE" HorizontalAlignment="Center"/>
-				</StackPanel>
-			</DockPanel>-->
-		</Border>
-	</Grid>
+        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{StaticResource BaseBrush0}" Height="20">
+
+        </Border>
+    </Grid>
 </mah:MetroWindow>

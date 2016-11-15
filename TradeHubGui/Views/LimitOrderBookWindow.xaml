@@ -1,0 +1,42 @@
+﻿<mah:MetroWindow x:Class="TradeHubGui.Views.LimitOrderBookWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 GlowBrush="Silver"
+                 ShowInTaskbar="True"
+                 WindowStartupLocation="CenterScreen"
+                 Width="350" Height="400"
+                 MinWidth="200" MinHeight="200"
+                 Icon="{StaticResource imgLOBWhite}">
+    <mah:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Image Height="20" Width="20" Source="{StaticResource imgLOBWhite}"/>
+        </DataTemplate>
+    </mah:MetroWindow.IconTemplate>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <StackPanel Margin="10">
+            <ItemsControl ItemsSource="{Binding AskRecords}" Margin="100,0,0,0" VirtualizingPanel.IsVirtualizing="True">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" TextBlock.TextAlignment="Right" TextBlock.Foreground="{StaticResource RedBrush}" TextBlock.FontWeight="SemiBold" Margin="2" >
+                            <TextBlock Text="{Binding AskPrice}" Width="50"/>
+                            <TextBlock Text="{Binding AskQuantity}" Width="50"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl ItemsSource="{Binding BidRecords}" VirtualizingPanel.IsVirtualizing="True">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal" TextBlock.TextAlignment="Right" TextBlock.Foreground="{StaticResource GreenBrush}" TextBlock.FontWeight="SemiBold" Margin="2" >
+                            <TextBlock Text="{Binding BidQuantity}" Width="50"/>
+                            <TextBlock Text="{Binding BidPrice}" Width="50"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+
+</mah:MetroWindow>

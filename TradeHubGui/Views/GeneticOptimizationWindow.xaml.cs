@@ -15,14 +15,19 @@ using System.Windows.Shapes;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for GeneticOptimizationWindow.xaml
-	/// </summary>
-	public partial class GeneticOptimizationWindow : MetroWindow
-	{
-		public GeneticOptimizationWindow()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for GeneticOptimizationWindow.xaml
+    /// </summary>
+    public partial class GeneticOptimizationWindow : MetroWindow
+    {
+        public GeneticOptimizationWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (sender as DataGrid).UnselectAllCells();
+        }
+    }
 }

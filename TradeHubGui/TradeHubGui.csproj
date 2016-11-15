@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TradeHubGui</RootNamespace>
-    <AssemblyName>TradeHUB</AssemblyName>
+    <AssemblyName>TradeSharp</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -31,7 +31,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -41,26 +41,92 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>TS9.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="clrzmq">
+      <HintPath>..\packages\clrzmq-x64.2.2.5\lib\clrzmq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="clrzmq-ext, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\clrzmq-x64.2.2.5\lib\clrzmq-ext.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Common.Logging, Version=1.2.0.0, Culture=neutral, PublicKeyToken=af08829b84f0328e">
+      <HintPath>..\packages\Common.Logging.1.2.0\lib\1.0\Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Disruptor, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\helper\Disruptor.1.1.0\lib\net40\Disruptor.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\Lib\helper\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\Lib\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationFramework.Luna" />
-    <Reference Include="Resources, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Resources.dll</HintPath>
+      <HintPath>..\packages\Prism.PubSubEvents.1.0.0\lib\portable-sl4+wp7+windows8+net40\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\Lib\helper\NHibernate.3.2.0.4000\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Luna" />
+    <Reference Include="Spring.Aop, Version=1.3.2.40943, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spring.Aop.1.3.2\lib\net40\Spring.Aop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Spring.Core">
+      <HintPath>..\packages\Spring.Core.1.3.2\lib\net40\Spring.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Spring.Data, Version=1.3.2.40943, Culture=neutral, PublicKeyToken=65e474d141e25e07, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spring.Data.1.3.2\lib\net40\Spring.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Spring.Data.NHibernate32">
+      <HintPath>..\Lib\helper\Spring.Data.NHibernate32.1.3.2\lib\net40\Spring.Data.NHibernate32.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -69,14 +135,39 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TraceSourceLogger, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TraceSourceLogger.2.2.0.1\lib\net45\x86\TraceSourceLogger.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TradeHub.Common.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.Common.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.Common.Persistence, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.Common.Persistence.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.Infrastructure.Nhibernate">
+      <HintPath>..\Lib\tradehub\TradeHub.Infrastructure.Nhibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.NotificationEngine.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\tradehub\TradeHub.NotificationEngine.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.Notification">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.Notification.dll</HintPath>
+    </Reference>
+    <Reference Include="TradeHub.StrategyEngine.Utlility">
+      <HintPath>..\Lib\tradehub\TradeHub.StrategyEngine.Utlility.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WPFToolkit">
       <HintPath>..\Lib\WPFToolkit.dll</HintPath>
     </Reference>
-    <Reference Include="WPFToolkit.Extended">
-      <HintPath>..\Lib\WPFToolkit.Extended.dll</HintPath>
+    <Reference Include="Xceed.Wpf.Toolkit">
+      <HintPath>..\Lib\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -86,14 +177,79 @@
     </ApplicationDefinition>
     <Compile Include="Common\DataGridRowDoubleClickHandler.cs" />
     <Compile Include="Common\RelayCommand.cs" />
-    <Compile Include="Model\Execution.cs" />
-    <Compile Include="Model\Order.cs" />
-    <Compile Include="Model\Strategy.cs" />
-    <Compile Include="Model\StrategyInstance.cs" />
+    <Compile Include="Common\UIHelper.cs" />
+    <Compile Include="Converters\OrderStatusToVisibilityConverter.cs" />
+    <Compile Include="Converters\InstanceExecutionStatusToBoolConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\OptimizationExecutionStatusToBrushConverter.cs" />
+    <Compile Include="Converters\PositionToVisibilityConverter.cs" />
+    <Compile Include="Converters\ProviderConnectionStatusToBoolConverter.cs" />
+    <Compile Include="Converters\ProviderConnectionStatusToImageConverter.cs" />
+    <Compile Include="Converters\ProviderConnectionStatusToBrushConverter.cs" />
+    <Compile Include="Converters\OrderStatusToBrushConverter.cs" />
+    <Compile Include="Converters\InstanceExecutionStatusToVisibilityConverter.cs" />
+    <Compile Include="Converters\InstanceExecutionStatusToBrushConverter.cs" />
+    <Compile Include="Converters\SelectedProviderToVisibilityConverter.cs" />
+    <Compile Include="Converters\StrategyIsSelectedToBrushConverter.cs" />
+    <Compile Include="Converters\ServiceStatusToVisibilityConverter.cs" />
+    <Compile Include="Converters\ServiceStatusToBrushConverter.cs" />
+    <Compile Include="TemplateSelectors\CredentialsTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\DataGridEndValuesTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\DataGridIncrementValuesTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\DataGridStartValuesTemplateSelector.cs" />
+    <Compile Include="TemplateSelectors\ParameterDetailsTemplateSelector.cs" />
+    <Compile Include="ViewModel\AddLicenseViewModel.cs" />
     <Compile Include="ViewModel\BaseViewModel.cs" />
+    <Compile Include="ViewModel\BruteOptimizationViewModel.cs" />
+    <Compile Include="ViewModel\DashboardViewModel.cs" />
+    <Compile Include="ViewModel\DataDownloaderViewModel.cs" />
+    <Compile Include="ViewModel\GeneticOptimizationViewModel.cs" />
+    <Compile Include="ViewModel\HistoricalParametersViewModel.cs" />
+    <Compile Include="ViewModel\LimitOrderBookViewModel.cs" />
+    <Compile Include="ViewModel\MarketScannerWindowViewModel.cs" />
+    <Compile Include="ViewModel\MarketScannerViewModel.cs" />
+    <Compile Include="ViewModel\NotificationSettingsViewModel.cs" />
+    <Compile Include="ViewModel\AlertWindowViewModel.cs" />
+    <Compile Include="ViewModel\StrategySummaryViewModel.cs" />
+    <Compile Include="Views\AddLicenseView.xaml.cs">
+      <DependentUpon>AddLicenseView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AlertWindow.xaml.cs">
+      <DependentUpon>AlertWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\OrdersViewModel.cs" />
+    <Compile Include="ViewModel\PriceAlertSettingsViewModel.cs" />
+    <Compile Include="ViewModel\ProvidersViewModel.cs" />
+    <Compile Include="ViewModel\SendOrderViewModel.cs" />
+    <Compile Include="ViewModel\ServicesViewModel.cs" />
+    <Compile Include="ViewModel\StrategyInstanceSummaryViewModel.cs" />
     <Compile Include="ViewModel\StrategyRunnerViewModel.cs" />
     <Compile Include="Views\BruteOptimizationWindow.xaml.cs">
       <DependentUpon>BruteOptimizationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HistoricalParametersView.xaml.cs">
+      <DependentUpon>HistoricalParametersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LimitOrderBookWindow.xaml.cs">
+      <DependentUpon>LimitOrderBookWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MarketScannerWindow.xaml.cs">
+      <DependentUpon>MarketScannerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NotificationSettingsView.xaml.cs">
+      <DependentUpon>NotificationSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PriceAlertSettings.xaml.cs">
+      <DependentUpon>PriceAlertSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SendOrderWindow.xaml.cs">
+      <DependentUpon>SendOrderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NewMarketScannerWindow.xaml.cs">
+      <DependentUpon>NewMarketScannerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MarketScannerView.xaml.cs">
+      <DependentUpon>MarketScannerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\GeneticOptimizationWindow.xaml.cs">
       <DependentUpon>GeneticOptimizationWindow.xaml</DependentUpon>
@@ -125,10 +281,59 @@
     <Compile Include="Views\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StrategyInstanceSummary.xaml.cs">
+      <DependentUpon>StrategyInstanceSummary.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StrategyNotificaitonParameterWindow.xaml.cs">
+      <DependentUpon>StrategyNotificaitonParameterWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StrategyRunnerView.xaml.cs">
       <DependentUpon>StrategyRunnerView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\StrategySummary.xaml.cs">
+      <DependentUpon>StrategySummary.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\AddLicenseView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AlertWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\BruteOptimizationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HistoricalParametersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LimitOrderBookWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MarketScannerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NotificationSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PriceAlertSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SendOrderWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\NewMarketScannerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MarketScannerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -176,7 +381,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\StrategyInstanceSummary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StrategyNotificaitonParameterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StrategyRunnerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StrategySummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -199,6 +416,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.manifest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -206,7 +427,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
@@ -226,7 +449,40 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Converters\" />
+    <None Include="libzmq.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="LoggerConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="TS9.ico" />
+    <SplashScreen Include="TS Splash Screen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Resources\Resources.csproj">
+      <Project>{9cc3c15b-6a55-481e-b379-85f86cd1cdbc}</Project>
+      <Name>Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.Common\TradeHubGui.Common.csproj">
+      <Project>{5e5a9a79-0b0c-428b-8385-015134b42d86}</Project>
+      <Name>TradeHubGui.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.Dashboard\TradeHubGui.Dashboard.csproj">
+      <Project>{8E7E4246-3804-4D60-90C4-C0350013297D}</Project>
+      <Name>TradeHubGui.Dashboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.DataDownloader\TradeHubGui.DataDownloader.csproj">
+      <Project>{ff91d752-e815-4994-9037-288c1fab2994}</Project>
+      <Name>TradeHubGui.DataDownloader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.IqFeedExtenstion\TradeHubGui.IqFeedExtenstion.csproj">
+      <Project>{2ccde7fc-7660-40bd-9d37-35bc13438948}</Project>
+      <Name>TradeHubGui.IqFeedExtenstion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHubGui.StrategyRunner\TradeHubGui.StrategyRunner.csproj">
+      <Project>{8090220c-f33f-46ea-ae6a-cdac8c921edd}</Project>
+      <Name>TradeHubGui.StrategyRunner</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

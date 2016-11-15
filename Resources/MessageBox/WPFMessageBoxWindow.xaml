@@ -1,0 +1,23 @@
+﻿<mah:MetroWindow x:Class="MessageBoxUtils.WPFMessageBoxWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:local="clr-namespace:MessageBoxUtils"
+                 Title="{Binding Title}" 
+                 ResizeMode="NoResize" 
+                 SizeToContent="WidthAndHeight" 
+                 FlowDirection="{Binding TitleFlowDirection}"
+                 ShowInTaskbar="False" 
+                 WindowStartupLocation="CenterOwner" 
+                 KeyDown="Window_KeyDown" 
+                 MinWidth="250"
+                 NonActiveGlowBrush="Silver"
+                 ShowIconOnTitleBar="True"
+                 ShowTitleBar="True"
+                 GlowBrush="{StaticResource BaseBrush0}"
+                 FontFamily="{StaticResource DefaultFont}"
+                 FontSize="{StaticResource NormalFontSize}">
+    
+        <local:WPFMessageBoxControl />
+
+</mah:MetroWindow>

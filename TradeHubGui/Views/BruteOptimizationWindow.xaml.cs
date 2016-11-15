@@ -15,14 +15,19 @@ using System.Windows.Shapes;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for BruteOptimizationWindow.xaml
-	/// </summary>
-	public partial class BruteOptimizationWindow : MetroWindow
-	{
-		public BruteOptimizationWindow()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for BruteOptimizationWindow.xaml
+    /// </summary>
+    public partial class BruteOptimizationWindow : MetroWindow
+    {
+        public BruteOptimizationWindow()
+        {
+            InitializeComponent();
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (sender as DataGrid).UnselectAllCells();
+        }
+    }
 }

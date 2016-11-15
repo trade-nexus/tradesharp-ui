@@ -1,0 +1,261 @@
+﻿<!--*********************************************************************
+
+   Extended WPF Toolkit
+
+   Copyright (C) 2010-2012 Xceed Software Inc.
+
+   This program is provided to you under the terms of the Microsoft Public
+   License (Ms-PL) as published at http://wpftoolkit.codeplex.com/license 
+
+   This program can be provided to you by Xceed Software Inc. under a
+   proprietary commercial license agreement for use in non-Open Source
+   projects. The commercial version of Extended WPF Toolkit also includes
+   priority technical support, commercial updates, and many additional 
+   useful WPF controls if you license Xceed Business Suite for WPF.
+
+   Visit http://xceed.com and follow @datagrid on Twitter.
+
+  ********************************************************************-->
+
+<ResourceDictionary
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:controls="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+	xmlns:local="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit">
+
+	<Style TargetType="controls:ButtonSpinner">
+		<Setter Property="HorizontalContentAlignment" Value="Center" />
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+		<Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="controls:ButtonSpinner">
+					<Grid SnapsToDevicePixels="True" FocusVisualStyle="{x:Null}">
+						<Grid.Resources>
+							<ControlTemplate x:Key="IncreaseButtonTemplate" TargetType="RepeatButton">
+								<Grid x:Name="Root" Margin="0,1,0,0">
+									<Border x:Name="Border" Width="17" Margin="0,0,1,0" BorderThickness="1,1,1,0" CornerRadius="0">
+										<Border.BorderBrush>
+											<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+												<GradientStop Color="#999" Offset="0.0"/>
+												<GradientStop Color="#888" Offset="1.0"/>
+											</LinearGradientBrush>
+										</Border.BorderBrush>
+										<Border.Background>
+											<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+												<GradientStop Color="White" Offset="0"/>
+												<GradientStop Color="#FDDD" Offset="1"/>
+											</LinearGradientBrush>
+										</Border.Background>
+									</Border>
+									<Path x:Name="Path" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,4,4,3" Width="6" Height="3"
+										  Fill="#FF333333" Stretch="Uniform" Data="F1 M 541.537,173.589L 531.107,173.589L 536.322,167.49L 541.537,173.589 Z " />
+								</Grid>
+								<ControlTemplate.Triggers>
+									<Trigger Property="IsPressed" Value="true">
+										<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush}" />
+										<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+										<Setter TargetName="Path" Property="Fill" Value="White" />
+									</Trigger>
+									<Trigger Property="IsEnabled" Value="false">
+										<Setter TargetName="Border" Property="Opacity" Value="0.5" />
+										<Setter TargetName="Path" Property="Fill" Value="Silver" />
+									</Trigger>
+								</ControlTemplate.Triggers>
+							</ControlTemplate>
+							
+							<ControlTemplate x:Key="DecreaseButtonTemplate" TargetType="RepeatButton">
+								<Grid x:Name="Root" Margin="0,0,0,1">
+									<Border x:Name="Border" Width="17" Margin="0,0,1,0" BorderThickness="1,0,1,1" CornerRadius="0">
+										<Border.BorderBrush>
+											<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+												<GradientStop Color="#999" Offset="0.0"/>
+												<GradientStop Color="#888" Offset="1.0"/>
+											</LinearGradientBrush>
+										</Border.BorderBrush>
+										<Border.Background>
+											<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+												<GradientStop Color="White" Offset="0"/>
+												<GradientStop Color="#FDDD" Offset="1"/>
+											</LinearGradientBrush>
+										</Border.Background>
+									</Border>
+									<Path x:Name="Path" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,4,4,3" Width="6" Height="3"
+										  Fill="#FF333333" Stretch="Uniform" Data="F1 M 531.107,321.943L 541.537,321.943L 536.322,328.042L 531.107,321.943 Z " />
+								</Grid>
+								<ControlTemplate.Triggers>
+									<Trigger Property="IsPressed" Value="true">
+										<Setter TargetName="Border" Property="Background" Value="{DynamicResource PressedBackgroundBrush}" />
+										<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource PressedBorderBrush}" />
+										<Setter TargetName="Path" Property="Fill" Value="White" />
+									</Trigger>
+									<Trigger Property="IsEnabled" Value="false">
+										<Setter TargetName="Border" Property="Opacity" Value="0.5" />
+										<Setter TargetName="Path" Property="Fill" Value="Silver" />
+									</Trigger>
+								</ControlTemplate.Triggers>
+							</ControlTemplate>
+						</Grid.Resources>
+						<Grid Name="Grid">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+							<Grid.ColumnDefinitions>
+								<ColumnDefinition Width="*" />
+								<ColumnDefinition Width="Auto" />
+							</Grid.ColumnDefinitions>
+							
+							<ContentControl x:Name="presentationSite" Grid.RowSpan="2" IsTabStop="False" 
+											HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+											VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" 
+											Content="{TemplateBinding Content}" />
+							<RepeatButton FocusVisualStyle="{x:Null}" Grid.Row="0" Grid.Column="1" IsTabStop="False" 
+										  Template="{StaticResource IncreaseButtonTemplate}" x:Name="IncreaseButton" ClickMode="Press" />
+							<RepeatButton FocusVisualStyle="{x:Null}" Grid.Row="1" Grid.Column="1" IsTabStop="False" 
+										  Template="{StaticResource DecreaseButtonTemplate}" x:Name="DecreaseButton" ClickMode="Press" />
+
+							<Border Name="HoverBorder" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="0" IsHitTestVisible="False"
+						        BorderBrush="{DynamicResource HoverBorderBrush}"
+						        BorderThickness="1" CornerRadius="0" Opacity="0.8"
+						        Visibility="Collapsed" />
+						</Grid>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter TargetName="HoverBorder" Property="Visibility" Value="Visible" />
+							<Setter Property="Foreground" Value="Black" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- =============================================================================== -->
+	<!-- ButtonSpinner                                                                   -->
+	<!-- =============================================================================== -->
+
+	<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+	<Style x:Key="RepeatButtonStyle" TargetType="{x:Type RepeatButton}">
+		<Setter Property="OverridesDefaultStyle" Value="True"/>
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="Padding" Value="2,0"/>
+		<Setter Property="Background" Value="{DynamicResource NormalBrush}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Grid SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+						<Border
+							x:Name="Border"
+							CornerRadius="0"
+							Padding="{TemplateBinding Padding}"
+							Background="{TemplateBinding Background}"
+							BorderBrush="Transparent"
+							BorderThickness="0">
+							<ContentPresenter x:Name="Content"
+								HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+								VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+								RecognizesAccessKey="True"/>
+						</Border>
+					</Grid>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsKeyboardFocused" Value="true">
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource HoverBorderBrush}" />
+							<Setter Property="BitmapEffect" TargetName="Border">
+								<Setter.Value>
+									<OuterGlowBitmapEffect GlowColor="DodgerBlue" GlowSize="2" Opacity="0.5"/>
+								</Setter.Value>
+							</Setter>
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter TargetName="Border" Property="Background" Value="{DynamicResource HoverBrush}" />
+							<Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource HoverBorderBrush}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter Property="Background" TargetName="Border" Value="{DynamicResource PressedBackgroundBrush}"/>
+							<Setter Property="BorderBrush" TargetName="Border" Value="{DynamicResource PressedBorderBrush}"/>
+							<Setter Property="BitmapEffect" TargetName="Border" Value="{x:Null}"/>
+						</Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Content" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type local:ButtonSpinner}">
+		<Setter Property="BorderThickness" Value="0" />
+		<Setter Property="Focusable" Value="False" />
+		<Setter Property="FontFamily" Value="{DynamicResource DefaultFont}"/>
+		<Setter Property="FontSize" Value="{DynamicResource NormalFontSize}"/>
+		<Setter Property="Background" Value="White"/>
+		<Setter Property="IsTabStop" Value="True" />
+		<Setter Property="Validation.ErrorTemplate" Value="{DynamicResource DefaultErrorTemplate}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:ButtonSpinner}">
+					<Grid SnapsToDevicePixels="True">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
+						</Grid.ColumnDefinitions>
+
+                        <Border Background="{TemplateBinding Background}" Margin="1,1,0,1"/>
+                        
+                        <ContentPresenter Focusable="False" Height="{TemplateBinding Height}"
+										  HorizontalAlignment="Stretch" 
+										  VerticalAlignment="Center" 
+										  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+
+                        <Grid Grid.Column="1" Visibility="{TemplateBinding ShowButtonSpinner, Converter={StaticResource BooleanToVisibilityConverter}}" Width="18">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="*" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+
+							<Border x:Name="Border" Grid.RowSpan="2"
+								CornerRadius="0" 
+								Margin="0,1,1,1" 
+								Padding="{TemplateBinding Padding}"
+								BorderThickness="1"
+								Background="{TemplateBinding Background}"
+								BorderBrush="{DynamicResource TextBoxBorderBrush}"/>
+
+							<RepeatButton x:Name="PART_IncreaseButton" Margin="1,2,2,0"
+									Style="{StaticResource RepeatButtonStyle}"
+									IsTabStop="{TemplateBinding IsTabStop}">
+								<Path x:Name="PART_ArrowUp" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3,2,3,3" Fill="#FF333333" Stretch="Uniform" Data="F1 M 541.537,173.589L 531.107,173.589L 536.322,167.49L 541.537,173.589 Z " />
+							</RepeatButton>
+
+							<RepeatButton x:Name="PART_DecreaseButton" Margin="1,0,2,2"
+									Grid.Row="1"
+									Style="{StaticResource RepeatButtonStyle}"
+									IsTabStop="{TemplateBinding IsTabStop}">
+								<Path x:Name="PART_ArrowDown" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="3,3,3,2" Fill="#FF333333" Stretch="Uniform" Data="F1 M 531.107,321.943L 541.537,321.943L 536.322,328.042L 531.107,321.943 Z " />
+							</RepeatButton>
+						</Grid>
+					</Grid>
+					<ControlTemplate.Triggers>
+                        <Trigger SourceName="PART_IncreaseButton" Property="IsPressed" Value="True">
+							<Setter TargetName="PART_ArrowUp" Property="Fill" Value="White" />
+						</Trigger>
+						<Trigger SourceName="PART_DecreaseButton" Property="IsPressed" Value="True">
+							<Setter TargetName="PART_ArrowDown" Property="Fill" Value="White" />
+						</Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+</ResourceDictionary>

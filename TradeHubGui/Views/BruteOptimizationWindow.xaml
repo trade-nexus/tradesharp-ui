@@ -1,119 +1,315 @@
 ﻿<mah:MetroWindow x:Class="TradeHubGui.Views.BruteOptimizationWindow"
-				 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-				 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-				 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-				 xmlns:views="clr-namespace:TradeHubGui.Views"
-				 GlowBrush="Silver"
-				 ShowInTaskbar="True"
-				 WindowStartupLocation="CenterScreen"
-				 Title="Brute Optimization"
-				 Width="1000"
-				 Height="600"
-				 MinWidth="500"
-				 MinHeight="500"
-				 Background="{StaticResource BaseBackground}"
-				 Icon="{StaticResource imgBrute}">
-	<mah:MetroWindow.IconTemplate>
-		<DataTemplate>
-			<Image Height="20" Width="20" Source="{StaticResource imgBrute}"/>
-		</DataTemplate>
-	</mah:MetroWindow.IconTemplate>
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                xmlns:wpfToolkitExtended="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+                xmlns:conv="clr-namespace:TradeHubGui.Converters"
+                xmlns:views="clr-namespace:TradeHubGui.Views"
+                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                xmlns:templateSelectors="clr-namespace:TradeHubGui.TemplateSelectors"
+                GlowBrush="Silver"
+                ShowInTaskbar="True"
+                WindowStartupLocation="CenterScreen"
+                Title="Brute Optimization"
+                Width="1140"
+                Height="600"
+                MinWidth="700"
+                MinHeight="500"
+                Background="{StaticResource BaseBackground}"
+                Icon="{StaticResource imgBrute}">
+    <mah:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Image Height="20" Width="20" Source="{StaticResource imgBrute}"/>
+        </DataTemplate>
+    </mah:MetroWindow.IconTemplate>
+    
+    <mah:MetroWindow.Resources>
+        <conv:OptimizationExecutionStatusToBrushConverter x:Key="StatusToBrush"/>
 
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition />
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+        <DataTemplate x:Key="StartValueIntegerTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
 
-		<Grid Margin="10,10,10,0">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="0.7*"/>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition />
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
-				<RowDefinition/>
-			</Grid.RowDefinitions>
+        <DataTemplate x:Key="StartValueUnsignedIntegerTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0"/>
+            </Border>
+        </DataTemplate>
 
-			<Border Grid.RowSpan="2" Grid.Column="0" Style="{StaticResource ContentBorderStyle}" Margin="4"/>
-			<Border Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource ContentBorderStyle}" Margin="4"/>
+        <DataTemplate x:Key="StartValueDecimalTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
 
-			<DockPanel>
-				<Button DockPanel.Dock="Right" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20">
-					<StackPanel Orientation="Horizontal">
-						<Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
-						<TextBlock Text="Execute"/>
-					</StackPanel>
-				</Button>
+        <DataTemplate x:Key="StartValueDoubleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DoubleUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="StartValueSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.01"/>
+            </Border>
+        </DataTemplate>
 
-				<StackPanel Margin="10" Orientation="Horizontal">
-					<StackPanel Orientation="Vertical" Margin="10,4,20,4">
-						<TextBlock Text="Strategy" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
-						<TextBlock Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}, FallbackValue=AA000001}"
-							   FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
-					</StackPanel>
-				</StackPanel>
-			</DockPanel>
+        <DataTemplate x:Key="StartValueLongTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:LongUpDown Value="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
 
-			<HeaderedContentControl Grid.Row="1" Header="Parameters" Margin="10,0,10,10">
-				<DataGrid x:Name="StrategyParametersDataGrid"
-							SelectionMode="Single" 
-							IsTextSearchEnabled="True"
-							IsSynchronizedWithCurrentItem="True"
-							CanUserAddRows="False" CanUserDeleteRows="False"
-							CanUserResizeRows="False" CanUserSortColumns="True"
-							IsReadOnly="False"
-							SelectionUnit="FullRow"
-							AutoGenerateColumns="False"
-							RowHeight="22">
+        <DataTemplate x:Key="StartValueStringTemplate">
+            <Border Background="#8FFF">
+                <TextBox Text="{Binding ParameterValue, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
+        </DataTemplate>
 
-					<DataGrid.Columns>
-						<DataGridTextColumn Header="Parameter" Width="0.7*" Binding="{Binding Path=Parameter}" />
-						<DataGridTextColumn Header="Value" Width="0.5*" Binding="{Binding Path=Value}" />
-						<DataGridTextColumn Header="End value" Width="0.6*" Binding="{Binding Path=EndValue}" />
-						<DataGridTextColumn Header="Increment" Width="0.7*" Binding="{Binding Path=Increment}" />
-					</DataGrid.Columns>
-				</DataGrid>
-			</HeaderedContentControl>
+        <DataTemplate x:Key="EndValueIntegerTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
 
-			<GridSplitter Grid.Column="1" Grid.RowSpan="2" ResizeDirection="Columns"/>
+        <DataTemplate x:Key="EndValueUnsignedIntegerTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EndValueDecimalTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EndValueDoubleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DoubleUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EndValueSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.01"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="EndValueLongTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:LongUpDown Value="{Binding EndValue, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="EndValueStringTemplate">
+            <Border Background="#8FFF"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IncrementIntegerTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IncrementUnsignedIntegerTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:IntegerUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="1" Minimum="0"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IncrementDecimalTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DecimalUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IncrementDoubleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:DoubleUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.1"/>
+            </Border>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="IncrementSingleTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:SingleUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="0.01"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IncrementLongTemplate">
+            <Border Background="#8FFF">
+                <wpfToolkitExtended:LongUpDown Value="{Binding Increment, UpdateSourceTrigger=PropertyChanged}" Increment="1"/>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="IncrementStringTemplate">
+            <Border Background="#8FFF"/>
+        </DataTemplate>
+
+    </mah:MetroWindow.Resources>
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction  Command="{Binding CloseBruteOptimizationWindowCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.8*" MinWidth="300"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition MinWidth="150"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.RowSpan="2" Grid.Column="0" Style="{StaticResource ContentBorderStyle}" Margin="4"/>
+            <Border Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource ContentBorderStyle}" Margin="4"/>
+
+            <DockPanel>
+                <Button DockPanel.Dock="Right" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20,40,20,0" VerticalAlignment="Top"
+                        Command="{Binding RunBruteOptimizationCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                        <TextBlock Text="Execute"/>
+                    </StackPanel>
+                </Button>
+
+                <WrapPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Strategy" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding Tag, RelativeSource={RelativeSource AncestorType=mah:MetroWindow}}"
+                                   FontSize="24" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Execution Status" Margin="0,0,4,0" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <Border Padding="8,4" Margin="0,4,0,0" Background="{Binding BruteForceParameters.Status, Converter={StaticResource StatusToBrush}}">
+                            <TextBlock Text="{Binding BruteForceParameters.Status, FallbackValue=None}" FontSize="14" FontWeight="SemiBold" Foreground="White" HorizontalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </WrapPanel>
+            </DockPanel>
+
+            <HeaderedContentControl Grid.Row="1" Header="Parameters" Margin="10,0,10,10">
+                <DataGrid x:Name="StrategyParametersDataGrid"
+                          ItemsSource="{Binding BruteForceParameters.ParameterDetails}"
+                          SelectionMode="Single" 
+                          IsTextSearchEnabled="True"
+                          IsSynchronizedWithCurrentItem="True"
+                          CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserResizeRows="False" CanUserSortColumns="True"
+                          IsReadOnly="False"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False"
+                          RowHeight="24"
+                          SelectionChanged="DataGrid_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Parameter" Width="0.7*" MinWidth="70" Binding="{Binding Path=Description}" IsReadOnly="True"/>
+                        <DataGridTemplateColumn Header="Value" Width="0.6*" MinWidth="70" SortMemberPath="ParameterValue">
+                            <DataGridTemplateColumn.CellTemplateSelector>
+                                <templateSelectors:DataGridStartValuesTemplateSelector
+                                        StartValueIntegerTemplate="{StaticResource StartValueIntegerTemplate}"
+                                        StartValueUnsignedIntegerTemplate="{StaticResource StartValueUnsignedIntegerTemplate}"
+                                        StartValueDecimalTemplate="{StaticResource StartValueDecimalTemplate}"
+                                        StartValueDoubleTemplate="{StaticResource StartValueDoubleTemplate}"
+                                        StartValueSingleTemplate="{StaticResource StartValueSingleTemplate}"
+                                        StartValueLongTemplate="{StaticResource StartValueLongTemplate}"
+                                        StartValueStringTemplate="{StaticResource StartValueStringTemplate}"/>
+                            </DataGridTemplateColumn.CellTemplateSelector>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="End value" Width="0.4*" MinWidth="80" SortMemberPath="EndValue">
+                            <DataGridTemplateColumn.CellTemplateSelector>
+                                <templateSelectors:DataGridEndValuesTemplateSelector
+                                        EndValueIntegerTemplate="{StaticResource EndValueIntegerTemplate}"
+                                        EndValueUnsignedIntegerTemplate="{StaticResource EndValueUnsignedIntegerTemplate}"
+                                        EndValueDecimalTemplate="{StaticResource EndValueDecimalTemplate}"
+                                        EndValueDoubleTemplate="{StaticResource EndValueDoubleTemplate}"
+                                        EndValueSingleTemplate="{StaticResource EndValueSingleTemplate}"
+                                        EndValueLongTemplate="{StaticResource EndValueLongTemplate}"
+                                        EndValueStringTemplate="{StaticResource EndValueStringTemplate}"/>
+                            </DataGridTemplateColumn.CellTemplateSelector>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Increment" Width="0.4*" MinWidth="80" SortMemberPath="Increment">
+                            <DataGridTemplateColumn.CellTemplateSelector>
+                                <templateSelectors:DataGridIncrementValuesTemplateSelector
+                                        IncrementIntegerTemplate="{StaticResource IncrementIntegerTemplate}"
+                                        IncrementUnsignedIntegerTemplate="{StaticResource IncrementUnsignedIntegerTemplate}"
+                                        IncrementDecimalTemplate="{StaticResource IncrementDecimalTemplate}"
+                                        IncrementDoubleTemplate="{StaticResource IncrementDoubleTemplate}"
+                                        IncrementSingleTemplate="{StaticResource IncrementSingleTemplate}"
+                                        IncrementLongTemplate="{StaticResource IncrementLongTemplate}"
+                                        IncrementStringTemplate="{StaticResource IncrementStringTemplate}"/>
+                            </DataGridTemplateColumn.CellTemplateSelector>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </HeaderedContentControl>
+
+            <GridSplitter Grid.Column="1" Grid.RowSpan="2" ResizeDirection="Columns"/>
 
 
-			<Button Grid.Row="0" Grid.Column="2" MinWidth="75" IsEnabled="True" Focusable="False" Margin="20" HorizontalAlignment="Right">
-				<StackPanel Orientation="Horizontal">
-					<Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}"/>
-					<TextBlock Text="Export"/>
-				</StackPanel>
-			</Button>
+            <DockPanel Grid.Row="0" Grid.Column="2">
+                
+                <WrapPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Total Iterations" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.TotalIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush0}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Completed" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.CompletedIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="10,4,20,4">
+                        <TextBlock Text="Remaining" Margin="0,0,4,0" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource BaseBrush2}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding BruteForceParameters.RemainingIterations, FallbackValue=0}" FontSize="12" FontWeight="SemiBold" Foreground="DarkGray" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </WrapPanel>
+                
+                <Button  MinWidth="75" IsEnabled="True" Focusable="False"
+                        Margin="20,40,20,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                        Command="{Binding ExportBruteOptimizationCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}" />
+                        <TextBlock Text="Export" />
+                    </StackPanel>
+                </Button>
+                
+            </DockPanel>
 
-			<HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Result" Margin="10,0,10,10">
-				<DataGrid x:Name="ResultDataGrid" 
-							SelectionMode="Single" 
-							IsTextSearchEnabled="True"
-							IsSynchronizedWithCurrentItem="True"
-							CanUserAddRows="False" CanUserDeleteRows="False"
-							CanUserResizeRows="False" CanUserSortColumns="True"
-							IsReadOnly="False"
-							SelectionUnit="FullRow"
-							AutoGenerateColumns="False"
-							RowHeight="22">
+            <HeaderedContentControl Grid.Row="1" Grid.Column="2" Header="Results" Margin="10,0,10,10">
+                <DataGrid x:Name="ResultDataGrid" 
+                          ItemsSource="{Binding OptimizationStatisticsCollection}"
+                          SelectionMode="Single" 
+                          IsTextSearchEnabled="True"
+                          IsSynchronizedWithCurrentItem="True"
+                          CanUserAddRows="False" CanUserDeleteRows="False"
+                          CanUserResizeRows="False" CanUserSortColumns="True"
+                          IsReadOnly="False"
+                          SelectionUnit="FullRow"
+                          AutoGenerateColumns="False"
+                          RowHeight="22"
+                          SelectionChanged="DataGrid_SelectionChanged">
 
-					<DataGrid.Columns>
-						<DataGridTextColumn Header="Property info" Width="*" Binding="{Binding Path=PropertyInfo}" />
-						<DataGridTextColumn Header="Bought" Width="0.7*" Binding="{Binding Path=Bought}" />
-						<DataGridTextColumn Header="Sold" Width="0.7*" Binding="{Binding Path=Sold}" />
-						<DataGridTextColumn Header="Avg buy price" Width="*" Binding="{Binding Path=AvgBuyPrice}" />
-						<DataGridTextColumn Header="Avg sell price" Width="*" Binding="{Binding Path=AvgSellPrice}" />
-						<DataGridTextColumn Header="Profit" Width="0.7*" Binding="{Binding Path=Profit}" />
-					</DataGrid.Columns>
-				</DataGrid>
-			</HeaderedContentControl>
-		</Grid>
-
-
-		<StackPanel Grid.Row="1" Margin="14,8,14,12" Orientation="Horizontal" HorizontalAlignment="Right">
-			<Button DockPanel.Dock="Right" Content="Close" MinWidth="70" Margin="3"/>
-		</StackPanel>
-	</Grid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Property info" Width="*" MinWidth="100" Binding="{Binding Path=Description}" />
+                        <DataGridTextColumn Header="Bought" Width="0.7*" MinWidth="50" Binding="{Binding Path=ExecutionDetails.BuyCount}" />
+                        <DataGridTextColumn Header="Sold" Width="0.7*" MinWidth="50" Binding="{Binding Path=ExecutionDetails.SellCount}" />
+                        <DataGridTextColumn Header="Avg buy price" Width="*" MinWidth="100" Binding="{Binding Path=ExecutionDetails.AvgBuyPrice}" />
+                        <DataGridTextColumn Header="Avg sell price" Width="*" MinWidth="100" Binding="{Binding Path=ExecutionDetails.AvgSellPrice}" />
+                        <DataGridTextColumn Header="Profit" Width="0.7*" MinWidth="50" Binding="{Binding Path=ExecutionDetails.Profit}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </HeaderedContentControl>
+        </Grid>
+    </Grid>
 </mah:MetroWindow>

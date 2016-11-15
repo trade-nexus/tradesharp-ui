@@ -1,0 +1,5 @@
+.Place unzipped 'ERX' folder in "..\AppData\Roaming\DataDownloader\Blackwood"
+
+.Place unzipped 'Market Data Engine' folder in "..\AppData\Roaming\TradeHub"
+.Place unzipped 'Order Execution Engine' folder in "..\AppData\Roaming\TradeHub"
+.Place unzipped 'Notification Engine' folder in "..\AppData\Roaming\TradeHub"

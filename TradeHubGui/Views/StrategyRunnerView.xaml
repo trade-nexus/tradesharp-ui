@@ -3,265 +3,443 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:conv="clr-namespace:TradeHubGui.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300"
-			 Tag="STRATEGY RUNNER">
+             d:DesignHeight="800" d:DesignWidth="1200"
+             Tag="STRATEGY RUNNER">
 
-	<UserControl.Resources>
-		<BooleanToVisibilityConverter x:Key="BoolToVis"/>
-	</UserControl.Resources>
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <conv:StrategyIsSelectedToBrushConverter x:Key="IsSelectedToBrush"/>
+        <conv:InstanceExecutionStatusToBrushConverter x:Key="StatusToBrush"/>
+        <conv:InstanceExecutionStatusToBoolConverter x:Key="StatusToBool"/>
+        <conv:InstanceExecutionStatusToVisibilityConverter x:Key="ExecutionStatusToVisibility"/>
+        <conv:OrderStatusToBrushConverter x:Key="OrderStatusToBrush"/>
+    </UserControl.Resources>
+    
+    <Grid x:Name="ContentGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.4*" MinWidth="300"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="0.45*" MinWidth="300"/>
+        </Grid.ColumnDefinitions>
 
-	<Grid x:Name="ContentGrid">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition MinWidth="300"/>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition MinWidth="300"/>
-		</Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Margin="20,20,5,20">
+            <Border Style="{StaticResource ContentBorderStyle}"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="80" Height="0.7*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition MinHeight="80"/>
+                </Grid.RowDefinitions>
+                
+                <DockPanel Grid.Row="0" Margin="10,10,10,0">
+                    <TextBlock DockPanel.Dock="Top" Margin="10,0" Text="STRATEGIES" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-		<Grid Grid.Column="0" Margin="20,20,5,20">
-			<Border Style="{StaticResource ContentBorderStyle}"/>
-			<DockPanel Grid.Row="0" Margin="10">
-				<TextBlock DockPanel.Dock="Top" Margin="10,0" Text="STRATEGIES" Style="{StaticResource HeaderTextBlockStyle}"/>
+                    <Button DockPanel.Dock="Top" HorizontalAlignment="Left" MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,19,10,0"
+                        Command="{Binding LoadStrategyCommand}">
+                        <StackPanel Orientation="Horizontal" Margin="4,0">
+                            <Image Width="16" Height="16" Margin="0,0,4,0" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
+                            <TextBlock Text="Load strategy"/>
+                        </StackPanel>
+                    </Button>
 
-				<Button DockPanel.Dock="Top" HorizontalAlignment="Left" MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,20,2,0"
-						Command="{Binding LoadStrategyCommand}">
-					<StackPanel Orientation="Horizontal" Margin="4,0">
-						<Image Width="16" Height="16" Margin="0,0,4,0" Source="{StaticResource imgFolder}" UseLayoutRounding="True"/>
-						<TextBlock Text="Load strategy"/>
-					</StackPanel>
-				</Button>
+                    <ListBox Name="StrategiesListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,3,10,0" Padding="0" 
+                             SelectedItem="{Binding SelectedStrategy}" ItemsSource="{Binding Strategies}">
+                        <ListBox.Resources>
+                            <ResourceDictionary>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                    <Setter Property="SnapsToDevicePixels" Value="true" />
+                                    <Setter Property="OverridesDefaultStyle" Value="true" />
+                                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Background" Value="Transparent" />
+                                    <Setter Property="BorderBrush" Value="Transparent" />
+                                    <Setter Property="Padding" Value="0" />
+                                    <Setter Property="MinHeight" Value="40" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                                <Grid>
+                                                    <Border x:Name="Border" Background="{TemplateBinding Background}" BorderThickness="0" CornerRadius="0" />
+                                                    <ContentPresenter Name="Content" Margin="{TemplateBinding Padding}" 
+                                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource HoverListBoxItemBackground}" />
+                                                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource HoverListBoxItemBorder}" />
+                                                        <Setter Property="Foreground" Value="Black" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsSelected" Value="true">
+                                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource BaseBrush0}" />
+                                                        <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BaseBrush0}" />
+                                                        <Setter Property="Foreground" Value="White" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="false">
+                                                        <Setter TargetName="Border" Property="Opacity" Value="0.2" />
+                                                        <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ResourceDictionary>
+                        </ListBox.Resources>
 
-				<Grid>
-					<Grid.RowDefinitions>
-						<RowDefinition Height="0.5*"/>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition/>
-					</Grid.RowDefinitions>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Margin="0">
+                                    <Border DockPanel.Dock="Left" Background="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource IsSelectedToBrush}}">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,2,14,4" >
+                                            <TextBlock Text="{Binding Key}" FontSize="18" Opacity="0.7" Margin="0,0,4,0"/>
+                                            <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="18"/>
+                                        </StackPanel>
+                                    </Border>
 
-					<ListBox Name="StrategiesListBox" BorderThickness="1" BorderBrush="#EEE" Background="WhiteSmoke" Margin="10,5,10,0" Padding="0" 
-							 SelectedItem="{Binding SelectedStrategy}" ItemsSource="{Binding Strategies}">
-						<ListBox.Resources>
-							<ResourceDictionary>
-								<Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
-									<Setter Property="Template">
-										<Setter.Value>
-											<ControlTemplate TargetType="{x:Type ListBoxItem}">
-												<Grid>
-													<Border x:Name="Border" Background="{TemplateBinding Background}" BorderThickness="1" CornerRadius="0" />
-													<ContentPresenter Name="Content" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-												</Grid>
-												<ControlTemplate.Triggers>
-													<Trigger Property="IsMouseOver" Value="true">
-														<Setter TargetName="Border" Property="Background" Value="{StaticResource HoverListBoxItemBackground}" />
-														<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource HoverListBoxItemBorder}" />
-														<Setter Property="Foreground" Value="Black" />
-													</Trigger>
-													<Trigger Property="IsSelected" Value="true">
-														<Setter TargetName="Border" Property="Background" Value="{StaticResource BaseBrush0}" />
-														<Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource BaseBrush0}" />
-														<Setter Property="Foreground" Value="White" />
-													</Trigger>
-													<Trigger Property="IsEnabled" Value="false">
-														<Setter TargetName="Border" Property="Opacity" Value="0.2" />
-														<Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
-													</Trigger>
-												</ControlTemplate.Triggers>
-											</ControlTemplate>
-										</Setter.Value>
-									</Setter>
-								</Style>
-							</ResourceDictionary>
-						</ListBox.Resources>
-						
-						<ListBox.ItemTemplate>
-							<DataTemplate>
-								<DockPanel Margin="0">
-									<StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="14,2,0,4">
-										<TextBlock Text="Strategy" FontSize="18" Opacity="0.7" Margin="0,0,4,0"/>
-										<TextBlock Text="{Binding Key}" FontWeight="SemiBold" FontSize="20"/>
-									</StackPanel>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" 
+                                                Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVis}}">
+                                        <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,0,2,0" Foreground="White"
+                                                Command="{Binding DataContext.StrategySummaryCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                            <StackPanel Orientation="Horizontal" Margin="4,0">
+                                                <Image Width="13" Height="13" Margin="0,0,4,0" Source="{StaticResource imgInformationWhite}" UseLayoutRounding="True"/>
+                                                <TextBlock Text="Statistics" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,0,2,0" Foreground="White"
+                                                Command="{Binding DataContext.ShowGeneticOptimizationWindowCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                            <StackPanel Orientation="Horizontal" Margin="4,0">
+                                                <Image Width="13" Height="13" Margin="0,0,4,0" Source="{StaticResource imgGenetic}" UseLayoutRounding="True"/>
+                                                <TextBlock Text="Genetic optimization" />
+                                            </StackPanel>
+                                        </Button>
+                                        <Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,10,0" Foreground="White"
+                                                Command="{Binding DataContext.ShowBruteOptimizationWindowCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                            <StackPanel Orientation="Horizontal" Margin="4,0">
+                                                <Image Width="13" Height="13" Margin="0,0,4,0" Source="{StaticResource imgBrute}" UseLayoutRounding="True"/>
+                                                <TextBlock Text="Brute optimization" />
+                                            </StackPanel>
+                                        </Button>
+                                        <!--<Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="10,0,0,0" ToolTip="Select providers" Focusable="False"
+                                                Command="{Binding DataContext.SelectProviderCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                            <Image Width="14" Height="14" Margin="2" Source="{StaticResource imgProviders}" UseLayoutRounding="True"/>
+                                        </Button>
+                                        <Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="0,0,4,0" ToolTip="Remove strategy" Focusable="False"
+                                                Command="{Binding DataContext.RemoveStrategyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
+                                            <Image Width="10" Height="10" Margin="2" Source="{StaticResource imgClose}" UseLayoutRounding="True"/>
+                                        </Button>-->
+                                    </StackPanel>
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
 
-									<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BoolToVis}}">
-										<Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="10,0,2,0" Foreground="White"
-												Command="{Binding DataContext.ShowGeneticOptimizationWindowCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
-											<StackPanel Orientation="Horizontal" Margin="4,0">
-												<Image Width="13" Height="13" Margin="0,0,4,0" Source="{StaticResource imgGenetic}" UseLayoutRounding="True"/>
-												<TextBlock Text="Genetic optimization" />
-											</StackPanel>
-										</Button>
-										<Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,10,0" Foreground="White"
-												Command="{Binding DataContext.ShowBruteOptimizationWindowCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
-											<StackPanel Orientation="Horizontal" Margin="4,0">
-												<Image Width="13" Height="13" Margin="0,0,4,0" Source="{StaticResource imgBrute}" UseLayoutRounding="True"/>
-												<TextBlock Text="Brute optimization" />
-											</StackPanel>
-										</Button>
-										<Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="10,0,0,0" ToolTip="Select providers" Focusable="False"
-											Command="{Binding DataContext.SelectProviderCommand, RelativeSource={RelativeSource AncestorType=ListBox}}">
-											<Image Width="14" Height="14" Margin="2" Source="{StaticResource imgProviders}" UseLayoutRounding="True"/>
-										</Button>
-										<Button MinWidth="24" Style="{StaticResource ButtonToolBar}" Margin="0,0,4,0" ToolTip="Remove strategy" Focusable="False">
-											<Image Width="10" Height="10" Margin="2" Source="{StaticResource imgClose}" UseLayoutRounding="True"/>
-										</Button>
-									</StackPanel>
-								</DockPanel>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
 
-					<GridSplitter Grid.Row="1" ResizeDirection="Rows"/>
+                <DockPanel Grid.Row="2" Margin="10,0,10,10">
+                    <DockPanel DockPanel.Dock="Top" Margin="10,20,0,0">
+                        <Button DockPanel.Dock="Left" MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
+                                Command="{Binding ShowCreateInstanceWindowCommand}">
+                            <StackPanel Orientation="Horizontal" Margin="4,0">
+                                <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgAdd}" UseLayoutRounding="True"/>
+                                <TextBlock Text="Create instance" />
+                            </StackPanel>
+                        </Button>
 
-					<DockPanel Grid.Row="2">
-						<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="10,20,0,-10">
-							<Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
-									Command="{Binding ShowCreateInstanceWindowCommand}">
-								<StackPanel Orientation="Horizontal" Margin="4,0">
-									<Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgAdd}" UseLayoutRounding="True"/>
-									<TextBlock Text="Create instance" />
-								</StackPanel>
-							</Button>
+                        <Button DockPanel.Dock="Left" MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
+                                Command="{Binding ImportInstancesCommand}">
+                            <StackPanel Orientation="Horizontal" Margin="4,0">
+                                <Image Width="15" Height="15" Margin="0,0,4,0" Source="{StaticResource imgImport}" UseLayoutRounding="True"/>
+                                <TextBlock Text="Import instances" />
+                            </StackPanel>
+                        </Button>
 
-							<Button MinWidth="60" Style="{StaticResource ButtonToolBar}" Focusable="False" Margin="0,0,2,0" HorizontalAlignment="Left"
-									Command="{Binding ImportInstancesCommand}">
-								<StackPanel Orientation="Horizontal" Margin="4,0">
-									<Image Width="15" Height="15" Margin="0,0,4,0" Source="{StaticResource imgImport}" UseLayoutRounding="True"/>
-									<TextBlock Text="Import instances" />
-								</StackPanel>
-							</Button>
-						</StackPanel>
+                        <CheckBox DockPanel.Dock="Right" Content="Enable order persistence"
+                                  IsChecked="{Binding EnablePersistence, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="10,4,10,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    </DockPanel>
+                    <DockPanel DockPanel.Dock="Bottom" Margin="10,0,0,0">
+                        <Button Focusable="False" Width="105" Margin="0,0,4,0" Height="22" DockPanel.Dock="Right"
+                                Command="{Binding StopMultipleInstanceCommand}" Visibility="{Binding}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}" />
+                                <TextBlock Text="Stop Selected" />
+                            </StackPanel>
+                        </Button>
+                        <Button Focusable="False" Width="105" Margin="0,0,4,0" Height="22" DockPanel.Dock="Right"
+                                Command="{Binding RunMultipleInstanceCommand}"
+                                Visibility="{Binding}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}" />
+                                <TextBlock Text="Start Selected" />
+                            </StackPanel>
+                        </Button>
+                        <Button Focusable="False" Width="68" Height="22" DockPanel.Dock="Right" HorizontalAlignment="Right"
+                                ToolTip="Export all strategy instances local data" Margin="0,0,4,0" 
+                                Command="{Binding ExportAllInstanceDataCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="12" Height="12" Margin="0,0,4,0" Source="{StaticResource imgExport}" UseLayoutRounding="True" />
+                                <TextBlock Text="Export" Margin="0,0,4,0" />
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete selected instances"
+                                IsEnabled="True" DockPanel.Dock="Right" Width="20" Height="22" HorizontalAlignment="Right"
+                                Command="{Binding DeleteMultipleInstanceCommand}" Margin="0,0,4,0">
+                            <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}"
+                                    UseLayoutRounding="True" />
+                        </Button>
 
-						<DataGrid x:Name="StrategyInstancesDataGrid" 
-								  ItemsSource="{Binding Instances}"
-								  SelectedItem="{Binding SelectedInstance}"
-								  Margin="10,20,10,10"
-								  SelectionMode="Single" 
-								  IsTextSearchEnabled="True"
-								  IsSynchronizedWithCurrentItem="True"
-								  CanUserAddRows="False" CanUserDeleteRows="False"
-								  CanUserResizeRows="False" CanUserSortColumns="True"
-								  IsReadOnly="True"
-								  SelectionUnit="FullRow"
-								  AutoGenerateColumns="False">
-							<DataGrid.Columns>
-								<DataGridTemplateColumn Header="Key" Width="0.3*" SortMemberPath="InstanceKey">
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<Border Padding="10,1,8,2" Margin="0,-10" Background="#0FFF" BorderThickness="9,0,0,0" BorderBrush="{Binding StateBrush}" HorizontalAlignment="Left">
-												<TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
-														   FontWeight="SemiBold" VerticalAlignment="Center">
-													<TextBlock.Effect>
-														<DropShadowEffect Color="White" ShadowDepth="0.1" BlurRadius="1" Opacity="1"/>
-													</TextBlock.Effect>
-												</TextBlock>
-											</Border>
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-								<DataGridTextColumn Header="Symbol" Width="0.3*" Binding="{Binding Path=Symbol}" />
-								<DataGridTextColumn Header="Description" Width="0.5*" Binding="{Binding Path=Description}" />
-								<DataGridTemplateColumn Header="Actions" Width="Auto">
-									<DataGridTemplateColumn.CellTemplate>
-										<DataTemplate>
-											<StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
-												<Button Focusable="False" MinWidth="50" Margin="0,2,4,2" Height="22">
-													<StackPanel Orientation="Horizontal">
-														<Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
-														<TextBlock Text="Stop"/>
-													</StackPanel>
-												</Button>
+                        <!--<CheckBox DockPanel.Dock="Left" HorizontalAlignment="Left" Content="Select All Instances"
+                                  IsChecked="{Binding SelectAllInstances, UpdateSourceTrigger=PropertyChanged}"
+                                  Margin="0,0,0,0" VerticalAlignment="Center"/>-->
+                        <Button Focusable="False" Width="120" Height="22"
+                                Margin="0,0,0,0" DockPanel.Dock="Left" HorizontalAlignment="Left"
+                                Command="{Binding SelectAllInstancesCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <!--<Image Width="12" Height="12" Margin="0,0,4,0" Source="{StaticResource imgExport}" UseLayoutRounding="True" />-->
+                                <TextBlock Text="Select All Instances" Margin="0,0,0,0" />
+                            </StackPanel>
+                        </Button>
+                    </DockPanel>
 
-												<Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Edit instance" 
-														Command="{Binding DataContext.ShowEditInstanceWindowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
-													<Image Width="13" Height="13" Margin="3,2,1,2" Source="{StaticResource imgEdit}" UseLayoutRounding="True"/>
-												</Button>
+                    <DataGrid x:Name="StrategyInstancesDataGrid" Margin="10"
+                                    ItemsSource="{Binding Instances}"
+                                    SelectedItem="{Binding SelectedInstance}"
+                                    SelectionMode="Extended" 
+                                    IsTextSearchEnabled="True"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    CanUserAddRows="False" CanUserDeleteRows="False"
+                                    CanUserResizeRows="False" CanUserSortColumns="True"
+                                    IsReadOnly="False"
+                                    SelectionUnit="FullRow"
+                                    AutoGenerateColumns="False">
+                        <DataGrid.Resources>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Width="32" IsReadOnly="True" CanUserResize="False">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                            <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Strategy Instance Summary" IsEnabled="True"
+                                                    Command="{Binding DataContext.InstanceSummaryCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                                <Image Width="15" Height="15" Margin="0" Source="{StaticResource imgInformation}" UseLayoutRounding="True"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Key" Width="0.3*" MinWidth="100" SortMemberPath="InstanceKey" IsReadOnly="True" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="10,0,8,1" Margin="0,-12" Background="#0FFF" BorderThickness="9,0,0,0"
+                                                    BorderBrush="{Binding Status, Converter={StaticResource StatusToBrush}}">
+                                            <TextBlock Text="{Binding InstanceKey}" Foreground="{Binding BorderBrush, RelativeSource={RelativeSource AncestorType=Border}}" 
+                                                         FontWeight="SemiBold" FontSize="16" VerticalAlignment="Center" />
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Description" Width="0.5*" MinWidth="50" Binding="{Binding Path=Description}" IsReadOnly="False"/>
+                            <DataGridTemplateColumn Header="Status" Width="0.1*" MinWidth="60" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource StatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Status}" Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Actions" Width="100" IsReadOnly="True">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Grid>
+                                                <Button Focusable="False" Width="60" Margin="0,2,4,2" Height="22"
+                                                            Command="{Binding DataContext.RunInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                            Visibility="{Binding Status, Converter={StaticResource ExecutionStatusToVisibility}}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="11" Height="11" Margin="0,0,4,0" Source="{StaticResource imgStart}"/>
+                                                        <TextBlock Text="Start"/>
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button Focusable="False" Width="60" Margin="0,2,4,2" Height="22"
+                                                            Command="{Binding DataContext.StopInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                            Visibility="{Binding Status, Converter={StaticResource ExecutionStatusToVisibility}, ConverterParameter=Invert}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="9" Height="9" Margin="0,0,6,0" Source="{StaticResource imgStop}"/>
+                                                        <TextBlock Text="Stop"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </Grid>
 
-												<Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete instance"
-														>
-													<Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
-												</Button>
-											</StackPanel>
-										</DataTemplate>
-									</DataGridTemplateColumn.CellTemplate>
-								</DataGridTemplateColumn>
-							</DataGrid.Columns>
-						</DataGrid>
-					</DockPanel>
-				</Grid>
-			</DockPanel>
-		</Grid>
+                                            <Button Style="{StaticResource ButtonToolBar}" Focusable="False" ToolTip="Delete instance"
+                                                    IsEnabled="True"
+                                                    Command="{Binding DataContext.DeleteInstanceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                                <Image Width="12" Height="12" Margin="2" Source="{StaticResource imgDelete}" UseLayoutRounding="True"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
 
-		<GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
+                        <DataGrid.RowDetailsTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="0.5,0,1,0.5" BorderBrush="CornflowerBlue">
+                                    <DockPanel HorizontalAlignment="Right" Margin="1">
 
-		<Grid Grid.Column="2" Margin="5,20,20,20">
-			<Border Style="{StaticResource ContentBorderStyle}"/>
-			<Grid>
-				<Grid.RowDefinitions>
-					<RowDefinition MinHeight="80"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition MinHeight="80"/>
-				</Grid.RowDefinitions>
+                                        <Button Name="ButtonEditInstance" Style="{StaticResource ButtonToolBar}"
+                                                Focusable="False" ToolTip="Edit instance"
+                                                Margin="0,0,2,0"
+                                                IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}}"
+                                                DockPanel.Dock="Right"
+                                                Command="{Binding DataContext.ShowEditInstanceWindowCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="13" Height="13" Margin="3,2,1,2"
+                                                       Source="{StaticResource imgEdit}" UseLayoutRounding="True" />
+                                                <TextBlock Text="Edit" Margin="0,0,4,0" />
+                                            </StackPanel>
+                                        </Button>
 
+                                        <Button Focusable="False" Style="{StaticResource ButtonToolBar}"
+                                                ToolTip="Select notification options" DockPanel.Dock="Right"
+                                                Margin="0,0,6,0" IsEnabled="True"
+                                                Command="{Binding DataContext.NotificationOptionsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="12" Height="12" Margin="2,1,4,0"
+                                                       Source="{StaticResource imgNotification}" UseLayoutRounding="True" />
+                                                <TextBlock Text="Notify" Margin="0,0,4,0" />
+                                            </StackPanel>
+                                        </Button>
+                                        
+                                        <Button Focusable="False" Style="{StaticResource ButtonToolBar}"
+                                                ToolTip="Export local data" DockPanel.Dock="Right"
+                                                Margin="0,0,6,0"
+                                                IsEnabled="{Binding Status, Converter={StaticResource StatusToBool}, ConverterParameter=Invert}"
+                                                Command="{Binding DataContext.ExportInstanceDataCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="12" Height="12" Margin="2,0,4,0"
+                                                       Source="{StaticResource imgExport}" UseLayoutRounding="True" />
+                                                <TextBlock Text="Export" Margin="0,0,4,0" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                        </DataGrid.RowDetailsTemplate>
+                    </DataGrid>
+                </DockPanel>
+            </Grid>
+        </Grid>
 
-				<DockPanel Grid.Row="0" Margin="10">
-					<DockPanel DockPanel.Dock="Top">
-						<TextBlock DockPanel.Dock="Left" Margin="10,0" Text="EXECUTION DETAILS" Style="{StaticResource HeaderTextBlockStyle}"/>
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
 
-						<ToggleButton Content="Show all instances" Margin="10,4" HorizontalAlignment="Right" ToolTip="Show all instances for selected strategy"/>
-					</DockPanel>
+        <Grid Grid.Column="2" Margin="5,20,20,20">
+            <Border Style="{StaticResource ContentBorderStyle}"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition MinHeight="80" Height="0.7*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition MinHeight="80"/>
+                </Grid.RowDefinitions>
 
-					<DataGrid x:Name="ExecutionDetailsDataGrid" Margin="10,22,10,10"
-											SelectionMode="Single" 
-											IsTextSearchEnabled="True"
-											IsSynchronizedWithCurrentItem="True"
-											CanUserAddRows="False" CanUserDeleteRows="False"
-											CanUserResizeRows="False" CanUserSortColumns="True"
-											IsReadOnly="False"
-											SelectionUnit="FullRow"
-											AutoGenerateColumns="False"
-											RowHeight="22">
+                <DockPanel Grid.Row="0" Margin="10,10,10,0">
+                    <DockPanel DockPanel.Dock="Top">
+                        <TextBlock DockPanel.Dock="Left" Margin="10,0" Text="EXECUTION DETAILS" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-						<DataGrid.Columns>
-							<DataGridTextColumn Header="Strategy key" Width="*" Binding="{Binding Path=Key}" />
-							<DataGridTextColumn Header="Executed" Width="*" Binding="{Binding Path=Executed}" />
-							<DataGridTextColumn Header="Buy count" Width="*" Binding="{Binding Path=BuyCount}" />
-							<DataGridTextColumn Header="Sell count" Width="*" Binding="{Binding Path=SellCount}" />
-						</DataGrid.Columns>
-					</DataGrid>
-				</DockPanel>
+                        <ToggleButton Content="Show all instances" Margin="10,4" HorizontalAlignment="Right" ToolTip="Show all instances for selected strategy"
+                                      IsChecked="{Binding ExecutionDetailsForAllInstances}"/>
+                    </DockPanel>
 
-				<GridSplitter Grid.Row="1" ResizeDirection="Rows" />
+                    <DataGrid x:Name="ExecutionDetailsDataGrid" Margin="10,16,10,0"
+                              ItemsSource="{Binding ExecutionDetailsCollection}"
+                              SelectedItem="{Binding SelectedExecutionDetails}"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False"
+                              RowHeight="22">
 
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Instance key" Width="*" MinWidth="90" Binding="{Binding Path=Key}" />
+                            <DataGridTextColumn Header="Executed" Width="0.34*" MinWidth="70" Binding="{Binding Path=Executed}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Buy count" Width="0.34*" MinWidth="80" Binding="{Binding Path=BuyCount}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Sell count" Width="0.34*" MinWidth="80" Binding="{Binding Path=SellCount}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
 
-				<DockPanel Grid.Row="2" Margin="10">
-					<TextBlock DockPanel.Dock="Top" Margin="10,0" Text="ORDERS - AA002" Style="{StaticResource HeaderTextBlockStyle}"/>
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" />
 
-					<DataGrid x:Name="OrdersDataGrid" Margin="10,20,10,10"
-											SelectionMode="Single" 
-											IsTextSearchEnabled="True"
-											IsSynchronizedWithCurrentItem="True"
-											CanUserAddRows="False" CanUserDeleteRows="False"
-											CanUserResizeRows="False" CanUserSortColumns="True"
-											IsReadOnly="False"
-											SelectionUnit="FullRow"
-											AutoGenerateColumns="False"
-											RowHeight="22">
+                <DockPanel Grid.Row="2" Margin="10,20,10,10">
+                    <DockPanel DockPanel.Dock="Top" Margin="10,0" >
+                        <TextBlock Text="ORDERS" Style="{StaticResource SubHeaderTextBlockStyle}" Margin="0,0,6,0"/>
+                        <TextBlock Text="{Binding Path=SelectedExecutionDetails.Key}" Style="{StaticResource SubHeaderTextBlockStyle}" FontWeight="SemiBold"/>
 
-						<DataGrid.Columns>
-							<DataGridTextColumn Header="Order ID" Width="*" Binding="{Binding Path=OrderId}" />
-							<DataGridTextColumn Header="Side" Width="*" Binding="{Binding Path=Side}" />
-							<DataGridTextColumn Header="Type" Width="*" Binding="{Binding Path=Type}" />
-							<DataGridTextColumn Header="Price" Width="*" Binding="{Binding Path=Price}" />
-							<DataGridTextColumn Header="Quantity" Width="*" Binding="{Binding Path=Quantity}" />
-							<DataGridTextColumn Header="Time" Width="*" Binding="{Binding Path=Time}" />
-							<DataGridTextColumn Header="Status" Width="*" Binding="{Binding Path=Status}" />
+                        <Button MinWidth="75" IsEnabled="True" Focusable="False" Margin="0,0,0,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Command="{Binding ExportExecutionsCommand}" DockPanel.Dock="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}" />
+                                <TextBlock Text="Export" />
+                            </StackPanel>
+                        </Button>
+                        <Button MinWidth="75" IsEnabled="True" Focusable="False" Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Command="{Binding ExportAllExecutionsCommand}" DockPanel.Dock="Right"
+                                ToolTip="Export executions of all selected instances">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="14" Height="14" Margin="0,0,4,0" Source="{StaticResource imgExport}" />
+                                <TextBlock Text="Export all Executions" />
+                            </StackPanel>
+                        </Button>
+                    </DockPanel>
 
-						</DataGrid.Columns>
-					</DataGrid>
-				</DockPanel>
-			</Grid>
-		</Grid>
+                    <DataGrid x:Name="OrdersDataGrid" Margin="10"
+                              ItemsSource="{Binding OrderDetailsCollection}"
+                              SelectionMode="Single" 
+                              IsTextSearchEnabled="True"
+                              IsSynchronizedWithCurrentItem="True"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserResizeRows="False" CanUserSortColumns="True"
+                              IsReadOnly="True"
+                              SelectionUnit="FullRow"
+                              AutoGenerateColumns="False"
+                              RowHeight="22"
+                              SelectionChanged="DataGrid_SelectionChanged">
 
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Order ID" Width="0.22*" MinWidth="80" Binding="{Binding Path=ID}" />
+                            <DataGridTextColumn Header="Symbol" Width="0.2*" MinWidth="100" Binding="{Binding Path=Security.Symbol}" />
+                            <DataGridTextColumn Header="Side" Width="0.15*" MinWidth="50" Binding="{Binding Path=Side}" />
+                            <DataGridTextColumn Header="Price" Width="0.2*" MinWidth="50" Binding="{Binding Path=Price}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Quantity" Width="0.22*" MinWidth="70" Binding="{Binding Path=Quantity}" HeaderStyle="{StaticResource RightAlignedColumnHeaderStyle}" CellStyle="{StaticResource RightAlignedCellStyle}"/>
+                            <DataGridTextColumn Header="Time" Width="0.4*" MinWidth="100" Binding="{Binding Path=Time}" />
+                            <DataGridTemplateColumn Header="Status" Width="0.4*" MinWidth="120" SortMemberPath="Status">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Padding="4,1,4,3" CornerRadius="3" Background="{Binding Status, Converter={StaticResource OrderStatusToBrush}}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Status}" Foreground="#EFFF" FontWeight="SemiBold" Typography.Capitals="AllSmallCaps" VerticalAlignment="Center" FontSize="12"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </Grid>
+        </Grid>
 
-	</Grid>
+    </Grid>
 
 </UserControl>

@@ -1,0 +1,36 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<ResourceDictionary.MergedDictionaries>
+		<!--WPFToolkit-->		
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/Accordion.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/AccordionButton.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/AccordionItem.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/AutoCompleteBox.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/BusyIndicator.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/ButtonSpinner.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/Calendar.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/DataGrid.xaml"/>
+        <ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/DatePicker.xaml"/>
+        <ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/DateTimePicker.xaml"/>
+        <ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/DateTimeUpDown.xaml"/>
+        <ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/DescriptionViewer.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/DomainUpDown.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/ExpandableContentControl.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/HeaderedContentControl.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/Label.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/ListTimePickerPopup.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/NumericUpDown.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/Picker.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/RangeTimePickerPopup.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/Rating.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/RatingItem.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/TimePicker.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/TimeUpDown.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/TransitioningContentControl.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/UpDownBase.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/ValidationSummary.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/WatermarkTextBox.xaml"/>
+		<ResourceDictionary Source="/Resources;component/Resources/Styles/WPFToolkit/ProgressableViewStyle.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

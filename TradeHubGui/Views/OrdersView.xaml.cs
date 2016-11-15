@@ -12,17 +12,24 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TradeHubGui.ViewModel;
 
 namespace TradeHubGui.Views
 {
-	/// <summary>
-	/// Interaction logic for OrdersView.xaml
-	/// </summary>
-	public partial class OrdersView : UserControl
-	{
-		public OrdersView()
-		{
-			InitializeComponent();
-		}
-	}
+    /// <summary>
+    /// Interaction logic for OrdersView.xaml
+    /// </summary>
+    public partial class OrdersView : UserControl
+    {
+        public OrdersView()
+        {
+            InitializeComponent();
+            DataContext = new OrdersViewModel();
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            (sender as DataGrid).UnselectAllCells();
+        }
+    }
 }
