@@ -29,9 +29,9 @@
 * See the License for the specific language governing permissions and 
 * limitations under the License. 
 *****************************************************************************-->
-
-
-﻿<UserControl x:Class="TradeHubGui.Views.NotificationSettingsView"
+    
+    
+<UserControl x:Class="TradeHubGui.Views.NotificationSettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 

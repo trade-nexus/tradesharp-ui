@@ -31,7 +31,7 @@
 *****************************************************************************-->
 
 
-﻿<Application x:Class="TradeHubGui.App"
+<Application x:Class="TradeHubGui.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
