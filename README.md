@@ -1,6 +1,6 @@
-# Tradehub - UI #
+# TradeSharp - UI #
 
-This repository contains all the front-end code for 'TradeHub'.
+This repository contains all the front-end code for 'TradeSharp'.
 
 ### JIRA link: ###
 https://aurorasolutions.atlassian.net
@@ -20,8 +20,8 @@ https://aurorasolutions.atlassian.net
     * Password = `root`
     * host = `localhost`
 
-+ Create a new database named `TradeHub`.
-+ Run sql script: `TradeHubDBScript.sql` located in `..\tradehub-ui\database\`
++ Create a new database named `tradehub`.
++ Run sql script: `TradeHubDBScript.sql` located in `..\tradesharp-ui\database\`
 ### Rabbit MQ###
 + Download and install erlang: http://www.erlang.org/download.html
 + Restart System.
@@ -31,4 +31,4 @@ If you run into any trouble for Rabbit MQ:
 http://www.rabbitmq.com/install-windows.html
 
 ### Sample Data ###
-Located in `..\tradehub-ui\Sample Data\`. Follow the instructions in `Read Me.txt` (as it will be updated depending on sample data added) located in the same folder to place the sample data.
+Located in `..\tradesharp-ui\Sample Data\`. Follow the instructions in `Read Me.txt` (as it will be updated depending on sample data added) located in the same folder to place the sample data.
