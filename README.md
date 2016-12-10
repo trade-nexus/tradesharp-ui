@@ -32,3 +32,7 @@ http://www.rabbitmq.com/install-windows.html
 
 ### Sample Data ###
 Located in `..\tradesharp-ui\Sample Data\`. Follow the instructions in `Read Me.txt` (as it will be updated depending on sample data added) located in the same folder to place the sample data.
+
+### Bugs
+
+Please report bugs [here](https://github.com/trade-nexus/bugs)
