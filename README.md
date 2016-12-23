@@ -5,6 +5,7 @@ This repository contains all the front-end code for TradeSharp. TradeSharp is a 
 ### Table of contents ###
 
   * [Installation](#installation)
+  * [Usage](#usage)
   * [Reporting Bugs](#bugs)
     
 ***
@@ -24,6 +25,23 @@ To get live data from the market data provider for any symbol, create a new mark
 
 ![TradeSharp Dashboard with Multiple Market Scanners](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/dashboard-with-scanner-windows.png)
 Figure 2: TradeSharp Dashboard with Multiple Market Scanners
+
+Figure 3 below shows the entry order window in TradeSharp
+
+![TradeSharp Dashboard with Entry Order Window](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/dashboard-with-entry-order-window.png)
+Figure 3: TradeSharp Dashboard with Entry Order Window
+
+![TradeSharp Strategy Runner](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/strategy-runner.png)
+Figure 4: TradeSharp Strategy Runner
+
+![TradeSharp Genetic and Brute Force Optimization](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/genetic-and-brute-optimization.png)
+Figure 5: TradeSharp Genetic and Brute Force Optimization
+
+![TradeSharp Order Statistics](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/order-statistics.png)
+Figure 6: TradeSharp Order Statistics
+
+![TradeSharp Data Downloader](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/data-downloader.png)
+Figure 7: TradeSharp Data Downloader
 
 ### Bugs
 
