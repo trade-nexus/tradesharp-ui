@@ -6,6 +6,7 @@ This repository contains all the front-end code for TradeSharp. TradeSharp is a 
 
   * [Installation](#installation)
   * [Usage](#usage)
+  * [Demo](#demo)
   * [Reporting Bugs](#bugs)
     
 ***
@@ -51,6 +52,16 @@ TradeSharp allows downloading data from a provider to be used later for back tes
 ![TradeSharp Data Downloader](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/data-downloader.png)
 Figure 7: TradeSharp Data Downloader
 
-### Bugs
+***
+
+### Demo ###
+
+Click on the video below for TradeSharp Demo.
+
+[![TradeSharp Demo](http://img.youtube.com/vi/ZGRxqN9n1Jg/hqdefault.jpg)](https://www.youtube.com/watch?v=ZGRxqN9n1Jg)
+
+***
+
+### Bugs ###
 
 Please report bugs [here](https://github.com/trade-nexus/bugs)
