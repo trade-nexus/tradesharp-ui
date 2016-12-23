@@ -1,37 +1,29 @@
 # TradeSharp - UI #
 
-This repository contains all the front-end code for 'TradeSharp'.
+This repository contains all the front-end code for TradeSharp. TradeSharp is a C# based data feed and broker neutral Algorithmic Trading Platform that lets trading firms or individuals automate any rules based trading strategies in stocks, forex and ETFs.
 
-### JIRA link: ###
-https://aurorasolutions.atlassian.net
+### Table of contents ###
 
-## Requirements ##
+  * [Installation](#installation)
+  * [Reporting Bugs](#bugs)
+    
+***
 
-* MS Visual Studio 2012 or higher
-* .Net Framework 4.5.1
-* MySql
-* Git
-* Rabbit MQ
+### Installation ###
 
-## Setting up the code ##
-### Database ###
-* Settings:
-    * Username = `root`
-    * Password = `root`
-    * host = `localhost`
+To install TradeSharp, follow the steps given [here](https://github.com/trade-nexus/tradesharp-core#installation)
 
-+ Create a new database named `tradehub`.
-+ Run sql script: `TradeHubDBScript.sql` located in `..\tradesharp-ui\database\`
-### Rabbit MQ###
-+ Download and install erlang: http://www.erlang.org/download.html
-+ Restart System.
-+ Download and install RabbitMQ: http://www.rabbitmq.com/download.html
-#### Help:
-If you run into any trouble for Rabbit MQ:
-http://www.rabbitmq.com/install-windows.html
+### Usage ###
 
-### Sample Data ###
-Located in `..\tradesharp-ui\Sample Data\`. Follow the instructions in `Read Me.txt` (as it will be updated depending on sample data added) located in the same folder to place the sample data.
+Once the TradeSharp has started, the dashboard page (see Figure 1 below) is loaded. Menu on the right allows the user to connect with multiple market data and order execution providers. On the levft of the dashborad page, there are tabs for navigating between Dashboard, Strategy Runner, Orders and Data Downloader views. 
+
+![TradeSharp Dashboard](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/dashboard.png)
+Figure 1: TradeSharp Dashboard
+
+To get live data from the market data provider for any symbol, create a new market scanner (if not already created) for that provider using the **New Market Scanner** on the dashboard view and add the symbols to the scanner. See Figure 2 below.
+
+![TradeSharp Dashboard with Multiple Market Scanners](https://github.com/trade-nexus/tradesharp-screenshots/blob/master/dashboard-with-scanner-windows.png)
+Figure 2: TradeSharp Dashboard with Multiple Market Scanners
 
 ### Bugs
 
